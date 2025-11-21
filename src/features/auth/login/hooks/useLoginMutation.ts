@@ -1,0 +1,53 @@
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
+import type { ApiResponse } from '@/types/global-types/api-response'
+import { toast } from 'sonner'
+import { useAuthStore } from '@/stores/auth-store'
+import apiClient from '@/lib/api-client'
+import type { LoginRequest, LoginResponse } from '../types/login-types'
+
+interface UseLoginMutationProps {
+  redirectTo?: string
+}
+
+export function useLoginMutation({ redirectTo }: UseLoginMutationProps = {}) {
+  const navigate = useNavigate()
+  const { auth } = useAuthStore()
+
+  return useMutation({
+    mutationFn: async (
+      credentials: LoginRequest
+    ): Promise<ApiResponse<LoginResponse>> => {
+      const response = await apiClient.post<ApiResponse<LoginResponse>>(
+        '/auth/login',
+        credentials
+      )
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'login-toast' })
+    },
+    onSuccess: async (data) => {
+      toast.dismiss('login-toast')
+
+      auth.setUser(data.content!.user)
+      auth.setAccessToken(data.content!.accessToken)
+
+      const greetingsSubject = data.content!.user!.full_name
+        ? data.content!.user!.full_name
+        : data.content!.user!.email
+
+      toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
+      try {
+        const targetPath = redirectTo || '/'
+        await navigate({ to: targetPath, replace: true })
+      } catch {
+        // Navigation error, but login was successful - silently ignore
+      }
+    },
+    onError: () => {
+      toast.dismiss('login-toast')
+      toast.error('Login gagal. Silakan periksa email dan kata sandi Anda.')
+    },
+  })
+}

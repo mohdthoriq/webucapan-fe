@@ -1,13 +1,15 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
+import type { LoginCompany } from '@/features/auth/login/types/login-types'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
-interface AuthUser {
-  accountNo: string
+export interface AuthUser {
+  id: string
+  full_name: string
   email: string
-  role: string[]
-  exp: number
+  is_active: boolean
+  company: LoginCompany
 }
 
 interface AuthState {
@@ -23,7 +25,8 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()((set) => {
   const cookieState = getCookie(ACCESS_TOKEN)
-  const initToken = cookieState ? JSON.parse(cookieState) : ''
+  const initToken =
+    cookieState && cookieState !== 'undefined' ? JSON.parse(cookieState) : ''
   return {
     auth: {
       user: null,
