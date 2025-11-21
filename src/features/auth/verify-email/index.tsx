@@ -8,34 +8,43 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { AuthLayout } from '../auth-layout'
-import { OtpForm } from './components/otp-form'
+import { VerifyEmailForm } from './components/verify-email-form'
 
-export function Otp() {
+export function VerifyEmail() {
   return (
     <AuthLayout>
       <Card className='gap-4'>
         <CardHeader>
           <CardTitle className='text-base tracking-tight'>
-            Two-factor Authentication
+            Verifikasi Email
           </CardTitle>
           <CardDescription>
-            Please enter the authentication code. <br /> We have sent the
-            authentication code to your email.
+            Silakan masukkan kode verifikasi yang telah dikirim ke email Anda.
+            <br /> Kode verifikasi berlaku selama 10 menit.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <OtpForm />
+          <VerifyEmailForm />
         </CardContent>
-        <CardFooter>
+        <CardFooter className='flex flex-col space-y-2'>
           <p className='text-muted-foreground px-8 text-center text-sm'>
-            Haven't received it?{' '}
+            Tidak menerima kode?{' '}
+            <button
+              type='button'
+              className='hover:text-primary underline underline-offset-4'
+            >
+              Kirim ulang kode
+            </button>
+            .
+          </p>
+          <p className='text-muted-foreground px-8 text-center text-sm'>
+            Sudah punya akun?{' '}
             <Link
               to='/login'
               className='hover:text-primary underline underline-offset-4'
             >
-              Resend a new code.
+              Kembali ke Login
             </Link>
-            .
           </p>
         </CardFooter>
       </Card>

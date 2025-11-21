@@ -1,9 +1,3 @@
-import { useState } from 'react'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,37 +14,14 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from '@/components/ui/input-otp'
+import { useVerifyEmailForm } from '../hooks/useVerifyEmailForm'
 
-const formSchema = z.object({
-  otp: z
-    .string()
-    .min(6, 'Please enter the 6-digit code.')
-    .max(6, 'Please enter the 6-digit code.'),
-})
+export type VerifyEmailProps = React.HTMLAttributes<HTMLFormElement>
 
-type OtpFormProps = React.HTMLAttributes<HTMLFormElement>
+export function VerifyEmailForm({ className, ...props }: VerifyEmailProps) {
+  const { form, isLoading, onSubmit } = useVerifyEmailForm()
 
-export function OtpForm({ className, ...props }: OtpFormProps) {
-  const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(false)
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { otp: '' },
-  })
-
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const otp = form.watch('otp')
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    showSubmittedData(data)
-
-    setTimeout(() => {
-      setIsLoading(false)
-      navigate({ to: '/' })
-    }, 1000)
-  }
+  const otp = form.watch('otp_code')
 
   return (
     <Form {...form}>
@@ -61,7 +32,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
       >
         <FormField
           control={form.control}
-          name='otp'
+          name='otp_code'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='sr-only'>One-Time Password</FormLabel>

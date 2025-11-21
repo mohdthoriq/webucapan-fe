@@ -5,8 +5,7 @@ import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import type { ProfileResponse } from '@/features/settings/profile/types/profile.type'
-import type { LoginResponse } from '../types/login.types'
-import type { LoginFormValues } from './useLoginForm'
+import type { LoginFormValues, LoginResponse } from '../types/login.types'
 
 interface UseLoginMutationProps {
   redirectTo?: string

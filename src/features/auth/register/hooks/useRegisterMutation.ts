@@ -1,12 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { RegisterResponse } from '../types/register.types'
-import type { RegisterFormValues } from './useRegisterForm'
+import type {
+  RegisterResponse,
+  RegisterFormValues,
+} from '../types/register.types'
 
 export function useRegisterMutation() {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   return useMutation({
     mutationFn: async (
@@ -21,16 +24,21 @@ export function useRegisterMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'register-toast' })
     },
-    onSuccess: async () => {
+    onSuccess: async (_, variables) => {
       toast.dismiss('register-toast')
 
-      toast.success(`Berhasil Melakukan Pendaftaran.`)
-      // try {
-      //   const targetPath = redirectTo || '/'
-      //   await navigate({ to: targetPath, replace: true })
-      // } catch {
-      //   // Navigation error, but register was successful - silently ignore
-      // }
+      toast.success('Pendaftaran berhasil! Silakan verifikasi email Anda.')
+
+      try {
+        // Redirect to OTP verification page with email parameter
+        await navigate({ 
+          to: '/verify-email', 
+          search: { email: variables.email }, 
+          replace: true 
+        })
+      } catch {
+        // Continue without navigation - user can manually navigate
+      }
     },
     onError: () => {
       toast.dismiss('register-toast')
