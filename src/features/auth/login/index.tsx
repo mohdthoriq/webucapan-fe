@@ -33,12 +33,13 @@ export function Login() {
             <h1 className='text-xl font-medium'>Amfibiz</h1>
           </div>
         </div> */}
-        <div className='mx-auto flex w-full max-w-sm flex-col justify-center space-y-10'>
+        <div className='mx-auto flex w-full max-w-sm flex-col justify-center space-y-6'>
           <div className='flex flex-col space-y-2 text-start'>
-            <h2 className='text-xl font-semibold tracking-tight'>Masuk</h2>
+            <h2 className='text-primary text-2xl font-semibold tracking-tight'>
+              Selamat Datang di Amfibiz
+            </h2>
             <p className='text-muted-foreground text-sm'>
-              Masukkan email dan kata sandi Anda di bawah ini <br />
-              untuk masuk ke akun Anda
+              Masukkan email dan kata sandi untuk masuk ke akun Anda
             </p>
           </div>
           <LoginForm />

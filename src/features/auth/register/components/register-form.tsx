@@ -111,8 +111,8 @@ export function RegisterForm({
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
-          Create Account
+        <Button className='mt-6' disabled={isLoading}>
+          Daftar
         </Button>
 
         <div className='relative my-2'>

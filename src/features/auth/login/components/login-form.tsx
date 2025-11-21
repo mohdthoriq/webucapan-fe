@@ -64,6 +64,15 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           Masuk
         </Button>
+        <p className='text-muted-foreground text-center text-sm'>
+          Belum punya akun?{' '}
+          <Link
+            to='/register'
+            className='hover:text-primary underline underline-offset-4'
+          >
+            Daftar
+          </Link>
+        </p>
       </form>
     </Form>
   )
