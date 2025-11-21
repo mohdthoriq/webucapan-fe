@@ -1,9 +1,4 @@
-import { useState } from 'react'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
-import { showSubmittedData } from '@/lib/show-submitted-data'
+import type { UseFormReturn } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,37 +15,23 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from '@/components/ui/input-otp'
+import type { VerifyEmailFormValues } from '../types/verify-email.types'
 
-const formSchema = z.object({
-  otp: z
-    .string()
-    .min(6, 'Please enter the 6-digit code.')
-    .max(6, 'Please enter the 6-digit code.'),
-})
+export interface VerifyEmailProps
+  extends Omit<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+  form: UseFormReturn<VerifyEmailFormValues>
+  isLoading: boolean
+  onSubmit: (data: VerifyEmailFormValues) => void
+}
 
-type OtpFormProps = React.HTMLAttributes<HTMLFormElement>
-
-export function OtpForm({ className, ...props }: OtpFormProps) {
-  const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(false)
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { otp: '' },
-  })
-
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const otp = form.watch('otp')
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    showSubmittedData(data)
-
-    setTimeout(() => {
-      setIsLoading(false)
-      navigate({ to: '/' })
-    }, 1000)
-  }
+export function VerifyEmailForm({
+  className,
+  form,
+  isLoading,
+  onSubmit,
+  ...props
+}: VerifyEmailProps) {
+  const otp = form.watch('otp_code')
 
   return (
     <Form {...form}>
@@ -61,7 +42,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
       >
         <FormField
           control={form.control}
-          name='otp'
+          name='otp_code'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='sr-only'>One-Time Password</FormLabel>

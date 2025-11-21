@@ -13,13 +13,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/forms/password-input'
 import { useLoginForm } from '../hooks/useLoginForm'
+import { UnverifiedEmailDialog } from './unverified-email-dialog'
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
 }
 
 export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
-  const { form, isLoading, onSubmit } = useLoginForm({ redirectTo })
+  const { form, isLoading, onSubmit, unverifiedEmailDialog } = useLoginForm({
+    redirectTo,
+  })
 
   return (
     <Form {...form}>
@@ -64,7 +67,22 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           Masuk
         </Button>
+        <p className='text-muted-foreground text-center text-sm'>
+          Belum punya akun?{' '}
+          <Link
+            to='/register'
+            className='hover:text-primary underline underline-offset-4'
+          >
+            Daftar
+          </Link>
+        </p>
       </form>
+      <UnverifiedEmailDialog
+        open={unverifiedEmailDialog.isOpen}
+        onOpenChange={unverifiedEmailDialog.setOpen}
+        email={unverifiedEmailDialog.email}
+        onResendOtp={unverifiedEmailDialog.onResendOtp}
+      />
     </Form>
   )
 }
