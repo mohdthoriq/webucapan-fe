@@ -1,20 +1,7 @@
-import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useLoginMutation } from '../hooks/useLoginMutation'
-
-const formSchema = z.object({
-  email: z.email({
-    error: (iss) =>
-      iss.input === '' ? 'Silakan masukkan email Anda' : undefined,
-  }),
-  password: z
-    .string()
-    .min(1, 'Silakan masukkan kata sandi Anda')
-    .min(7, 'Kata sandi harus minimal 7 karakter'),
-})
-
-export type LoginFormValues = z.infer<typeof formSchema>
+import { LoginSchema, type LoginFormValues } from '../types/login.types'
+import { useLoginMutation } from './useLoginMutation'
 
 interface UseLoginFormProps {
   redirectTo?: string
@@ -22,7 +9,7 @@ interface UseLoginFormProps {
 
 export function useLoginForm({ redirectTo }: UseLoginFormProps = {}) {
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
       password: '',

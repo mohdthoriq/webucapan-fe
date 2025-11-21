@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/forms/password-input'
-import { useLoginForm } from './useLoginForm'
+import { useLoginForm } from '../hooks/useLoginForm'
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
