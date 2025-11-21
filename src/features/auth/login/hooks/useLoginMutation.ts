@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
@@ -9,9 +10,13 @@ import type { LoginFormValues, LoginResponse } from '../types/login.types'
 
 interface UseLoginMutationProps {
   redirectTo?: string
+  onUnverifiedEmail?: (email: string) => void
 }
 
-export function useLoginMutation({ redirectTo }: UseLoginMutationProps = {}) {
+export function useLoginMutation({
+  redirectTo,
+  onUnverifiedEmail,
+}: UseLoginMutationProps = {}) {
   const navigate = useNavigate()
   const { auth } = useAuthStore()
 
@@ -33,16 +38,22 @@ export function useLoginMutation({ redirectTo }: UseLoginMutationProps = {}) {
 
       auth.setAccessToken(data.data!.accessToken)
 
-      const response =
-        await apiClient.get<ApiResponse<ProfileResponse>>('/auth/me')
+      try {
+        const response =
+          await apiClient.get<ApiResponse<ProfileResponse>>('/auth/me')
 
-      auth.setUser(response.data!.data!.user)
+        auth.setUser(response.data!.data!.user)
 
-      const greetingsSubject = response.data!.data!.user!.full_name
-        ? response.data!.data!.user!.full_name
-        : response.data!.data!.user!.email
+        const greetingsSubject = response.data!.data!.user!.full_name
+          ? response.data!.data!.user!.full_name
+          : response.data!.data!.user!.email
 
-      toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
+        toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
+      } catch {
+        // If profile fetch fails, still show success
+        toast.success('Login berhasil!')
+      }
+
       try {
         const targetPath = redirectTo || '/'
         await navigate({ to: targetPath, replace: true })
@@ -50,8 +61,19 @@ export function useLoginMutation({ redirectTo }: UseLoginMutationProps = {}) {
         // Navigation error, but login was successful - silently ignore
       }
     },
-    onError: () => {
+    onError: (error, variables) => {
       toast.dismiss('login-toast')
+
+      if (error instanceof AxiosError) {
+        const errorCode = error.response?.data?.code
+
+        if (errorCode === 401) {
+          // Email not verified
+          onUnverifiedEmail?.(variables.email)
+          return
+        }
+      }
+
       toast.error('Login gagal. Silakan periksa email dan kata sandi Anda.')
     },
   })

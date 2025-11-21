@@ -1,3 +1,4 @@
+import type { UseFormReturn } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,13 +15,22 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from '@/components/ui/input-otp'
-import { useVerifyEmailForm } from '../hooks/useVerifyEmailForm'
+import type { VerifyEmailFormValues } from '../types/verify-email.types'
 
-export type VerifyEmailProps = React.HTMLAttributes<HTMLFormElement>
+export interface VerifyEmailProps
+  extends Omit<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+  form: UseFormReturn<VerifyEmailFormValues>
+  isLoading: boolean
+  onSubmit: (data: VerifyEmailFormValues) => void
+}
 
-export function VerifyEmailForm({ className, ...props }: VerifyEmailProps) {
-  const { form, isLoading, onSubmit } = useVerifyEmailForm()
-
+export function VerifyEmailForm({
+  className,
+  form,
+  isLoading,
+  onSubmit,
+  ...props
+}: VerifyEmailProps) {
   const otp = form.watch('otp_code')
 
   return (

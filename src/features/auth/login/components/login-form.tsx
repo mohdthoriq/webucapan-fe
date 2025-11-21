@@ -13,13 +13,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/forms/password-input'
 import { useLoginForm } from '../hooks/useLoginForm'
+import { UnverifiedEmailDialog } from './unverified-email-dialog'
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
 }
 
 export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
-  const { form, isLoading, onSubmit } = useLoginForm({ redirectTo })
+  const { form, isLoading, onSubmit, unverifiedEmailDialog } = useLoginForm({
+    redirectTo,
+  })
 
   return (
     <Form {...form}>
@@ -74,6 +77,12 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
           </Link>
         </p>
       </form>
+      <UnverifiedEmailDialog
+        open={unverifiedEmailDialog.isOpen}
+        onOpenChange={unverifiedEmailDialog.setOpen}
+        email={unverifiedEmailDialog.email}
+        onResendOtp={unverifiedEmailDialog.onResendOtp}
+      />
     </Form>
   )
 }
