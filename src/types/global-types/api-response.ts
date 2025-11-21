@@ -6,7 +6,7 @@ export interface ApiResponse<T = unknown> {
   status: ApiStatus
   code: number
   message: string
-  content: T | null
+  data: T | null
   pagination?: PaginationMeta | null
   errors?: string[] | null
 }

@@ -4,6 +4,7 @@ import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
+import type { ProfileResponse } from '@/features/settings/profile/types/profile.type'
 import type { LoginRequest, LoginResponse } from '../types/login-types'
 
 interface UseLoginMutationProps {
@@ -30,12 +31,16 @@ export function useLoginMutation({ redirectTo }: UseLoginMutationProps = {}) {
     onSuccess: async (data) => {
       toast.dismiss('login-toast')
 
-      auth.setUser(data.content!.user)
-      auth.setAccessToken(data.content!.accessToken)
+      auth.setAccessToken(data.data!.accessToken)
 
-      const greetingsSubject = data.content!.user!.full_name
-        ? data.content!.user!.full_name
-        : data.content!.user!.email
+      const response =
+        await apiClient.get<ApiResponse<ProfileResponse>>('/auth/me')
+
+      auth.setUser(response.data!.data!.user)
+
+      const greetingsSubject = response.data!.data!.user!.full_name
+        ? response.data!.data!.user!.full_name
+        : response.data!.data!.user!.email
 
       toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
       try {

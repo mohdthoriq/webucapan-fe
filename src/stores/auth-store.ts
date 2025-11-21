@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
-import type { LoginCompany } from '@/features/auth/login/types/login-types'
+import type { ProfileCompany } from '@/features/settings/profile/types/profile.type'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
@@ -9,7 +9,7 @@ export interface AuthUser {
   full_name: string
   email: string
   is_active: boolean
-  company: LoginCompany
+  company: ProfileCompany
 }
 
 interface AuthState {

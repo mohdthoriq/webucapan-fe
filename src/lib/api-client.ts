@@ -1,4 +1,7 @@
 import axios from 'axios'
+import { getCookie } from '@/lib/cookies'
+
+const ACCESS_TOKEN_COOKIE = 'thisisjustarandomstring'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
@@ -7,14 +10,26 @@ const apiClient = axios.create({
   },
 })
 
+// Function to get auth token from cookie
+function getAuthToken(): string | null {
+  const tokenCookie = getCookie(ACCESS_TOKEN_COOKIE)
+  if (tokenCookie && tokenCookie !== 'undefined') {
+    try {
+      return JSON.parse(tokenCookie)
+    } catch {
+      return null
+    }
+  }
+  return null
+}
+
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    // You can add auth token here if needed
-    // const token = getAuthToken()
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`
-    // }
+    const token = getAuthToken()
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   (error) => {
