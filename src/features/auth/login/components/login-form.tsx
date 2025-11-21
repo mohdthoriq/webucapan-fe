@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { PasswordInput } from '@/components/password-input'
+import { PasswordInput } from '@/components/forms/password-input'
 import { useLoginForm } from './useLoginForm'
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -60,7 +60,7 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
+        <Button className='mt-4' disabled={isLoading}>
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           Masuk
         </Button>

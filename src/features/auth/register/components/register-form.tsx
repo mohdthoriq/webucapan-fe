@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { PasswordInput } from '@/components/password-input'
+import { PasswordInput } from '@/components/forms/password-input'
 
 const formSchema = z
   .object({
@@ -32,7 +32,7 @@ const formSchema = z
     path: ['confirmPassword'],
   })
 
-export function SignUpForm({
+export function RegisterForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {

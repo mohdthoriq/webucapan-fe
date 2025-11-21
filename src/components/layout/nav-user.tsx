@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { SignOutDialog } from '@/components/sign-out-dialog'
+import { LogoutDialog } from '@/components/dialog/logout.dialog'
 
 type NavUserProps = {
   user: {
@@ -89,7 +89,7 @@ export function NavUser({ user }: NavUserProps) {
         </SidebarMenuItem>
       </SidebarMenu>
 
-      <SignOutDialog open={!!open} onOpenChange={setOpen} />
+      <LogoutDialog open={!!open} onOpenChange={setOpen} />
     </>
   )
 }
