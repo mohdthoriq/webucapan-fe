@@ -3,38 +3,37 @@ import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { ForgotPasswordFormValues } from '../types/forgot-password.types'
+import type { ResetPasswordFormValues } from '../types/reset-password.types'
 
-interface UseForgotPasswordMutationProps {
+interface UseResetPasswordMutationProps {
   redirectTo?: string
 }
 
-export function useForgotPasswordMutation({
+export function useResetPasswordMutation({
   redirectTo = '/login',
-}: UseForgotPasswordMutationProps = {}) {
+}: UseResetPasswordMutationProps = {}) {
   const navigate = useNavigate()
 
   return useMutation({
     mutationFn: async (
-      data: ForgotPasswordFormValues
+      data: ResetPasswordFormValues
     ): Promise<ApiResponse<void>> => {
       const response = await apiClient.post<ApiResponse<void>>(
-        '/auth/forgot-password',
+        '/auth/reset-password',
         data
       )
       return response.data
     },
     onMutate: () => {
-      toast.loading('Mengirim email...', { id: 'forgot-password-toast' })
+      toast.loading('Loading...', { id: 'reset-password-toast' })
     },
-    onSuccess: async (_, variables) => {
-      toast.dismiss('forgot-password-toast')
-      toast.success(`Email telah dikirim ke ${variables.email}`)
+    onSuccess: async () => {
+      toast.dismiss('reset-password-toast')
+      toast.success(`Berhasil melakukan reset password`)
 
       try {
         await navigate({
           to: redirectTo,
-          // search: { email: variables.email },
           replace: true,
         })
       } catch {
@@ -42,8 +41,8 @@ export function useForgotPasswordMutation({
       }
     },
     onError: () => {
-      toast.dismiss('forgot-password-toast')
-      toast.error('Gagal mengirim email. Silakan coba lagi.')
+      toast.dismiss('reset-password-toast')
+      toast.error('Gagal melakukan reset password. Silakan coba lagi.')
     },
   })
 }

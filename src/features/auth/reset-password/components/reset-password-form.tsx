@@ -9,14 +9,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForgotPasswordForm } from '../hooks/useForgotPasswordForm'
+import { PasswordInput } from '@/components/forms/password-input'
+import { useResetPasswordForm } from '../hooks/useResetPasswordForm'
 
-export function ForgotPasswordForm({
+export function ResetPasswordForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
-  const { form, isLoading, onSubmit } = useForgotPasswordForm()
+  const { form, isLoading, onSubmit } = useResetPasswordForm()
 
   return (
     <Form {...form}>
@@ -27,17 +27,32 @@ export function ForgotPasswordForm({
       >
         <FormField
           control={form.control}
-          name='email'
+          name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='nama@contoh.com' {...field} />
+                <PasswordInput placeholder='********' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name='confirmPassword'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <PasswordInput placeholder='********' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button className='mt-2' disabled={isLoading}>
           Lanjutkan
           {isLoading ? <Loader2 className='animate-spin' /> : <ArrowRight />}

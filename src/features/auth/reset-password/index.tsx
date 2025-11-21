@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { AuthLayout } from '../auth-layout'
-import { ForgotPasswordForm } from './components/forgot-password-form'
+import { ResetPasswordForm } from './components/reset-password-form'
 
-export function ForgotPassword() {
+export function ResetPassword() {
   return (
     <AuthLayout>
       <Card className='gap-4'>
@@ -24,7 +24,7 @@ export function ForgotPassword() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ForgotPasswordForm />
+          <ResetPasswordForm />
         </CardContent>
         <CardFooter>
           <p className='text-muted-foreground mx-auto px-8 text-center text-sm text-balance'>
