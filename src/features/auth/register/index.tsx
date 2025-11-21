@@ -8,47 +8,46 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { AuthLayout } from '../auth-layout'
-import { SignUpForm } from './components/sign-up-form'
+import { RegisterForm } from './components/register-form'
 
-export function SignUp() {
+export function Register() {
   return (
     <AuthLayout>
       <Card className='gap-4'>
         <CardHeader>
-          <CardTitle className='text-lg tracking-tight'>
-            Create an account
-          </CardTitle>
+          <CardTitle className='text-lg tracking-tight'>Buat akun</CardTitle>
           <CardDescription>
-            Enter your email and password to create an account. <br />
-            Already have an account?{' '}
+            Masukkan email dan password untuk membuat akun. <br />
+            Sudah punya akun?{' '}
             <Link
-              to='/sign-in'
+              to='/register'
               className='hover:text-primary underline underline-offset-4'
             >
-              Sign In
+              Masuk
             </Link>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignUpForm />
+          {/* ========= Register Form ========= */}
+          <RegisterForm />
         </CardContent>
         <CardFooter>
           <p className='text-muted-foreground px-8 text-center text-sm'>
-            By creating an account, you agree to our{' '}
+            Dengan membuat akun, Anda menyetujui{' '}
             <a
               href='/terms'
               className='hover:text-primary underline underline-offset-4'
             >
-              Terms of Service
+              Ketentuan Layanan
             </a>{' '}
-            and{' '}
+            dan{' '}
             <a
               href='/privacy'
               className='hover:text-primary underline underline-offset-4'
             >
-              Privacy Policy
-            </a>
-            .
+              Kebijakan Privasi
+            </a>{' '}
+            kami.
           </p>
         </CardFooter>
       </Card>
