@@ -54,12 +54,6 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
               <FormMessage />
-              <Link
-                to='/forgot-password'
-                className='text-muted-foreground absolute end-0 -top-0.5 text-sm font-medium hover:opacity-75'
-              >
-                Lupa kata sandi?
-              </Link>
             </FormItem>
           )}
         />
@@ -67,6 +61,14 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           Masuk
         </Button>
+        <p className='text-muted-foreground text-center text-sm'>
+          <Link
+            to='/forgot-password'
+            className='hover:text-primary underline underline-offset-4'
+          >
+            Lupa Password?
+          </Link>
+        </p>
         <p className='text-muted-foreground text-center text-sm'>
           Belum punya akun?{' '}
           <Link

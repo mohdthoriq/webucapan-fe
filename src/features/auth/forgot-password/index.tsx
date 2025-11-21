@@ -16,11 +16,11 @@ export function ForgotPassword() {
       <Card className='gap-4'>
         <CardHeader>
           <CardTitle className='text-lg tracking-tight'>
-            Forgot Password
+            Lupa Kata Sandi
           </CardTitle>
           <CardDescription>
-            Enter your registered email and <br /> we will send you a link to
-            reset your password.
+            Masukkan email terdaftar Anda dan <br /> kami akan mengirimkan
+            tautan untuk mereset kata sandi Anda.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -28,12 +28,12 @@ export function ForgotPassword() {
         </CardContent>
         <CardFooter>
           <p className='text-muted-foreground mx-auto px-8 text-center text-sm text-balance'>
-            Don't have an account?{' '}
+            Belum punya akun?{' '}
             <Link
               to='/register'
               className='hover:text-primary underline underline-offset-4'
             >
-              Sign up
+              Daftar
             </Link>
             .
           </p>
