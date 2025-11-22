@@ -1,4 +1,4 @@
-import { Loader2, Save, User, Mail, Lock } from 'lucide-react'
+import { Loader2, Save, User, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -83,7 +83,7 @@ export function UserSettingsForm() {
 
           <FormField
             control={form.control}
-            name='current_password'
+            name='old_password'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password Saat Ini</FormLabel>

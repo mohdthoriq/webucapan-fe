@@ -6,16 +6,19 @@ import {
   userSettingsSchema,
   type UserSettingsFormData,
 } from '../types/user-settings.schema'
+import { useUserSettingsMutation } from './useUserSettingsMutation'
 
 export function useUserSettingsForm() {
   const user = useAuthStore((state) => state.auth.user)
+
+  const userSettingsMutation = useUserSettingsMutation(user?.user?.id || '')
 
   const form = useForm<UserSettingsFormData>({
     resolver: zodResolver(userSettingsSchema),
     defaultValues: {
       full_name: user?.user.full_name || '',
       email: user?.user.email || '',
-      current_password: '',
+      old_password: '',
       new_password: '',
       confirm_password: '',
     },
@@ -23,17 +26,12 @@ export function useUserSettingsForm() {
 
   const onSubmit = async (data: UserSettingsFormData) => {
     try {
-      // TODO: Implement API call to update user settings
-      // eslint-disable-next-line no-console
-      console.log('User settings data:', data)
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await userSettingsMutation.mutateAsync(data)
 
       toast.success('Profil berhasil diperbarui')
 
       // Reset password fields after successful update
-      form.setValue('current_password', '')
+      form.setValue('old_password', '')
       form.setValue('new_password', '')
       form.setValue('confirm_password', '')
     } catch (error) {
@@ -46,6 +44,6 @@ export function useUserSettingsForm() {
   return {
     form,
     onSubmit,
-    isLoading: form.formState.isSubmitting,
+    isLoading: userSettingsMutation.isPending,
   }
 }
