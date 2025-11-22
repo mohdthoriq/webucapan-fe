@@ -1,15 +1,35 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
-import type { ProfileCompany } from '@/features/settings/profile/types/profile.type'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
 export interface AuthUser {
+  user: User
+  company: Company
+  role: Role
+  permissions: string[]
+}
+
+export interface Company {
+  id: string
+  name: string
+  address: string
+}
+
+export interface Role {
+  id: string
+  name: string
+}
+
+export interface User {
   id: string
   full_name: string
   email: string
   is_active: boolean
-  company: ProfileCompany
+  email_verified: boolean
+  email_verified_at: Date
+  created_at: Date
+  updated_at: Date
 }
 
 interface AuthState {

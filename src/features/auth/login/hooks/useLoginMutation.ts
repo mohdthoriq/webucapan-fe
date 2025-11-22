@@ -42,7 +42,9 @@ export function useLoginMutation({
         const response =
           await apiClient.get<ApiResponse<ProfileResponse>>('/auth/me')
 
-        auth.setUser(response.data!.data!.user)
+        const userData = response.data!.data!
+
+        auth.setUser(userData)
 
         const greetingsSubject = response.data!.data!.user!.full_name
           ? response.data!.data!.user!.full_name

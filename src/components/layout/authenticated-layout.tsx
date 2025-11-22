@@ -6,6 +6,11 @@ import { SearchProvider } from '@/context/search-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { ProfileDropdown } from '../profile-dropdown'
+import { Search } from '../search'
+import { ThemeSwitch } from '../theme-switch'
+import { Header } from './header'
+import { Main } from './main'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
@@ -33,7 +38,16 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
               'peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
             )}
           >
-            {children ?? <Outlet />}
+            {/* ===== Top Heading ===== */}
+            <Header fixed>
+              <Search />
+              <div className='ms-auto flex items-center space-x-4'>
+                <ThemeSwitch />
+                <ProfileDropdown />
+              </div>
+            </Header>
+
+            <Main>{children ?? <Outlet />}</Main>
           </SidebarInset>
         </SidebarProvider>
       </LayoutProvider>

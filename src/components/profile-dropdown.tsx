@@ -1,3 +1,6 @@
+import { useNavigate } from '@tanstack/react-router'
+import { LogOut, User } from 'lucide-react'
+import { useAuthStore } from '@/stores/auth-store'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -7,13 +10,29 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { LogoutDialog } from '@/components/dialog/logout.dialog'
 
+// Helper function to get initials from full name
+const getInitials = (fullName: string): string => {
+  const names = fullName.trim().split(' ')
+  if (names.length === 1) {
+    return names[0].substring(0, 2).toUpperCase()
+  }
+  return (names[0][0] + names[names.length - 1][0]).toUpperCase()
+}
+
 export function ProfileDropdown() {
+  const navigate = useNavigate()
   const [open, setOpen] = useDialogState()
+  const user = useAuthStore((state) => state.auth.user)
+
+  // Fallback values if user is not loaded yet
+  const fullName = user?.user?.full_name || 'User'
+  const email = user?.user?.email || 'user@example.com'
+  const companyName = user?.company?.name || 'Company'
+  const initials = getInitials(fullName)
 
   return (
     <>
@@ -21,26 +40,35 @@ export function ProfileDropdown() {
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
             <Avatar className='h-8 w-8'>
-              <AvatarImage src='/avatars/01.png' alt='@shadcn' />
-              <AvatarFallback>SN</AvatarFallback>
+              <AvatarImage src='/avatars/01.png' alt={`@${fullName}`} />
+              <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-56' align='end' forceMount>
           <DropdownMenuLabel className='font-normal'>
             <div className='flex flex-col gap-1.5'>
-              <p className='text-sm leading-none font-medium'>satnaing</p>
+              <p className='text-sm leading-none font-medium'>{fullName}</p>
               <p className='text-muted-foreground text-xs leading-none'>
-                satnaingdev@gmail.com
+                {email}
+              </p>
+              <p className='text-muted-foreground text-xs leading-none'>
+                {companyName}
               </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem
+            variant='default'
+            onClick={() => navigate({ to: '/settings' })}
+          >
+            <User className='h-4 w-4' />
+            Profil
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem variant='destructive' onClick={() => setOpen(true)}>
-            Sign out
-            <DropdownMenuShortcut className='text-current'>
-              ⇧⌘Q
-            </DropdownMenuShortcut>
+            <LogOut className='h-4 w-4' />
+            Keluar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
