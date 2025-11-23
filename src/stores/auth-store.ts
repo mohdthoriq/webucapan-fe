@@ -1,15 +1,38 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
-import type { ProfileCompany } from '@/features/settings/profile/types/profile.type'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
+const USER_DATA = 'user_data'
 
 export interface AuthUser {
+  user: User
+  company: Company
+  role: Role
+  permissions: string[]
+}
+
+export interface Company {
+  id: string
+  name: string
+  address: string
+  npwp: string
+  logo_url?: string | null
+}
+
+export interface Role {
+  id: string
+  name: string
+}
+
+export interface User {
   id: string
   full_name: string
   email: string
   is_active: boolean
-  company: ProfileCompany
+  email_verified: boolean
+  email_verified_at: Date
+  created_at: Date
+  updated_at: Date
 }
 
 interface AuthState {
@@ -27,11 +50,30 @@ export const useAuthStore = create<AuthState>()((set) => {
   const cookieState = getCookie(ACCESS_TOKEN)
   const initToken =
     cookieState && cookieState !== 'undefined' ? JSON.parse(cookieState) : ''
+
+  // Get user data from cookie
+  const getUserFromCookie = (): AuthUser | null => {
+    try {
+      const userData = getCookie(USER_DATA)
+      return userData && userData !== 'undefined' ? JSON.parse(userData) : null
+    } catch {
+      return null
+    }
+  }
+
   return {
     auth: {
-      user: null,
+      user: getUserFromCookie(),
       setUser: (user) =>
-        set((state) => ({ ...state, auth: { ...state.auth, user } })),
+        set((state) => {
+          // Persist user data to cookie
+          if (user) {
+            setCookie(USER_DATA, JSON.stringify(user))
+          } else {
+            removeCookie(USER_DATA)
+          }
+          return { ...state, auth: { ...state.auth, user } }
+        }),
       accessToken: initToken,
       setAccessToken: (accessToken) =>
         set((state) => {
@@ -46,6 +88,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       reset: () =>
         set((state) => {
           removeCookie(ACCESS_TOKEN)
+          removeCookie(USER_DATA)
           return {
             ...state,
             auth: { ...state.auth, user: null, accessToken: '' },
