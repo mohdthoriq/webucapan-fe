@@ -31,10 +31,10 @@ export function useRegisterMutation() {
 
       try {
         // Redirect to OTP verification page with email parameter
-        await navigate({ 
-          to: '/verify-email', 
-          search: { email: variables.email }, 
-          replace: true 
+        await navigate({
+          to: '/verify-email',
+          search: { email: variables.email },
+          replace: true,
         })
       } catch {
         // Continue without navigation - user can manually navigate

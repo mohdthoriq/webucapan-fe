@@ -7,41 +7,56 @@ import {
   companySettingsSchema,
   type CompanySettingsFormData,
 } from '../types/company-settings.schema'
+import { useCompanySettingsMutation } from './useCompanySettingsMutation'
+import { useCompanySettingsQuery } from './useCompanySettingsQuery'
 
 export function useCompanySettingsForm() {
   const company = useAuthStore((state) => state.auth.user?.company)
+
+  // Fetch company data from API
+  const {
+    data: companyData,
+    isLoading: isLoadingCompany,
+    isError,
+  } = useCompanySettingsQuery(company?.id)
 
   const form = useForm<CompanySettingsFormData>({
     resolver: zodResolver(companySettingsSchema),
     defaultValues: {
       name: '',
       address: '',
+      npwp: '',
+      logo_url: '',
     },
   })
 
-  // Update form values when company data is loaded
+  // Update form values when company data is loaded from API
   useEffect(() => {
-    if (company) {
+    if (companyData) {
       form.reset({
-        name: company.name || '',
-        address: company.address || '',
+        name: companyData.name || '',
+        address: companyData.address || '',
+        npwp: companyData.npwp || '',
+        logo_url: companyData.logo_url || '',
       })
     }
-  }, [company, form])
+  }, [companyData, form])
+
+  // Show error toast if query fails
+  useEffect(() => {
+    if (isError) {
+      toast.error('Gagal memuat data perusahaan')
+    }
+  }, [isError])
+
+  const companySettingsMutation = useCompanySettingsMutation(company?.id || '')
 
   const onSubmit = async (data: CompanySettingsFormData) => {
     try {
-      // TODO: Implement API call to update company settings
-      // eslint-disable-next-line no-console
-      console.log('Company settings data:', data)
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      
+      await companySettingsMutation.mutateAsync(data)
+
       toast.success('Pengaturan perusahaan berhasil diperbarui')
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error updating company settings:', error)
+    } catch (_) {
       toast.error('Gagal memperbarui pengaturan perusahaan')
     }
   }
@@ -49,6 +64,7 @@ export function useCompanySettingsForm() {
   return {
     form,
     onSubmit,
-    isLoading: form.formState.isSubmitting,
+    isLoading: companySettingsMutation.isPending,
+    isLoadingData: isLoadingCompany,
   }
 }

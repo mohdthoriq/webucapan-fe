@@ -1,6 +1,7 @@
 # Settings Feature - Implementation Summary
 
 ## Overview
+
 Implemented a comprehensive settings page with user profile and company settings management.
 
 ## File Structure
@@ -29,13 +30,16 @@ src/features/settings/
 ## Features Implemented
 
 ### 1. Main Settings Page (`index.tsx`)
+
 - Tabbed interface using shadcn/ui Tabs component
 - Two tabs: "Profil Pengguna" and "Perusahaan"
 - Card layout for each settings section
 - Responsive design with proper spacing
 
 ### 2. User Settings
+
 **Form Fields:**
+
 - Full Name (required, 2-100 characters)
 - Email (required, valid email format)
 - Current Password (optional, required if changing password)
@@ -43,6 +47,7 @@ src/features/settings/
 - Confirm Password (optional, must match new password)
 
 **Features:**
+
 - Auto-populated from auth store
 - Password change is optional
 - Validation ensures current password is provided when changing password
@@ -50,11 +55,14 @@ src/features/settings/
 - Resets password fields after successful update
 
 ### 3. Company Settings
+
 **Form Fields:**
+
 - Company Name (required, 2-200 characters)
 - Address (required, 5-500 characters, textarea)
 
 **Features:**
+
 - Auto-populated from auth store
 - Simple and clean interface
 - Icon indicators for better UX
@@ -62,6 +70,7 @@ src/features/settings/
 ## Validation Rules
 
 ### User Settings
+
 - Full name: 2-100 characters
 - Email: Valid email format
 - New password: Min 8 characters (if provided)
@@ -69,10 +78,12 @@ src/features/settings/
 - Confirm password must match new password
 
 ### Company Settings
+
 - Company name: 2-200 characters
 - Address: 5-500 characters
 
 ## UI/UX Features
+
 - Indonesian language labels
 - Icon indicators for sections (User, Mail, Lock, Building, MapPin)
 - Loading states with spinner
@@ -85,17 +96,22 @@ src/features/settings/
 ## Integration Points
 
 ### Auth Store
+
 Both forms integrate with the auth store to:
+
 - Get current user data
 - Get current company data
 - Pre-populate form fields
 
 ### API Integration (TODO)
+
 The hooks have placeholder comments for API integration:
+
 - `useUserSettingsForm`: Update user profile and password
 - `useCompanySettingsForm`: Update company information
 
 ## Next Steps
+
 1. Implement API endpoints for:
    - Update user profile
    - Change password

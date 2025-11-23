@@ -1,0 +1,28 @@
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
+import { type CompanySettingsFormData } from '../types/company-settings.schema'
+
+export function useCompanySettingsMutation(companyId: string) {
+  return useMutation({
+    mutationFn: async (credentials: CompanySettingsFormData) => {
+      const response = await apiClient.patch(
+        `companies/${companyId}`,
+        credentials
+      )
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'company-settings-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('company-settings-toast')
+
+      toast.success('Pengaturan perusahaan berhasil diubah.')
+    },
+    onError: () => {
+      toast.dismiss('company-settings-toast')
+      toast.error('Pengaturan perusahaan gagal diubah.')
+    },
+  })
+}

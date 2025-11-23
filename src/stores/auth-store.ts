@@ -15,6 +15,8 @@ export interface Company {
   id: string
   name: string
   address: string
+  npwp: string
+  logo_url?: string | null
 }
 
 export interface Role {
@@ -48,7 +50,7 @@ export const useAuthStore = create<AuthState>()((set) => {
   const cookieState = getCookie(ACCESS_TOKEN)
   const initToken =
     cookieState && cookieState !== 'undefined' ? JSON.parse(cookieState) : ''
-  
+
   // Get user data from cookie
   const getUserFromCookie = (): AuthUser | null => {
     try {

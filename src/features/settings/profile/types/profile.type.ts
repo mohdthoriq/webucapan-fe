@@ -29,5 +29,5 @@ export interface ProfileCompany {
   name: string
   npwp: string
   address: string
-  logo_url: null
+  logo_url?: string | null
 }

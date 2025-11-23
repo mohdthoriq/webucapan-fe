@@ -10,11 +10,51 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Textarea } from '@/components/ui/textarea'
 import { useCompanySettingsForm } from '../hooks/useCompanySettingsForm'
 
 export function CompanySettingsForm() {
-  const { form, onSubmit, isLoading } = useCompanySettingsForm()
+  const { form, onSubmit, isLoading, isLoadingData } = useCompanySettingsForm()
+
+  // Show loading skeleton while fetching data
+  if (isLoadingData) {
+    return (
+      <div className='space-y-6'>
+        <div className='space-y-4'>
+          <div className='flex items-center gap-2'>
+            <Building2 className='text-muted-foreground h-5 w-5' />
+            <h3 className='text-lg font-medium'>Informasi Perusahaan</h3>
+          </div>
+
+          {/* Name field skeleton */}
+          <div className='space-y-2'>
+            <Skeleton className='h-4 w-32' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-4 w-48' />
+          </div>
+
+          {/* Address field skeleton */}
+          <div className='space-y-2'>
+            <Skeleton className='h-4 w-24' />
+            <Skeleton className='h-[100px] w-full' />
+            <Skeleton className='h-4 w-56' />
+          </div>
+
+          {/* NPWP field skeleton */}
+          <div className='space-y-2'>
+            <Skeleton className='h-4 w-20' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-4 w-40' />
+          </div>
+        </div>
+
+        <div className='flex justify-end pt-4'>
+          <Skeleton className='h-10 w-40' />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Form {...form}>
@@ -61,6 +101,21 @@ export function CompanySettingsForm() {
                 <FormDescription>
                   Alamat lengkap kantor atau lokasi perusahaan
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='npwp'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NPWP</FormLabel>
+                <FormControl>
+                  <Input placeholder='Masukkan NPWP perusahaan' {...field} />
+                </FormControl>
+                <FormDescription>NPWP perusahaan Anda</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
