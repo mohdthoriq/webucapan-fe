@@ -1,4 +1,4 @@
-export interface Role {
+export interface CompanyRole {
   id: string
   company: {
     id: string
@@ -12,4 +12,4 @@ export interface Role {
   updated_at: Date
 }
 
-export type Roles = Role[]
+export type CompanyRoles = CompanyRole[]

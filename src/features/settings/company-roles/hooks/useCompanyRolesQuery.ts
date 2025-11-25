@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { type ApiResponse } from '@/types/global-types/api-response'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import { type Roles } from '../types/company-roles-response.type'
+import { type CompanyRoles } from '../types/company-roles-response.type'
 
 interface RoleSettingsQueryParams {
   page?: number
@@ -13,8 +13,13 @@ interface RoleSettingsQueryParams {
 export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
   const user = useAuthStore((state) => state.auth.user)
 
-  return useQuery<Roles>({
-    queryKey: ['role', params?.page, params?.limit, params?.company_id],
+  return useQuery<CompanyRoles>({
+    queryKey: [
+      'company-roles',
+      params?.page,
+      params?.limit,
+      params?.company_id,
+    ],
     queryFn: async () => {
       const queryParams = new URLSearchParams()
 
@@ -35,9 +40,9 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
       const url = queryParams.toString()
         ? `/roles?${queryParams.toString()}`
         : '/roles'
-      const response = await apiClient.get<ApiResponse<Roles>>(url)
+      const response = await apiClient.get<ApiResponse<CompanyRoles>>(url)
 
-      return response.data.data as Roles
+      return response.data.data as CompanyRoles
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1, // optional: retry once only

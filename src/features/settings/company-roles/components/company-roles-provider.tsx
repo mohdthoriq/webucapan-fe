@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useCompanyRoleSettingsQuery } from '../hooks/useCompanyRolesQuery'
-import { type Role as ApiRole } from '../types/company-roles-response.type'
+import { type CompanyRole as ApiRole } from '../types/company-roles-response.type'
 
 type RolesDialogType = 'view' | 'edit' | 'add' | 'delete'
 

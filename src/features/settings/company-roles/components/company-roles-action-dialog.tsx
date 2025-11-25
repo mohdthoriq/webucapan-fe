@@ -1,9 +1,5 @@
 'use client'
 
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -23,18 +19,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { type Role } from '../types/company-roles-response.type'
-
-const formSchema = z.object({
-  name: z.string().min(1, 'Role name is required.'),
-  description: z.string().min(1, 'Description is required.'),
-  isEdit: z.boolean(),
-})
-
-type CompanyRoleForm = z.infer<typeof formSchema>
+import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
+import { type CompanyRole } from '../types/company-roles-response.type'
 
 type CompanyRolesActionDialogProps = {
-  currentRow?: Role
+  currentRow?: CompanyRole
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -45,31 +34,15 @@ export function CompanyRolesActionDialog({
   onOpenChange,
 }: CompanyRolesActionDialogProps) {
   const isEdit = !!currentRow
-  const form = useForm<CompanyRoleForm>({
-    resolver: zodResolver(formSchema),
-    defaultValues: isEdit
-      ? {
-          ...currentRow,
-          isEdit,
-        }
-      : {
-          name: '',
-          description: '',
-          isEdit,
-        },
-  })
 
-  const onSubmit = (values: CompanyRoleForm) => {
-    form.reset()
-    showSubmittedData(values)
-    onOpenChange(false)
-  }
+  const { form, onSubmit, isSubmitting } = useCompanySettingsForm({
+    currentRow,
+  })
 
   return (
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        form.reset()
         onOpenChange(state)
       }}
     >
@@ -128,8 +101,8 @@ export function CompanyRolesActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='role-form'>
-            {isEdit ? 'Update Role' : 'Create Role'}
+          <Button type='submit' form='role-form' disabled={isSubmitting}>
+            {isEdit ? 'Update Role' : 'Create Role'} 
           </Button>
         </DialogFooter>
       </DialogContent>

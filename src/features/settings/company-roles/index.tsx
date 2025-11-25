@@ -22,7 +22,7 @@ function CompanyRolesContent() {
           <div>
             <h2 className='leading-none font-semibold'>Pengaturan Peran</h2>
             <p className='text-muted-foreground mt-[6px] text-sm'>
-              Kelola Peran dan hak akses akun di Perusahaan Anda.
+              Kelola Hak Akses Pengguna di Perusahaan Anda.
             </p>
           </div>
         </div>
