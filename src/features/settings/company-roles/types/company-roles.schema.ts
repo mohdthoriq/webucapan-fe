@@ -1,11 +1,21 @@
 import { z } from 'zod'
 
-export const companyRoleSettingsSchema = z.object({
+export const createCompanyRoleSettingsSchema = z.object({
   name: z.string(),
   description: z.string(),
   company_id: z.string(),
 })
 
-export type CompanyRoleSettingsFormData = z.infer<
-  typeof companyRoleSettingsSchema
+export type CreateCompanyRoleSettingsFormData = z.infer<
+  typeof createCompanyRoleSettingsSchema
+>
+
+export const updateCompanyRoleSettingsSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  description: z.string(),
+})
+
+export type UpdateCompanyRoleSettingsFormData = z.infer<
+  typeof updateCompanyRoleSettingsSchema
 >

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { rolesColumns as columns } from './company-roles-columns'
+import { rolesColumns } from './company-roles-columns'
 import { useCompanyRoles } from './company-roles-provider'
 
 type DataTableProps = {
@@ -59,7 +59,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: rolesData,
-    columns,
+    columns: rolesColumns,
     state: {
       sorting,
       pagination,
@@ -153,7 +153,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={rolesColumns.length}
                   className='h-24 text-center'
                 >
                   No results.

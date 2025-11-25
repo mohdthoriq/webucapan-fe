@@ -1,13 +1,16 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { type CompanyRole } from '../types/company-roles-response.type'
 import {
-  type CompanyRoleSettingsFormData,
-  companyRoleSettingsSchema,
+  createCompanyRoleSettingsSchema,
+  type CreateCompanyRoleSettingsFormData,
+  type UpdateCompanyRoleSettingsFormData,
 } from '../types/company-roles.schema'
-import { useCreateCompanyRoleMutation } from './useCompanyRolesMutation'
+import {
+  useCreateCompanyRoleMutation,
+  useUpdateCompanyRoleMutation,
+} from './useCompanyRolesMutation'
 
 type useCompanySettingsFormProps = {
   currentRow?: CompanyRole
@@ -19,34 +22,40 @@ export function useCompanySettingsForm({
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
-  const form = useForm<CompanyRoleSettingsFormData>({
-    resolver: zodResolver(companyRoleSettingsSchema),
+  const form = useForm<CreateCompanyRoleSettingsFormData>({
+    resolver: zodResolver(createCompanyRoleSettingsSchema),
     defaultValues: isEdit
       ? {
-          ...currentRow,
+          name: currentRow?.name,
+          description: currentRow?.description,
+          company_id: currentRow?.company?.id ?? company?.id ?? '',
         }
       : {
-          company_id: company?.id,
+          company_id: company?.id ?? '',
           name: '',
           description: '',
         },
   })
 
-  const companySettingsMutation = useCreateCompanyRoleMutation()
+  const createMutation = useCreateCompanyRoleMutation()
+  const updateMutation = useUpdateCompanyRoleMutation()
 
-  const onSubmit = async (data: CompanyRoleSettingsFormData) => {
-    try {
-      await companySettingsMutation.mutateAsync(data)
-
-      toast.success('Peran berhasil ditambahkan')
-    } catch (_) {
-      toast.error('Gagal menambahkan peran')
+  const onSubmit = async (data: CreateCompanyRoleSettingsFormData) => {
+    if (isEdit && currentRow) {
+      const updateData: UpdateCompanyRoleSettingsFormData = {
+        id: currentRow.id,
+        name: data.name,
+        description: data.description,
+      }
+      await updateMutation.mutateAsync(updateData)
+    } else {
+      await createMutation.mutateAsync(data)
     }
   }
 
   return {
     form,
     onSubmit,
-    isSubmitting: companySettingsMutation.isPending,
+    isSubmitting: createMutation.isPending || updateMutation.isPending,
   }
 }

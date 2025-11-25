@@ -1,4 +1,3 @@
-import type { Role } from '../types/company-roles-response.type'
 import { CompanyRolesActionDialog } from './company-roles-action-dialog'
 import { useCompanyRoles } from './company-roles-provider'
 
@@ -23,7 +22,7 @@ export function CompanyRolesDialogs() {
               setCurrentRow(null)
             }, 500)
           }}
-          currentRow={currentRow as unknown as Role}
+          currentRow={currentRow}
         />
       )}
     </>

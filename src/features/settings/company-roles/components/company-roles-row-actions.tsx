@@ -8,14 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type Role } from '../types/company-roles-response.type'
+import { type CompanyRole } from '../types/company-roles-response.type'
+import { useCompanyRoles } from './company-roles-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Role>
+  row: Row<CompanyRole>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const _role = row.original
+  const { setOpen, setCurrentRow } = useCompanyRoles()
 
   return (
     <>
@@ -33,7 +35,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <div className='text-muted-foreground text-center text-sm'>{`${_role?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => {}}>Detail</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(_role)
+              setOpen('edit')
+            }}
+          >
+            Edit
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => {}} className='text-red-500!'>
             Delete role
