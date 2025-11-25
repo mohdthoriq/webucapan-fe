@@ -9,7 +9,7 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Role Name' />
+      <DataTableColumnHeader column={column} title='Nama Peran' />
     ),
     cell: ({ row }) => {
       const { name } = row.original
@@ -28,9 +28,9 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'deskripsi',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Description' />
+      <DataTableColumnHeader column={column} title='Deskripsi' />
     ),
     cell: ({ row }) => {
       const { description } = row.original

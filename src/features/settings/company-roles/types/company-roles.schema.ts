@@ -19,3 +19,11 @@ export const updateCompanyRoleSettingsSchema = z.object({
 export type UpdateCompanyRoleSettingsFormData = z.infer<
   typeof updateCompanyRoleSettingsSchema
 >
+
+export const deleteCompanyRoleSettingsSchema = z.object({
+  id: z.uuid(),
+})
+
+export type DeleteCompanyRoleSettingsFormData = z.infer<
+  typeof deleteCompanyRoleSettingsSchema
+>

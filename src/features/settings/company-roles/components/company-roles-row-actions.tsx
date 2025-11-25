@@ -51,8 +51,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => {}} className='text-red-500!'>
-            Delete role
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(_role)
+              setOpen('delete')
+            }}
+            className='text-red-500!'
+          >
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

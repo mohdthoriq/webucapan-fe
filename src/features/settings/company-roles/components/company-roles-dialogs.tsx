@@ -1,9 +1,13 @@
+import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
+import { useDeleteCompanyRoleMutation } from '../hooks/useCompanyRolesMutation'
 import { CompanyRolesActionDialog } from './company-roles-action-dialog'
 import { CompanyRolesDetailDialog } from './company-roles-detail-dialog'
 import { useCompanyRoles } from './company-roles-provider'
 
 export function CompanyRolesDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useCompanyRoles()
+
+  const { mutate: deleteRole, isPending } = useDeleteCompanyRoleMutation()
 
   return (
     <>
@@ -37,6 +41,53 @@ export function CompanyRolesDialogs() {
               }, 500)
             }}
             currentRow={currentRow}
+          />
+
+          {/* <CompanyRolesDeleteDialog
+            key={`role-delete-${currentRow.id}`}
+            open={open === 'delete'}
+            onOpenChange={() => {
+              setOpen('delete')
+              setTimeout(() => {
+                setCurrentRow(null)
+              }, 500)
+            }}
+            currentRow={currentRow}
+          /> */}
+
+          <ConfirmDialog
+            key={`role-delete-${currentRow.id}`}
+            destructive
+            open={open === 'delete'}
+            onOpenChange={() => {
+              setOpen('delete')
+              setTimeout(() => {
+                setCurrentRow(null)
+              }, 500)
+            }}
+            handleConfirm={() => {
+              deleteRole({
+                id: currentRow.id,
+              })
+              setOpen(null)
+              setTimeout(() => {
+                setCurrentRow(null)
+              }, 500)
+            }}
+            disabled={isPending}
+            className='max-w-md'
+            title={`Hapus peran "${currentRow.name}" ?`}
+            desc={
+              <>
+                Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
+                permanen peran{' '}
+                <span className='text-foreground font-semibold'>
+                  "{currentRow.name}"
+                </span>{' '}
+                dari perusahaan Anda.
+              </>
+            }
+            confirmText={`${isPending ? 'Deleting...' : 'Delete'}`}
           />
         </>
       )}
