@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type Role } from '../types/roles.schema'
+import { type Role } from '../types/roles-response.type'
 
 type DataTableRowActionsProps = {
   row: Row<Role>
@@ -16,8 +16,6 @@ type DataTableRowActionsProps = {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const _role = row.original
-  // eslint-disable-next-line no-console
-  console.log(_role)
 
   return (
     <>
@@ -32,11 +30,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <DropdownMenuItem onClick={() => {}}>View details</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>Edit role</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>
-            Copy permissions
-          </DropdownMenuItem>
+          <div className='text-muted-foreground text-center text-sm'>{`${_role?.name}`}</div>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => {}}>Detail</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => {}} className='text-red-500!'>
             Delete role

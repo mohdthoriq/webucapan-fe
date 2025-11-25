@@ -1,12 +1,26 @@
+import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { RolesProvider } from './components/roles-provider'
 import { RolesTable } from './components/roles-table'
-import { mockRoles } from './data/roles-data'
+
+const route = getRouteApi('/_authenticated/settings/')
 
 export function CompanyRoles() {
+  const search = route.useSearch() as Record<string, string>
+  const navigate = route.useNavigate()
+
+  // Extract pagination parameters from URL search
+  const page = search?.page ? parseInt(search.page) : undefined
+  const limit = search?.limit ? parseInt(search.limit) : undefined
+
+  const paginationParams = {
+    page,
+    limit,
+  }
+
   return (
-    <RolesProvider>
+    <RolesProvider paginationParams={paginationParams}>
       <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div className='flex items-center gap-2'>
@@ -24,7 +38,7 @@ export function CompanyRoles() {
             </Button>
           </div>
         </div>
-        <RolesTable data={mockRoles} search={{}} navigate={() => {}} />
+        <RolesTable search={search} navigate={navigate} />
       </div>
     </RolesProvider>
   )

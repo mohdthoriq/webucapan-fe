@@ -33,7 +33,7 @@ export function Settings() {
           </TabsTrigger>
           <TabsTrigger value='roles' className='flex items-center gap-2'>
             <Shield className='h-4 w-4' />
-            Roles
+            Peran
           </TabsTrigger>
         </TabsList>
 
@@ -67,12 +67,6 @@ export function Settings() {
 
         <TabsContent value='roles' className='mt-6'>
           <Card>
-            {/* <CardHeader>
-              <CardTitle>Roles</CardTitle>
-              <CardDescription>
-                Manage company roles and their permissions
-              </CardDescription>
-            </CardHeader> */}
             <CardContent>
               <CompanyRoles />
             </CardContent>
