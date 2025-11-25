@@ -1,4 +1,4 @@
-import { Building2, User } from 'lucide-react'
+import { Building2, User, Shield } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CompanySettingsForm } from './company/components/company-settings-form'
 import { UserSettingsForm } from './profile/components/user-settings-form'
+import CompanyRoles from './roles'
 
 export function Settings() {
   return (
@@ -21,7 +22,7 @@ export function Settings() {
       </div>
 
       <Tabs defaultValue='user' className='w-full'>
-        <TabsList className='grid w-full max-w-md grid-cols-2'>
+        <TabsList className='grid w-full max-w-2xl grid-cols-3'>
           <TabsTrigger value='user' className='flex items-center gap-2'>
             <User className='h-4 w-4' />
             Profil Pengguna
@@ -29,6 +30,10 @@ export function Settings() {
           <TabsTrigger value='company' className='flex items-center gap-2'>
             <Building2 className='h-4 w-4' />
             Perusahaan
+          </TabsTrigger>
+          <TabsTrigger value='roles' className='flex items-center gap-2'>
+            <Shield className='h-4 w-4' />
+            Roles
           </TabsTrigger>
         </TabsList>
 
@@ -56,6 +61,20 @@ export function Settings() {
             </CardHeader>
             <CardContent>
               <CompanySettingsForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value='roles' className='mt-6'>
+          <Card>
+            {/* <CardHeader>
+              <CardTitle>Roles</CardTitle>
+              <CardDescription>
+                Manage company roles and their permissions
+              </CardDescription>
+            </CardHeader> */}
+            <CardContent>
+              <CompanyRoles />
             </CardContent>
           </Card>
         </TabsContent>
