@@ -7,9 +7,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import CompanyRoles from './company-roles'
 import { CompanySettingsForm } from './company/components/company-settings-form'
 import { UserSettingsForm } from './profile/components/user-settings-form'
-import CompanyRoles from './roles'
 
 export function Settings() {
   return (

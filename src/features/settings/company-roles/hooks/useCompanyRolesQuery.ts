@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { type ApiResponse } from '@/types/global-types/api-response'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import { type Roles } from '../types/roles-response.type'
+import { type Roles } from '../types/company-roles-response.type'
 
 interface RoleSettingsQueryParams {
   page?: number
@@ -10,7 +10,7 @@ interface RoleSettingsQueryParams {
   company_id?: string
 }
 
-export function useRoleSettingsQuery(params?: RoleSettingsQueryParams) {
+export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
   const user = useAuthStore((state) => state.auth.user)
 
   return useQuery<Roles>({

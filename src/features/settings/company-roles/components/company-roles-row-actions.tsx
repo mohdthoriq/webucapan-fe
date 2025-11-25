@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type Role } from '../types/roles-response.type'
+import { type Role } from '../types/company-roles-response.type'
 
 type DataTableRowActionsProps = {
   row: Row<Role>

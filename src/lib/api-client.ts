@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { getCookie } from '@/lib/cookies'
 
-const ACCESS_TOKEN_COOKIE = 'thisisjustarandomstring'
+const ACCESS_TOKEN =
+  import.meta.env.VITE_ACCESS_TOKEN || 'thisIsJustRandomString'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
@@ -12,11 +13,12 @@ const apiClient = axios.create({
 
 // Function to get auth token from cookie
 function getAuthToken(): string | null {
-  const tokenCookie = getCookie(ACCESS_TOKEN_COOKIE)
+  const tokenCookie = getCookie(ACCESS_TOKEN)
   if (tokenCookie && tokenCookie !== 'undefined') {
     try {
       return JSON.parse(tokenCookie)
     } catch {
+      alert('cookie not found')
       return null
     }
   }

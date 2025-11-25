@@ -22,16 +22,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { rolesColumns as columns } from './roles-columns'
-import { useRoles } from './roles-provider'
+import { rolesColumns as columns } from './company-roles-columns'
+import { useCompanyRoles } from './company-roles-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function RolesTable({ search, navigate }: DataTableProps) {
-  const { rolesData } = useRoles()
+export function CompanyRolesTable({ search, navigate }: DataTableProps) {
+  const { rolesData } = useCompanyRoles()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})

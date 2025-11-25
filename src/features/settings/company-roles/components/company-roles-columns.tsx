@@ -2,8 +2,8 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { type Role } from '../types/roles-response.type'
-import { DataTableRowActions } from './roles-row-actions'
+import { type Role } from '../types/company-roles-response.type'
+import { DataTableRowActions } from './company-roles-row-actions'
 
 export const rolesColumns: ColumnDef<Role>[] = [
   {

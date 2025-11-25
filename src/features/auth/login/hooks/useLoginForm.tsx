@@ -5,11 +5,7 @@ import { useLoginMutation } from './useLoginMutation'
 import { useResendOtpMutation } from './useResendOtpMutation'
 import { useUnverifiedEmailDialog } from './useUnverifiedEmailDialog'
 
-interface UseLoginFormProps {
-  redirectTo?: string
-}
-
-export function useLoginForm({ redirectTo }: UseLoginFormProps = {}) {
+export function useLoginForm() {
   const unverifiedEmailDialog = useUnverifiedEmailDialog()
   const resendOtpMutation = useResendOtpMutation()
 
@@ -22,7 +18,6 @@ export function useLoginForm({ redirectTo }: UseLoginFormProps = {}) {
   })
 
   const loginMutation = useLoginMutation({
-    redirectTo,
     onUnverifiedEmail: (email) => {
       unverifiedEmailDialog.openDialog(email)
     },

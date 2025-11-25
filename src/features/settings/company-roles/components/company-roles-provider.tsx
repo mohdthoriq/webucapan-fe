@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useRoleSettingsQuery } from '../hooks/useRoleSettingsQuery'
-import { type Role as ApiRole } from '../types/roles-response.type'
+import { useCompanyRoleSettingsQuery } from '../hooks/useCompanyRolesQuery'
+import { type Role as ApiRole } from '../types/company-roles-response.type'
 
 type RolesDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -18,7 +18,7 @@ type RolesContextType = {
 
 const RolesContext = React.createContext<RolesContextType | null>(null)
 
-export function RolesProvider({
+export function CompanyRolesProvider({
   children,
   paginationParams,
 }: {
@@ -32,7 +32,7 @@ export function RolesProvider({
     data: rolesData,
     isLoading: isLoadingRoles,
     isError: isErrorRoles,
-  } = useRoleSettingsQuery(paginationParams)
+  } = useCompanyRoleSettingsQuery(paginationParams)
 
   const rolesProviderValues = {
     open,
@@ -49,11 +49,11 @@ export function RolesProvider({
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useRoles = () => {
+export const useCompanyRoles = () => {
   const rolesContext = React.useContext(RolesContext)
 
   if (!rolesContext) {
-    throw new Error('useRoles has to be used within <RolesContext>')
+    throw new Error('useCompanyRoles has to be used within <RolesContext>')
   }
 
   return rolesContext
