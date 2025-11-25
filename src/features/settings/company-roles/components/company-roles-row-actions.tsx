@@ -34,7 +34,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         <DropdownMenuContent align='end' className='w-[160px]'>
           <div className='text-muted-foreground text-center text-sm'>{`${_role?.name}`}</div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => {}}>Detail</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(_role)
+              setOpen('view')
+            }}
+          >
+            Detail
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(_role)
