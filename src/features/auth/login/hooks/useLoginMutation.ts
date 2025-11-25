@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import type { ProfileResponse } from '@/features/settings/profile/types/profile.type'
-import type { LoginFormValues, LoginResponse } from '../types/login.types'
+import type { LoginFormData, LoginResponse } from '../types/login.types'
 
 interface UseLoginMutationProps {
   redirectTo?: string
@@ -22,7 +22,7 @@ export function useLoginMutation({
 
   return useMutation({
     mutationFn: async (
-      credentials: LoginFormValues
+      credentials: LoginFormData
     ): Promise<ApiResponse<LoginResponse>> => {
       const response = await apiClient.post<ApiResponse<LoginResponse>>(
         '/auth/login',

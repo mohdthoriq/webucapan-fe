@@ -1,6 +1,6 @@
 export interface PaginationMeta {
   page: number
-  per_page: number
+  limit: number
   total: number
   total_pages: number
 }
@@ -12,15 +12,15 @@ export interface PaginatedResult<T> {
 
 export function buildPaginationMeta(params: {
   page: number
-  perPage: number
+  limit: number
   total: number
 }): PaginationMeta {
-  const { page, perPage, total } = params
-  const totalPages = Math.max(1, Math.ceil(total / perPage))
+  const { page, limit, total } = params
+  const totalPages = Math.max(1, Math.ceil(total / limit))
 
   return {
     page,
-    per_page: perPage,
+    limit: limit,
     total,
     total_pages: totalPages,
   }

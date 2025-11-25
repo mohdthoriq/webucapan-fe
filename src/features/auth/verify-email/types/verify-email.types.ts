@@ -9,4 +9,4 @@ export const VerifyEmailSchema = z.object({
   purpose: z.string(),
 })
 
-export type VerifyEmailFormValues = z.infer<typeof VerifyEmailSchema>
+export type VerifyEmailFormData = z.infer<typeof VerifyEmailSchema>

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoginSchema, type LoginFormValues } from '../types/login.types'
+import { LoginSchema, type LoginFormData } from '../types/login.types'
 import { useLoginMutation } from './useLoginMutation'
 import { useResendOtpMutation } from './useResendOtpMutation'
 import { useUnverifiedEmailDialog } from './useUnverifiedEmailDialog'
@@ -13,7 +13,7 @@ export function useLoginForm({ redirectTo }: UseLoginFormProps = {}) {
   const unverifiedEmailDialog = useUnverifiedEmailDialog()
   const resendOtpMutation = useResendOtpMutation()
 
-  const form = useForm<LoginFormValues>({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
@@ -28,7 +28,7 @@ export function useLoginForm({ redirectTo }: UseLoginFormProps = {}) {
     },
   })
 
-  function onSubmit(data: LoginFormValues) {
+  function onSubmit(data: LoginFormData) {
     loginMutation.mutate(data)
   }
 

@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { ForgotPasswordFormValues } from '../types/forgot-password.types'
+import type { ForgotPasswordFormData } from '../types/forgot-password.types'
 
 interface UseForgotPasswordMutationProps {
   redirectTo?: string
@@ -16,7 +16,7 @@ export function useForgotPasswordMutation({
 
   return useMutation({
     mutationFn: async (
-      data: ForgotPasswordFormValues
+      data: ForgotPasswordFormData
     ): Promise<ApiResponse<void>> => {
       const response = await apiClient.post<ApiResponse<void>>(
         '/auth/forgot-password',

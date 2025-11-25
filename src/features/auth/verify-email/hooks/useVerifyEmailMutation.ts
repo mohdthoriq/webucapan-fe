@@ -2,13 +2,13 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { type VerifyEmailFormValues } from '../types/verify-email.types'
+import { type VerifyEmailFormData } from '../types/verify-email.types'
 
 export function useVerifyEmailMutation() {
   const navigate = useNavigate()
 
   return useMutation({
-    mutationFn: async (credentials: VerifyEmailFormValues) => {
+    mutationFn: async (credentials: VerifyEmailFormData) => {
       const response = await apiClient.post('/auth/otp/verify', credentials)
       return response.data
     },

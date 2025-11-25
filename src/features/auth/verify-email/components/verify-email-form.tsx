@@ -15,13 +15,13 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from '@/components/ui/input-otp'
-import type { VerifyEmailFormValues } from '../types/verify-email.types'
+import type { VerifyEmailFormData } from '../types/verify-email.types'
 
 export interface VerifyEmailProps
   extends Omit<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
-  form: UseFormReturn<VerifyEmailFormValues>
+  form: UseFormReturn<VerifyEmailFormData>
   isLoading: boolean
-  onSubmit: (data: VerifyEmailFormValues) => void
+  onSubmit: (data: VerifyEmailFormData) => void
 }
 
 export function VerifyEmailForm({

@@ -16,4 +16,4 @@ export const LoginSchema = z.object({
     .min(7, 'Kata sandi harus minimal 7 karakter'),
 })
 
-export type LoginFormValues = z.infer<typeof LoginSchema>
+export type LoginFormData = z.infer<typeof LoginSchema>
