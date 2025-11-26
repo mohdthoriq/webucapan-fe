@@ -18,24 +18,23 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
-import { type CompanyRole } from '../types/company-roles-response.type'
+import { useUnitsForm } from '../hooks/use-units-form'
+import { type Unit } from '../types/units-response'
 
-type CompanyRolesActionDialogProps = {
-  currentRow?: CompanyRole
+type UnitsActionDialogProps = {
+  currentRow?: Unit
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function CompanyRolesActionDialog({
+export function UnitsActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: CompanyRolesActionDialogProps) {
+}: UnitsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useCompanySettingsForm({
+  const { form, onSubmit, isSubmitting } = useUnitsForm({
     currentRow,
   })
 
@@ -48,11 +47,13 @@ export function CompanyRolesActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Edit Role' : 'Add New Role'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Update Satuan' : 'Tambah Satuan'}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Update the role details here.'
-              : 'Create a new role for your organization.'}
+              ? 'Update satuan disini.'
+              : 'Tambah satuan baru untuk Perusahaan Anda.'}
             Click save when you're done.
           </DialogDescription>
         </DialogHeader>
@@ -68,10 +69,10 @@ export function CompanyRolesActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role Name</FormLabel>
+                    <FormLabel>Nama Satuan</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='e.g., Administrator, Manager, Developer'
+                        placeholder='Masukkan nama satuan...'
                         autoComplete='off'
                         {...field}
                       />
@@ -82,14 +83,14 @@ export function CompanyRolesActionDialog({
               />
               <FormField
                 control={form.control}
-                name='description'
+                name='code'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Kode</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder='Describe the role responsibilities and permissions...'
-                        className='min-h-[80px]'
+                      <Input
+                        placeholder='contoh:Pcs, Ft, Kg, Ltr, '
+                        autoComplete='off'
                         {...field}
                       />
                     </FormControl>
@@ -102,7 +103,7 @@ export function CompanyRolesActionDialog({
         </div>
         <DialogFooter>
           <Button type='submit' form='role-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Role' : 'Create Role'}
+            {isEdit ? 'Update Satuan' : 'Tambah Satuan'}
           </Button>
         </DialogFooter>
       </DialogContent>
