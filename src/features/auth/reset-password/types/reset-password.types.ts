@@ -14,4 +14,4 @@ export const ResetPasswordSchema = z
     path: ['confirmPassword'],
   })
 
-export type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>
+export type ResetPasswordFormData = z.infer<typeof ResetPasswordSchema>

@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
 
-const ACCESS_TOKEN = 'thisisjustarandomstring'
-const USER_DATA = 'user_data'
+const ACCESS_TOKEN =
+  import.meta.env.VITE_ACCESS_TOKEN || 'thisIsJustRandomString'
+const USER_DATA = import.meta.env.VITE_USER_DATA || 'userData'
 
 export interface AuthUser {
   user: User

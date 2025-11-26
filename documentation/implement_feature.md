@@ -116,7 +116,7 @@ export const ProductSchema = z.object({
   category: z.string().min(1, 'Kategori wajib dipilih'),
 })
 
-export type ProductFormValues = z.infer<typeof ProductSchema>
+export type ProductFormData = z.infer<typeof ProductSchema>
 
 // ========== Create Product Request ==========
 export interface CreateProductRequest {
@@ -226,12 +226,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ProductSchema,
-  type ProductFormValues,
+  type ProductFormData,
 } from '../types/product.types'
 import { useCreateProductMutation } from './useCreateProductMutation'
 
 interface UseProductFormProps {
-  defaultValues?: Partial<ProductFormValues>
+  defaultValues?: Partial<ProductFormData>
   onSuccess?: () => void
 }
 
@@ -239,7 +239,7 @@ export function useProductForm({
   defaultValues,
   onSuccess,
 }: UseProductFormProps = {}) {
-  const form = useForm<ProductFormValues>({
+  const form = useForm<ProductFormData>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: defaultValues?.name || '',
@@ -252,7 +252,7 @@ export function useProductForm({
 
   const createMutation = useCreateProductMutation()
 
-  function onSubmit(data: ProductFormValues) {
+  function onSubmit(data: ProductFormData) {
     createMutation.mutate(data, {
       onSuccess: () => {
         form.reset()
@@ -739,11 +739,11 @@ const schema = z.object({
   email: z.string().email('Invalid email'),
 })
 
-type FormValues = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>
 
 // 2. Create form hook
 export function useMyForm() {
-  const form = useForm<FormValues>({
+  const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -753,7 +753,7 @@ export function useMyForm() {
 
   const mutation = useCreateMutation()
 
-  function onSubmit(data: FormValues) {
+  function onSubmit(data: FormData) {
     mutation.mutate(data)
   }
 

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearch } from '@tanstack/react-router'
 import { useResendOtpMutation } from '../../login/hooks/useResendOtpMutation'
 import {
-  type VerifyEmailFormValues,
+  type VerifyEmailFormData,
   VerifyEmailSchema,
 } from '../types/verify-email.types'
 import { useVerifyEmailMutation } from './useVerifyEmailMutation'
@@ -12,7 +12,7 @@ export function useVerifyEmailForm() {
   const search = useSearch({ from: '/(auth)/verify-email' })
   const resendOtpMutation = useResendOtpMutation()
 
-  const form = useForm<VerifyEmailFormValues>({
+  const form = useForm<VerifyEmailFormData>({
     resolver: zodResolver(VerifyEmailSchema),
     defaultValues: {
       otp_code: '',
@@ -23,7 +23,7 @@ export function useVerifyEmailForm() {
 
   const verifyEmailMutation = useVerifyEmailMutation()
 
-  function onSubmit(data: VerifyEmailFormValues) {
+  function onSubmit(data: VerifyEmailFormData) {
     verifyEmailMutation.mutate(data)
   }
 

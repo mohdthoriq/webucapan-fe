@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import type {
   RegisterResponse,
-  RegisterFormValues,
+  RegisterFormData,
 } from '../types/register.types'
 
 export function useRegisterMutation() {
@@ -13,7 +13,7 @@ export function useRegisterMutation() {
 
   return useMutation({
     mutationFn: async (
-      credentials: RegisterFormValues
+      credentials: RegisterFormData
     ): Promise<ApiResponse<RegisterResponse>> => {
       const response = await apiClient.post<ApiResponse<RegisterResponse>>(
         '/auth/register',

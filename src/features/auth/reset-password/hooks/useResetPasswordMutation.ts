@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { ResetPasswordFormValues } from '../types/reset-password.types'
+import type { ResetPasswordFormData } from '../types/reset-password.types'
 
 interface UseResetPasswordMutationProps {
   redirectTo?: string
@@ -16,7 +16,7 @@ export function useResetPasswordMutation({
 
   return useMutation({
     mutationFn: async (
-      data: ResetPasswordFormValues
+      data: ResetPasswordFormData
     ): Promise<ApiResponse<void>> => {
       const response = await apiClient.post<ApiResponse<void>>(
         '/auth/reset-password',

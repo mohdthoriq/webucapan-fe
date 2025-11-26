@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearch } from '@tanstack/react-router'
 import {
   ResetPasswordSchema,
-  type ResetPasswordFormValues,
+  type ResetPasswordFormData,
 } from '../types/reset-password.types'
 import { useResetPasswordMutation } from './useResetPasswordMutation'
 
@@ -16,7 +16,7 @@ export function useResetPasswordForm({
 }: UseResetPasswordFormProps = {}) {
   const search = useSearch({ from: '/(auth)/reset-password' })
 
-  const form = useForm<ResetPasswordFormValues>({
+  const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       token: search.token || '',
@@ -27,7 +27,7 @@ export function useResetPasswordForm({
 
   const resetPasswordMutation = useResetPasswordMutation({ redirectTo })
 
-  function onSubmit(data: ResetPasswordFormValues) {
+  function onSubmit(data: ResetPasswordFormData) {
     resetPasswordMutation.mutate(data)
   }
 

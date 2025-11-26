@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ForgotPasswordSchema,
-  type ForgotPasswordFormValues,
+  type ForgotPasswordFormData,
 } from '../types/forgot-password.types'
 import { useForgotPasswordMutation } from './useForgotPasswordMutation'
 
@@ -13,7 +13,7 @@ interface UseForgotPasswordFormProps {
 export function useForgotPasswordForm({
   redirectTo,
 }: UseForgotPasswordFormProps = {}) {
-  const form = useForm<ForgotPasswordFormValues>({
+  const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
       email: '',
@@ -22,7 +22,7 @@ export function useForgotPasswordForm({
 
   const forgotPasswordMutation = useForgotPasswordMutation({ redirectTo })
 
-  function onSubmit(data: ForgotPasswordFormValues) {
+  function onSubmit(data: ForgotPasswordFormData) {
     forgotPasswordMutation.mutate(data)
   }
 

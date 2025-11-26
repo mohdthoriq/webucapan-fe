@@ -1,20 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
+import { type ApiResponse } from '@/types/global-types/api-response'
 import type { Company } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 
-export function useCompanySettingsQuery(companyId: string | undefined) {
-  return useQuery({
+export function useCompanySettingsQuery(companyId?: string) {
+  return useQuery<Company>({
     queryKey: ['company', companyId],
     queryFn: async () => {
-      if (!companyId) {
-        throw new Error('Company ID is required')
-      }
-      const response = await apiClient.get<{ data: Company }>(
+      const response = await apiClient.get<ApiResponse<Company>>(
         `/companies/${companyId}`
       )
-      return response.data.data
+      return response.data.data as Company
     },
-    enabled: !!companyId,
+    enabled: Boolean(companyId), // only run when companyId existed
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1, // optional: retry once only
   })
 }

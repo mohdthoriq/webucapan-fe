@@ -1,28 +1,28 @@
 import { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types/global-types/api-response'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import type { ProfileResponse } from '@/features/settings/profile/types/profile.type'
-import type { LoginFormValues, LoginResponse } from '../types/login.types'
+import type { LoginFormData, LoginResponse } from '../types/login.types'
 
 interface UseLoginMutationProps {
-  redirectTo?: string
   onUnverifiedEmail?: (email: string) => void
 }
 
 export function useLoginMutation({
-  redirectTo,
   onUnverifiedEmail,
 }: UseLoginMutationProps = {}) {
   const navigate = useNavigate()
   const { auth } = useAuthStore()
 
+  const searchParams = useSearch({ strict: false }) as { redirect?: string }
+
   return useMutation({
     mutationFn: async (
-      credentials: LoginFormValues
+      credentials: LoginFormData
     ): Promise<ApiResponse<LoginResponse>> => {
       const response = await apiClient.post<ApiResponse<LoginResponse>>(
         '/auth/login',
@@ -57,7 +57,8 @@ export function useLoginMutation({
       }
 
       try {
-        const targetPath = redirectTo || '/'
+        // Use redirect param if it exists, otherwise go to home
+        const targetPath = searchParams.redirect || '/'
         await navigate({ to: targetPath, replace: true })
       } catch {
         // Navigation error, but login was successful - silently ignore
