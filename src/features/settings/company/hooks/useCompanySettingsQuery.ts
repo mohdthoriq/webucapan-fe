@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse } from '@/types/global-types/api-response'
-import type { Company } from '@/stores/auth-store'
+import type { ApiResponse, Company } from '@/types'
 import apiClient from '@/lib/api-client'
 
 export function useCompanySettingsQuery(companyId?: string) {

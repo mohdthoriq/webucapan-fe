@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse } from '@/types/global-types/api-response'
+import { type ApiResponse } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import { type CompanyRoles } from '../types/company-roles-response.type'

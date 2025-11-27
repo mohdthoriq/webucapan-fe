@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type PaginationApiResponse } from '@/types/global-types/api-response'
+import { type PaginationApiResponse } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import { type Unit } from '../types/units-response'

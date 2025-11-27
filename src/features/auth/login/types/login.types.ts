@@ -1,10 +1,5 @@
 import z from 'zod'
 
-export interface LoginResponse {
-  accessToken: string
-  refreshToken: string
-}
-
 export const LoginSchema = z.object({
   email: z.email({
     error: (iss) =>

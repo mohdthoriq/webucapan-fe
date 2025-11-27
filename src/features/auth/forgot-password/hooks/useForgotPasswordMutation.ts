@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import type { ApiResponse } from '@/types/global-types/api-response'
+import type { ApiResponse } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import type { ForgotPasswordFormData } from '../types/forgot-password.types'

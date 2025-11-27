@@ -1,12 +1,11 @@
 import { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import type { ApiResponse } from '@/types/global-types/api-response'
+import type { ApiResponse, LoginResponse } from '@/types'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import type { ProfileResponse } from '@/features/settings/profile/types/profile.type'
-import type { LoginFormData, LoginResponse } from '../types/login.types'
+import type { LoginFormData } from '../types/login.types'
 
 interface UseLoginMutationProps {
   onUnverifiedEmail?: (email: string) => void
@@ -36,11 +35,11 @@ export function useLoginMutation({
     onSuccess: async (data) => {
       toast.dismiss('login-toast')
 
-      auth.setTokens(data.data!.accessToken, data.data!.refreshToken)
+      auth.setTokens(data.data!.access_token, data.data!.refresh_token)
 
       try {
         const response =
-          await apiClient.get<ApiResponse<ProfileResponse>>('/auth/me')
+          await apiClient.get<ApiResponse<LoginResponse>>('/auth/me')
 
         const userData = response.data!.data!
 

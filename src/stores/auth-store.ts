@@ -1,3 +1,4 @@
+import type { AuthMe } from '@/types'
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
 
@@ -7,41 +8,10 @@ const REFRESH_TOKEN =
   import.meta.env.VITE_REFRESH_TOKEN || 'thisIsJustRandomStringRefresh'
 const USER_DATA = import.meta.env.VITE_USER_DATA || 'userData'
 
-export interface AuthUser {
-  user: User
-  company: Company
-  role: Role
-  permissions: string[]
-}
-
-export interface Company {
-  id: string
-  name: string
-  address: string
-  npwp: string
-  logo_url?: string | null
-}
-
-export interface Role {
-  id: string
-  name: string
-}
-
-export interface User {
-  id: string
-  full_name: string
-  email: string
-  is_active: boolean
-  email_verified: boolean
-  email_verified_at: Date
-  created_at: Date
-  updated_at: Date
-}
-
 interface AuthState {
   auth: {
-    user: AuthUser | null
-    setUser: (user: AuthUser | null) => void
+    user: AuthMe | null
+    setUser: (user: AuthMe | null) => void
     accessToken: string
     refreshToken: string
     setAccessToken: (accessToken: string) => void
@@ -64,7 +34,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       : ''
 
   // Get user data from cookie
-  const getUserFromCookie = (): AuthUser | null => {
+  const getUserFromCookie = (): AuthMe | null => {
     try {
       const userData = getCookie(USER_DATA)
       return userData && userData !== 'undefined' ? JSON.parse(userData) : null
