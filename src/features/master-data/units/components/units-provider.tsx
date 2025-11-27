@@ -11,6 +11,12 @@ type UnitsContextType = {
   currentRow: Unit | null
   setCurrentRow: React.Dispatch<React.SetStateAction<Unit | null>>
   unitsData: Unit[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    total_pages: number
+  }
   isLoading: boolean
   isError: boolean
   paginationParams?: { page?: number; limit?: number; name?: string }
@@ -39,7 +45,13 @@ export function UnitsProvider({
     setOpen,
     currentRow,
     setCurrentRow,
-    unitsData: unitsData ?? [],
+    unitsData: unitsData?.data ?? [],
+    pagination: unitsData?.pagination ?? {
+      page: 1,
+      limit: 10,
+      total: 0,
+      total_pages: 1,
+    },
     isLoading: isLoadingUnits,
     isError: isErrorUnits,
     paginationParams,

@@ -36,7 +36,7 @@ export function useLoginMutation({
     onSuccess: async (data) => {
       toast.dismiss('login-toast')
 
-      auth.setAccessToken(data.data!.accessToken)
+      auth.setTokens(data.data!.accessToken, data.data!.refreshToken)
 
       try {
         const response =

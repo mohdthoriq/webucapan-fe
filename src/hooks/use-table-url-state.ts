@@ -113,9 +113,17 @@ export function useTableUrlState(
   const pagination: PaginationState = useMemo(() => {
     const rawPage = (search as SearchRecord)[pageKey]
     const rawPageSize = (search as SearchRecord)[pageSizeKey]
-    const pageNum = typeof rawPage === 'number' ? rawPage : defaultPage
+
+    const parsedPage = Number(rawPage)
+    const pageNum =
+      !isNaN(parsedPage) && parsedPage > 0 ? parsedPage : defaultPage
+
+    const parsedPageSize = Number(rawPageSize)
     const pageSizeNum =
-      typeof rawPageSize === 'number' ? rawPageSize : defaultPageSize
+      !isNaN(parsedPageSize) && parsedPageSize > 0
+        ? parsedPageSize
+        : defaultPageSize
+
     return { pageIndex: Math.max(0, pageNum - 1), pageSize: pageSizeNum }
   }, [search, pageKey, pageSizeKey, defaultPage, defaultPageSize])
 
@@ -194,17 +202,33 @@ export function useTableUrlState(
     pageCount: number,
     opts: { resetTo?: 'first' | 'last' } = { resetTo: 'first' }
   ) => {
-    const currentPage = (search as SearchRecord)[pageKey]
-    const pageNum = typeof currentPage === 'number' ? currentPage : defaultPage
-    if (pageCount > 0 && pageNum > pageCount) {
-      navigate({
-        replace: true,
-        search: (prev) => ({
-          ...(prev as SearchRecord),
-          [pageKey]: opts.resetTo === 'last' ? pageCount : undefined,
-        }),
-      })
-    }
+    // 1. Skip when pageCount is not ready (prevents refresh-reset)
+    if (!pageCount || pageCount < 1) return
+
+    const currentPageRaw = (search as SearchRecord)[pageKey]
+    const parsedPage = Number(currentPageRaw)
+
+    // 2. Normalize page number from URL
+    const pageNum =
+      !isNaN(parsedPage) && parsedPage > 0 ? parsedPage : defaultPage
+
+    // 3. If page is valid, do nothing
+    if (pageNum <= pageCount) return
+
+    // 4. Decide the new page
+    const nextPage = opts.resetTo === 'last' ? pageCount : undefined // undefined = remove param → goes to defaultPage
+
+    // 5. Avoid unnecessary URL updates (prevents flicker)
+    if (pageNum === nextPage) return
+
+    // 6. Apply the corrected page
+    navigate({
+      replace: true,
+      search: (prev) => ({
+        ...(prev as SearchRecord),
+        [pageKey]: nextPage,
+      }),
+    })
   }
 
   return {

@@ -10,3 +10,12 @@ export interface ApiResponse<T = unknown> {
   pagination?: PaginationMeta | null
   errors?: string[] | null
 }
+
+export interface PaginationApiResponse<T = unknown> {
+  status: ApiStatus
+  code: number
+  message: string
+  data: T[]
+  pagination?: PaginationMeta
+  errors?: string[] | null
+}

@@ -31,7 +31,7 @@ type DataTableProps = {
 }
 
 export function UnitsTable({ search, navigate }: DataTableProps) {
-  const { unitsData } = useUnits()
+  const { unitsData, pagination: serverPagination } = useUnits()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -48,7 +48,7 @@ export function UnitsTable({ search, navigate }: DataTableProps) {
   } = useTableUrlState({
     search,
     navigate,
-    pagination: { defaultPage: 1, defaultPageSize: 10 },
+    pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
       // name per-column text filter
@@ -67,6 +67,8 @@ export function UnitsTable({ search, navigate }: DataTableProps) {
       columnFilters,
       columnVisibility,
     },
+    manualPagination: true,
+    pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
     onColumnFiltersChange,
@@ -82,8 +84,10 @@ export function UnitsTable({ search, navigate }: DataTableProps) {
   })
 
   useEffect(() => {
-    ensurePageInRange(table.getPageCount())
-  }, [table, ensurePageInRange])
+    if (serverPagination.total_pages !== 1) {
+      ensurePageInRange(serverPagination.total_pages)
+    }
+  }, [serverPagination.total_pages, ensurePageInRange])
 
   return (
     <div

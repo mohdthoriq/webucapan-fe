@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse } from '@/types/global-types/api-response'
+import { type PaginationApiResponse } from '@/types/global-types/api-response'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import { type Units } from '../types/units-response'
+import { type Unit } from '../types/units-response'
 
 interface RoleSettingsQueryParams {
   page?: number
@@ -14,7 +14,7 @@ interface RoleSettingsQueryParams {
 export function useUnitsQuery(params?: RoleSettingsQueryParams) {
   const user = useAuthStore((state) => state.auth.user)
 
-  return useQuery<Units>({
+  return useQuery({
     queryKey: [
       'units',
       params?.page,
@@ -27,22 +27,18 @@ export function useUnitsQuery(params?: RoleSettingsQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.company_id
-          ? {
-              company_id: params.company_id
-                ? params.company_id
-                : user?.company?.id,
-            }
-          : {}),
         ...(params?.name ? { name: params.name } : {}),
+        company_id: params?.company_id
+          ? params.company_id
+          : user?.company?.id || '',
       })
 
       const url = queryParams.toString()
         ? `/units?${queryParams.toString()}`
         : '/units'
-      const response = await apiClient.get<ApiResponse<Units>>(url)
+      const response = await apiClient.get<PaginationApiResponse<Unit>>(url)
 
-      return response.data.data as Units
+      return response.data
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1, // optional: retry once only

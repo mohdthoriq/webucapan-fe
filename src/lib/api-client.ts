@@ -42,7 +42,57 @@ apiClient.interceptors.request.use(
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config
+    const { auth } = await import('@/stores/auth-store').then((m) =>
+      m.useAuthStore.getState()
+    )
+
+    // Check if error is 401 and not a retry
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      auth.refreshToken
+    ) {
+      originalRequest._retry = true
+
+      try {
+        // Call refresh token endpoint
+        // Note: We use axios directly to avoid interceptors loop if this fails
+        // But here we can use the instance if we are careful, or create a new one.
+        // Let's use a fresh axios call for safety to avoid attaching old token if not needed,
+        // though the endpoint likely needs the refresh token in body.
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/refresh`,
+          {
+            refreshToken: auth.refreshToken,
+          }
+        )
+
+        const { accessToken, refreshToken } = response.data.data
+
+        // Update tokens in store
+        auth.setTokens(accessToken, refreshToken)
+
+        // Update authorization header for original request
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`
+
+        // Retry original request
+        return apiClient(originalRequest)
+      } catch (refreshError) {
+        // Refresh failed (expired or invalid)
+        auth.reset()
+        window.location.href = '/login'
+        return Promise.reject(refreshError)
+      }
+    }
+
+    // If 401 and no refresh token, or retry failed
+    if (error.response?.status === 401) {
+      auth.reset()
+      window.location.href = '/login'
+    }
+
     return Promise.reject(error)
   }
 )
