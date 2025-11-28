@@ -1,8 +1,32 @@
+import { useEffect } from 'react'
+import { useRouter, useSearch } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import businessIllustrator from './assets/web-illustration.jpg'
 import { LoginForm } from './components/login-form'
 
 export function Login() {
+  const { redirect, error } = useSearch({ from: '/(auth)/login' })
+  const router = useRouter()
+  // const { errorAuthMessage } = useAuthStore.getState()
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error)
+
+      // Clear the flag so next redirect will trigger another toast
+      router.navigate({
+        to: '/login',
+        search: () => {
+          const searchParams: { redirect?: string; error?: string } = {}
+          if (redirect) searchParams.redirect = redirect
+          return searchParams
+        },
+        replace: true,
+      })
+    }
+  }, [error, redirect, router])
+
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <div
@@ -42,7 +66,7 @@ export function Login() {
               Masukkan email dan kata sandi untuk masuk ke akun Anda
             </p>
           </div>
-          <LoginForm />
+          <LoginForm redirectTo={redirect} />
         </div>
       </div>
     </div>
