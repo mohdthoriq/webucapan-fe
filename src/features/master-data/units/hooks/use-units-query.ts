@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { type PaginationApiResponse } from '@/types'
+import type { PaginationApiResponse, Unit } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import { type Unit } from '../types/units-response'
 
 interface RoleSettingsQueryParams {
   page?: number

@@ -1,3 +1,4 @@
+import { type CompanyRole } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -5,7 +6,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
-import { type CompanyRole } from '../types/company-roles-response.type'
 
 type CompanyRolesDetailDialogProps = {
   currentRow: CompanyRole

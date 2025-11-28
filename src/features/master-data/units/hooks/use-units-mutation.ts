@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useUnits } from '../components/units-provider'
 import {
   type CreateUnitFormData,
   type UpdateUnitFormData,
   type DeleteUnitFormData,
-} from '../types/units.schema'
+} from '@/features/master-data/units/types/units.schema'
+import { useUnits } from '../components/units-provider'
 
 export function useCreateUnitMutation() {
   const { setOpen } = useUnits()

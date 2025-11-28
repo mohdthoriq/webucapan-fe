@@ -31,7 +31,7 @@ type DataTableProps = {
 }
 
 export function CompanyRolesTable({ search, navigate }: DataTableProps) {
-  const { rolesData } = useCompanyRoles()
+  const { rolesData, pagination: serverPagination } = useCompanyRoles()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -67,6 +67,8 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
       columnFilters,
       columnVisibility,
     },
+    manualPagination: true,
+    pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
     onColumnFiltersChange,
@@ -82,8 +84,10 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
   })
 
   useEffect(() => {
-    ensurePageInRange(table.getPageCount())
-  }, [table, ensurePageInRange])
+    if (serverPagination.total_pages !== 1) {
+      ensurePageInRange(serverPagination.total_pages)
+    }
+  }, [serverPagination.total_pages, ensurePageInRange])
 
   return (
     <div

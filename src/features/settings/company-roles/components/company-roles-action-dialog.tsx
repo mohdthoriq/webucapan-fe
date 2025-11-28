@@ -1,5 +1,6 @@
 'use client'
 
+import { type CompanyRole } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,7 +21,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
-import { type CompanyRole } from '../types/company-roles-response.type'
 
 type CompanyRolesActionDialogProps = {
   currentRow?: CompanyRole
@@ -48,7 +48,7 @@ export function CompanyRolesActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Edit Role' : 'Add New Role'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Update Peran' : 'Tambah Peran'}</DialogTitle>
           <DialogDescription>
             {isEdit
               ? 'Update the role details here.'
@@ -68,7 +68,7 @@ export function CompanyRolesActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role Name</FormLabel>
+                    <FormLabel>Nama Peran</FormLabel>
                     <FormControl>
                       <Input
                         placeholder='e.g., Administrator, Manager, Developer'
@@ -85,10 +85,10 @@ export function CompanyRolesActionDialog({
                 name='description'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Deskripsi</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Describe the role responsibilities and permissions...'
+                        placeholder='Deskripsikan peran ini...'
                         className='min-h-[80px]'
                         {...field}
                       />
@@ -102,7 +102,7 @@ export function CompanyRolesActionDialog({
         </div>
         <DialogFooter>
           <Button type='submit' form='role-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Role' : 'Create Role'}
+            {isEdit ? 'Update Peran' : 'Tambah Peran'}
           </Button>
         </DialogFooter>
       </DialogContent>

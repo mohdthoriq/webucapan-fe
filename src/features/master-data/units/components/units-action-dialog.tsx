@@ -1,5 +1,6 @@
 'use client'
 
+import { type Unit } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,7 +20,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useUnitsForm } from '../hooks/use-units-form'
-import { type Unit } from '../types/units-response'
 
 type UnitsActionDialogProps = {
   currentRow?: Unit

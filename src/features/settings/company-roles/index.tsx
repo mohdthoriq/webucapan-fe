@@ -29,7 +29,7 @@ function CompanyRolesContent() {
         <div className='flex gap-2'>
           <Button onClick={() => setOpen('add')}>
             <Plus className='mr-2 h-4 w-4' />
-            Add Role
+            Tambah Peran
           </Button>
         </div>
       </div>

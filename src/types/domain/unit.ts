@@ -10,5 +10,3 @@ export interface Unit {
   created_at: Date
   updated_at: Date
 }
-
-export type Units = Unit[]

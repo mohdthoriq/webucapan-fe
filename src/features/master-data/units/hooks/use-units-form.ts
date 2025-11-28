@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { type Unit } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
-import { type Unit } from '../types/units-response'
 import {
   createUnitSchema,
   type CreateUnitFormData,
   type UpdateUnitFormData,
-} from '../types/units.schema'
+} from '@/features/master-data/units/types/units.schema'
 import {
   useCreateUnitMutation,
   useUpdateUnitMutation,

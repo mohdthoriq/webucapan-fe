@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
+import type { CompanyRole, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useCompanyRoleSettingsQuery } from '../hooks/useCompanyRolesQuery'
-import { type CompanyRole as ApiRole } from '../types/company-roles-response.type'
 
 type RolesDialogType = 'view' | 'edit' | 'add' | 'delete'
 
 type RolesContextType = {
   open: RolesDialogType | null
   setOpen: (str: RolesDialogType | null) => void
-  currentRow: ApiRole | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<ApiRole | null>>
-  rolesData: ApiRole[]
+  currentRow: CompanyRole | null
+  setCurrentRow: React.Dispatch<React.SetStateAction<CompanyRole | null>>
+  rolesData: CompanyRole[]
   isLoading: boolean
   isError: boolean
+  pagination: PaginationMeta
   paginationParams?: { page?: number; limit?: number }
 }
 
@@ -26,7 +27,7 @@ export function CompanyRolesProvider({
   paginationParams?: { page?: number; limit?: number }
 }) {
   const [open, setOpen] = useDialogState<RolesDialogType>(null)
-  const [currentRow, setCurrentRow] = useState<ApiRole | null>(null)
+  const [currentRow, setCurrentRow] = useState<CompanyRole | null>(null)
 
   const {
     data: rolesData,
@@ -39,7 +40,13 @@ export function CompanyRolesProvider({
     setOpen,
     currentRow,
     setCurrentRow,
-    rolesData: rolesData ?? [],
+    rolesData: rolesData?.data ?? [],
+    pagination: rolesData?.pagination ?? {
+      page: 1,
+      limit: 10,
+      total: 0,
+      total_pages: 1,
+    },
     isLoading: isLoadingRoles,
     isError: isErrorRoles,
     paginationParams,

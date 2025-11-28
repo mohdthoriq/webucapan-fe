@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { CompanyRole } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
-import { type CompanyRole } from '../types/company-roles-response.type'
 import {
   createCompanyRoleSettingsSchema,
   type CreateCompanyRoleSettingsFormData,

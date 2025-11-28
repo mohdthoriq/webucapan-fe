@@ -1,8 +1,8 @@
 import { type ColumnDef } from '@tanstack/react-table'
+import { type Unit } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { type Unit } from '../types/units-response'
 import { DataTableRowActions } from './units-row-actions'
 
 export const unitsColumns: ColumnDef<Unit>[] = [

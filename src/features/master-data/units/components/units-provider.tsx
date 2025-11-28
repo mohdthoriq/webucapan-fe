@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
+import type { PaginationMeta, Unit } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useUnitsQuery } from '../hooks/use-units-query'
-import { type Unit } from '../types/units-response'
 
 type UnitsDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -11,12 +11,7 @@ type UnitsContextType = {
   currentRow: Unit | null
   setCurrentRow: React.Dispatch<React.SetStateAction<Unit | null>>
   unitsData: Unit[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    total_pages: number
-  }
+  pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
   paginationParams?: { page?: number; limit?: number; name?: string }

@@ -1,3 +1,4 @@
+import { type Unit } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -5,7 +6,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
-import { type Unit } from '../types/units-response'
 
 type UnitsDetailDialogProps = {
   currentRow: Unit
