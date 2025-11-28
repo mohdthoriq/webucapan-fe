@@ -1,11 +1,12 @@
-import axios from 'axios'
+import axios, { type AxiosError } from 'axios'
 import { getCookie } from '@/lib/cookies'
 
 const ACCESS_TOKEN =
   import.meta.env.VITE_ACCESS_TOKEN || 'thisIsJustRandomString'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -44,9 +45,15 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-    const { auth } = await import('@/stores/auth-store').then((m) =>
-      m.useAuthStore.getState()
-    )
+    const { auth, setErrorAuthMessage } = await import(
+      '@/stores/auth-store'
+    ).then((m) => m.useAuthStore.getState())
+
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      setErrorAuthMessage(
+        error.response?.data?.message || 'Authentication Error'
+      )
+    }
 
     // Check if error is 401 and not a retry
     if (
@@ -62,14 +69,12 @@ apiClient.interceptors.response.use(
         // But here we can use the instance if we are careful, or create a new one.
         // Let's use a fresh axios call for safety to avoid attaching old token if not needed,
         // though the endpoint likely needs the refresh token in body.
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/refresh`,
-          {
-            refreshToken: auth.refreshToken,
-          }
-        )
+        const response = await axios.post(`${BASE_URL}/auth/refresh`, {
+          refreshToken: auth.refreshToken,
+        })
 
-        const { accessToken, refreshToken } = response.data.data
+        const { accessToken: accessToken, refreshToken: refreshToken } =
+          response.data.data
 
         // Update tokens in store
         auth.setTokens(accessToken, refreshToken)
@@ -81,16 +86,23 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest)
       } catch (refreshError) {
         // Refresh failed (expired or invalid)
+        const err = refreshError as AxiosError<{ message?: string }>
+
         auth.reset()
-        window.location.href = '/login'
+        setErrorAuthMessage(
+          err.response?.data?.message || 'Authentication Error'
+        )
+
         return Promise.reject(refreshError)
       }
     }
 
     // If 401 and no refresh token, or retry failed
     if (error.response?.status === 401) {
+      setErrorAuthMessage(
+        error.response?.data?.message || 'Authentication Error'
+      )
       auth.reset()
-      window.location.href = '/login'
     }
 
     return Promise.reject(error)

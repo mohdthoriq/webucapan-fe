@@ -10,6 +10,6 @@ export interface AuthMe {
 }
 
 export interface LoginResponse extends AuthMe {
-  access_token: string
-  refresh_token: string
+  accessToken: string
+  refreshToken: string
 }

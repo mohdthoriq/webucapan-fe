@@ -14,12 +14,15 @@ interface AuthState {
     setUser: (user: AuthMe | null) => void
     accessToken: string
     refreshToken: string
+    isAuthenticated: boolean
     setAccessToken: (accessToken: string) => void
     setRefreshToken: (refreshToken: string) => void
     setTokens: (accessToken: string, refreshToken: string) => void
     resetAccessToken: () => void
     reset: () => void
   }
+  errorAuthMessage: string
+  setErrorAuthMessage: (errorAuthMessage: string) => void
 }
 
 export const useAuthStore = create<AuthState>()((set) => {
@@ -58,10 +61,18 @@ export const useAuthStore = create<AuthState>()((set) => {
         }),
       accessToken: initToken,
       refreshToken: initRefreshToken,
+      isAuthenticated: !!initToken,
       setAccessToken: (accessToken) =>
         set((state) => {
           setCookie(ACCESS_TOKEN, JSON.stringify(accessToken))
-          return { ...state, auth: { ...state.auth, accessToken } }
+          return {
+            ...state,
+            auth: {
+              ...state.auth,
+              accessToken,
+              isAuthenticated: !!accessToken,
+            },
+          }
         }),
       setRefreshToken: (refreshToken) =>
         set((state) => {
@@ -74,13 +85,21 @@ export const useAuthStore = create<AuthState>()((set) => {
           setCookie(REFRESH_TOKEN, JSON.stringify(refreshToken))
           return {
             ...state,
-            auth: { ...state.auth, accessToken, refreshToken },
+            auth: {
+              ...state.auth,
+              accessToken,
+              refreshToken,
+              isAuthenticated: !!accessToken,
+            },
           }
         }),
       resetAccessToken: () =>
         set((state) => {
           removeCookie(ACCESS_TOKEN)
-          return { ...state, auth: { ...state.auth, accessToken: '' } }
+          return {
+            ...state,
+            auth: { ...state.auth, accessToken: '', isAuthenticated: false },
+          }
         }),
       reset: () =>
         set((state) => {
@@ -94,9 +113,13 @@ export const useAuthStore = create<AuthState>()((set) => {
               user: null,
               accessToken: '',
               refreshToken: '',
+              isAuthenticated: false,
             },
           }
         }),
     },
+    errorAuthMessage: '',
+    setErrorAuthMessage: (errorAuthMessage: string) =>
+      set({ errorAuthMessage }),
   }
 })
