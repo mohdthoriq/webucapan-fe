@@ -1,6 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CompanyRolesDialogs } from './components/company-roles-dialogs'
 import {
   useCompanyRoles,
@@ -16,10 +17,10 @@ function CompanyRolesContent() {
   const { setOpen } = useCompanyRoles()
 
   return (
-    <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
-      <div className='flex flex-wrap items-end justify-between gap-2'>
-        <div className='flex items-center gap-2'>
-          <div>
+    <Card>
+      <CardHeader>
+        <div className='flex justify-between'>
+          <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
               Pengaturan Peran
             </h2>
@@ -27,17 +28,27 @@ function CompanyRolesContent() {
               Kelola Hak Akses Pengguna di Perusahaan Anda.
             </p>
           </div>
+          <div>
+            <div className='flex'>
+              <Button variant={'link'} onClick={() => history.go(-1)}>
+                Kembali
+              </Button>
+              <Button onClick={() => setOpen('add')}>
+                <Plus className='mr-2 h-4 w-4' />
+                Tambah Peran
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className='flex gap-2'>
-          <Button onClick={() => setOpen('add')}>
-            <Plus className='mr-2 h-4 w-4' />
-            Tambah Peran
-          </Button>
+        <hr />
+      </CardHeader>
+      <CardContent>
+        <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
+          <CompanyRolesTable search={search} navigate={navigate} />
+          <CompanyRolesDialogs />
         </div>
-      </div>
-      <CompanyRolesTable search={search} navigate={navigate} />
-      <CompanyRolesDialogs />
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 

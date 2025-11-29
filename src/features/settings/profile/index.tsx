@@ -1,10 +1,8 @@
-import { useRouter } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { CompanySettingsForm } from './components/company-settings-form'
+import { UserSettingsForm } from './components/user-settings-form'
 
-export function CompanySettings() {
-  const { history } = useRouter()
+export function UserSettings() {
   return (
     <>
       <Card>
@@ -12,11 +10,9 @@ export function CompanySettings() {
           <div className='flex justify-between'>
             <div className='mb-2 grid'>
               <h2 className='text-2xl font-bold tracking-tight'>
-                Data Perusahaan
+                Profil Pengguna
               </h2>
-              <p className='text-muted-foreground'>
-                Kelola data Perusahaan Anda.
-              </p>
+              <p className='text-muted-foreground'>Kelola data pribadi Anda.</p>
             </div>
             <div>
               <Button variant={'link'} onClick={() => history.go(-1)}>
@@ -27,7 +23,7 @@ export function CompanySettings() {
           <hr />
         </CardHeader>
         <CardContent>
-          <CompanySettingsForm />
+          <UserSettingsForm />
         </CardContent>
       </Card>
     </>

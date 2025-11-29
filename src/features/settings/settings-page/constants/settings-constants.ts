@@ -1,5 +1,6 @@
 import {
   Activity,
+  Bell,
   Bot,
   Briefcase,
   Building2,
@@ -12,6 +13,7 @@ import {
   ReceiptText,
   Ruler,
   Settings as SettingsIcon,
+  Shield,
   Users,
   Workflow,
 } from 'lucide-react'
@@ -113,7 +115,7 @@ export const settingsTabs = [
         title: 'Peran',
         description: 'Atur hak akses pengguna',
         url: '/settings/company-roles',
-        icon: Users,
+        icon: Shield,
       },
       {
         title: 'Profil',
@@ -124,7 +126,7 @@ export const settingsTabs = [
       {
         title: 'Notifikasi',
         description: 'Atur preferensi notifikasi',
-        icon: Bot,
+        icon: Bell,
       },
     ],
   },
