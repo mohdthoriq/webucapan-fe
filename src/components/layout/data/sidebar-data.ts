@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Ruler, Building2 } from 'lucide-react'
+import { LayoutDashboard, Settings } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -30,34 +30,6 @@ export const sidebarData: SidebarData = {
           title: 'Settings',
           url: '/settings',
           icon: Settings,
-          // items: [
-          //   {
-          //     title: 'Company',
-          //     url: '/settings/company',
-          //     icon: Building,
-          //   },
-          //   {
-          //     title: 'Company Roles',
-          //     url: '/settings/company-roles',
-          //     icon: Users,
-          //   },
-          //   {
-          //     title: 'Profile',
-          //     url: '/settings/profile',
-          //     icon: User,
-          //   },
-          // ],
-        },
-        {
-          title: 'Master Data',
-          icon: Building2,
-          items: [
-            {
-              title: 'Units',
-              url: '/settings/units',
-              icon: Ruler,
-            },
-          ],
         },
       ],
     },

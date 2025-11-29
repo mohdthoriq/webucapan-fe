@@ -187,6 +187,7 @@ function checkIsActive(href: string, item: NavItem, mainNav = false) {
   return (
     href === item.url || // /endpint?search=param
     href.split('?')[0] === item.url || // endpoint
+    (!!item.url && href.split('?')[0].startsWith(`${item.url}/`)) || // sub-route
     !!item?.items?.filter((i) => i.url === href).length || // if child nav is active
     (mainNav &&
       href.split('/')[1] !== '' &&
