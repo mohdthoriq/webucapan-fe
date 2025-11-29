@@ -20,8 +20,10 @@ function CompanyRolesContent() {
       <div className='flex flex-wrap items-end justify-between gap-2'>
         <div className='flex items-center gap-2'>
           <div>
-            <h2 className='leading-none font-semibold'>Pengaturan Peran</h2>
-            <p className='text-muted-foreground mt-[6px] text-sm'>
+            <h2 className='text-2xl font-bold tracking-tight'>
+              Pengaturan Peran
+            </h2>
+            <p className='text-muted-foreground'>
               Kelola Hak Akses Pengguna di Perusahaan Anda.
             </p>
           </div>

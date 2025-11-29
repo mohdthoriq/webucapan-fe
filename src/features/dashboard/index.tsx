@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Analytics } from './components/analytics'
+import { BillsOverview } from './components/bills-overview'
+import { CashOverview } from './components/cash-overview'
 import { Overview } from './components/overview'
 import { RecentSales } from './components/recent-sales'
 
@@ -38,6 +40,13 @@ export function Dashboard() {
           </TabsList>
         </div>
         <TabsContent value='overview' className='space-y-4'>
+          {/* Financial Overview Cards */}
+          <div className='grid gap-4 sm:grid-cols-1 lg:grid-cols-2'>
+            <CashOverview />
+            <BillsOverview />
+          </div>
+
+          {/* Original Stats Cards */}
           <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
             <Card>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -58,7 +67,7 @@ export function Dashboard() {
                 </svg>
               </CardHeader>
               <CardContent>
-                <div className='text-2xl font-bold'>$45,231.89</div>
+                <div className='text-2xl font-bold'>Rp.3.587.965.521</div>
                 <p className='text-muted-foreground text-xs'>
                   +20.1% from last month
                 </p>
@@ -141,6 +150,8 @@ export function Dashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Charts Section */}
           <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
             <Card className='col-span-1 lg:col-span-4'>
               <CardHeader>

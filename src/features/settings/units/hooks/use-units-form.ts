@@ -6,7 +6,7 @@ import {
   createUnitSchema,
   type CreateUnitFormData,
   type UpdateUnitFormData,
-} from '@/features/master-data/units/types/units.schema'
+} from '@/features/settings/units/types/units.schema'
 import {
   useCreateUnitMutation,
   useUpdateUnitMutation,

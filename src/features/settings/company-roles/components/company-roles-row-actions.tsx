@@ -16,7 +16,7 @@ type DataTableRowActionsProps = {
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const _role = row.original
+  const role = row.original
   const { setOpen, setCurrentRow } = useCompanyRoles()
 
   return (
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${_role?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${role?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(_role)
+              setCurrentRow(role)
               setOpen('view')
             }}
           >
@@ -44,19 +44,21 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(_role)
+              setCurrentRow(role)
               setOpen('edit')
             }}
+            disabled={role?.is_default}
           >
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(_role)
+              setCurrentRow(role)
               setOpen('delete')
             }}
             className='text-red-500!'
+            disabled={role?.is_default}
           >
             Delete
           </DropdownMenuItem>

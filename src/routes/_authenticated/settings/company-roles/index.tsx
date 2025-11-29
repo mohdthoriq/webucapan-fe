@@ -7,7 +7,9 @@ const searchSchema = z.object({
   limit: z.string().optional(),
 })
 
-export const Route = createFileRoute('/_authenticated/settings/company-roles/')({
-  component: CompanyRoles,
-  validateSearch: (search) => searchSchema.parse(search),
-})
+export const Route = createFileRoute('/_authenticated/settings/company-roles/')(
+  {
+    component: CompanyRoles,
+    validateSearch: (search) => searchSchema.parse(search),
+  }
+)

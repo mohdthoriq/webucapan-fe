@@ -10,6 +10,7 @@ export interface CompanyRole extends Role {
     name: string
     address: string
   }
+  is_default: boolean
   system_role: boolean
   created_at: Date
   updated_at: Date
