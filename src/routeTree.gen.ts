@@ -25,6 +25,7 @@ import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
+import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
@@ -110,6 +111,12 @@ const AuthenticatedSettingsUnitsIndexRoute =
     path: '/settings/units/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsTaxesIndexRoute =
+  AuthenticatedSettingsTaxesIndexRouteImport.update({
+    id: '/settings/taxes/',
+    path: '/settings/taxes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsProfileIndexRoute =
   AuthenticatedSettingsProfileIndexRouteImport.update({
     id: '/settings/profile/',
@@ -147,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -167,6 +175,7 @@ export interface FileRoutesByTo {
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRoutesById {
@@ -189,6 +198,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
+  '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRouteTypes {
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/profile'
+    | '/settings/taxes'
     | '/settings/units'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/profile'
+    | '/settings/taxes'
     | '/settings/units'
   id:
     | '__root__'
@@ -252,6 +264,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/profile/'
+    | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
   fileRoutesById: FileRoutesById
 }
@@ -383,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsUnitsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/taxes/': {
+      id: '/_authenticated/settings/taxes/'
+      path: '/settings/taxes'
+      fullPath: '/settings/taxes'
+      preLoaderRoute: typeof AuthenticatedSettingsTaxesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/profile/': {
       id: '/_authenticated/settings/profile/'
       path: '/settings/profile'
@@ -415,6 +435,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
+  AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
 }
 
@@ -429,6 +450,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsCompanyIndexRoute,
   AuthenticatedSettingsProfileIndexRoute:
     AuthenticatedSettingsProfileIndexRoute,
+  AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
 }
 

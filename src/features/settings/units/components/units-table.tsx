@@ -10,9 +10,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type Table as TanstackTable,
 } from '@tanstack/react-table'
+import type { Unit } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -31,7 +34,7 @@ type DataTableProps = {
 }
 
 export function UnitsTable({ search, navigate }: DataTableProps) {
-  const { unitsData, pagination: serverPagination } = useUnits()
+  const { unitsData, pagination: serverPagination, isLoading } = useUnits()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -130,44 +133,72 @@ export function UnitsTable({ search, navigate }: DataTableProps) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className='group/row'
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn(
-                        'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
-                        cell.column.columnDef.meta?.className,
-                        cell.column.columnDef.meta?.tdClassName
-                      )}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+            {isLoading ? (
+              <TableLoading
+                columnCount={table.getVisibleFlatColumns().length}
+              />
+            ) : table.getRowModel().rows?.length ? (
+              <TableRows table={table} />
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={unitsColumns.length}
-                  className='h-24 text-center'
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
+              <TableEmpty colSpan={unitsColumns.length} />
             )}
           </TableBody>
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
     </div>
+  )
+}
+
+function TableLoading({ columnCount }: { columnCount: number }) {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <TableRow key={index} className='hover:bg-transparent'>
+          {Array.from({ length: columnCount }).map((_, colIndex) => (
+            <TableCell key={colIndex}>
+              <Skeleton className='h-6 w-full' />
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
+  )
+}
+
+function TableRows({ table }: { table: TanstackTable<Unit> }) {
+  return (
+    <>
+      {table.getRowModel().rows.map((row) => (
+        <TableRow
+          key={row.id}
+          data-state={row.getIsSelected() && 'selected'}
+          className='group/row'
+        >
+          {row.getVisibleCells().map((cell) => (
+            <TableCell
+              key={cell.id}
+              className={cn(
+                'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
+                cell.column.columnDef.meta?.className,
+                cell.column.columnDef.meta?.tdClassName
+              )}
+            >
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
+  )
+}
+
+function TableEmpty({ colSpan }: { colSpan: number }) {
+  return (
+    <TableRow>
+      <TableCell colSpan={colSpan} className='h-24 text-center'>
+        No results.
+      </TableCell>
+    </TableRow>
   )
 }

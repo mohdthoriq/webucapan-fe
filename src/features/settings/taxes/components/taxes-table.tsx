@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { CompanyRole } from '@/types'
+import type { Tax } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,20 +25,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { rolesColumns } from './company-roles-columns'
-import { useCompanyRoles } from './company-roles-provider'
+import { taxesColumns } from './taxes-columns'
+import { useTaxes } from './taxes-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function CompanyRolesTable({ search, navigate }: DataTableProps) {
-  const {
-    rolesData,
-    pagination: serverPagination,
-    isLoading,
-  } = useCompanyRoles()
+export function TaxesTable({ search, navigate }: DataTableProps) {
+  const { taxesData, pagination: serverPagination, isLoading } = useTaxes()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -65,8 +61,8 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: rolesData,
-    columns: rolesColumns,
+    data: taxesData,
+    columns: taxesColumns,
     state: {
       sorting,
       pagination,
@@ -144,7 +140,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={rolesColumns.length} />
+              <TableEmpty colSpan={taxesColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -170,7 +166,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<CompanyRole> }) {
+function TableRows({ table }: { table: TanstackTable<Tax> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (
