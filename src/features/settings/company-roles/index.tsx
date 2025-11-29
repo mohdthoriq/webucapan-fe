@@ -8,7 +8,7 @@ import {
 } from './components/company-roles-provider'
 import { CompanyRolesTable } from './components/company-roles-table'
 
-const route = getRouteApi('/_authenticated/settings/')
+const route = getRouteApi('/_authenticated/settings/company-roles/')
 
 function CompanyRolesContent() {
   const search = route.useSearch() as Record<string, string>

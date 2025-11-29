@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { settingsTabs } from './settings-constants'
+import { settingsTabs } from '../constants/settings-constants'
 
 interface SettingsTabsListProps {
   isDesktop: boolean

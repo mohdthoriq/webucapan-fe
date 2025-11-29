@@ -30,6 +30,23 @@ export const sidebarData: SidebarData = {
           title: 'Settings',
           url: '/settings',
           icon: Settings,
+          // items: [
+          //   {
+          //     title: 'Company',
+          //     url: '/settings/company',
+          //     icon: Building,
+          //   },
+          //   {
+          //     title: 'Company Roles',
+          //     url: '/settings/company-roles',
+          //     icon: Users,
+          //   },
+          //   {
+          //     title: 'Profile',
+          //     url: '/settings/profile',
+          //     icon: User,
+          //   },
+          // ],
         },
         {
           title: 'Master Data',

@@ -25,6 +25,7 @@ export const settingsTabs = [
       {
         title: 'Profil Perusahaan',
         description: 'Atur detail perusahaan Anda',
+        url: '/settings/company',
         icon: Building2,
       },
       {
@@ -111,11 +112,13 @@ export const settingsTabs = [
       {
         title: 'Peran',
         description: 'Atur hak akses pengguna',
+        url: '/settings/company-roles',
         icon: Users,
       },
       {
         title: 'Profil',
         description: 'Atur profil dan ubah password',
+        url: '/settings/profile',
         icon: SettingsIcon,
       },
       {
@@ -133,11 +136,13 @@ export const settingsTabs = [
       {
         title: 'Satuan',
         description: 'Kelola data pelanggan dan vendor',
+        url: '/settings/units',
         icon: Ruler,
       },
       {
         title: 'Pajak',
         description: 'Kelola data pelanggan dan vendor',
+        url: '/settings/taxes',
         icon: HandCoins,
       },
     ],

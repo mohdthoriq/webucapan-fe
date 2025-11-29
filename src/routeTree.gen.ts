@@ -25,6 +25,9 @@ import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
+import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
+import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
+import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -107,6 +110,24 @@ const AuthenticatedSettingsUnitsIndexRoute =
     path: '/settings/units/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsProfileIndexRoute =
+  AuthenticatedSettingsProfileIndexRouteImport.update({
+    id: '/settings/profile/',
+    path: '/settings/profile/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsCompanyIndexRoute =
+  AuthenticatedSettingsCompanyIndexRouteImport.update({
+    id: '/settings/company/',
+    path: '/settings/company/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsCompanyRolesIndexRoute =
+  AuthenticatedSettingsCompanyRolesIndexRouteImport.update({
+    id: '/settings/company-roles/',
+    path: '/settings/company-roles/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/forgot-password': typeof authForgotPasswordRoute
@@ -123,6 +144,9 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
+  '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -140,6 +164,9 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
+  '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRoutesById {
@@ -159,6 +186,9 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
+  '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRouteTypes {
@@ -178,6 +208,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/settings/company-roles'
+    | '/settings/company'
+    | '/settings/profile'
     | '/settings/units'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -195,6 +228,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/settings/company-roles'
+    | '/settings/company'
+    | '/settings/profile'
     | '/settings/units'
   id:
     | '__root__'
@@ -213,6 +249,9 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/settings/company-roles/'
+    | '/_authenticated/settings/company/'
+    | '/_authenticated/settings/profile/'
     | '/_authenticated/settings/units/'
   fileRoutesById: FileRoutesById
 }
@@ -344,6 +383,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsUnitsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/profile/': {
+      id: '/_authenticated/settings/profile/'
+      path: '/settings/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AuthenticatedSettingsProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/company/': {
+      id: '/_authenticated/settings/company/'
+      path: '/settings/company'
+      fullPath: '/settings/company'
+      preLoaderRoute: typeof AuthenticatedSettingsCompanyIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/company-roles/': {
+      id: '/_authenticated/settings/company-roles/'
+      path: '/settings/company-roles'
+      fullPath: '/settings/company-roles'
+      preLoaderRoute: typeof AuthenticatedSettingsCompanyRolesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -352,6 +412,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
+  AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
+  AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
 }
 
@@ -360,6 +423,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedSettingsCompanyRolesIndexRoute:
+    AuthenticatedSettingsCompanyRolesIndexRoute,
+  AuthenticatedSettingsCompanyIndexRoute:
+    AuthenticatedSettingsCompanyIndexRoute,
+  AuthenticatedSettingsProfileIndexRoute:
+    AuthenticatedSettingsProfileIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
 }
 

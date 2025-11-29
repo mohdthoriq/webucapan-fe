@@ -2,16 +2,16 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Tabs } from '@/components/ui/tabs'
-import { settingsTabs } from './components/settings-constants'
 import { SettingsHeader } from './components/settings-header'
 import { SettingsTabContent } from './components/settings-tab-content'
 import { SettingsTabsList } from './components/settings-tabs-list'
+import { settingsTabs } from './constants/settings-constants'
 import { useSettingsScroll } from './hooks/use-settings-scroll'
 
 function Settings() {
   const navigate = useNavigate()
   const search = useSearch({ strict: false }) as { tab?: string }
-  const currentTab = search.tab || settingsTabs[1].value
+  const currentTab = search.tab || settingsTabs[0].value
   const isDesktop = useMediaQuery('(min-width: 1200px)')
 
   const { scrollAreaRef, tabRefs } = useSettingsScroll({
