@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { CompanySettingsForm } from '@/features/settings/company/components/company-settings-form'
+import { CompanySettings } from '@/features/settings/company'
 
 export const Route = createFileRoute('/_authenticated/settings/company/')({
-  component: CompanySettingsForm,
+  component: CompanySettings,
 })

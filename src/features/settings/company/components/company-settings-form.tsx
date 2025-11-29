@@ -1,4 +1,4 @@
-import { Loader2, Save, Building2, MapPin } from 'lucide-react'
+import { Loader2, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -10,61 +10,22 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Textarea } from '@/components/ui/textarea'
 import { useCompanySettingsForm } from '../hooks/useCompanySettingsForm'
+import { CompanySettingsSkeleton } from './company-settings-skeleton'
 
 export function CompanySettingsForm() {
   const { form, onSubmit, isLoading, isLoadingData } = useCompanySettingsForm()
 
   // Show loading skeleton while fetching data
   if (isLoadingData) {
-    return (
-      <div className='space-y-6'>
-        <div className='space-y-4'>
-          <div className='flex items-center gap-2'>
-            <Building2 className='text-muted-foreground h-5 w-5' />
-            <h3 className='text-lg font-medium'>Informasi Perusahaan</h3>
-          </div>
-
-          {/* Name field skeleton */}
-          <div className='space-y-2'>
-            <Skeleton className='h-4 w-32' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-4 w-48' />
-          </div>
-
-          {/* Address field skeleton */}
-          <div className='space-y-2'>
-            <Skeleton className='h-4 w-24' />
-            <Skeleton className='h-[100px] w-full' />
-            <Skeleton className='h-4 w-56' />
-          </div>
-
-          {/* NPWP field skeleton */}
-          <div className='space-y-2'>
-            <Skeleton className='h-4 w-20' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-4 w-40' />
-          </div>
-        </div>
-
-        <div className='flex justify-end pt-4'>
-          <Skeleton className='h-10 w-40' />
-        </div>
-      </div>
-    )
+    return <CompanySettingsSkeleton />
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         <div className='space-y-4'>
-          <div className='flex items-center gap-2'>
-            <Building2 className='text-muted-foreground h-5 w-5' />
-            <h3 className='text-lg font-medium'>Informasi Perusahaan</h3>
-          </div>
-
           <FormField
             control={form.control}
             name='name'
@@ -89,10 +50,9 @@ export function CompanySettingsForm() {
                 <FormControl>
                   <div className='space-y-2'>
                     <div className='relative'>
-                      <MapPin className='text-muted-foreground absolute top-3 left-3 h-4 w-4' />
                       <Textarea
                         placeholder='Masukkan alamat lengkap perusahaan'
-                        className='min-h-[100px] resize-none pl-9'
+                        className='min-h-[100px] resize-none'
                         {...field}
                       />
                     </div>
