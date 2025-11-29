@@ -48,7 +48,9 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
               </div>
             </Header>
 
-            <Main>{children ?? <Outlet />}</Main>
+            <Main className='flex flex-1 flex-col'>
+              {children ?? <Outlet />}
+            </Main>
           </SidebarInset>
         </SidebarProvider>
       </LayoutProvider>
