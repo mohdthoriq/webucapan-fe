@@ -44,6 +44,7 @@ export function CompanyRolesActionDialog({
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
+        form.reset()
       }}
     >
       <DialogContent className='sm:max-w-lg'>
@@ -51,9 +52,9 @@ export function CompanyRolesActionDialog({
           <DialogTitle>{isEdit ? 'Update Peran' : 'Tambah Peran'}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Update the role details here.'
-              : 'Create a new role for your organization.'}
-            Click save when you're done.
+              ? 'Perbarui detail peran di sini.'
+              : 'Buat peran baru untuk organisasi Anda.'}
+            Klik simpan jika sudah selesai.
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>

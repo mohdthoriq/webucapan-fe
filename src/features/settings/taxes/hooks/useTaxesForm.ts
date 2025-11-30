@@ -21,10 +21,10 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
     resolver: zodResolver(createTaxesSchema),
     defaultValues: isEdit
       ? {
-          name: currentRow?.name,
-          rate: currentRow?.rate ?? 0,
+          name: currentRow?.name || '',
+          rate: currentRow?.rate || 0,
           company_id: currentRow?.company?.id ?? company?.id ?? '',
-          description: currentRow?.description,
+          description: currentRow?.description || '',
         }
       : {
           company_id: company?.id ?? '',
@@ -46,8 +46,10 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
         description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
+      form.reset()
     } else {
       await createMutation.mutateAsync(data)
+      form.reset()
     }
   }
 

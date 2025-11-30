@@ -46,8 +46,10 @@ export function useUnitsForm({ currentRow }: useUnitsFormProps) {
         code: data.code,
       }
       await updateMutation.mutateAsync(updateData)
+      form.reset()
     } else {
       await createMutation.mutateAsync(data)
+      form.reset()
     }
   }
 

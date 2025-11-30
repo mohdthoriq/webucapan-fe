@@ -1,16 +1,10 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import type { CompanyRole } from '@/types'
-import { useAuthStore } from '@/stores/auth-store'
-import {
-  createCompanyRoleSettingsSchema,
-  type CreateCompanyRoleSettingsFormData,
-  type UpdateCompanyRoleSettingsFormData,
-} from '../types/company-roles.schema'
-import {
-  useCreateCompanyRoleMutation,
-  useUpdateCompanyRoleMutation,
-} from './useCompanyRolesMutation'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { CompanyRole } from '@/types';
+import { useAuthStore } from '@/stores/auth-store';
+import { createCompanyRoleSettingsSchema, type CreateCompanyRoleSettingsFormData, type UpdateCompanyRoleSettingsFormData } from '../types/company-roles.schema';
+import { useCreateCompanyRoleMutation, useUpdateCompanyRoleMutation } from './useCompanyRolesMutation';
+
 
 type useCompanySettingsFormProps = {
   currentRow?: CompanyRole
@@ -48,8 +42,10 @@ export function useCompanySettingsForm({
         description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
+      form.reset()
     } else {
       await createMutation.mutateAsync(data)
+      
     }
   }
 

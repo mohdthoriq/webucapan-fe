@@ -14,21 +14,21 @@ export function useCreateTaxMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: CreateTaxesFormData) => {
-      const response = await apiClient.post(`roles`, credentials)
+      const response = await apiClient.post(`taxes`, credentials)
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'company-roles-toast' })
+      toast.loading('Loading...', { id: 'taxes-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
-      toast.success('Peran berhasil ditambahkan.')
+      toast.dismiss('taxes-toast')
+      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      toast.success('Pajak berhasil ditambahkan.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('company-roles-toast')
-      toast.error('Peran gagal ditambahkan.')
+      toast.dismiss('taxes-toast')
+      toast.error('Pajak gagal ditambahkan.')
     },
   })
 }
@@ -40,23 +40,23 @@ export function useUpdateTaxMutation() {
   return useMutation({
     mutationFn: async (credentials: UpdateTaxesFormData) => {
       const response = await apiClient.patch(
-        `roles/${credentials.id}`,
+        `taxes/${credentials.id}`,
         credentials
       )
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'company-roles-toast' })
+      toast.loading('Loading...', { id: 'taxes-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
-      toast.success('Peran berhasil diubah.')
+      toast.dismiss('taxes-toast')
+      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      toast.success('Pajak berhasil diubah.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('company-roles-toast')
-      toast.error('Peran gagal diubah.')
+      toast.dismiss('taxes-toast')
+      toast.error('Pajak gagal diubah.')
     },
   })
 }
@@ -67,22 +67,22 @@ export function useDeleteTaxMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: DeleteTaxesFormData) => {
-      const response = await apiClient.delete(`roles/${credentials.id}`)
+      const response = await apiClient.delete(`taxes/${credentials.id}`)
 
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'company-roles-toast' })
+      toast.loading('Loading...', { id: 'taxes-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
-      toast.success('Peran berhasil dihapus.')
+      toast.dismiss('taxes-toast')
+      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      toast.success('Pajak berhasil dihapus.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('company-roles-toast')
-      toast.error('Peran gagal dihapus.')
+      toast.dismiss('taxes-toast')
+      toast.error('Pajak gagal dihapus.')
     },
   })
 }
