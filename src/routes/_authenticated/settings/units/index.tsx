@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { createFileRoute } from '@tanstack/react-router'
-import Units from '@/features/master-data/units'
+import Units from '@/features/settings/units'
 
 const unitSearchSchema = z.object({
   page: z.coerce.number().min(1).optional().catch(1),

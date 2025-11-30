@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type CompanyRole } from '@/types'
+import type { Tax } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useCompanyRoles } from './company-roles-provider'
+import { useTaxes } from './taxes-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<CompanyRole>
+  row: Row<Tax>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const role = row.original
-  const { setOpen, setCurrentRow } = useCompanyRoles()
+  const tax = row.original
+  const { setOpen, setCurrentRow } = useTaxes()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${role?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${tax?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(role)
+              setCurrentRow(tax)
               setOpen('view')
             }}
           >
@@ -44,21 +44,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(role)
+              setCurrentRow(tax)
               setOpen('edit')
             }}
-            disabled={role?.is_default}
           >
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(role)
+              setCurrentRow(tax)
               setOpen('delete')
             }}
             className='text-red-500!'
-            disabled={role?.is_default}
           >
             Delete
           </DropdownMenuItem>

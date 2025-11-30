@@ -22,9 +22,14 @@ export function UserSettingsForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         {/* Profile Information Section */}
         <div className='space-y-4'>
-          <div className='flex items-center gap-2'>
-            <User className='text-muted-foreground h-5 w-5' />
-            <h3 className='text-lg font-medium'>Informasi Profil</h3>
+          <div className=''>
+            <div className='flex items-center gap-2'>
+              <User className='text-muted-foreground h-5 w-5' />
+              <h3 className='text-lg font-medium'>Informasi Profil</h3>
+            </div>
+            <p className='text-muted-foreground text-sm'>
+              Kelola data pribadi Anda.
+            </p>
           </div>
 
           <FormField
@@ -73,13 +78,15 @@ export function UserSettingsForm() {
 
         {/* Password Change Section */}
         <div className='space-y-4'>
-          <div className='flex items-center gap-2'>
-            <Lock className='text-muted-foreground h-5 w-5' />
-            <h3 className='text-lg font-medium'>Ubah Password</h3>
+          <div>
+            <div className='flex items-center gap-2'>
+              <Lock className='text-muted-foreground h-5 w-5' />
+              <h3 className='text-lg font-medium'>Ubah Password</h3>
+            </div>
+            <p className='text-muted-foreground text-sm'>
+              Kosongkan jika tidak ingin mengubah password
+            </p>
           </div>
-          <p className='text-muted-foreground text-sm'>
-            Kosongkan jika tidak ingin mengubah password
-          </p>
 
           <FormField
             control={form.control}

@@ -1,6 +1,6 @@
 'use client'
 
-import { type CompanyRole } from '@/types'
+import type { Tax } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,22 +20,22 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
+import { useTaxesForm } from '../hooks/useTaxesForm'
 
-type CompanyRolesActionDialogProps = {
-  currentRow?: CompanyRole
+type TaxesActionDialogProps = {
+  currentRow?: Tax
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function CompanyRolesActionDialog({
+export function TaxesActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: CompanyRolesActionDialogProps) {
+}: TaxesActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useCompanySettingsForm({
+  const { form, onSubmit, isSubmitting } = useTaxesForm({
     currentRow,
   })
 
@@ -49,18 +49,18 @@ export function CompanyRolesActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Update Peran' : 'Tambah Peran'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Update Pajak' : 'Tambah Pajak'}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Perbarui detail peran di sini.'
-              : 'Buat peran baru untuk organisasi Anda.'}
-            Klik simpan jika sudah selesai.
+              ? 'Perbarui detail pajak di sini.'
+              : 'Buat pajak baru untuk perusahaan Anda.'}{' '}
+            Klik simpan setelah selesai.
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
           <Form {...form}>
             <form
-              id='role-form'
+              id='tax-form'
               onSubmit={form.handleSubmit(onSubmit)}
               className='space-y-4'
             >
@@ -69,10 +69,10 @@ export function CompanyRolesActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Peran</FormLabel>
+                    <FormLabel>Nama Pajak</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='e.g., Administrator, Manager, Developer'
+                        placeholder='Masukkan nama pajak...'
                         autoComplete='off'
                         {...field}
                       />
@@ -81,6 +81,33 @@ export function CompanyRolesActionDialog({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name='rate'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rate</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan rate pajak...'
+                        autoComplete='off'
+                        onChange={(e) => {
+                          const value = e.target.valueAsNumber
+                          field.onChange(isNaN(value) ? 0 : value)
+                        }}
+                        type='number'
+                        value={field.value}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name='description'
@@ -89,7 +116,7 @@ export function CompanyRolesActionDialog({
                     <FormLabel>Deskripsi</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Deskripsikan peran ini...'
+                        placeholder='Deskripsikan pajak ini...'
                         className='min-h-[80px]'
                         {...field}
                       />
@@ -102,8 +129,8 @@ export function CompanyRolesActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='role-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Peran' : 'Tambah Peran'}
+          <Button type='submit' form='tax-form' disabled={isSubmitting}>
+            {isEdit ? 'Update Pajak' : 'Tambah Pajak'}
           </Button>
         </DialogFooter>
       </DialogContent>

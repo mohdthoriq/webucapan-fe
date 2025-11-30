@@ -6,7 +6,7 @@ import {
   createUnitSchema,
   type CreateUnitFormData,
   type UpdateUnitFormData,
-} from '@/features/master-data/units/types/units.schema'
+} from '@/features/settings/units/types/units.schema'
 import {
   useCreateUnitMutation,
   useUpdateUnitMutation,
@@ -46,8 +46,10 @@ export function useUnitsForm({ currentRow }: useUnitsFormProps) {
         code: data.code,
       }
       await updateMutation.mutateAsync(updateData)
+      form.reset()
     } else {
       await createMutation.mutateAsync(data)
+      form.reset()
     }
   }
 

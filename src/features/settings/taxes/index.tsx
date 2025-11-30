@@ -2,19 +2,16 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { CompanyRolesDialogs } from './components/company-roles-dialogs'
-import {
-  useCompanyRoles,
-  CompanyRolesProvider,
-} from './components/company-roles-provider'
-import { CompanyRolesTable } from './components/company-roles-table'
+import { TaxesDialogs } from './components/taxes-dialogs'
+import { useTaxes, TaxesProvider } from './components/taxes-provider'
+import { TaxesTable } from './components/taxes-table'
 
-const route = getRouteApi('/_authenticated/settings/company-roles/')
+const route = getRouteApi('/_authenticated/settings/taxes/')
 
-function CompanyRolesContent() {
+function TaxesContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useCompanyRoles()
+  const { setOpen } = useTaxes()
 
   return (
     <Card>
@@ -22,10 +19,10 @@ function CompanyRolesContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Peran
+              Pengaturan Pajak
             </h2>
             <p className='text-muted-foreground'>
-              Kelola Hak Akses Pengguna di Perusahaan Anda.
+              Kelola Pajak di Perusahaan Anda.
             </p>
           </div>
           <div>
@@ -35,7 +32,7 @@ function CompanyRolesContent() {
               </Button>
               <Button onClick={() => setOpen('add')}>
                 <Plus className='mr-2 h-4 w-4' />
-                Tambah Peran
+                Tambah Pajak
               </Button>
             </div>
           </div>
@@ -44,26 +41,27 @@ function CompanyRolesContent() {
       </CardHeader>
       <CardContent>
         <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
-          <CompanyRolesTable search={search} navigate={navigate} />
-          <CompanyRolesDialogs />
+          <TaxesTable search={search} navigate={navigate} />
+          <TaxesDialogs />
         </div>
       </CardContent>
     </Card>
   )
 }
 
-export function CompanyRoles() {
+export function Taxes() {
   const search = route.useSearch() as Record<string, string>
 
   // Extract pagination parameters from URL search
   const page = search?.page ? parseInt(search.page) : undefined
   const limit = search?.limit ? parseInt(search.limit) : undefined
+  const name = search?.name ? search.name : undefined
 
   return (
-    <CompanyRolesProvider paginationParams={{ page, limit }}>
-      <CompanyRolesContent />
-    </CompanyRolesProvider>
+    <TaxesProvider paginationParams={{ page, limit, name }}>
+      <TaxesContent />
+    </TaxesProvider>
   )
 }
 
-export default CompanyRoles
+export default Taxes

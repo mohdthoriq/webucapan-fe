@@ -43,6 +43,7 @@ export function UnitsActionDialog({
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
+        form.reset()
       }}
     >
       <DialogContent className='sm:max-w-lg'>
@@ -54,7 +55,7 @@ export function UnitsActionDialog({
             {isEdit
               ? 'Update satuan disini.'
               : 'Tambah satuan baru untuk Perusahaan Anda.'}
-            Click save when you're done.
+            Klik simpan jika sudah selesai.
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>

@@ -1,6 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { UnitsDialogs } from './components/units-dialogs'
 import { UnitsProvider, useUnits } from './components/units-provider'
 import { UnitsTable } from './components/units-table'
@@ -13,10 +14,10 @@ function UnitsContent() {
   const { setOpen } = useUnits()
 
   return (
-    <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
-      <div className='flex flex-wrap items-end justify-between gap-2'>
-        <div className='flex items-center gap-2'>
-          <div>
+    <Card>
+      <CardHeader>
+        <div className='flex justify-between'>
+          <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
               Pengaturan Satuan
             </h2>
@@ -24,17 +25,23 @@ function UnitsContent() {
               Kelola Satuan di Perusahaan Anda.
             </p>
           </div>
+          <div className='flex'>
+            <Button variant={'link'} onClick={() => history.go(-1)}>
+              Kembali
+            </Button>
+            <Button onClick={() => setOpen('add')}>
+              <Plus className='mr-2 h-4 w-4' />
+              Tambah Satuan
+            </Button>
+          </div>
         </div>
-        <div className='flex gap-2'>
-          <Button onClick={() => setOpen('add')}>
-            <Plus className='mr-2 h-4 w-4' />
-            Tambah Satuan
-          </Button>
-        </div>
-      </div>
-      <UnitsTable search={search} navigate={navigate} />
-      <UnitsDialogs />
-    </div>
+        <hr />
+      </CardHeader>
+      <CardContent>
+        <UnitsTable search={search} navigate={navigate} />
+        <UnitsDialogs />
+      </CardContent>
+    </Card>
   )
 }
 

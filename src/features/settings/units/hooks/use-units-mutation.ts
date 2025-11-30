@@ -5,7 +5,7 @@ import {
   type CreateUnitFormData,
   type UpdateUnitFormData,
   type DeleteUnitFormData,
-} from '@/features/master-data/units/types/units.schema'
+} from '@/features/settings/units/types/units.schema'
 import { useUnits } from '../components/units-provider'
 
 export function useCreateUnitMutation() {
