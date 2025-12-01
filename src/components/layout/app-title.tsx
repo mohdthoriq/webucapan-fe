@@ -22,8 +22,10 @@ export function AppTitle() {
               onClick={() => setOpenMobile(false)}
               className='grid flex-1 text-start text-sm leading-tight'
             >
-              <span className='truncate font-bold'>Amfibiz</span>
-              <span className='truncate text-xs'>Aplikasi Kelola Bizniz</span>
+              <span className='truncate font-bold'>Manajerku</span>
+              <span className='truncate text-xs'>
+                Kelola Manajerial dengan mudah.
+              </span>
             </Link>
           </div>
         </SidebarMenuButton>

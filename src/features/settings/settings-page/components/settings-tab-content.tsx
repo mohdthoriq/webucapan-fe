@@ -4,7 +4,7 @@ import { settingsTabs } from '../constants/settings-constants'
 
 export function SettingsTabContent() {
   return (
-    <div className='bg-card text-card-foreground w-full flex-1 rounded-xl border shadow-sm'>
+    <div className='bg-secondary text-card-foreground w-full flex-1 rounded-xl border shadow-sm'>
       {settingsTabs.map((tab) => (
         <TabsContent
           key={tab.value}
@@ -19,7 +19,7 @@ export function SettingsTabContent() {
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             {tab.items.map((item) => (
               <Link key={item.title} to={item?.url || '.'}>
-                <div className='group bg-background hover:border-primary/50 flex min-h-50 cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border p-6 text-center shadow-sm transition-all hover:shadow-md'>
+                <div className='group bg-background hover:border-primary/50 flex h-full min-h-50 cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border p-6 text-center shadow-sm transition-all hover:shadow-md'>
                   <div className='bg-primary/10 text-primary rounded-full p-3 transition-transform group-hover:scale-110'>
                     <item.icon className='h-8 w-8' />
                   </div>

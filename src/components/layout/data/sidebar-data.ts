@@ -3,7 +3,7 @@ import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'amfibiz',
+    name: 'Manajerku',
     email: 'owner@amfibiz.com',
     avatar: '/avatars/shadcn.jpg',
   },

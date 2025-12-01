@@ -39,7 +39,7 @@ export function CashOverview() {
         <div className='mb-4 space-y-2'>
           <div className='flex items-center justify-between'>
             <span className='text-muted-foreground text-sm'>
-              Saldo di kledo
+              Saldo di Manajerku
             </span>
             <span className='text-sm font-semibold'>
               {formatCurrency(27064663)}
