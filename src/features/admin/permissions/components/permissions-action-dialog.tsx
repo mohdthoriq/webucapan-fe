@@ -1,6 +1,6 @@
 'use client'
 
-import { type CompanyRole } from '@/types'
+import { type Permission } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,22 +20,22 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
+import { usePermissionsForm } from '../hooks/use-permissions-form'
 
-type CompanyRolesActionDialogProps = {
-  currentRow?: CompanyRole
+type PermissionsActionDialogProps = {
+  currentRow?: Permission
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function CompanyRolesActionDialog({
+export function PermissionsActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: CompanyRolesActionDialogProps) {
+}: PermissionsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useCompanySettingsForm({
+  const { form, onSubmit, isSubmitting } = usePermissionsForm({
     currentRow,
   })
 
@@ -49,11 +49,13 @@ export function CompanyRolesActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Update Peran' : 'Tambah Peran'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Update Permission' : 'Tambah Permission'}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Perbarui detail peran di sini.'
-              : 'Buat peran baru untuk organisasi Anda.'}
+              ? 'Update permission disini.'
+              : 'Tambah permission baru untuk Aplikasi Manajerku. '}
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
@@ -68,10 +70,10 @@ export function CompanyRolesActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Peran</FormLabel>
+                    <FormLabel>Nama Permission</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='e.g., Administrator, Manager, Developer'
+                        placeholder='Masukkan nama permission...'
                         autoComplete='off'
                         {...field}
                       />
@@ -88,8 +90,8 @@ export function CompanyRolesActionDialog({
                     <FormLabel>Deskripsi</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Deskripsikan peran ini...'
-                        className='min-h-[80px]'
+                        placeholder='Masukkan deskripsi permission...'
+                        autoComplete='off'
                         {...field}
                       />
                     </FormControl>
@@ -102,7 +104,7 @@ export function CompanyRolesActionDialog({
         </div>
         <DialogFooter>
           <Button type='submit' form='role-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Peran' : 'Tambah Peran'}
+            {isEdit ? 'Update Permission' : 'Tambah Permission'}
           </Button>
         </DialogFooter>
       </DialogContent>

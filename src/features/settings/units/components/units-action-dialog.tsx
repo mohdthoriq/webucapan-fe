@@ -55,7 +55,6 @@ export function UnitsActionDialog({
             {isEdit
               ? 'Update satuan disini.'
               : 'Tambah satuan baru untuk Perusahaan Anda.'}
-            Klik simpan jika sudah selesai.
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
