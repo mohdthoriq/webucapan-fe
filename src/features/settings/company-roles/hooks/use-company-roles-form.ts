@@ -10,7 +10,7 @@ import {
 import {
   useCreateCompanyRoleMutation,
   useUpdateCompanyRoleMutation,
-} from './useCompanyRolesMutation'
+} from './use-company-roles-mutation'
 
 type useCompanySettingsFormProps = {
   currentRow?: CompanyRole

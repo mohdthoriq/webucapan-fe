@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanySettingsForm'
+import { useCompanySettingsForm } from '../hooks/use-company-settings-form'
 import { CompanySettingsSkeleton } from './company-settings-skeleton'
 
 export function CompanySettingsForm() {

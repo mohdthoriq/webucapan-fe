@@ -60,7 +60,7 @@ export function UnitsActionDialog({
         <div className='py-4'>
           <Form {...form}>
             <form
-              id='role-form'
+              id='unit-form'
               onSubmit={form.handleSubmit(onSubmit)}
               className='space-y-4'
             >
@@ -102,7 +102,7 @@ export function UnitsActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='role-form' disabled={isSubmitting}>
+          <Button type='submit' form='unit-form' disabled={isSubmitting}>
             {isEdit ? 'Update Satuan' : 'Tambah Satuan'}
           </Button>
         </DialogFooter>

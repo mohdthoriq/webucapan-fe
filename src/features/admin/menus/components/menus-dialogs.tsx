@@ -1,26 +1,26 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteTaxMutation } from '../hooks/use-taxes-mutation'
-import { TaxesActionDialog } from './taxes-action-dialog'
-import { TaxesDetailDialog } from './taxes-detail-dialog'
-import { useTaxes } from './taxes-provider'
+import { useDeleteMenuMutation } from '../hooks/use-menus-mutation'
+import { MenusActionDialog } from './menus-action-dialog'
+import { MenusDetailDialog } from './menus-detail-dialog'
+import { useMenus } from './menus-provider'
 
-export function TaxesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useTaxes()
+export function MenusDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = useMenus()
 
-  const { mutate: deleteTax, isPending } = useDeleteTaxMutation()
+  const { mutate: deleteMenu, isPending } = useDeleteMenuMutation()
 
   return (
     <>
-      <TaxesActionDialog
-        key='tax-add'
+      <MenusActionDialog
+        key='menu-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <TaxesActionDialog
-            key={`tax-edit-${currentRow.id}`}
+          <MenusActionDialog
+            key={`menu-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +31,8 @@ export function TaxesDialogs() {
             currentRow={currentRow}
           />
 
-          <TaxesDetailDialog
-            key={`tax-view-${currentRow.id}`}
+          <MenusDetailDialog
+            key={`menu-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function TaxesDialogs() {
           />
 
           <ConfirmDialog
-            key={`tax-delete-${currentRow.id}`}
+            key={`menu-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function TaxesDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteTax({
+              deleteMenu({
                 id: currentRow.id,
               })
               setOpen(null)
@@ -64,15 +64,15 @@ export function TaxesDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus pajak "${currentRow.name}" ?`}
+            title={`Hapus menu "${currentRow.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-                permanen pajak{' '}
+                permanen menu{' '}
                 <span className='text-foreground font-semibold'>
                   "{currentRow.name}"
                 </span>{' '}
-                dari perusahaan Anda.
+                dari Aplikasi Manajerku.
               </>
             }
             confirmText={`${isPending ? 'Deleting...' : 'Delete'}`}

@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { PasswordInput } from '@/components/forms/password-input'
-import { useUserSettingsForm } from '../hooks/useUserSettingsForm'
+import { useUserSettingsForm } from '../hooks/use-user-settings-form'
 
 export function UserSettingsForm() {
   const { form, onSubmit, isLoading } = useUserSettingsForm()

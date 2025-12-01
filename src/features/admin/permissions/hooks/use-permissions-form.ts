@@ -23,7 +23,7 @@ export function usePermissionsForm({ currentRow }: usePermissionsFormProps) {
       ? {
           name: currentRow?.name,
           description: currentRow?.description,
-          parent_id: currentRow?.parent_id,
+          parent_id: currentRow?.parent?.id,
         }
       : {
           name: '',

@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
+import { useCompanySettingsForm } from '../hooks/use-company-roles-form'
 
 type CompanyRolesActionDialogProps = {
   currentRow?: CompanyRole

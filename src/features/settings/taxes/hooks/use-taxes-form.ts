@@ -7,7 +7,10 @@ import {
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
 } from '../types/taxes.schema'
-import { useCreateTaxMutation, useUpdateTaxMutation } from './useTaxesMutation'
+import {
+  useCreateTaxMutation,
+  useUpdateTaxMutation,
+} from './use-taxes-mutation'
 
 type useTaxesFormProps = {
   currentRow?: Tax
