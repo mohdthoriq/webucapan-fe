@@ -54,8 +54,8 @@ export function PaymentTermsActionDialog({
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Perbarui detail pajak di sini.'
-              : 'Buat pajak baru untuk perusahaan Anda.'}{' '}
+              ? 'Perbarui detail termin di sini.'
+              : 'Buat termin baru untuk perusahaan Anda.'}{' '}
             Klik simpan setelah selesai.
           </DialogDescription>
         </DialogHeader>
@@ -74,7 +74,7 @@ export function PaymentTermsActionDialog({
                     <FormLabel>Nama Termin</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Masukkan nama pajak...'
+                        placeholder='Masukkan nama termin...'
                         autoComplete='off'
                         {...field}
                       />
@@ -89,7 +89,7 @@ export function PaymentTermsActionDialog({
                 name='days'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lama</FormLabel>
+                    <FormLabel>Lama (Hari)</FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Masukkan lama termin pembayaran...'
@@ -103,6 +103,7 @@ export function PaymentTermsActionDialog({
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
+                        endAdornment={'Days'}
                       />
                     </FormControl>
                     <FormMessage />
@@ -118,7 +119,7 @@ export function PaymentTermsActionDialog({
                     <FormLabel>Deskripsi</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Deskripsikan pajak ini...'
+                        placeholder='Deskripsikan termin ini...'
                         className='min-h-[80px]'
                         {...field}
                       />

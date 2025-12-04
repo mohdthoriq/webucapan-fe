@@ -147,6 +147,12 @@ export const settingsTabs = [
         url: '/settings/taxes',
         icon: HandCoins,
       },
+      {
+        title: 'Termin',
+        description: 'Kelola data termin pembayaran',
+        url: '/settings/payment-terms',
+        icon: Calendar,
+      },
     ],
   },
   {
