@@ -28,6 +28,7 @@ import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
+import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
@@ -131,6 +132,12 @@ const AuthenticatedSettingsProfileIndexRoute =
     path: '/settings/profile/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsPaymentTermsIndexRoute =
+  AuthenticatedSettingsPaymentTermsIndexRouteImport.update({
+    id: '/settings/payment-terms/',
+    path: '/settings/payment-terms/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsCompanyIndexRoute =
   AuthenticatedSettingsCompanyIndexRouteImport.update({
     id: '/settings/company/',
@@ -176,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -200,6 +208,7 @@ export interface FileRoutesByTo {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -226,6 +235,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/settings/company-roles'
     | '/settings/company'
+    | '/settings/payment-terms'
     | '/settings/profile'
     | '/settings/taxes'
     | '/settings/units'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/settings/company-roles'
     | '/settings/company'
+    | '/settings/payment-terms'
     | '/settings/profile'
     | '/settings/taxes'
     | '/settings/units'
@@ -301,6 +313,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
+    | '/_authenticated/settings/payment-terms/'
     | '/_authenticated/settings/profile/'
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
@@ -455,6 +468,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsProfileIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/payment-terms/': {
+      id: '/_authenticated/settings/payment-terms/'
+      path: '/settings/payment-terms'
+      fullPath: '/settings/payment-terms'
+      preLoaderRoute: typeof AuthenticatedSettingsPaymentTermsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/company/': {
       id: '/_authenticated/settings/company/'
       path: '/settings/company'
@@ -511,6 +531,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
+  AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
   AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
   AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
@@ -526,6 +547,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:
     AuthenticatedSettingsCompanyIndexRoute,
+  AuthenticatedSettingsPaymentTermsIndexRoute:
+    AuthenticatedSettingsPaymentTermsIndexRoute,
   AuthenticatedSettingsProfileIndexRoute:
     AuthenticatedSettingsProfileIndexRoute,
   AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
