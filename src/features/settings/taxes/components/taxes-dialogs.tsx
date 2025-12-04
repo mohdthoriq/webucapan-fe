@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteTaxMutation } from '../hooks/useTaxesMutation'
+import { useDeleteTaxMutation } from '../hooks/use-taxes-mutation'
 import { TaxesActionDialog } from './taxes-action-dialog'
 import { TaxesDetailDialog } from './taxes-detail-dialog'
 import { useTaxes } from './taxes-provider'
@@ -7,12 +7,12 @@ import { useTaxes } from './taxes-provider'
 export function TaxesDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useTaxes()
 
-  const { mutate: deleteRole, isPending } = useDeleteTaxMutation()
+  const { mutate: deleteTax, isPending } = useDeleteTaxMutation()
 
   return (
     <>
       <TaxesActionDialog
-        key='role-add'
+        key='tax-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
@@ -20,7 +20,7 @@ export function TaxesDialogs() {
       {currentRow && (
         <>
           <TaxesActionDialog
-            key={`role-edit-${currentRow.id}`}
+            key={`tax-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -32,7 +32,7 @@ export function TaxesDialogs() {
           />
 
           <TaxesDetailDialog
-            key={`role-view-${currentRow.id}`}
+            key={`tax-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function TaxesDialogs() {
           />
 
           <ConfirmDialog
-            key={`role-delete-${currentRow.id}`}
+            key={`tax-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function TaxesDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteRole({
+              deleteTax({
                 id: currentRow.id,
               })
               setOpen(null)

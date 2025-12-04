@@ -6,7 +6,7 @@ import {
   userSettingsSchema,
   type UserSettingsFormData,
 } from '../types/user-settings.schema'
-import { useUserSettingsMutation } from './useUserSettingsMutation'
+import { useUserSettingsMutation } from './use-user-settings-mutation'
 
 export function useUserSettingsForm() {
   const user = useAuthStore((state) => state.auth.user)

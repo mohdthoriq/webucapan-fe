@@ -59,7 +59,7 @@ export const settingsTabs = [
       },
       {
         title: 'Pemetaan Akun',
-        description: 'Pemetaan akun CoA untuk transaksi di Kledo',
+        description: 'Pemetaan akun CoA untuk transaksi di Manajerku',
         icon: Database,
       },
       {

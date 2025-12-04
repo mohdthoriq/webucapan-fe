@@ -29,7 +29,7 @@ export function SettingsTabsList({
             tabRefs.current[tab.value] = el
           }}
           className={cn(
-            'data-[state=active]:bg-primary/10 data-[state=active]:text-primary hover:bg-muted h-auto px-4 py-1.5 text-sm font-medium transition-all',
+            'data-[state=active]:bg-sidebar-primary data-[state=active]:text-sidebar-primary-foreground hover:bg-sidebar-accent h-auto px-4 py-1.5 text-sm font-medium transition-all',
             isDesktop ? 'justify-start' : 'h-full min-w-fit justify-start py-4'
           )}
         >

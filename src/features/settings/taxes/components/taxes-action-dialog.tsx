@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useTaxesForm } from '../hooks/useTaxesForm'
+import { useTaxesForm } from '../hooks/use-taxes-form'
 
 type TaxesActionDialogProps = {
   currentRow?: Tax

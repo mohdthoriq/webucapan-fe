@@ -2,11 +2,6 @@ import { LayoutDashboard, Settings } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
-  user: {
-    name: 'amfibiz',
-    email: 'owner@amfibiz.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
   navGroups: [
     {
       title: 'General',

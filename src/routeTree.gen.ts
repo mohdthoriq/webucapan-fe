@@ -21,6 +21,7 @@ import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-pas
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
@@ -29,6 +30,8 @@ import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
+import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
+import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -89,6 +92,11 @@ const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -135,8 +143,21 @@ const AuthenticatedSettingsCompanyRolesIndexRoute =
     path: '/settings/company-roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminPermissionsIndexRoute =
+  AuthenticatedAdminPermissionsIndexRouteImport.update({
+    id: '/permissions/',
+    path: '/permissions/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMenusIndexRoute =
+  AuthenticatedAdminMenusIndexRouteImport.update({
+    id: '/menus/',
+    path: '/menus/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -151,6 +172,8 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
+  '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
@@ -158,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -172,6 +196,8 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
+  '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
@@ -181,6 +207,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
@@ -195,6 +222,8 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
+  '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
@@ -204,6 +233,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -218,6 +248,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/admin/menus'
+    | '/admin/permissions'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/profile'
@@ -225,6 +257,7 @@ export interface FileRouteTypes {
     | '/settings/units'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -239,6 +272,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/admin/menus'
+    | '/admin/permissions'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/profile'
@@ -247,6 +282,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_authenticated'
+    | '/_authenticated/admin'
     | '/(auth)/forgot-password'
     | '/(auth)/login'
     | '/(auth)/register'
@@ -261,6 +297,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/admin/menus/'
+    | '/_authenticated/admin/permissions/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/profile/'
@@ -368,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -424,10 +469,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsCompanyRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/permissions/': {
+      id: '/_authenticated/admin/permissions/'
+      path: '/permissions'
+      fullPath: '/admin/permissions'
+      preLoaderRoute: typeof AuthenticatedAdminPermissionsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/menus/': {
+      id: '/_authenticated/admin/menus/'
+      path: '/menus'
+      fullPath: '/admin/menus'
+      preLoaderRoute: typeof AuthenticatedAdminMenusIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminMenusIndexRoute: typeof AuthenticatedAdminMenusIndexRoute
+  AuthenticatedAdminPermissionsIndexRoute: typeof AuthenticatedAdminPermissionsIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminMenusIndexRoute: AuthenticatedAdminMenusIndexRoute,
+    AuthenticatedAdminPermissionsIndexRoute:
+      AuthenticatedAdminPermissionsIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
@@ -440,6 +517,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,

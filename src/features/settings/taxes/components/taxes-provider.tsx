@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { Tax, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useTaxesQuery } from '../hooks/useTaxesQuery'
+import { useTaxesQuery } from '../hooks/use-taxes-query'
 
 type TaxesDialogType = 'view' | 'edit' | 'add' | 'delete'
 

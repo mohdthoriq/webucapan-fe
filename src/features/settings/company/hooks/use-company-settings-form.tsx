@@ -7,8 +7,8 @@ import {
   companySettingsSchema,
   type CompanySettingsFormData,
 } from '../types/company-settings.schema'
-import { useCompanySettingsMutation } from './useCompanySettingsMutation'
-import { useCompanySettingsQuery } from './useCompanySettingsQuery'
+import { useCompanySettingsMutation } from './use-company-setting-mutation'
+import { useCompanySettingsQuery } from './use-company-settings-query'
 
 export function useCompanySettingsForm() {
   const company = useAuthStore((state) => state.auth.user?.company)

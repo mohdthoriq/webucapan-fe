@@ -115,7 +115,7 @@ export function TaxesTable({ search, navigate }: DataTableProps) {
                       key={header.id}
                       colSpan={header.colSpan}
                       className={cn(
-                        'bg-primary/5 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
+                        'bg-secondary group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                         header.column.columnDef.meta?.className,
                         header.column.columnDef.meta?.thClassName
                       )}

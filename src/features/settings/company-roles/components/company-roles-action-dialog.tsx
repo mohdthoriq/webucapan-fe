@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useCompanySettingsForm } from '../hooks/useCompanyRolesForm'
+import { useCompanySettingsForm } from '../hooks/use-company-roles-form'
 
 type CompanyRolesActionDialogProps = {
   currentRow?: CompanyRole
@@ -54,7 +54,6 @@ export function CompanyRolesActionDialog({
             {isEdit
               ? 'Perbarui detail peran di sini.'
               : 'Buat peran baru untuk organisasi Anda.'}
-            Klik simpan jika sudah selesai.
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>

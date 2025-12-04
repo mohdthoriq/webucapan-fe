@@ -1,0 +1,113 @@
+'use client'
+
+import { type Permission } from '@/types'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { usePermissionsForm } from '../hooks/use-permissions-form'
+
+type PermissionsActionDialogProps = {
+  currentRow?: Permission
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export function PermissionsActionDialog({
+  currentRow,
+  open,
+  onOpenChange,
+}: PermissionsActionDialogProps) {
+  const isEdit = !!currentRow
+
+  const { form, onSubmit, isSubmitting } = usePermissionsForm({
+    currentRow,
+  })
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(state) => {
+        onOpenChange(state)
+        form.reset()
+      }}
+    >
+      <DialogContent className='sm:max-w-lg'>
+        <DialogHeader className='text-start'>
+          <DialogTitle>
+            {isEdit ? 'Update Permission' : 'Tambah Permission'}
+          </DialogTitle>
+          <DialogDescription>
+            {isEdit
+              ? 'Update permission disini.'
+              : 'Tambah permission baru untuk Aplikasi Manajerku. '}
+          </DialogDescription>
+        </DialogHeader>
+        <div className='py-4'>
+          <Form {...form}>
+            <form
+              id='role-form'
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-4'
+            >
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nama Permission</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan nama permission...'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deskripsi</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder='Masukkan deskripsi permission...'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </div>
+        <DialogFooter>
+          <Button type='submit' form='role-form' disabled={isSubmitting}>
+            {isEdit ? 'Update Permission' : 'Tambah Permission'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}

@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteCompanyRoleMutation } from '../hooks/useCompanyRolesMutation'
+import { useDeleteCompanyRoleMutation } from '../hooks/use-company-roles-mutation'
 import { CompanyRolesActionDialog } from './company-roles-action-dialog'
 import { CompanyRolesDetailDialog } from './company-roles-detail-dialog'
 import { useCompanyRoles } from './company-roles-provider'

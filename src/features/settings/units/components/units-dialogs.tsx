@@ -7,12 +7,12 @@ import { useUnits } from './units-provider'
 export function UnitsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUnits()
 
-  const { mutate: deleteRole, isPending } = useDeleteUnitMutation()
+  const { mutate: deleteUnit, isPending } = useDeleteUnitMutation()
 
   return (
     <>
       <UnitsActionDialog
-        key='role-add'
+        key='unit-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
@@ -20,7 +20,7 @@ export function UnitsDialogs() {
       {currentRow && (
         <>
           <UnitsActionDialog
-            key={`role-edit-${currentRow.id}`}
+            key={`unit-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -32,7 +32,7 @@ export function UnitsDialogs() {
           />
 
           <UnitsDetailDialog
-            key={`role-view-${currentRow.id}`}
+            key={`unit-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function UnitsDialogs() {
           />
 
           <ConfirmDialog
-            key={`role-delete-${currentRow.id}`}
+            key={`unit-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function UnitsDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteRole({
+              deleteUnit({
                 id: currentRow.id,
               })
               setOpen(null)
