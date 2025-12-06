@@ -82,6 +82,33 @@ export function PermissionsActionDialog({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name='position'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Urutan</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan urutan permission...'
+                        autoComplete='off'
+                        onChange={(e) => {
+                          const value = e.target.valueAsNumber
+                          field.onChange(isNaN(value) ? 0 : value)
+                        }}
+                        type='number'
+                        value={field.value || ''}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name='description'
