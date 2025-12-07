@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { usePermissionsForm } from '../hooks/use-permissions-form'
+import { PermissionCombobox } from './permission-combobox'
 
 type PermissionsActionDialogProps = {
   currentRow?: Permission
@@ -102,6 +103,24 @@ export function PermissionsActionDialog({
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='parent_id'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Parent Permission</FormLabel>
+                    <FormControl>
+                      <PermissionCombobox
+                        value={field.value || ''}
+                        onValueChange={field.onChange}
+                        placeholder='Pilih parent permission...'
                       />
                     </FormControl>
                     <FormMessage />

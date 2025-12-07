@@ -13,19 +13,32 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     ),
     cell: ({ row }) => {
       const { name } = row.original
-      return (
-        <div className='px-2'>
-          <LongText className='min-w-sm'>{name}</LongText>
-        </div>
-      )
+      return <div className='px-2'>{name}</div>
     },
     meta: {
       className: cn(
         'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'px-8 ps-2 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
+  },
+  {
+    accessorKey: 'parent',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Parent' />
+    ),
+    cell: ({ row }) => {
+      const { parent } = row.original
+      return (
+        <div className='overflow-hidden px-2'>
+          <LongText className='truncate'>{parent?.name}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'px-8',
+    },
   },
   {
     accessorKey: 'description',
@@ -35,13 +48,13 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='overflow-hidden px-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[700px]',
+      className: 'w-full px-8',
     },
   },
   {
