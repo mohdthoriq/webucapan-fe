@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Unit } from '@/types'
+import type { Contact } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -101,7 +101,7 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
+        searchPlaceholder='Cari kontak...'
         searchKey='name'
       />
       <div className='overflow-hidden rounded-md border'>
@@ -166,7 +166,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Unit> }) {
+function TableRows({ table }: { table: TanstackTable<Contact> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

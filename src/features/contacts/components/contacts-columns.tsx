@@ -29,15 +29,15 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'contact_type',
+    accessorKey: 'type',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tipe Kontak' />
     ),
     cell: ({ row }) => {
-      const { contact_type } = row.original
+      const { type } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{contact_type}</LongText>
+          <LongText className='truncate'>{type.name}</LongText>
         </div>
       )
     },
@@ -46,15 +46,15 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'company_name',
+    accessorKey: 'company',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Perusahaan' />
     ),
     cell: ({ row }) => {
-      const { company_name } = row.original
+      const { company } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{company_name}</LongText>
+          <LongText className='truncate'>{company.name}</LongText>
         </div>
       )
     },

@@ -1,3 +1,5 @@
+import { type Company } from "./company"
+
 export interface Role {
   id: string
   name: string
@@ -5,11 +7,7 @@ export interface Role {
 }
 
 export interface CompanyRole extends Role {
-  company: {
-    id: string
-    name: string
-    address: string
-  }
+  company: Company
   is_default: boolean
   system_role: boolean
   created_at: Date
