@@ -1,3 +1,4 @@
+import Contacts from '@/features/contacts'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/contacts/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/_authenticated/contacts/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/contacts/"!</div>
+  return <Contacts />
 }

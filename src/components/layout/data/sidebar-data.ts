@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Users } from 'lucide-react'
+import { ContactRound, LayoutDashboard, Settings } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -24,7 +24,7 @@ export const sidebarData: SidebarData = {
         {
           title: 'Kontak',
           url: '/contacts',
-          icon: Users,
+          icon: ContactRound,
         },
         {
           title: 'Settings',
