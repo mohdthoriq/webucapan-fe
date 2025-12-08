@@ -4,12 +4,13 @@ export const createMenusSchema = z.object({
   name: z.string(),
   title: z.string(),
   parent_id: z.string(),
-  position: z.number().min(1, { message: 'Posisi minimal 1' }),
+  position: z.number(),
   icon: z.string(),
   url: z.string(),
   permission_id: z.string(),
   is_divider: z.boolean(),
   is_active: z.boolean(),
+  category_id: z.string(),
 })
 
 export type CreateMenusFormData = z.infer<typeof createMenusSchema>
@@ -19,10 +20,11 @@ export const updateMenusSchema = z.object({
   name: z.string(),
   title: z.string(),
   parent_id: z.string(),
-  position: z.number().min(1, { message: 'Posisi minimal 1' }),
+  position: z.number(),
   icon: z.string(),
   url: z.string(),
   permission_id: z.string(),
+  category_id: z.string(),
   is_divider: z.boolean(),
   is_active: z.boolean(),
 })

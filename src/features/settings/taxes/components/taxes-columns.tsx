@@ -28,15 +28,15 @@ export const taxesColumns: ColumnDef<Tax>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'rate',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Deskripsi' />
+      <DataTableColumnHeader column={column} title='Rate' />
     ),
     cell: ({ row }) => {
-      const { description } = row.original
+      const { rate } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{description}</LongText>
+          <LongText className='truncate'>{rate}%</LongText>
         </div>
       )
     },
