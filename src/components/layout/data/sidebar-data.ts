@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings } from 'lucide-react'
+import { LayoutDashboard, Settings, Users } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -21,6 +21,11 @@ export const sidebarData: SidebarData = {
         //   url: '/users',
         //   icon: Users,
         // },
+        {
+          title: 'Kontak',
+          url: '/contacts',
+          icon: Users,
+        },
         {
           title: 'Settings',
           url: '/settings',
