@@ -16,14 +16,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { name } = row.original
       return (
         <div className='px-4'>
-          <LongText className='min-w-sm'>{name}</LongText>
+          <LongText>{name}</LongText>
         </div>
       )
     },
     meta: {
       className: cn(
-        'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'px-8 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'w-full min-w-[250px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+        'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
@@ -42,7 +42,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[150px] px-8',
     },
   },
   {
