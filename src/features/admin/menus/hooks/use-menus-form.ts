@@ -30,6 +30,7 @@ export function useMenusForm({ currentRow }: useMenusFormProps) {
           is_divider: currentRow?.is_divider,
           is_active: currentRow?.is_active,
           permission_id: currentRow?.permission?.id,
+          category_id: currentRow?.category?.id,
         }
       : {
           name: '',
@@ -41,6 +42,7 @@ export function useMenusForm({ currentRow }: useMenusFormProps) {
           is_divider: false,
           is_active: true,
           permission_id: '',
+          category_id: 'a713a65d-44fd-4f63-9708-4f6775e0b79e',
         },
   })
 
@@ -60,6 +62,7 @@ export function useMenusForm({ currentRow }: useMenusFormProps) {
         is_divider: data.is_divider,
         is_active: data.is_active,
         permission_id: data.permission_id,
+        category_id: data.category_id,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()

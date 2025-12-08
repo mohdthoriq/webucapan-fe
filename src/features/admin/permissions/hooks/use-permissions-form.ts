@@ -23,12 +23,14 @@ export function usePermissionsForm({ currentRow }: usePermissionsFormProps) {
       ? {
           name: currentRow?.name,
           description: currentRow?.description,
-          parent_id: currentRow?.parent?.id,
+          parent_id: currentRow?.parent?.id || null,
+          position: currentRow?.position || null,
         }
       : {
           name: '',
           description: '',
-          parent_id: '',
+          parent_id: null,
+          position: null,
         },
   })
 
@@ -39,9 +41,7 @@ export function usePermissionsForm({ currentRow }: usePermissionsFormProps) {
     if (isEdit && currentRow) {
       const updateData: UpdatePermissionFormData = {
         id: currentRow.id,
-        name: data.name,
-        description: data.description,
-        parent_id: data.parent_id,
+        ...data,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()

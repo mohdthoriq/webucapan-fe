@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { usePermissionsForm } from '../hooks/use-permissions-form'
+import { PermissionCombobox } from './permission-combobox'
 
 type PermissionsActionDialogProps = {
   currentRow?: Permission
@@ -82,6 +83,51 @@ export function PermissionsActionDialog({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name='position'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Urutan</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan urutan permission...'
+                        autoComplete='off'
+                        onChange={(e) => {
+                          const value = e.target.valueAsNumber
+                          field.onChange(isNaN(value) ? 0 : value)
+                        }}
+                        type='number'
+                        value={field.value || ''}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='parent_id'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Parent Permission</FormLabel>
+                    <FormControl>
+                      <PermissionCombobox
+                        value={field.value || ''}
+                        onValueChange={field.onChange}
+                        placeholder='Pilih parent permission...'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name='description'
