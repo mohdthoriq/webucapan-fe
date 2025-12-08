@@ -24,25 +24,45 @@ export function ContactsDetailDialog({
         <DialogHeader>
           <DialogTitle>Detail Kontak</DialogTitle>
           <DialogDescription>
-            Detail informasi satuan yang dipilih.
+            Detail informasi kontak yang dipilih.
           </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Satuan
+              Nama Kontak
             </h4>
             <p className='text-sm font-medium'>{currentRow.name}</p>
           </div>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Kode</h4>
-            <p className='text-sm'>{currentRow.code || '-'}</p>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Tipe Kontak
+            </h4>
+            <p className='text-sm'>{currentRow.type.name || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              No. Telepon
+            </h4>
+            <p className='text-sm'>{currentRow.phone || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Email
+            </h4>
+            <p className='text-sm'>{currentRow.email || '-'}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
               Nama Perusahaan
             </h4>
             <p className='text-sm'>{currentRow.company?.name || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Alamat
+            </h4>
+            <p className='text-sm'>{currentRow.address || '-'}</p>
           </div>
         </div>
       </DialogContent>

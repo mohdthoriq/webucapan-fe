@@ -63,7 +63,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'email',
+    id: 'email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
@@ -80,7 +80,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'phone',
+    id: 'phone',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Telepon' />
     ),
@@ -89,6 +89,23 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
           <LongText className='truncate'>{phone}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[250px] px-12',
+    },
+  },
+  {
+    id: 'address',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Alamat' />
+    ),
+    cell: ({ row }) => {
+      const { address } = row.original
+      return (
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{address}</LongText>
         </div>
       )
     },
