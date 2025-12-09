@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useContactsForm } from '../hooks/use-contacts-form'
+import { ContactsCombobox } from './contacts-combobox'
 
 type ContactsActionDialogProps = {
   currentRow?: Contact
@@ -69,10 +70,10 @@ export function ContactsActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Satuan</FormLabel>
+                    <FormLabel>Nama Kontak</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Masukkan nama satuan...'
+                        placeholder='Masukkan nama kontak...'
                         autoComplete='off'
                         {...field}
                       />
@@ -83,13 +84,65 @@ export function ContactsActionDialog({
               />
               <FormField
                 control={form.control}
-                name='code'
+                name='type_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kode</FormLabel>
+                    <FormLabel>Tipe Kontak</FormLabel>
+                    <FormControl>
+                      <ContactsCombobox
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        placeholder='Pilih tipe kontak...'
+                        companyId={currentRow?.company?.id}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='phone'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nomor Telepon</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='contoh:Pcs, Ft, Kg, Ltr, '
+                        placeholder='08123456789'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='email@example.com'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='address'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Alamat</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Jl. Contoh No. 1'
                         autoComplete='off'
                         {...field}
                       />
