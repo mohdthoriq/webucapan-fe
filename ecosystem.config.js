@@ -1,8 +1,8 @@
 module.exports = {
   apps: [{
-    name: 'dev-manajerku-fe',
+    name: 'dev-app-manajerku',
     script: 'pnpm',
-    args: 'preview', // Runs the "preview" script
+    args: 'preview',
     interpreter: 'none'
   }]
 }
