@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   apps: [{
     name: 'dev-app-manajerku',
     script: 'pnpm',
