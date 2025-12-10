@@ -24,7 +24,7 @@ export function useAccountCategoriesForm({ currentRow }: useAccountCategoriesFor
       ? {
           name: currentRow?.name,
           description: currentRow?.description,
-          type_id: currentRow?.type_id?.id ?? '',
+          type_id: currentRow?.type?.id ?? '',
         }
       : {
           name: '',

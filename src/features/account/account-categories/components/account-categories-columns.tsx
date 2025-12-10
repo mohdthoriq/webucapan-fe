@@ -46,15 +46,15 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     },
   },
   {
-    accessorKey: 'type_id',
+    accessorKey: 'type',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tipe Akun' />
     ),
     cell: ({ row }) => {
-      const { type_id } = row.original
+      const { type } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{type_id.name}</LongText>
+          <LongText className='truncate'>{type.name}</LongText>
         </div>
       )
     },

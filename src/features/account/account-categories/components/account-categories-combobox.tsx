@@ -176,19 +176,18 @@ export function AccountCategoriesCombobox({
                           value === accountType.id ? 'opacity-100' : 'opacity-0'
                         )}
                       />
-                      {/* <div className='flex flex-col'>
+                      <div className='flex flex-col'>
                         <span className='font-medium'>{accountType.name}</span>
-                        {accountType.description && (
+                        {accountType.name && (
                           <span className='text-muted-foreground text-xs'>
-                            {contactType.description}
+                            {accountType.name}
                           </span>
                         )}
-                      </div> */}
+                      </div>
                     </CommandItem>
                   ))}
                 </CommandGroup>
 
-                {/* Load more indicator */}
                 {hasMore && (
                   <div className='border-t'>
                     <Button

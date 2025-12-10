@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { useAccountCategoriesForm } from '../hooks/use-account-categories-form'
 import { AccountCategoriesCombobox } from './account-categories-combobox'
+import { Textarea } from '@/components/ui/textarea'
 
 type AccountCategoriesActionDialogProps = {
   currentRow?: AccountCategory
@@ -67,10 +68,28 @@ export function AccountCategoriesActionDialog({
             >
               <FormField
                 control={form.control}
+                name='type_id'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipe Akun</FormLabel>
+                    <FormControl>
+                      <AccountCategoriesCombobox
+                        value={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value)
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Kategori Akun</FormLabel>
+                    <FormLabel>Nama</FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Masukkan nama kategori akun...'
@@ -89,29 +108,10 @@ export function AccountCategoriesActionDialog({
                   <FormItem>
                     <FormLabel>Deskripsi Kategori Akun</FormLabel>
                     <FormControl>
-                      <textarea
-                        id='description'
+                      <Textarea
                         placeholder='Masukkan deskripsi kategori akun...'
                         className='min-h-[100px] resize-none'
                         {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='type_id'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tipe Akun</FormLabel>
-                    <FormControl>
-                      <AccountCategoriesCombobox
-                        value={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value)
-                        }}
                       />
                     </FormControl>
                     <FormMessage />
