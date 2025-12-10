@@ -1,8 +1,8 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
 import { useDeleteContactMutation } from '../hooks/use-contacts-mutation'
-import { ContactsActionDialog } from './contacts-action-dialog'
-import { ContactsDetailDialog } from './contacts-detail-dialog'
-import { useContacts } from './contacts-provider'
+import { ContactsActionDialog } from './account-types-action-dialog'
+import { ContactsDetailDialog } from './account-types-detail-dialog'
+import { useContacts } from './account-types-provider'
 
 export function ContactsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useContacts()

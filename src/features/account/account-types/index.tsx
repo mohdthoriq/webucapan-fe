@@ -2,16 +2,16 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ContactsDialogs } from './components/contacts-dialogs'
-import { ContactsProvider, useContacts } from './components/contacts-provider'
-import { ContactsTable } from './components/contacts-table'
+import { AccountTypesDialogs } from './components/account-types-dialogs'
+import { AccountTypesProvider, useAccountTypes } from './components/account-types-provider'
+import { AccountTypesTable } from './components/account-types-table'
 
-const route = getRouteApi('/_authenticated/contacts/')
+const route = getRouteApi('/_authenticated/account/account-types/')
 
-function ContactsContent() {
+function AccountTypesContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useContacts()
+  const { setOpen } = useAccountTypes()
 
   return (
     <Card>
@@ -19,10 +19,10 @@ function ContactsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Kontak
+              Pengaturan Tipe Akun
             </h2>
             <p className='text-muted-foreground'>
-              Kelola Kontak di Perusahaan Anda.
+              Kelola Tipe Akun di Perusahaan Anda.
             </p>
           </div>
           <div className='flex'>
@@ -31,21 +31,21 @@ function ContactsContent() {
             </Button>
             <Button onClick={() => setOpen('add')}>
               <Plus className='mr-2 h-4 w-4' />
-              Tambah Kontak
+              Tambah Tipe Akun
             </Button>
           </div>
         </div>
         <hr />
       </CardHeader>
       <CardContent>
-        <ContactsTable search={search} navigate={navigate} />
-        <ContactsDialogs />
+        <AccountTypesTable search={search} navigate={navigate} />
+        <AccountTypesDialogs />
       </CardContent>
     </Card>
   )
 }
 
-function Contacts() {
+function AccountTypes() {
   const search = route.useSearch() as Record<string, string>
 
   // Extract pagination parameters from URL search
@@ -55,9 +55,9 @@ function Contacts() {
 
   return (
     <ContactsProvider paginationParams={{ page, limit, name }}>
-      <ContactsContent />
+      <AccountTypesContent />
     </ContactsProvider>
   )
 }
 
-export default Contacts
+export default AccountTypes

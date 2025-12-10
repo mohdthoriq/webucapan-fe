@@ -1,12 +1,9 @@
 import type { Company } from './company'
+import type { GlobalResponse } from '../api/global-response'
 
-export interface PaymentTerm {
-  id: string
-  created_at: Date
-  updated_at: Date
-
+export interface PaymentTerm extends GlobalResponse {
   name: string
   days: number
-  description?: string
+  description?: string  
   company: Company
 }

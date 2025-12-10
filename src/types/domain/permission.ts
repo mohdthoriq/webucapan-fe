@@ -1,10 +1,9 @@
-export interface Permission {
-  id: string
+import type { GlobalResponse } from "../api/global-response"
+
+export interface Permission extends GlobalResponse {
   name: string
   description: string
   parent: Permission | null
   position: number
   is_parent?: boolean
-  created_at: Date
-  updated_at: Date
 }

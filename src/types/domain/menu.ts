@@ -1,13 +1,8 @@
 import type { MenuCategory } from './menu_category'
 import type { Permission } from './permission'
+import type { GlobalResponse } from '../api/global-response'
 
-export interface Menu {
-  // Base
-  id: string
-  created_at: Date
-  updated_at: Date
-
-  // Attributes
+export interface Menu extends GlobalResponse {
   title: string
   name: string
   icon: string

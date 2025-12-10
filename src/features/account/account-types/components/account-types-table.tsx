@@ -25,8 +25,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { contactsColumns } from './contacts-columns'
-import { useContacts } from './contacts-provider'
+import { accountTypesColumns } from './account-types-columns'
+import { useAccountTypes } from './account-types-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -34,14 +34,16 @@ type DataTableProps = {
 }
 
 export function ContactsTable({ search, navigate }: DataTableProps) {
-  const { contactsData, pagination: serverPagination, isLoading } = useContacts()
+  const {
+    accountTypesData,
+    pagination: serverPagination,
+    isLoading,
+  } = useAccountTypes()
 
-  // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
-  // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
     onColumnFiltersChange,
@@ -54,15 +56,14 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      // name per-column text filter
       { columnId: 'name', searchKey: 'name', type: 'string' },
     ],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: contactsData,
-    columns: contactsColumns,
+    data: accountTypesData,
+    columns: accountTypesColumns,
     state: {
       sorting,
       pagination,
@@ -95,13 +96,13 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', // Add margin bottom to the table on mobile when the toolbar is visible
+        'max-sm:has-[div[role="toolbar"]]:mb-16', 
         'flex flex-1 flex-col gap-4'
       )}
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari kontak...'
+        searchPlaceholder='Cari tipe akun...'
         searchKey='name'
       />
       <div className='overflow-hidden rounded-md border'>
@@ -140,7 +141,7 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={contactsColumns.length} />
+              <TableEmpty colSpan={accountTypesColumns.length} />
             )}
           </TableBody>
         </Table>

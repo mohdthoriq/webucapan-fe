@@ -6,7 +6,7 @@ import {
   type UpdateContactFormData,
   type DeleteContactFormData,
 } from '@/features/contacts/types/contacts.schema'
-import { useContacts } from '../components/contacts-provider'
+import { useContacts } from '../components/account-types-provider'
 
 export function useCreateContactMutation() {
   const { setOpen } = useContacts()

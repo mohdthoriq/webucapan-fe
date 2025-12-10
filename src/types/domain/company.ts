@@ -1,5 +1,6 @@
-export interface Company {
-  id: string
+import type { GlobalResponse } from "../api/global-response"
+
+export interface Company extends GlobalResponse {
   name: string
   npwp: string
   address: string

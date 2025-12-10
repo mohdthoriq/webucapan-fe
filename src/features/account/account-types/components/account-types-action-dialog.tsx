@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useContactsForm } from '../hooks/use-contacts-form'
-import { ContactsCombobox } from './contacts-combobox'
+import { ContactsCombobox } from './account-types-combobox'
 
 type ContactsActionDialogProps = {
   currentRow?: Contact

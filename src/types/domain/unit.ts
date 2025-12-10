@@ -1,12 +1,8 @@
-export interface Unit {
-  id: string
-  company: {
-    id: string
-    name: string
-    address: string
-  }
+import type { Company } from "./company"
+import type { GlobalResponse } from "../api/global-response"
+
+export interface Unit extends GlobalResponse {
+  company: Company
   name: string
   code: string
-  created_at: Date
-  updated_at: Date
 }

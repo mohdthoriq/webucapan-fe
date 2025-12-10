@@ -1,10 +1,6 @@
-export interface MenuCategory {
-  // Base
-  id: string
-  created_at: Date
-  updated_at: Date
+import type { GlobalResponse } from "../api/global-response"
 
-  // Attributes
+export interface MenuCategory extends GlobalResponse {
   title: string
   name: string
   position: number
