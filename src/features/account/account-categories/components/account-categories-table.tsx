@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Contact } from '@/types'
+import type { AccountCategory } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,16 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { contactsColumns } from './contacts-columns'
-import { useContacts } from './contacts-provider'
+import { accountCategoriesColumns } from './account-categories-columns'
+import { useAccountCategories } from './account-categories-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function ContactsTable({ search, navigate }: DataTableProps) {
-  const { contactsData, pagination: serverPagination, isLoading } = useContacts()
+export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
+  const {
+    accountCategoriesData,
+    pagination: serverPagination,
+    isLoading,
+  } = useAccountCategories()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -54,15 +58,14 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      // name per-column text filter
       { columnId: 'name', searchKey: 'name', type: 'string' },
     ],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: contactsData,
-    columns: contactsColumns,
+    data: accountCategoriesData,
+    columns: accountCategoriesColumns,
     state: {
       sorting,
       pagination,
@@ -95,7 +98,7 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', // Add margin bottom to the table on mobile when the toolbar is visible
+        'max-sm:has-[div[role="toolbar"]]:mb-16', 
         'flex flex-1 flex-col gap-4'
       )}
     >
@@ -140,7 +143,7 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={contactsColumns.length} />
+              <TableEmpty colSpan={accountCategoriesColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -166,7 +169,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Contact> }) {
+function TableRows({ table }: { table: TanstackTable<AccountCategory> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

@@ -1,6 +1,6 @@
 'use client'
 
-import { type Contact } from '@/types'
+import { type AccountCategory } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,23 +19,23 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useContactsForm } from '../hooks/use-contacts-form'
-import { ContactsCombobox } from './contacts-combobox'
+import { useAccountCategoriesForm } from '../hooks/use-account-categories-form'
+import { AccountCategoriesCombobox } from './account-categories-combobox'
 
-type ContactsActionDialogProps = {
-  currentRow?: Contact
+type AccountCategoriesActionDialogProps = {
+  currentRow?: AccountCategory
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ContactsActionDialog({
+export function AccountCategoriesActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: ContactsActionDialogProps) {
+}: AccountCategoriesActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useContactsForm({
+  const { form, onSubmit, isSubmitting } = useAccountCategoriesForm({
     currentRow,
   })
 
@@ -50,12 +50,12 @@ export function ContactsActionDialog({
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
           <DialogTitle>
-            {isEdit ? 'Update Kontak' : 'Tambah Kontak'}
+            {isEdit ? 'Update Kategori Akun' : 'Tambah Kategori Akun'}
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Update kontak disini.'
-              : 'Tambah kontak baru untuk Perusahaan Anda.'}
+              ? 'Update kategori akun disini.'
+              : 'Tambah kategori akun baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
@@ -70,11 +70,29 @@ export function ContactsActionDialog({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Kontak</FormLabel>
+                    <FormLabel>Nama Kategori Akun</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Masukkan nama kontak...'
+                        placeholder='Masukkan nama kategori akun...'
                         autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deskripsi Kategori Akun</FormLabel>
+                    <FormControl>
+                      <textarea
+                        id='description'
+                        placeholder='Masukkan deskripsi kategori akun...'
+                        className='min-h-[100px] resize-none'
                         {...field}
                       />
                     </FormControl>
@@ -87,64 +105,13 @@ export function ContactsActionDialog({
                 name='type_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tipe Kontak</FormLabel>
+                    <FormLabel>Tipe Akun</FormLabel>
                     <FormControl>
-                      <ContactsCombobox
+                      <AccountCategoriesCombobox
                         value={field.value}
-                        onValueChange={field.onChange}
-                        placeholder='Pilih tipe kontak...'
-                        companyId={currentRow?.company?.id}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nomor Telepon</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='08123456789'
-                        autoComplete='off'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='email@example.com'
-                        autoComplete='off'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='address'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Alamat</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Jl. Contoh No. 1'
-                        autoComplete='off'
-                        {...field}
+                        onValueChange={(value) => {
+                          field.onChange(value)
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -156,7 +123,7 @@ export function ContactsActionDialog({
         </div>
         <DialogFooter>
           <Button type='submit' form='contact-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Kontak' : 'Tambah Kontak'}
+            {isEdit ? 'Update Kategori Akun' : 'Tambah Kategori Akun'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Contact } from '@/types'
+import { type AccountCategory } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useContacts } from './contacts-provider'
+import { useAccountCategories } from './account-categories-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Contact>
+  row: Row<AccountCategory>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const contact = row.original
-  const { setOpen, setCurrentRow } = useContacts()
+  const { setOpen, setCurrentRow } = useAccountCategories()
 
   return (
     <>

@@ -1,26 +1,26 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteContactMutation } from '../hooks/use-contacts-mutation'
-import { ContactsActionDialog } from './contacts-action-dialog'
-import { ContactsDetailDialog } from './contacts-detail-dialog'
-import { useContacts } from './contacts-provider'
+import { useDeleteAccountCategoryMutation } from '../hooks/use-account-categories-mutation'
+import { AccountCategoriesActionDialog } from './account-categories-action-dialog'
+import { AccountCategoriesDetailDialog } from './account-categories-detail-dialog'
+import { useAccountCategories } from './account-categories-provider'
 
-export function ContactsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useContacts()
+export function AccountCategoriesDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = useAccountCategories()
 
-  const { mutate: deleteContact, isPending } = useDeleteContactMutation()
+  const { mutate: deleteAccountCategory, isPending } = useDeleteAccountCategoryMutation()
 
   return (
     <>
-      <ContactsActionDialog
-        key='contact-add'
+      <AccountCategoriesActionDialog
+        key='account-categories-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <ContactsActionDialog
-            key={`contact-edit-${currentRow.id}`}
+          <AccountCategoriesActionDialog
+            key={`account-categories-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +31,8 @@ export function ContactsDialogs() {
             currentRow={currentRow}
           />
 
-          <ContactsDetailDialog
-            key={`contact-view-${currentRow.id}`}
+          <AccountCategoriesDetailDialog
+            key={`account-categories-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function ContactsDialogs() {
           />
 
           <ConfirmDialog
-            key={`contact-delete-${currentRow.id}`}
+            key={`account-categories-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function ContactsDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteContact({
+              deleteAccountCategory({
                 id: currentRow.id,
               })
               setOpen(null)
@@ -64,11 +64,11 @@ export function ContactsDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus kontak "${currentRow.name}" ?`}
+            title={`Hapus kategori akun "${currentRow.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-                permanen kontak{' '}
+                permanen kategori akun{' '}
                 <span className='text-foreground font-semibold'>
                   "{currentRow.name}"
                 </span>{' '}

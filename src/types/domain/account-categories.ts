@@ -4,6 +4,6 @@ import type { AccountType } from "./account-types";
 export interface AccountCategory extends GlobalResponse {
     name: string
     description: string
-    type: AccountType
+    type_id: AccountType
     
 }

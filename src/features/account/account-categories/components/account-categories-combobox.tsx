@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import type { ContactType } from '@/types/domain/contact-type'
 import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -19,9 +18,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useContactTypesQuery } from '../hooks/use-contacts-query'
+import { useAccountTypesQuery } from '@/features/account/account-types/hooks/use-account-types-query'
+import type { AccountType } from '@/types'
 
-interface PermissionComboboxProps {
+interface AccountCategoriesComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
@@ -29,24 +29,26 @@ interface PermissionComboboxProps {
   limit?: number
 }
 
-export function ContactsCombobox({
+export function AccountCategoriesCombobox({
   value = '',
   onValueChange,
-  placeholder = 'Select contact types...',
+  placeholder = 'Select account type...',
   companyId,
   limit = 20,
-}: PermissionComboboxProps) {
+}: AccountCategoriesComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [allContactTypes, setAllContactTypes] = React.useState<ContactType[]>([])
-  const [selectedContactType, setSelectedContactType] =
-    React.useState<ContactType | null>(null)
+  const [allAccountTypes, setAllAccountTypes] = React.useState<AccountType[]>(
+    []
+  )
+  const [selectedAccountType, setSelectedAccountType] =
+    React.useState<AccountType | null>(null)
   const [hasMore, setHasMore] = React.useState(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
-  const { data, isLoading, isError, refetch } = useContactTypesQuery({
+  const { data, isLoading, isError, refetch } = useAccountTypesQuery({
     page: currentPage,
     limit,
     name: debouncedSearchTerm || undefined,
@@ -55,24 +57,24 @@ export function ContactsCombobox({
 
   React.useEffect(() => {
     setCurrentPage(1)
-    setAllContactTypes([])
+    setAllAccountTypes([])
     setHasMore(true)
   }, [debouncedSearchTerm, companyId])
 
   React.useEffect(() => {
     if (data?.data) {
       if (currentPage === 1) {
-        setAllContactTypes(data.data)
+        setAllAccountTypes(data.data)
       } else {
-        setAllContactTypes((prev) => {
-          const newContactTypes = data.data.filter(
-            (newContactType) =>
+        setAllAccountTypes((prev) => {
+          const newAccountTypes = data.data.filter(
+            (newAccountType) =>
               !prev.some(
-                (existingContactType) =>
-                  existingContactType.id === newContactType.id
+                (existingAccountType) =>
+                  existingAccountType.id === newAccountType.id
               )
           )
-          return [...prev, ...newContactTypes]
+          return [...prev, ...newAccountTypes]
         })
       }
 
@@ -84,23 +86,23 @@ export function ContactsCombobox({
   }, [data, currentPage])
 
   React.useEffect(() => {
-    if (value && allContactTypes.length > 0) {
-      const contactType = allContactTypes.find((p) => p.id === value)
-      setSelectedContactType(contactType || null)
+    if (value && allAccountTypes.length > 0) {
+      const accountType = allAccountTypes.find((p) => p.id === value)
+      setSelectedAccountType(accountType || null)
     } else {
-      setSelectedContactType(null)
+      setSelectedAccountType(null)
     }
-  }, [value, allContactTypes])
+  }, [value, allAccountTypes])
 
   const handleSearch = (searchValue: string) => {
     setSearchTerm(searchValue)
   }
 
-  const handleSelect = (contactTypeId: string) => {
-    const contactType = allContactTypes.find((p) => p.id === contactTypeId)
-    if (contactType) {
-      setSelectedContactType(contactType)
-      onValueChange?.(contactTypeId)
+  const handleSelect = (accountTypeId: string) => {
+    const accountType = allAccountTypes.find((p) => p.id === accountTypeId)
+    if (accountType) {
+      setSelectedAccountType(accountType)
+      onValueChange?.(accountTypeId)
       setOpen(false)
     }
   }
@@ -111,7 +113,6 @@ export function ContactsCombobox({
     }
   }
 
-  // Reset when closing popover
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen)
     if (!newOpen) {
@@ -128,14 +129,14 @@ export function ContactsCombobox({
           aria-expanded={open}
           className='w-full min-w-[300px] justify-between'
         >
-          {selectedContactType ? selectedContactType.name : placeholder}
+          {selectedAccountType ? selectedAccountType.name : placeholder}
           <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-full min-w-[300px] p-0'>
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder='Search contact types...'
+            placeholder='Search account types...'
             value={searchTerm}
             onValueChange={handleSearch}
           />
@@ -151,38 +152,38 @@ export function ContactsCombobox({
               <CommandEmpty>
                 <div className='flex flex-col items-center py-4'>
                   <span className='text-muted-foreground mb-2 text-sm'>
-                    Failed to load contact types
+                    Failed to load account types
                   </span>
                   <Button variant='outline' size='sm' onClick={() => refetch()}>
                     Retry
                   </Button>
                 </div>
               </CommandEmpty>
-            ) : allContactTypes.length === 0 ? (
-              <CommandEmpty>No contact types found.</CommandEmpty>
+            ) : allAccountTypes.length === 0 ? (
+              <CommandEmpty>No account types found.</CommandEmpty>
             ) : (
               <>
                 <CommandGroup>
-                  {allContactTypes.map((contactType) => (
+                  {allAccountTypes.map((accountType) => (
                     <CommandItem
-                      key={contactType.id}
-                      value={contactType.id}
-                      onSelect={() => handleSelect(contactType.id)}
+                      key={accountType.id}
+                      value={accountType.id}
+                      onSelect={() => handleSelect(accountType.id)}
                     >
                       <CheckIcon
                         className={cn(
                           'mr-2 h-4 w-4',
-                          value === contactType.id ? 'opacity-100' : 'opacity-0'
+                          value === accountType.id ? 'opacity-100' : 'opacity-0'
                         )}
                       />
-                      <div className='flex flex-col'>
-                        <span className='font-medium'>{contactType.name}</span>
-                        {contactType.description && (
+                      {/* <div className='flex flex-col'>
+                        <span className='font-medium'>{accountType.name}</span>
+                        {accountType.description && (
                           <span className='text-muted-foreground text-xs'>
                             {contactType.description}
                           </span>
                         )}
-                      </div>
+                      </div> */}
                     </CommandItem>
                   ))}
                 </CommandGroup>
