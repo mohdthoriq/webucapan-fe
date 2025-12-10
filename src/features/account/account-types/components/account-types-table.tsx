@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Contact } from '@/types'
+import type { AccountType } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -33,7 +33,7 @@ type DataTableProps = {
   navigate: NavigateFn
 }
 
-export function ContactsTable({ search, navigate }: DataTableProps) {
+export function AccountTypesTable({ search, navigate }: DataTableProps) {
   const {
     accountTypesData,
     pagination: serverPagination,
@@ -167,7 +167,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Contact> }) {
+function TableRows({ table }: { table: TanstackTable<AccountType> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

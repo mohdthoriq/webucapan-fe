@@ -1,9 +1,7 @@
+import AccountTypes from '@/features/account/account-types'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/account/account-types/')({
-  component: RouteComponent,
+  component: AccountTypes,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_authenticated/account/account-types/"!</div>
-}

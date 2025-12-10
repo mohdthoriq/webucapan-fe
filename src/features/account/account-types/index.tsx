@@ -54,9 +54,9 @@ function AccountTypes() {
   const name = search?.name ? search.name : undefined
 
   return (
-    <ContactsProvider paginationParams={{ page, limit, name }}>
+    <AccountTypesProvider paginationParams={{ page, limit, name }}>
       <AccountTypesContent />
-    </ContactsProvider>
+    </AccountTypesProvider>
   )
 }
 

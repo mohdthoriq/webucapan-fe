@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Contact } from '@/types'
+import { type AccountType } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useContacts } from './account-types-provider'
+import { useAccountTypes } from './account-types-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Contact>
+  row: Row<AccountType>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const contact = row.original
-  const { setOpen, setCurrentRow } = useContacts()
+  const accountType = row.original
+  const { setOpen, setCurrentRow } = useAccountTypes()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${contact?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${accountType?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(contact)
+              setCurrentRow(accountType)
               setOpen('view')
             }}
           >
@@ -44,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(contact)
+              setCurrentRow(accountType)
               setOpen('edit')
             }}
           >
@@ -53,7 +53,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(contact)
+              setCurrentRow(accountType)
               setOpen('delete')
             }}
             className='text-red-500!'

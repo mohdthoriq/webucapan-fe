@@ -19,7 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useContactTypesQuery } from '../hooks/use-contacts-query'
+import { useContactTypesQuery } from '../hooks/use-account-types-query'
 
 interface PermissionComboboxProps {
   value?: string

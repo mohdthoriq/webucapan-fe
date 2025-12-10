@@ -1,4 +1,4 @@
-import { type Contact } from '@/types'
+import { type AccountType } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -7,62 +7,44 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 
-type ContactsDetailDialogProps = {
-  currentRow: Contact
+type AccountTypesDetailDialogProps = {
+  currentRow: AccountType
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ContactsDetailDialog({
+export function AccountTypesDetailDialog({
   currentRow,
   open,
   onOpenChange,
-}: ContactsDetailDialogProps) {
+}: AccountTypesDetailDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Detail Kontak</DialogTitle>
+          <DialogTitle>Detail Tipe Akun</DialogTitle>
           <DialogDescription>
-            Detail informasi kontak yang dipilih.
+            Detail informasi tipe akun yang dipilih.
           </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Kontak
+              Kode Akun
             </h4>
-            <p className='text-sm font-medium'>{currentRow.name}</p>
+            <p className='text-sm font-medium'>{currentRow.code}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Tipe Kontak
+              Nama Tipe Akun
             </h4>
-            <p className='text-sm'>{currentRow.type.name || '-'}</p>
+            <p className='text-sm'>{currentRow.name || '-'}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              No. Telepon
+              Saldo Normal  
             </h4>
-            <p className='text-sm'>{currentRow.phone || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Email
-            </h4>
-            <p className='text-sm'>{currentRow.email || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Perusahaan
-            </h4>
-            <p className='text-sm'>{currentRow.company?.name || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Alamat
-            </h4>
-            <p className='text-sm'>{currentRow.address || '-'}</p>
+            <p className='text-sm'>{currentRow.normal_balance || '-'}</p>
           </div>
         </div>
       </DialogContent>

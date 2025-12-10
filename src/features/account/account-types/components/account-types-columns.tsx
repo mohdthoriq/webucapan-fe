@@ -1,22 +1,21 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Contact } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './account-types-row-actions';
+import { type ColumnDef } from '@tanstack/react-table'
+import { type AccountType } from '@/types'
+import { cn } from '@/lib/utils'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './account-types-row-actions'
 
-
-export const contactsColumns: ColumnDef<Contact>[] = [
+export const accountTypesColumns: ColumnDef<AccountType>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'code',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nama' />
+      <DataTableColumnHeader column={column} title='Kode' />
     ),
     cell: ({ row }) => {
-      const { name } = row.original
+      const { code } = row.original
       return (
         <div className='px-4'>
-          <LongText>{name}</LongText>
+          <LongText>{code}</LongText>
         </div>
       )
     },
@@ -29,15 +28,15 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tipe Kontak' />
+      <DataTableColumnHeader column={column} title='Nama' />
     ),
     cell: ({ row }) => {
-      const { type } = row.original
+      const { name } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{type.name}</LongText>
+          <LongText className='truncate'>{name}</LongText>
         </div>
       )
     },
@@ -46,66 +45,15 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'normal_balance',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Perusahaan' />
+      <DataTableColumnHeader column={column} title='Saldo Normal' />
     ),
     cell: ({ row }) => {
-      const { company } = row.original
+      const { normal_balance } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{company.name}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
-    },
-  },
-  {
-    id: 'email',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email' />
-    ),
-    cell: ({ row }) => {
-      const { email } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{email}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
-    },
-  },
-  {
-    id: 'phone',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Telepon' />
-    ),
-    cell: ({ row }) => {
-      const { phone } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{phone}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
-    },
-  },
-  {
-    id: 'address',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Alamat' />
-    ),
-    cell: ({ row }) => {
-      const { address } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{address}</LongText>
+          <LongText className='truncate'>{normal_balance}</LongText>
         </div>
       )
     },

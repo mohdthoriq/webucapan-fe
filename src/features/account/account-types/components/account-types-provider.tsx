@@ -1,67 +1,67 @@
 import { createContext, useContext, useState } from 'react'
-import type { PaginationMeta, Contact } from '@/types'
+import type { PaginationMeta, AccountType } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useContactsQuery } from '../hooks/use-contacts-query'
+import { useAccountTypesQuery } from '../hooks/use-account-types-query'
 
-type ContactsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type AccountTypesDialogType = 'view' | 'edit' | 'add' | 'delete'
 
-type ContactsContextType = {
-  open: ContactsDialogType | null
-  setOpen: (str: ContactsDialogType | null) => void
-  currentRow: Contact | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<Contact | null>>
-  contactsData: Contact[]
+type AccountTypesContextType = {
+  open: AccountTypesDialogType | null
+  setOpen: (str: AccountTypesDialogType | null) => void
+  currentRow: AccountType | null
+  setCurrentRow: React.Dispatch<React.SetStateAction<AccountType | null>>
+  accountTypesData: AccountType[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const ContactsContext = createContext<ContactsContextType | null>(null)
+const AccountTypesContext = createContext<AccountTypesContextType | null>(null)
 
-export function ContactsProvider({
+export function AccountTypesProvider({
   children,
   paginationParams,
 }: {
   children: React.ReactNode
   paginationParams?: { page?: number; limit?: number; name?: string }
 }) {
-  const [open, setOpen] = useDialogState<ContactsDialogType>(null)
-  const [currentRow, setCurrentRow] = useState<Contact | null>(null)
+  const [open, setOpen] = useDialogState<AccountTypesDialogType>(null)
+  const [currentRow, setCurrentRow] = useState<AccountType | null>(null)
 
   const {
-    data: contactsData,
-    isLoading: isLoadingContacts,
-    isError: isErrorContacts,
-  } = useContactsQuery(paginationParams)
+    data: accountTypesData,
+    isLoading: isLoadingAccountTypes,
+    isError: isErrorAccountTypes,
+  } = useAccountTypesQuery(paginationParams)
 
-  const contactsProviderValues = {
+  const accountTypesProviderValues = {
     open,
     setOpen,
     currentRow,
     setCurrentRow,
-    contactsData: contactsData?.data ?? [],
-    pagination: contactsData?.pagination ?? {
+    accountTypesData: accountTypesData?.data ?? [],
+    pagination: accountTypesData?.pagination ?? {
       page: 1,
       limit: 10,
       total: 0,
       total_pages: 1,
     },
-    isLoading: isLoadingContacts,
-    isError: isErrorContacts,
+    isLoading: isLoadingAccountTypes,
+    isError: isErrorAccountTypes,
     paginationParams,
   }
 
-  return <ContactsContext value={contactsProviderValues}>{children}</ContactsContext>
+  return <AccountTypesContext value={accountTypesProviderValues}>{children}</AccountTypesContext>
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useContacts = () => {
-  const contactsContext = useContext(ContactsContext)
+export const useAccountTypes = () => {
+  const accountTypesContext = useContext(AccountTypesContext)
 
-  if (!contactsContext) {
-    throw new Error('useContacts has to be used within <ContactsProvider>')
+  if (!accountTypesContext) {
+    throw new Error('useAccountTypes has to be used within <AccountTypesProvider>')
   }
 
-  return contactsContext
+  return accountTypesContext
 }
