@@ -21,7 +21,7 @@ export const accountTypesColumns: ColumnDef<AccountType>[] = [
     },
     meta: {
       className: cn(
-        'w-full min-w-[250px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+        'w-full min-w-[150px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
         'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
@@ -30,7 +30,7 @@ export const accountTypesColumns: ColumnDef<AccountType>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nama' />
+      <DataTableColumnHeader column={column} title='Tipe Akun' />
     ),
     cell: ({ row }) => {
       const { name } = row.original
