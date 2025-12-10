@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     tanstackRouter({
@@ -18,5 +17,15 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+
+  server: {
+    allowedHosts: ['app.manajerku.com'],
+  },
+
+  preview: {
+    allowedHosts: ['app.manajerku.com'],
+    port: 4173,
+    host: '0.0.0.0',
   },
 })
