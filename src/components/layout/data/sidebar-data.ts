@@ -1,4 +1,4 @@
-import { ContactRound, LayoutDashboard, Settings } from 'lucide-react'
+import { BuildingIcon, ContactRound, LayoutDashboard, Settings, Wallet, WalletCards, WalletMinimal } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -11,16 +11,6 @@ export const sidebarData: SidebarData = {
           url: '/',
           icon: LayoutDashboard,
         },
-        // {
-        //   title: 'Tasks',
-        //   url: '/tasks',
-        //   icon: ListTodo,
-        // },
-        // {
-        //   title: 'Users',
-        //   url: '/users',
-        //   icon: Users,
-        // },
         {
           title: 'Kontak',
           url: '/contacts',
@@ -31,6 +21,27 @@ export const sidebarData: SidebarData = {
           url: '/settings',
           icon: Settings,
         },
+        {
+          title: 'Akun',
+          icon: BuildingIcon,
+          items: [
+            {
+              title: 'Tipe Akun',
+              url: '/account/account-types',
+              icon: WalletMinimal,
+            },
+            {
+              title: 'Kategori Akun',
+              url: '/account/account-categories',
+              icon:  Wallet,
+            },
+            {
+              title: 'Akun',
+              url: '/account/account',
+              icon: WalletCards,
+            },
+          ],
+        }
       ],
     },
   ],

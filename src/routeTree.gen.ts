@@ -34,6 +34,9 @@ import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
+import { Route as AuthenticatedAccountAccountIndexRouteImport } from './routes/_authenticated/account/account/index'
+import { Route as AuthenticatedAccountAccountTypesIndexRouteImport } from './routes/_authenticated/account/account-types/index'
+import { Route as AuthenticatedAccountAccountCategoriesIndexRouteImport } from './routes/_authenticated/account/account-categories/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -169,6 +172,24 @@ const AuthenticatedAdminMenusIndexRoute =
     path: '/menus/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAccountAccountIndexRoute =
+  AuthenticatedAccountAccountIndexRouteImport.update({
+    id: '/account/account/',
+    path: '/account/account/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAccountAccountTypesIndexRoute =
+  AuthenticatedAccountAccountTypesIndexRouteImport.update({
+    id: '/account/account-types/',
+    path: '/account/account-types/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAccountAccountCategoriesIndexRoute =
+  AuthenticatedAccountAccountCategoriesIndexRouteImport.update({
+    id: '/account/account-categories/',
+    path: '/account/account-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -187,6 +208,9 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/account/account-categories': typeof AuthenticatedAccountAccountCategoriesIndexRoute
+  '/account/account-types': typeof AuthenticatedAccountAccountTypesIndexRoute
+  '/account/account': typeof AuthenticatedAccountAccountIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
@@ -213,6 +237,9 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/account/account-categories': typeof AuthenticatedAccountAccountCategoriesIndexRoute
+  '/account/account-types': typeof AuthenticatedAccountAccountTypesIndexRoute
+  '/account/account': typeof AuthenticatedAccountAccountIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
@@ -241,6 +268,9 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/account/account-categories/': typeof AuthenticatedAccountAccountCategoriesIndexRoute
+  '/_authenticated/account/account-types/': typeof AuthenticatedAccountAccountTypesIndexRoute
+  '/_authenticated/account/account/': typeof AuthenticatedAccountAccountIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
@@ -269,6 +299,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/account/account-categories'
+    | '/account/account-types'
+    | '/account/account'
     | '/admin/menus'
     | '/admin/permissions'
     | '/settings/company-roles'
@@ -295,6 +328,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/account/account-categories'
+    | '/account/account-types'
+    | '/account/account'
     | '/admin/menus'
     | '/admin/permissions'
     | '/settings/company-roles'
@@ -322,6 +358,9 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/account/account-categories/'
+    | '/_authenticated/account/account-types/'
+    | '/_authenticated/account/account/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/settings/company-roles/'
@@ -523,6 +562,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMenusIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/account/account/': {
+      id: '/_authenticated/account/account/'
+      path: '/account/account'
+      fullPath: '/account/account'
+      preLoaderRoute: typeof AuthenticatedAccountAccountIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/account/account-types/': {
+      id: '/_authenticated/account/account-types/'
+      path: '/account/account-types'
+      fullPath: '/account/account-types'
+      preLoaderRoute: typeof AuthenticatedAccountAccountTypesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/account/account-categories/': {
+      id: '/_authenticated/account/account-categories/'
+      path: '/account/account-categories'
+      fullPath: '/account/account-categories'
+      preLoaderRoute: typeof AuthenticatedAccountAccountCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -550,6 +610,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedAccountAccountCategoriesIndexRoute: typeof AuthenticatedAccountAccountCategoriesIndexRoute
+  AuthenticatedAccountAccountTypesIndexRoute: typeof AuthenticatedAccountAccountTypesIndexRoute
+  AuthenticatedAccountAccountIndexRoute: typeof AuthenticatedAccountAccountIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -565,6 +628,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedAccountAccountCategoriesIndexRoute:
+    AuthenticatedAccountAccountCategoriesIndexRoute,
+  AuthenticatedAccountAccountTypesIndexRoute:
+    AuthenticatedAccountAccountTypesIndexRoute,
+  AuthenticatedAccountAccountIndexRoute: AuthenticatedAccountAccountIndexRoute,
   AuthenticatedSettingsCompanyRolesIndexRoute:
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:
