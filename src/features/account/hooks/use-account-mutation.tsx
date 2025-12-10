@@ -1,19 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import {
-  type CreateContactFormData,
-  type UpdateContactFormData,
-  type DeleteContactFormData,
-} from '@/features/contacts/types/contacts.schema'
 import { useAccounts } from '../components/account-provider'
+import type { CreateAccountFormData, DeleteAccountFormData, UpdateAccountFormData } from '../types/account.schema'
 
 export function useCreateAccountMutation() {
   const { setOpen } = useAccounts()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreateContactFormData) => {
+    mutationFn: async (credentials: CreateAccountFormData) => {
       const response = await apiClient.post(`accounts`, credentials)
       return response.data
     },
@@ -38,7 +34,7 @@ export function useUpdateAccountMutation() {
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateContactFormData) => {
+    mutationFn: async (credentials: UpdateAccountFormData) => {
       const response = await apiClient.patch(
         `accounts/${credentials.id}`,
         credentials
@@ -66,7 +62,7 @@ export function useDeleteAccountMutation() {
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: DeleteContactFormData) => {
+    mutationFn: async (credentials: DeleteAccountFormData) => {
       const response = await apiClient.delete(`accounts/${credentials.id}`)
 
       return response.data

@@ -1,23 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Account } from '@/types'
-import { useAuthStore } from '@/stores/auth-store'
-import {
-  type CreateContactFormData,
-  type UpdateContactFormData,
-  createContactSchema,
-} from '../types/account.schema'
 import {
   useCreateAccountMutation,
   useUpdateAccountMutation,
 } from './use-account-mutation'
+import { type CreateAccountFormData, createAccountSchema, type UpdateAccountFormData } from '../types/account.schema'
 
 type useAccountsFormProps = {
   currentRow?: Account
 }
 
 export function useAccountsForm({ currentRow }: useAccountsFormProps) {
-  const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
   const form = useForm<CreateAccountFormData>({
@@ -26,34 +20,40 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
       ? {
           name: currentRow?.name,
           type_id: currentRow?.type?.id ?? '',
-          phone: currentRow?.phone,
-          email: currentRow?.email,
-          address: currentRow?.company?.address,
-          company_id: currentRow?.company?.id ?? company?.id ?? '',
+          code: currentRow?.code ?? '',
+          category_id: currentRow?.category?.id ?? '',
+          parent_id: currentRow?.parent?.id ?? '',
+          allow_transaction: currentRow?.allow_transaction ?? false,
+          is_active: currentRow?.is_active ?? true,
+          description: currentRow?.description ?? '',
         }
       : {
-          company_id: company?.id ?? '',
           name: '',
           type_id: '',
-          phone: '',
-          email: '',
-          address: '',
+          code: '',
+          category_id: '',
+          parent_id: '',
+          allow_transaction: false,
+          is_active: true,
+          description: '',
         },
   })
 
-  const createMutation = useCreateContactMutation()
-  const updateMutation = useUpdateContactMutation()
+  const createMutation = useCreateAccountMutation()
+  const updateMutation = useUpdateAccountMutation()
 
-  const onSubmit = async (data: CreateContactFormData) => {
+  const onSubmit = async (data: CreateAccountFormData) => {
     if (isEdit && currentRow) {
-      const updateData: UpdateContactFormData = {
+      const updateData: UpdateAccountFormData = {
         id: currentRow.id,
         name: data.name,
         type_id: data.type_id,
-        phone: data.phone,
-        email: data.email,
-        address: data.address,
-        company_id: data.company_id,
+        code: data.code,
+        category_id: data.category_id,
+        parent_id: data.parent_id,
+        allow_transaction: data.allow_transaction,
+        is_active: data.is_active,
+        description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()

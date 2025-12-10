@@ -6,7 +6,7 @@ import { AccountsDialogs } from './components/account-dialogs'
 import { AccountsProvider, useAccounts } from './components/account-provider'
 import { AccountsTable } from './components/account-table'
 
-const route = getRouteApi('/_authenticated/account/account/')
+const route = getRouteApi('/_authenticated/account/')
 
 function AccountContent() {
   const search = route.useSearch() as Record<string, string>

@@ -1,4 +1,4 @@
-import { type Contact } from '@/types'
+import { type Account } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -7,62 +7,76 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 
-type ContactsDetailDialogProps = {
-  currentRow: Contact
+type AccountDetailDialogProps = {
+  currentRow: Account
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ContactsDetailDialog({
+export function AccountsDetailDialog({
   currentRow,
   open,
   onOpenChange,
-}: ContactsDetailDialogProps) {
+}: AccountDetailDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Detail Kontak</DialogTitle>
+          <DialogTitle>Detail Akun</DialogTitle>
           <DialogDescription>
-            Detail informasi kontak yang dipilih.
+            Detail informasi akun yang dipilih.
           </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Kontak
+              Kode Akun
             </h4>
-            <p className='text-sm font-medium'>{currentRow.name}</p>
+            <p className='text-sm font-medium'>{currentRow.code}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Tipe Kontak
+              Nama Akun
+            </h4>
+            <p className='text-sm'>{currentRow.name || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Kategori Akun
+            </h4>
+            <p className='text-sm'>{currentRow.category.name || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Tipe Akun
             </h4>
             <p className='text-sm'>{currentRow.type.name || '-'}</p>
           </div>
+          {currentRow.parent && (
+            <div>
+              <h4 className='text-muted-foreground text-sm font-medium'>
+                Parent Akun
+              </h4>
+              <p className='text-sm'>{currentRow.parent?.name || '-'}</p>
+            </div>
+          )}
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              No. Telepon
+              Allow Transaksi
             </h4>
-            <p className='text-sm'>{currentRow.phone || '-'}</p>
+            <p className='text-sm'>
+              {currentRow.allow_transaction ? 'Ya' : 'Tidak'}
+            </p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>Aktif</h4>
+            <p className='text-sm'>{currentRow.is_active ? 'Ya' : 'Tidak'}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Email
+              Deskripsi
             </h4>
-            <p className='text-sm'>{currentRow.email || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Perusahaan
-            </h4>
-            <p className='text-sm'>{currentRow.company?.name || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Alamat
-            </h4>
-            <p className='text-sm'>{currentRow.address || '-'}</p>
+            <p className='text-sm'>{currentRow.description || '-'}</p>
           </div>
         </div>
       </DialogContent>

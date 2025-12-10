@@ -40,12 +40,10 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     isLoading,
   } = useAccounts()
 
-  // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
-  // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
     onColumnFiltersChange,
@@ -58,7 +56,6 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      // name per-column text filter
       { columnId: 'name', searchKey: 'name', type: 'string' },
     ],
   })
@@ -99,7 +96,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', // Add margin bottom to the table on mobile when the toolbar is visible
+        'max-sm:has-[div[role="toolbar"]]:mb-16', 
         'flex flex-1 flex-col gap-4'
       )}
     >

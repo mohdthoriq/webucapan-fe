@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import type { ContactType } from '@/types/domain/contact-type'
 import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -19,9 +18,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useContactTypesQuery } from '../hooks/use-account-query'
+import { useAccountsQuery } from '../hooks/use-account-query'
+import type { Account } from '@/types'
 
-interface PermissionComboboxProps {
+interface AccountsComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
@@ -29,52 +29,50 @@ interface PermissionComboboxProps {
   limit?: number
 }
 
-export function ContactsCombobox({
+export function AccountsCombobox({
   value = '',
   onValueChange,
-  placeholder = 'Select contact types...',
-  companyId,
+  placeholder = 'Select account parent...',
   limit = 20,
-}: PermissionComboboxProps) {
+}: AccountsComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [allContactTypes, setAllContactTypes] = React.useState<ContactType[]>(
+  const [allAccounts, setAllAccounts] = React.useState<Account[]>(
     []
   )
   const [selectedContactType, setSelectedContactType] =
-    React.useState<ContactType | null>(null)
+    React.useState<Account | null>(null)
   const [hasMore, setHasMore] = React.useState(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
-  const { data, isLoading, isError, refetch } = useContactTypesQuery({
+  const { data, isLoading, isError, refetch } = useAccountsQuery({
     page: currentPage,
     limit,
     name: debouncedSearchTerm || undefined,
-    company_id: companyId,
   })
 
   React.useEffect(() => {
     setCurrentPage(1)
-    setAllContactTypes([])
+    setAllAccounts([])
     setHasMore(true)
-  }, [debouncedSearchTerm, companyId])
+  }, [debouncedSearchTerm])
 
   React.useEffect(() => {
     if (data?.data) {
       if (currentPage === 1) {
-        setAllContactTypes(data.data)
+        setAllAccounts(data.data)
       } else {
-        setAllContactTypes((prev) => {
-          const newContactTypes = data.data.filter(
-            (newContactType) =>
+        setAllAccounts((prev) => {
+          const newAccounts = data.data.filter(
+            (newAccount) =>
               !prev.some(
-                (existingContactType) =>
-                  existingContactType.id === newContactType.id
+                (existingAccount) =>
+                  existingAccount.id === newAccount.id
               )
           )
-          return [...prev, ...newContactTypes]
+          return [...prev, ...newAccounts]
         })
       }
 
@@ -86,22 +84,22 @@ export function ContactsCombobox({
   }, [data, currentPage])
 
   React.useEffect(() => {
-    if (value && allContactTypes.length > 0) {
-      const contactType = allContactTypes.find((p) => p.id === value)
-      setSelectedContactType(contactType || null)
+    if (value && allAccounts.length > 0) {
+      const account = allAccounts.find((p) => p.id === value)
+      setSelectedContactType(account || null)
     } else {
       setSelectedContactType(null)
     }
-  }, [value, allContactTypes])
+  }, [value, allAccounts])
 
   const handleSearch = (searchValue: string) => {
     setSearchTerm(searchValue)
   }
 
   const handleSelect = (contactTypeId: string) => {
-    const contactType = allContactTypes.find((p) => p.id === contactTypeId)
-    if (contactType) {
-      setSelectedContactType(contactType)
+    const account = allAccounts.find((p) => p.id === contactTypeId)
+    if (account) {
+      setSelectedContactType(account)
       onValueChange?.(contactTypeId)
       setOpen(false)
     }
@@ -123,7 +121,7 @@ export function ContactsCombobox({
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={data?.data.length === 0}>
         <Button
           variant='outline'
           role='combobox'
@@ -137,7 +135,7 @@ export function ContactsCombobox({
       <PopoverContent className='w-full min-w-[300px] p-0'>
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder='Search contact types...'
+            placeholder='Search account parents...'
             value={searchTerm}
             onValueChange={handleSearch}
           />
@@ -153,35 +151,35 @@ export function ContactsCombobox({
               <CommandEmpty>
                 <div className='flex flex-col items-center py-4'>
                   <span className='text-muted-foreground mb-2 text-sm'>
-                    Failed to load contact types
+                    Failed to load account parents
                   </span>
                   <Button variant='outline' size='sm' onClick={() => refetch()}>
                     Retry
                   </Button>
                 </div>
               </CommandEmpty>
-            ) : allContactTypes.length === 0 ? (
-              <CommandEmpty>No contact types found.</CommandEmpty>
+            ) : allAccounts.length === 0 ? (
+              <CommandEmpty>No account parents found.</CommandEmpty>
             ) : (
               <>
                 <CommandGroup>
-                  {allContactTypes.map((contactType) => (
+                  {allAccounts.map((account) => (
                     <CommandItem
-                      key={contactType.id}
-                      value={contactType.id}
-                      onSelect={() => handleSelect(contactType.id)}
+                      key={account.id}
+                      value={account.id}
+                      onSelect={() => handleSelect(account.id)}
                     >
                       <CheckIcon
                         className={cn(
                           'mr-2 h-4 w-4',
-                          value === contactType.id ? 'opacity-100' : 'opacity-0'
+                          value === account.id ? 'opacity-100' : 'opacity-0'
                         )}
                       />
                       <div className='flex flex-col'>
-                        <span className='font-medium'>{contactType.name}</span>
-                        {contactType.description && (
+                        <span className='font-medium'>{account.name}</span>
+                        {account.description && (
                           <span className='text-muted-foreground text-xs'>
-                            {contactType.description}
+                            {account.description}
                           </span>
                         )}
                       </div>
