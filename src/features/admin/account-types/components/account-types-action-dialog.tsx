@@ -19,6 +19,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { useAccountTypesForm } from '../hooks/use-account-types-form'
 
 type AccountTypesActionDialogProps = {
@@ -107,11 +114,19 @@ export function AccountTypesActionDialog({
                   <FormItem>
                     <FormLabel>Saldo Normal</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder='Masukkan saldo normal...'
-                        autoComplete='off'
-                        {...field}
-                      />
+                      <Select
+                        disabled={isEdit}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className='w-full'>
+                          <SelectValue placeholder='Pilih saldo normal' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value='debit'>Debit</SelectItem>
+                          <SelectItem value='credit'>Kredit</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -121,7 +136,11 @@ export function AccountTypesActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='account-types-form' disabled={isSubmitting}>
+          <Button
+            type='submit'
+            form='account-types-form'
+            disabled={isSubmitting}
+          >
             {isEdit ? 'Update Tipe Akun' : 'Tambah Tipe Akun'}
           </Button>
         </DialogFooter>
