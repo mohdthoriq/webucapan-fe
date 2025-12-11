@@ -199,7 +199,8 @@ export function AccountsActionDialog({
                       <FormControl>
                         <AccountsCombobox
                           placeholder='Pilih parent akun...'
-                          {...field}
+                          value={field.value}
+                          onValueChange={(value) => field.onChange(value)}
                         />
                       </FormControl>
                       <FormMessage />

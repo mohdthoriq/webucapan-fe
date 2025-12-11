@@ -22,10 +22,9 @@ import { useAccountsQuery } from '../hooks/use-account-query'
 import type { Account } from '@/types'
 
 interface AccountsComboboxProps {
-  value?: string
-  onValueChange?: (value: string) => void
+  value?: string | null
+  onValueChange?: (value: string | null) => void
   placeholder?: string
-  companyId?: string
   limit?: number
 }
 

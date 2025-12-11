@@ -52,14 +52,12 @@ export function AccountsDetailDialog({
             </h4>
             <p className='text-sm'>{currentRow.type.name || '-'}</p>
           </div>
-          {currentRow.parent && (
             <div>
               <h4 className='text-muted-foreground text-sm font-medium'>
                 Parent Akun
               </h4>
               <p className='text-sm'>{currentRow.parent?.name || '-'}</p>
             </div>
-          )}
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
               Allow Transaksi
