@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Contact, PaginationApiResponse } from '@/types'
-import type { ContactType } from '@/types/domain/contact-type'
+import type { Contact, PaginationApiResponse, ContactType } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 
