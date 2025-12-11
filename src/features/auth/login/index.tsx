@@ -60,7 +60,7 @@ export function Login() {
         <div className='mx-auto flex w-full max-w-sm flex-col justify-center space-y-6'>
           <div className='flex flex-col space-y-2 text-start'>
             <h2 className='text-primary text-2xl font-semibold tracking-tight'>
-              Selamat Datang di Amfibiz
+              Selamat Datang di Manajerku
             </h2>
             <p className='text-muted-foreground text-sm'>
               Masukkan email dan kata sandi untuk masuk ke akun Anda
