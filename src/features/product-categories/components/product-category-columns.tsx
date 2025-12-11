@@ -22,7 +22,7 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     meta: {
       className: cn(
         'w-full min-w-[150px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'px-8 max-sm:sticky @md/content:table-cell @md/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
@@ -42,8 +42,7 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     },
     meta: {
       className: cn(
-        'w-full min-w-[150px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'w-full min-w-[150px] px-8'
       ),
     },
   },

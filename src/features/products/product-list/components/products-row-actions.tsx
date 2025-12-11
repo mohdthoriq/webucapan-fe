@@ -38,14 +38,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(product)
-              setOpen('view')
-            }}
-          >
-            Detail
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
               navigate({
                 to: '/products/add',
                 search: {},

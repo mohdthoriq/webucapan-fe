@@ -46,40 +46,6 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'purchase_price',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Harga Beli' />
-    ),
-    cell: ({ row }) => {
-      const { purchase_price } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{purchase_price}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
-    },
-  },
-  {
-    accessorKey: 'sale_price',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Harga Jual' />
-    ),
-    cell: ({ row }) => {
-      const { sale_price } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{sale_price}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
-    },
-  },
-  {
     accessorKey: 'unit',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Satuan' />
@@ -93,7 +59,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[150px] px-8',
     },
   },
   {
@@ -110,7 +76,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[150px] px-8',
     },
   },
   {
