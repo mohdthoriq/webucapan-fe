@@ -26,6 +26,7 @@ import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
+import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './routes/_authenticated/product-categories/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
@@ -125,6 +126,12 @@ const AuthenticatedProductsIndexRoute =
     path: '/products/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProductCategoriesIndexRoute =
+  AuthenticatedProductCategoriesIndexRouteImport.update({
+    id: '/product-categories/',
+    path: '/product-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContactsIndexRoute =
   AuthenticatedContactsIndexRouteImport.update({
     id: '/contacts/',
@@ -213,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
@@ -243,6 +251,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
@@ -275,6 +284,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
+  '/_authenticated/product-categories/': typeof AuthenticatedProductCategoriesIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/product-categories'
     | '/products'
     | '/settings'
     | '/tasks'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/product-categories'
     | '/products'
     | '/settings'
     | '/tasks'
@@ -368,6 +380,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/account/'
     | '/_authenticated/contacts/'
+    | '/_authenticated/product-categories/'
     | '/_authenticated/products/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
@@ -519,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/product-categories/': {
+      id: '/_authenticated/product-categories/'
+      path: '/product-categories'
+      fullPath: '/product-categories'
+      preLoaderRoute: typeof AuthenticatedProductCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/contacts/': {
       id: '/_authenticated/contacts/'
       path: '/contacts'
@@ -634,6 +654,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
+  AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
@@ -651,6 +672,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
+  AuthenticatedProductCategoriesIndexRoute:
+    AuthenticatedProductCategoriesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
