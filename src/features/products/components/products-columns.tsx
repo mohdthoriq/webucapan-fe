@@ -1,22 +1,22 @@
 import { type ColumnDef } from '@tanstack/react-table';
-import { type Account } from '@/types';
+import { type Product } from '@/types';
 import { cn } from '@/lib/utils';
 import { DataTableColumnHeader } from '@/components/data-table';
 import { LongText } from '@/components/long-text';
 import { DataTableRowActions } from './products-row-actions';
 
 
-export const accountsColumns: ColumnDef<Account>[] = [
+export const productsColumns: ColumnDef<Product>[] = [
   {
-    accessorKey: 'code',
+    accessorKey: 'sku',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Kode' />
+      <DataTableColumnHeader column={column} title='SKU' />
     ),
     cell: ({ row }) => {
-      const { code } = row.original
+      const { sku } = row.original
       return (
         <div className='px-4'>
-          <LongText>{code}</LongText>
+          <LongText>{sku}</LongText>
         </div>
       )
     },
@@ -46,15 +46,66 @@ export const accountsColumns: ColumnDef<Account>[] = [
     },
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'purchase_price',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Harga Beli' />
+    ),
+    cell: ({ row }) => {
+      const { purchase_price } = row.original
+      return (
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{purchase_price}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[250px] px-12',
+    },
+  },
+  {
+    accessorKey: 'sale_price',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Harga Jual' />
+    ),
+    cell: ({ row }) => {
+      const { sale_price } = row.original
+      return (
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{sale_price}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[250px] px-12',
+    },
+  },
+  {
+    accessorKey: 'unit_id',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Satuan' />
+    ),
+    cell: ({ row }) => {
+      const { unit_id } = row.original
+      return (
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{unit_id.name}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[250px] px-12',
+    },
+  },
+  {
+    accessorKey: 'product_category_id',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kategori' />
     ),
     cell: ({ row }) => {
-      const { category } = row.original
+      const { product_category_id } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{category.name}</LongText>
+          <LongText className='truncate'>{product_category_id.name}</LongText>
         </div>
       )
     },

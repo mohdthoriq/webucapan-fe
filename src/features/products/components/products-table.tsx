@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Account } from '@/types'
+import type { Product } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,20 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { accountsColumns } from './products-columns'
-import { useAccounts } from './products-provider'
+import { productsColumns } from './products-columns'
+import { useProducts } from './products-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function AccountsTable({ search, navigate }: DataTableProps) {
+export function ProductsTable({ search, navigate }: DataTableProps) {
   const {
-    accountsData,
+    productsData,
     pagination: serverPagination,
     isLoading,
-  } = useAccounts()
+  } = useProducts()
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -60,8 +60,8 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: accountsData,
-    columns: accountsColumns,
+    data: productsData,
+    columns: productsColumns,
     state: {
       sorting,
       pagination,
@@ -100,7 +100,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari akun...'
+        searchPlaceholder='Cari produk...'
         searchKey='name'
       />
       <div className='overflow-hidden rounded-md border'>
@@ -139,7 +139,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={accountsColumns.length} />
+              <TableEmpty colSpan={productsColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -165,7 +165,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Account> }) {
+function TableRows({ table }: { table: TanstackTable<Product> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Account } from '@/types'
+import { type Product } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAccounts } from './products-provider'
+import { useProducts } from './products-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Account>
+  row: Row<Product>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const account = row.original
-  const { setOpen, setCurrentRow } = useAccounts()
+  const product = row.original
+  const { setOpen, setCurrentRow } = useProducts()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${account?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${product?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(account)
+              setCurrentRow(product)
               setOpen('view')
             }}
           >
@@ -44,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(account)
+              setCurrentRow(product)
               setOpen('edit')
             }}
           >
@@ -53,7 +53,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(account)
+              setCurrentRow(product)
               setOpen('delete')
             }}
             className='text-red-500!'
