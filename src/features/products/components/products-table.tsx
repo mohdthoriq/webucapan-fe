@@ -25,8 +25,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { accountsColumns } from './account-columns'
-import { useAccounts } from './account-provider'
+import { accountsColumns } from './products-columns'
+import { useAccounts } from './products-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -55,9 +55,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
-    ],
+    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -96,7 +94,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', 
+        'max-sm:has-[div[role="toolbar"]]:mb-16',
         'flex flex-1 flex-col gap-4'
       )}
     >

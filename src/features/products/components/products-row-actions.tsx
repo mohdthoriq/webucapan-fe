@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAccounts } from './account-provider'
+import { useAccounts } from './products-provider'
 
 type DataTableRowActionsProps = {
   row: Row<Account>

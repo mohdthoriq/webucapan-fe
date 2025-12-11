@@ -3,7 +3,7 @@ import { type Account } from '@/types';
 import { cn } from '@/lib/utils';
 import { DataTableColumnHeader } from '@/components/data-table';
 import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './account-row-actions';
+import { DataTableRowActions } from './products-row-actions';
 
 
 export const accountsColumns: ColumnDef<Account>[] = [

@@ -1,19 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Account, PaginationApiResponse } from '@/types'
+import type { PaginationApiResponse, Product } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface AccountQueryParams {
+interface ProductsQueryParams {
   page?: number
   limit?: number
-  company_id?: string
   name?: string
 }
 
-export function useAccountsQuery(params?: AccountQueryParams) {
+export function useProductsQuery(params?: ProductsQueryParams) {
 
   return useQuery({
     queryKey: [
-      'accounts',
+      'products',
       params?.page,
       params?.limit,
       params?.name,
@@ -26,10 +25,10 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/accounts?${queryParams.toString()}`
-        : '/accounts'
+        ? `/products?${queryParams.toString()}`
+        : '/products'
       const response =
-        await apiClient.get<PaginationApiResponse<Account>>(url)
+        await apiClient.get<PaginationApiResponse<Product>>(url)
 
       return response.data ?? []
     },
