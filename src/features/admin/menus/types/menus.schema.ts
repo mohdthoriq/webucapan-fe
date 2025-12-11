@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const createMenusSchema = z.object({
   name: z.string(),
   title: z.string(),
-  parent_id: z.string(),
+  parent_id: z.string().optional().nullable(),
   position: z.number(),
   icon: z.string(),
   url: z.string(),
@@ -19,7 +19,7 @@ export const updateMenusSchema = z.object({
   id: z.uuid(),
   name: z.string(),
   title: z.string(),
-  parent_id: z.string(),
+  parent_id: z.string().optional().nullable(),
   position: z.number(),
   icon: z.string(),
   url: z.string(),

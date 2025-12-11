@@ -15,7 +15,7 @@ export const unitsColumns: ColumnDef<Unit>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{name}</LongText>
+          <LongText>{name}</LongText>
         </div>
       )
     },

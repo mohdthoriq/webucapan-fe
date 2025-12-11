@@ -25,7 +25,7 @@ export function useCompanySettingsForm() {
     defaultValues: {
       name: '',
       address: '',
-      npwp: '',
+      npwp: undefined,
       logo_url: '',
     },
   })
@@ -36,7 +36,7 @@ export function useCompanySettingsForm() {
       form.reset({
         name: companyData.name || '',
         address: companyData.address || '',
-        npwp: companyData.npwp || '',
+        npwp: companyData.npwp || undefined,
         logo_url: companyData.logo_url || '',
       })
     }

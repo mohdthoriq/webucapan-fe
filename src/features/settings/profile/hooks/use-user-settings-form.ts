@@ -18,9 +18,9 @@ export function useUserSettingsForm() {
     defaultValues: {
       full_name: user?.user.full_name || '',
       email: user?.user.email || '',
-      old_password: '',
-      new_password: '',
-      confirm_password: '',
+      old_password: undefined,
+      new_password: undefined,
+      confirm_password: undefined,
     },
   })
 
@@ -31,9 +31,9 @@ export function useUserSettingsForm() {
       toast.success('Profil berhasil diperbarui')
 
       // Reset password fields after successful update
-      form.setValue('old_password', '')
-      form.setValue('new_password', '')
-      form.setValue('confirm_password', '')
+      form.setValue('old_password', undefined)
+      form.setValue('new_password', undefined)
+      form.setValue('confirm_password', undefined)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error updating user settings:', error)

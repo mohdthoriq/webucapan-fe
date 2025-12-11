@@ -8,14 +8,28 @@ export const companySettingsSchema = z.object({
     .optional(),
   npwp: z
     .string()
-    .min(15, { message: 'NPWP minimal 15 karakter' })
-    .max(16, { message: 'NPWP maksimal 16 karakter' })
-    .optional(),
+    .optional()
+    .nullable()
+    .refine(
+      (val) => {
+        if (val === undefined || val === null) return true
+        return val.length >= 15
+      },
+      { message: 'NPWP minimal 15 karakter' }
+    )
+    .refine(
+      (val) => {
+        if (val === undefined || val === null) return true
+        return val.length <= 16
+      },
+      { message: 'NPWP maksimal 16 karakter' }
+    ),
   address: z
     .string()
     .min(5, { message: 'Alamat minimal 5 karakter' })
     .max(500, { message: 'Alamat maksimal 500 karakter' })
-    .optional(),
+    .optional()
+    .nullable(),
   logo_url: z
     .union([
       z.url({ message: 'URL logo tidak valid' }),
