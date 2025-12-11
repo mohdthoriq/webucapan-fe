@@ -3,86 +3,86 @@ import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { useAccounts } from '../components/account-provider'
 import type {
-  CreateAccountFormData,
-  DeleteAccountFormData,
-  UpdateAccountFormData,
+  CreateProductCategoryFormData,
+  DeleteProductCategoryFormData,
+  UpdateProductCategoryFormData,
 } from '../types/product-category.schema'
 
-export function useCreateAccountMutation() {
+export function useCreateProductCategoryMutation() {
   const { setOpen } = useAccounts()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreateAccountFormData) => {
-      const response = await apiClient.post(`accounts`, credentials)
+    mutationFn: async (credentials: CreateProductCategoryFormData) => {
+      const response = await apiClient.post(`product-categories`, credentials)
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'accounts-toast' })
+      toast.loading('Loading...', { id: 'product-categories-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
-      toast.success('Akun berhasil ditambahkan.')
+      toast.dismiss('product-categories-toast')
+      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      toast.success('Kategori produk berhasil ditambahkan.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('accounts-toast')
-      toast.error('Akun gagal ditambahkan.')
+      toast.dismiss('product-categories-toast')
+      toast.error('Kategori produk gagal ditambahkan.')
     },
   })
 }
 
-export function useUpdateAccountMutation() {
+export function useUpdateProductCategoryMutation() {
   const { setOpen } = useAccounts()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateAccountFormData) => {
+    mutationFn: async (credentials: UpdateProductCategoryFormData) => {
       const response = await apiClient.patch(
-        `accounts/${credentials.id}`,
+        `product-categories/${credentials.id}`,
         credentials
       )
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'accounts-toast' })
+      toast.loading('Loading...', { id: 'product-categories-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
-      toast.success('Akun berhasil diubah.')
+      toast.dismiss('product-categories-toast')
+      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      toast.success('Kategori produk berhasil diubah.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('accounts-toast')
-      toast.error('Akun gagal diubah.')
+      toast.dismiss('product-categories-toast')
+      toast.error('Kategori produk gagal diubah.')
     },
   })
 }
 
-export function useDeleteAccountMutation() {
+export function useDeleteProductCategoryMutation() {
   const { setOpen } = useAccounts()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: DeleteAccountFormData) => {
-      const response = await apiClient.delete(`accounts/${credentials.id}`)
+    mutationFn: async (credentials: DeleteProductCategoryFormData) => {
+      const response = await apiClient.delete(`product-categories/${credentials.id}`)
 
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'accounts-toast' })
+      toast.loading('Loading...', { id: 'product-categories-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
-      toast.success('Akun berhasil dihapus.')
+      toast.dismiss('product-categories-toast')
+      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      toast.success('Kategori produk berhasil dihapus.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('accounts-toast')
-      toast.error('Akun gagal dihapus.')
+      toast.dismiss('product-categories-toast')
+      toast.error('Kategori produk gagal dihapus.')
     },
   })
 }

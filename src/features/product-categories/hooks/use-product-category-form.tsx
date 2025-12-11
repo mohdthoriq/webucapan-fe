@@ -1,61 +1,43 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Account } from '@/types'
+import type { ProductCategory } from '@/types'
 import {
-  type CreateAccountFormData,
-  createAccountSchema,
-  type UpdateAccountFormData,
+  type CreateProductCategoryFormData,
+  createProductCategorySchema,
+  type UpdateProductCategoryFormData,
 } from '../types/product-category.schema'
 import {
-  useCreateAccountMutation,
-  useUpdateAccountMutation,
+  useCreateProductCategoryMutation,
+  useUpdateProductCategoryMutation,
 } from './use-product-category-mutation'
 
-type useAccountsFormProps = {
-  currentRow?: Account
+type useProductCategoryFormProps = {
+  currentRow?: ProductCategory
 }
 
-export function useAccountsForm({ currentRow }: useAccountsFormProps) {
+export function useProductCategoryForm({ currentRow }: useProductCategoryFormProps) {
   const isEdit = !!currentRow
-  const form = useForm<CreateAccountFormData>({
-    resolver: zodResolver(createAccountSchema),
+  const form = useForm<CreateProductCategoryFormData>({
+    resolver: zodResolver(createProductCategorySchema),
     defaultValues: isEdit
       ? {
           name: currentRow?.name,
-          type_id: currentRow?.type?.id ?? '',
-          code: currentRow?.code ?? '',
-          category_id: currentRow?.category?.id ?? '',
-          parent_id: currentRow?.parent?.id ?? '',
-          allow_transaction: currentRow?.allow_transaction ?? false,
-          is_active: currentRow?.is_active ?? true,
-          description: currentRow?.description ?? '',
+          description: currentRow?.description,
         }
       : {
           name: '',
-          type_id: '',
-          code: '',
-          category_id: '',
-          parent_id: '',
-          allow_transaction: false,
-          is_active: true,
           description: '',
         },
   })
 
-  const createMutation = useCreateAccountMutation()
-  const updateMutation = useUpdateAccountMutation()
+  const createMutation = useCreateProductCategoryMutation()
+  const updateMutation = useUpdateProductCategoryMutation()
 
-  const onSubmit = async (data: CreateAccountFormData) => {
+  const onSubmit = async (data: CreateProductCategoryFormData) => {
     if (isEdit && currentRow) {
-      const updateData: UpdateAccountFormData = {
+      const updateData: UpdateProductCategoryFormData = {
         id: currentRow.id,
         name: data.name,
-        type_id: data.type_id,
-        code: data.code,
-        category_id: data.category_id,
-        parent_id: data.parent_id,
-        allow_transaction: data.allow_transaction,
-        is_active: data.is_active,
         description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
