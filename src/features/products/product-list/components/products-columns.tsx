@@ -80,15 +80,15 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'unit_id',
+    accessorKey: 'unit',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Satuan' />
     ),
     cell: ({ row }) => {
-      const { unit_id } = row.original
+      const { unit } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{unit_id.name}</LongText>
+          <LongText className='truncate'>{unit.name}</LongText>
         </div>
       )
     },
@@ -97,15 +97,15 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'product_category_id',
+    accessorKey: 'product_category',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kategori' />
     ),
     cell: ({ row }) => {
-      const { product_category_id } = row.original
+      const { product_category } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{product_category_id.name}</LongText>
+          <LongText className='truncate'>{product_category.name}</LongText>
         </div>
       )
     },

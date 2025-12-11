@@ -9,7 +9,7 @@ export interface Product extends GlobalResponse {
     purchase_price: number
     sale_price: number
     taxable: boolean
-    unit_id: Unit
-    product_category_id: ProductCategory
+    unit: Unit
+    product_category: ProductCategory
     images: string[]
 }

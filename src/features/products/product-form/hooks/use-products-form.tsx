@@ -33,8 +33,8 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
           purchase_price: currentRow?.purchase_price ?? 0,
           sale_price: currentRow?.sale_price ?? 0,
           taxable: currentRow?.taxable ?? false,
-          unit_id: currentRow?.unit_id.id ?? '',
-          product_category_id: currentRow?.product_category_id.id ?? '',
+          unit_id: currentRow?.unit.id ?? '',
+          product_category_id: currentRow?.product_category.id ?? '',
           images: currentRow?.images ?? [],
         }
       : {
