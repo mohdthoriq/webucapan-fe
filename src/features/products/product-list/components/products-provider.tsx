@@ -1,9 +1,9 @@
 import { createContext, useContext, useState } from 'react'
 import type { PaginationMeta, Product } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useProductsQuery } from '../hooks/use-products-query'
+import { useProductsQuery } from '../hooks/use-product-list-query'
 
-type ProductsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type ProductsDialogType = 'add' | 'edit' | 'delete' | 'view'
 
 type ProductsContextType = {
   open: ProductsDialogType | null

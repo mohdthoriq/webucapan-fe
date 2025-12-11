@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { ProductsForm } from '@/features/products/product-form'
 
 export const Route = createFileRoute('/_authenticated/products/add/')({
-  component: RouteComponent,
+  component: ProductsForm,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/products/add/"!</div>
-}

@@ -1,4 +1,5 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import { type Product } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,7 @@ type DataTableRowActionsProps = {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const product = row.original
   const { setOpen, setCurrentRow } = useProducts()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -44,8 +46,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(product)
-              setOpen('edit')
+              navigate({
+                to: '/products/add',
+                search: {},
+                state: { currentRow: product } as Record<string, unknown>,
+              })
             }}
           >
             Edit

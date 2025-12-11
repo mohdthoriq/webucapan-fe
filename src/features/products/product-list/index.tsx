@@ -2,8 +2,7 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-// import { ProductsDialogs } from './components/products-dialogs'
-import { ProductsProvider, useProducts } from './components/products-provider'
+import { ProductsProvider } from './components/products-provider'
 import { ProductsTable } from './components/products-table'
 
 const route = getRouteApi('/_authenticated/products/')
@@ -11,7 +10,6 @@ const route = getRouteApi('/_authenticated/products/')
 function ProductsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useProducts()
 
   return (
     <Card>
@@ -29,7 +27,7 @@ function ProductsContent() {
             <Button variant={'link'} onClick={() => history.go(-1)}>
               Kembali
             </Button>
-            <Button onClick={() => setOpen('add')}>
+            <Button onClick={() => navigate({ to: '/products/add' })}>
               <Plus className='mr-2 h-4 w-4' />
               Tambah Produk
             </Button>

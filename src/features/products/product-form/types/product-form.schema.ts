@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import {z} from 'zod'
 
 export const createProductSchema = z.object({
   sku: z.string().min(1, 'SKU harus diisi'),
@@ -28,9 +28,3 @@ export const updateProductSchema = z.object({
 })
 
 export type UpdateProductFormData = z.infer<typeof updateProductSchema>
-
-export const deleteProductSchema = z.object({
-  id: z.uuid(),
-})
-
-export type DeleteProductFormData = z.infer<typeof deleteProductSchema>
