@@ -25,6 +25,7 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
@@ -118,6 +119,12 @@ const AuthenticatedSettingsIndexRoute =
     path: '/settings/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProductsIndexRoute =
+  AuthenticatedProductsIndexRouteImport.update({
+    id: '/products/',
+    path: '/products/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContactsIndexRoute =
   AuthenticatedContactsIndexRouteImport.update({
     id: '/contacts/',
@@ -206,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -266,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
+  '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -297,6 +307,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/products'
     | '/settings'
     | '/tasks'
     | '/users'
@@ -326,6 +337,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/products'
     | '/settings'
     | '/tasks'
     | '/users'
@@ -356,6 +368,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/account/'
     | '/_authenticated/contacts/'
+    | '/_authenticated/products/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
@@ -499,6 +512,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/products/': {
+      id: '/_authenticated/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof AuthenticatedProductsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/contacts/': {
       id: '/_authenticated/contacts/'
       path: '/contacts'
@@ -614,6 +634,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
+  AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
@@ -630,6 +651,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
+  AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
