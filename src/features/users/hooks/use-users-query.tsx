@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, User } from '@/types'
-import apiClient from '@/lib/api-client'
 import { useAuthStore } from '@/stores/auth-store'
+import apiClient from '@/lib/api-client'
 
 interface UsersQueryParams {
   page?: number
@@ -26,14 +26,12 @@ export function useUsersQuery(params?: UsersQueryParams) {
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 
       const url = queryParams.toString()
-        ? `/users/company?${params?.company_id ?? company?.id}&${queryParams.toString()}`
-        : '/users/company'
-      const response =
-        await apiClient.get<PaginationApiResponse<User>>(url)
+        ? `/users/company/${params?.company_id ? params.company_id : company?.id || ''}?${queryParams.toString()}`
+        : `/users/company/${params?.company_id ? params.company_id : company?.id || ''}`
+      const response = await apiClient.get<PaginationApiResponse<User>>(url)
 
       return response.data ?? []
     },
