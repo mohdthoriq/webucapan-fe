@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ProductCategoryProvider, useProductCategories } from './components/product-category-provider'
 import { ProductCategoryTable } from './components/product-category-table'
+import { ProductCategoryDialogs } from './components/product-category-dialogs'
 
 const route = getRouteApi('/_authenticated/product-categories/')
 
@@ -38,7 +39,7 @@ function ProductCategoryContent() {
       </CardHeader>
       <CardContent>
         <ProductCategoryTable search={search} navigate={navigate} />
-        {/* <ProductCategoryDialogs /> */}
+        <ProductCategoryDialogs />
       </CardContent>
     </Card>
   )

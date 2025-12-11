@@ -1,6 +1,6 @@
 'use client'
 
-import { type Account } from '@/types'
+import type { ProductCategory } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,40 +19,25 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-  SelectItem,
-} from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
-import { useAccountTypesQuery } from '@/features/admin/account-types/hooks/use-account-types-query'
-import { useAccountsForm } from '../hooks/use-product-category-form'
-import { AccountsCombobox } from './product-category-combobox'
+import { useProductCategoryForm } from '../hooks/use-product-category-form'
 
-type AccountsActionDialogProps = {
-  currentRow?: Account
+type ProductCategoryActionDialogProps = {
+  currentRow?: ProductCategory
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function AccountsActionDialog({
+export function ProductCategoryActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: AccountsActionDialogProps) {
+}: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useAccountsForm({
+  const { form, onSubmit, isSubmitting } = useProductCategoryForm({
     currentRow,
   })
-
-  const { data: accountTypes } = useAccountTypesQuery()
-
-  const { data: accountCategories } = useAccountCategoriesQuery()
 
   return (
     <Dialog
@@ -62,16 +47,17 @@ export function AccountsActionDialog({
         form.reset()
       }}
     >
-      <DialogContent className='flex max-h-[80vh] flex-col sm:max-w-lg'>
+      <DialogContent className='flex flex-col sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Update Akun' : 'Tambah Akun'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Update Kategori Produk' : 'Tambah Kategori Produk'}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Update akun disini.'
-              : 'Tambah akun baru untuk Perusahaan Anda.'}
+              ? 'Update kategori produk disini.'
+              : 'Tambah kategori produk baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[50vh] w-full px-4'>
           <div className='py-4'>
             <Form {...form}>
               <form
@@ -81,164 +67,17 @@ export function AccountsActionDialog({
               >
                 <FormField
                   control={form.control}
-                  name='code'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kode Akun</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder='Masukkan kode akun...'
-                          autoComplete='off'
-                          type='number'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name='name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nama Akun</FormLabel>
+                      <FormLabel>Nama Kategori Produk</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Masukkan nama akun...'
+                          placeholder='Masukkan nama kategori produk...'
                           autoComplete='off'
+                          type='text'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='type_id'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipe Akun</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          value={field.value}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih tipe akun...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {accountTypes?.data?.map((accountType) => (
-                              <SelectItem
-                                key={accountType.id}
-                                value={accountType.id}
-                              >
-                                {accountType.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='category_id'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kategori Akun</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          value={field.value}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih kategori akun...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {accountCategories?.data?.map((accountCategory) => (
-                              <SelectItem
-                                key={accountCategory.id}
-                                value={accountCategory.id}
-                              >
-                                {accountCategory.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='parent_id'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Parent Akun</FormLabel>
-                      <FormControl>
-                        <AccountsCombobox
-                          placeholder='Pilih parent akun...'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='allow_transaction'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Allow Transaksi</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) =>
-                            field.onChange(value === 'true')
-                          }
-                          value={field.value ? 'true' : 'false'}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih opsi...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value='true'>Ya</SelectItem>
-                            <SelectItem value='false'>Tidak</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='is_active'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Aktif</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) =>
-                            field.onChange(value === 'true')
-                          }
-                          value={field.value ? 'true' : 'false'}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih opsi...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value='true'>Ya</SelectItem>
-                            <SelectItem value='false'>Tidak</SelectItem>
-                          </SelectContent>
-                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -253,8 +92,8 @@ export function AccountsActionDialog({
                       <FormControl>
                         <Textarea
                           placeholder='Masukkan deskripsi...'
-                          className='min-h-[100px] resize-none'
                           {...field}
+                          className='min-h-[100px] resize-none'
                         />
                       </FormControl>
                       <FormMessage />
@@ -264,7 +103,6 @@ export function AccountsActionDialog({
               </form>
             </Form>
           </div>
-        </ScrollArea>
         <DialogFooter>
           <Button type='submit' form='account-form' disabled={isSubmitting}>
             {isEdit ? 'Update Akun' : 'Tambah Akun'}

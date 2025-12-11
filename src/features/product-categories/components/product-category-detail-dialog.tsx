@@ -1,4 +1,4 @@
-import { type Account } from '@/types'
+import { type ProductCategory } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -7,70 +7,32 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 
-type AccountDetailDialogProps = {
-  currentRow: Account
+type ProductCategoryDetailDialogProps = {
+  currentRow: ProductCategory
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function AccountsDetailDialog({
+export function ProductCategoryDetailDialog({
   currentRow,
   open,
   onOpenChange,
-}: AccountDetailDialogProps) {
+}: ProductCategoryDetailDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Detail Akun</DialogTitle>
+          <DialogTitle>Detail Kategori Produk</DialogTitle>
           <DialogDescription>
-            Detail informasi akun yang dipilih.
+            Detail informasi kategori produk yang dipilih.
           </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Kode Akun
+              Nama Kategori Produk
             </h4>
-            <p className='text-sm font-medium'>{currentRow.code}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Nama Akun
-            </h4>
-            <p className='text-sm'>{currentRow.name || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Kategori Akun
-            </h4>
-            <p className='text-sm'>{currentRow.category.name || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Tipe Akun
-            </h4>
-            <p className='text-sm'>{currentRow.type.name || '-'}</p>
-          </div>
-          {currentRow.parent && (
-            <div>
-              <h4 className='text-muted-foreground text-sm font-medium'>
-                Parent Akun
-              </h4>
-              <p className='text-sm'>{currentRow.parent?.name || '-'}</p>
-            </div>
-          )}
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Allow Transaksi
-            </h4>
-            <p className='text-sm'>
-              {currentRow.allow_transaction ? 'Ya' : 'Tidak'}
-            </p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Aktif</h4>
-            <p className='text-sm'>{currentRow.is_active ? 'Ya' : 'Tidak'}</p>
+            <p className='text-sm font-medium'>{currentRow.name}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>

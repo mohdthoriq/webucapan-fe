@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useAccounts } from '../components/product-category-provider'
+import { useProductCategories } from '../components/product-category-provider'
 import type {
   CreateProductCategoryFormData,
   DeleteProductCategoryFormData,
@@ -9,7 +9,7 @@ import type {
 } from '../types/product-category.schema'
 
 export function useCreateProductCategoryMutation() {
-  const { setOpen } = useAccounts()
+  const { setOpen } = useProductCategories()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -34,7 +34,7 @@ export function useCreateProductCategoryMutation() {
 }
 
 export function useUpdateProductCategoryMutation() {
-  const { setOpen } = useAccounts()
+  const { setOpen } = useProductCategories()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -62,7 +62,7 @@ export function useUpdateProductCategoryMutation() {
 }
 
 export function useDeleteProductCategoryMutation() {
-  const { setOpen } = useAccounts()
+  const { setOpen } = useProductCategories()
 
   const queryClient = useQueryClient()
   return useMutation({

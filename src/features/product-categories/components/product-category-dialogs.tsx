@@ -1,26 +1,26 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteAccountMutation } from '../hooks/use-product-category-mutation'
-import { AccountsActionDialog } from './product-category-action-dialog'
-import { AccountsDetailDialog } from './product-category-detail-dialog'
-import { useAccounts } from './product-category-provider'
+import { useDeleteProductCategoryMutation } from '../hooks/use-product-category-mutation'
+import { ProductCategoryActionDialog } from './product-category-action-dialog'
+import { ProductCategoryDetailDialog } from './product-category-detail-dialog'
+import { useProductCategories } from './product-category-provider'
 
-export function AccountsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useAccounts()
+export function ProductCategoryDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = useProductCategories()
 
-  const { mutate: deleteAccount, isPending } = useDeleteAccountMutation()
+  const { mutate: deleteProductCategory, isPending } = useDeleteProductCategoryMutation()
 
   return (
     <>
-      <AccountsActionDialog
-        key='account-add'
+      <ProductCategoryActionDialog
+        key='product-category-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <AccountsActionDialog
-            key={`account-edit-${currentRow.id}`}
+          <ProductCategoryActionDialog
+            key={`product-category-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +31,8 @@ export function AccountsDialogs() {
             currentRow={currentRow}
           />
 
-          <AccountsDetailDialog
-            key={`account-view-${currentRow.id}`}
+          <ProductCategoryDetailDialog
+            key={`product-category-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function AccountsDialogs() {
           />
 
           <ConfirmDialog
-            key={`account-delete-${currentRow.id}`}
+            key={`product-category-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function AccountsDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteAccount({
+              deleteProductCategory({
                 id: currentRow.id,
               })
               setOpen(null)
@@ -64,11 +64,11 @@ export function AccountsDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus akun "${currentRow.name}" ?`}
+            title={`Hapus kategori produk "${currentRow.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-                permanen akun{' '}
+                permanen kategori produk{' '}
                 <span className='text-foreground font-semibold'>
                   "{currentRow.name}"
                 </span>{' '}
