@@ -1,16 +1,14 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, UserPen } from 'lucide-react'
+import { type User } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type User } from '../data/schema'
 import { useUsers } from './users-provider'
 
 type DataTableRowActionsProps = {
@@ -18,7 +16,9 @@ type DataTableRowActionsProps = {
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const user = row.original
   const { setOpen, setCurrentRow } = useUsers()
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -32,30 +32,17 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original)
-              setOpen('edit')
-            }}
-          >
-            Edit
-            <DropdownMenuShortcut>
-              <UserPen size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <div className='text-muted-foreground text-center text-sm'>{`${user?.full_name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(row.original)
-              setOpen('delete')
+              setCurrentRow(user)
+              setOpen('view')
             }}
-            className='text-red-500!'
           >
-            Delete
-            <DropdownMenuShortcut>
-              <Trash2 size={16} />
-            </DropdownMenuShortcut>
+            Detail
           </DropdownMenuItem>
+          
         </DropdownMenuContent>
       </DropdownMenu>
     </>

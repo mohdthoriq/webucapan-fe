@@ -1,35 +1,70 @@
-import React, { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
+import type { PaginationMeta, User } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { type User } from '../data/schema'
+import { useUsersQuery } from '../hooks/use-users-query'
 
-type UsersDialogType = 'invite' | 'add' | 'edit' | 'delete'
+type UsersDialogType = 'view' | 'edit' | 'add' | 'delete'
 
 type UsersContextType = {
   open: UsersDialogType | null
   setOpen: (str: UsersDialogType | null) => void
   currentRow: User | null
   setCurrentRow: React.Dispatch<React.SetStateAction<User | null>>
+  usersData: User[]
+  pagination: PaginationMeta
+  isLoading: boolean
+  isError: boolean
+  paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const UsersContext = React.createContext<UsersContextType | null>(null)
+const UsersContext = createContext<UsersContextType | null>(null)
 
-export function UsersProvider({ children }: { children: React.ReactNode }) {
+export function UsersProvider({
+  children,
+  paginationParams,
+}: {
+  children: React.ReactNode
+  paginationParams?: { page?: number; limit?: number; name?: string }
+}) {
   const [open, setOpen] = useDialogState<UsersDialogType>(null)
   const [currentRow, setCurrentRow] = useState<User | null>(null)
 
+  const {
+    data: usersData,
+    isLoading: isLoadingUsers,
+    isError: isErrorUsers,
+  } = useUsersQuery(paginationParams)
+
+  const usersProviderValues = {
+    open,
+    setOpen,
+    currentRow,
+    setCurrentRow,
+    usersData: usersData?.data ?? [],
+    pagination: usersData?.pagination ?? {
+      page: 1,
+      limit: 10,
+      total: 0,
+      total_pages: 1,
+    },
+    isLoading: isLoadingUsers,
+    isError: isErrorUsers,
+    paginationParams,
+  }
+
   return (
-    <UsersContext value={{ open, setOpen, currentRow, setCurrentRow }}>
+    <UsersContext.Provider value={usersProviderValues}>
       {children}
-    </UsersContext>
+    </UsersContext.Provider>
   )
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUsers = () => {
-  const usersContext = React.useContext(UsersContext)
+  const usersContext = useContext(UsersContext)
 
   if (!usersContext) {
-    throw new Error('useUsers has to be used within <UsersContext>')
+    throw new Error('useUsers has to be used within <UsersProvider>')
   }
 
   return usersContext
