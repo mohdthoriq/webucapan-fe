@@ -2,17 +2,20 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Account } from '@/types'
 import {
+  type CreateAccountFormData,
+  createAccountSchema,
+  type UpdateAccountFormData,
+} from '../types/products.schema'
+import {
   useCreateAccountMutation,
   useUpdateAccountMutation,
 } from './use-account-mutation'
-import { type CreateAccountFormData, createAccountSchema, type UpdateAccountFormData } from '../types/account.schema'
 
 type useAccountsFormProps = {
   currentRow?: Account
 }
 
 export function useAccountsForm({ currentRow }: useAccountsFormProps) {
-
   const isEdit = !!currentRow
   const form = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountSchema),

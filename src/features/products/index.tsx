@@ -2,16 +2,16 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { AccountsDialogs } from './components/account-dialogs'
-import { AccountsProvider, useAccounts } from './components/account-provider'
-import { AccountsTable } from './components/account-table'
+import { ProductsDialogs } from './components/product-dialogs'
+import { ProductsProvider, useProducts } from './components/product-provider'
+import { ProductsTable } from './components/product-table'
 
-const route = getRouteApi('/_authenticated/account/')
+const route = getRouteApi('/_authenticated/products/')
 
-function AccountContent() {
+function ProductsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useAccounts()
+  const { setOpen } = useProducts()
 
   return (
     <Card>
@@ -19,10 +19,10 @@ function AccountContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Akun
+              Pengaturan Produk
             </h2>
             <p className='text-muted-foreground'>
-              Kelola Akun di Perusahaan Anda.
+              Kelola Produk di Perusahaan Anda.
             </p>
           </div>
           <div className='flex'>
@@ -31,21 +31,21 @@ function AccountContent() {
             </Button>
             <Button onClick={() => setOpen('add')}>
               <Plus className='mr-2 h-4 w-4' />
-              Tambah Akun
+              Tambah Produk
             </Button>
           </div>
         </div>
         <hr />
       </CardHeader>
       <CardContent>
-        <AccountsTable search={search} navigate={navigate} />
-        <AccountsDialogs />
+        <ProductsTable search={search} navigate={navigate} />
+        <ProductsDialogs />
       </CardContent>
     </Card>
   )
 }
 
-function Account() {
+function Products() {
   const search = route.useSearch() as Record<string, string>
 
   // Extract pagination parameters from URL search
@@ -54,10 +54,10 @@ function Account() {
   const name = search?.name ? search.name : undefined
 
   return (
-    <AccountsProvider paginationParams={{ page, limit, name }}>
-      <AccountContent />
-    </AccountsProvider>
+    <ProductsProvider paginationParams={{ page, limit, name }}>
+      <ProductsContent />
+    </ProductsProvider>
   )
 }
 
-export default Account
+export default Products
