@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { type Account } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
@@ -52,7 +53,19 @@ export function AccountsActionDialog({
 
   const { data: accountTypes } = useAccountTypesQuery()
 
-  const { data: accountCategories } = useAccountCategoriesQuery()
+  const typeId = form.watch('type_id')
+  const { data: accountCategories } = useAccountCategoriesQuery({
+    type_id: typeId,
+  })
+
+  const prevTypeIdRef = useRef(typeId)
+  // Reset category when type changes
+  useEffect(() => {
+    if (prevTypeIdRef.current !== typeId) {
+      form.setValue('category_id', '')
+      prevTypeIdRef.current = typeId
+    }
+  }, [typeId, form])
 
   return (
     <Dialog
@@ -156,6 +169,7 @@ export function AccountsActionDialog({
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           value={field.value}
+                          disabled={!typeId}
                         >
                           <SelectTrigger className='w-full'>
                             <SelectValue placeholder='Pilih kategori akun...' />

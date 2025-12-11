@@ -11,6 +11,6 @@ export interface Account extends GlobalResponse {
     description: string
     type: AccountType
     category: AccountCategory
-    parent: Account
+    parent: Account | null
     company: Company
 }

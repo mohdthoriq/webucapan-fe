@@ -30,7 +30,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 import { useAccountTypesQuery } from '@/features/admin/account-types/hooks/use-account-types-query'
-import { useAccountsForm } from '../hooks/use-account-form'
+import { useAccountsForm } from '../hooks/use-product-category-form'
 import { AccountsCombobox } from './account-combobox'
 
 type AccountsActionDialogProps = {

@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteAccountMutation } from '../hooks/use-account-mutation'
+import { useDeleteAccountMutation } from '../hooks/use-product-category-mutation'
 import { AccountsActionDialog } from './account-action-dialog'
 import { AccountsDetailDialog } from './account-detail-dialog'
 import { useAccounts } from './account-provider'

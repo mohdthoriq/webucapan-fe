@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import type { PaginationMeta, Account } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useAccountsQuery } from '../hooks/use-account-query'
+import { useAccountsQuery } from '../hooks/use-product-category-query'
 
 type AccountsDialogType = 'view' | 'edit' | 'add' | 'delete'
 
