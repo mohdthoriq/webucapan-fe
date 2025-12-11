@@ -10,7 +10,7 @@ export function useDeleteProductMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: DeleteProductFormData) => {
-      const response = await apiClient.delete(`products/${credentials.id}`)
+      const response = await apiClient.delete(`/products/${credentials.id}`)
 
       return response.data
     },

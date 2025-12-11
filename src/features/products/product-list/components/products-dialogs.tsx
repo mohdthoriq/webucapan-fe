@@ -11,7 +11,7 @@ export function ProductsDialogs() {
     <>
       {currentRow && (
         <ConfirmDialog
-          key={`account-delete-${currentRow.id}`}
+          key={`products-delete-${currentRow.id}`}
           destructive
           open={open === 'delete'}
           onOpenChange={() => {

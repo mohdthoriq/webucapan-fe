@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ProductsProvider } from './components/products-provider'
 import { ProductsTable } from './components/products-table'
+import { ProductsDialogs } from './components/products-dialogs'
 
 const route = getRouteApi('/_authenticated/products/')
 
@@ -37,6 +38,7 @@ function ProductsContent() {
       </CardHeader>
       <CardContent>
         <ProductsTable search={search} navigate={navigate} />
+        <ProductsDialogs />
       </CardContent>
     </Card>
   )

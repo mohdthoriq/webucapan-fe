@@ -53,7 +53,9 @@ export function ProductsProvider({
   }
 
   return (
-    <ProductsContext value={productsProviderValues}>{children}</ProductsContext>
+    <ProductsContext.Provider value={productsProviderValues}>
+      {children}
+    </ProductsContext.Provider>
   )
 }
 
