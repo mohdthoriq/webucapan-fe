@@ -110,6 +110,7 @@ export const settingsTabs = [
         title: 'Pengguna',
         description: 'Undang staff dan kolega untuk menggunakan Manajerku',
         icon: Users,
+        url: `/users`,
       },
       {
         title: 'Peran',

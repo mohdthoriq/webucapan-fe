@@ -20,7 +20,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { useUsersForm } from '../hooks/use-users-form'
 import { RolesCombobox } from './users-role-combobox'
 import { useAuthStore } from '@/stores/auth-store'
@@ -56,7 +55,7 @@ export function UsersActionDialog({
         form.reset()
       }}
     >
-      <DialogContent className='flex max-h-[80vh] flex-col sm:max-w-lg'>
+      <DialogContent className='flex flex-col sm:max-w-lg'>
         <DialogHeader className='text-start'>
           <DialogTitle>{isEdit ? 'Edit Pengguna' : 'Invite Pengguna'}</DialogTitle>
           <DialogDescription>
@@ -65,7 +64,6 @@ export function UsersActionDialog({
               : 'Undang pengguna baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[50vh] w-full px-4'>
           <div className='py-4'>
             <Form {...form}>
               <form
@@ -128,7 +126,6 @@ export function UsersActionDialog({
               </form>
             </Form>
           </div>
-        </ScrollArea>
         <DialogFooter>
           <Button type='submit' form='user-form' disabled={isSubmitting}>
             {isEdit ? 'Simpan' : 'Undang'}
