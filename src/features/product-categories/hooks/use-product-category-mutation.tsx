@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useAccounts } from '../components/account-provider'
+import { useAccounts } from '../components/product-category-provider'
 import type {
   CreateProductCategoryFormData,
   DeleteProductCategoryFormData,
@@ -67,7 +67,9 @@ export function useDeleteProductCategoryMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: DeleteProductCategoryFormData) => {
-      const response = await apiClient.delete(`product-categories/${credentials.id}`)
+      const response = await apiClient.delete(
+        `product-categories/${credentials.id}`
+      )
 
       return response.data
     },

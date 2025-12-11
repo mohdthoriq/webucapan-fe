@@ -2,14 +2,15 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useAccounts } from './components/account-provider'
+import { ProductCategoryProvider, useProductCategories } from './components/product-category-provider'
+import { ProductCategoryTable } from './components/product-category-table'
 
 const route = getRouteApi('/_authenticated/product-categories/')
 
 function ProductCategoryContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useAccounts()
+  const { setOpen } = useProductCategories()
 
   return (
     <Card>
@@ -37,7 +38,7 @@ function ProductCategoryContent() {
       </CardHeader>
       <CardContent>
         <ProductCategoryTable search={search} navigate={navigate} />
-        <ProductCategoryDialogs />
+        {/* <ProductCategoryDialogs /> */}
       </CardContent>
     </Card>
   )

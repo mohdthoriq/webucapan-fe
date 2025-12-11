@@ -1,8 +1,8 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
 import { useDeleteAccountMutation } from '../hooks/use-product-category-mutation'
-import { AccountsActionDialog } from './account-action-dialog'
-import { AccountsDetailDialog } from './account-detail-dialog'
-import { useAccounts } from './account-provider'
+import { AccountsActionDialog } from './product-category-action-dialog'
+import { AccountsDetailDialog } from './product-category-detail-dialog'
+import { useAccounts } from './product-category-provider'
 
 export function AccountsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useAccounts()

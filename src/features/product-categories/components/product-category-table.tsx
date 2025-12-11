@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Account } from '@/types'
+import type { ProductCategory } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,20 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { accountsColumns } from './account-columns'
-import { useAccounts } from './account-provider'
+import { productCategoriesColumns } from './product-category-columns'
+import { useProductCategories } from './product-category-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function AccountsTable({ search, navigate }: DataTableProps) {
+export function ProductCategoryTable({ search, navigate }: DataTableProps) {
   const {
-    accountsData,
+    productCategoriesData,
     pagination: serverPagination,
     isLoading,
-  } = useAccounts()
+  } = useProductCategories()
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -55,15 +55,13 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
-    ],
+    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: accountsData,
-    columns: accountsColumns,
+    data: productCategoriesData,
+    columns: productCategoriesColumns,
     state: {
       sorting,
       pagination,
@@ -96,7 +94,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', 
+        'max-sm:has-[div[role="toolbar"]]:mb-16',
         'flex flex-1 flex-col gap-4'
       )}
     >
@@ -141,7 +139,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={accountsColumns.length} />
+              <TableEmpty colSpan={productCategoriesColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -167,7 +165,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Account> }) {
+function TableRows({ table }: { table: TanstackTable<ProductCategory> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (
