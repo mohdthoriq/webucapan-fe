@@ -39,7 +39,6 @@ function ProductsContent() {
       </CardHeader>
       <CardContent>
         <ProductsTable search={search} navigate={navigate} />
-        {/* <ProductsDialogs /> */}
       </CardContent>
     </Card>
   )

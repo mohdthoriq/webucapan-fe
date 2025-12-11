@@ -1,26 +1,26 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteAccountMutation } from '../hooks/use-products-mutation'
-import { AccountsActionDialog } from './products-action-dialog'
-import { AccountsDetailDialog } from './products-detail-dialog'
-import { useAccounts } from './products-provider'
+import { useDeleteProductMutation } from '../hooks/use-products-mutation'
+import { ProductsActionDialog } from './products-action-dialog'
+import { ProductsDetailDialog } from './products-detail-dialog'
+import { useProducts } from './products-provider'
 
-export function AccountsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useAccounts()
+export function ProductsDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = useProducts()
 
-  const { mutate: deleteAccount, isPending } = useDeleteAccountMutation()
+  const { mutate: deleteProduct, isPending } = useDeleteProductMutation()
 
   return (
     <>
-      <AccountsActionDialog
-        key='account-add'
+      <ProductsActionDialog
+        key='product-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <AccountsActionDialog
-            key={`account-edit-${currentRow.id}`}
+          <ProductsActionDialog
+            key={`product-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +31,8 @@ export function AccountsDialogs() {
             currentRow={currentRow}
           />
 
-          <AccountsDetailDialog
-            key={`account-view-${currentRow.id}`}
+          <ProductsDetailDialog
+            key={`product-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -54,7 +54,7 @@ export function AccountsDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deleteAccount({
+              deleteProduct({
                 id: currentRow.id,
               })
               setOpen(null)
@@ -64,11 +64,11 @@ export function AccountsDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus akun "${currentRow.name}" ?`}
+            title={`Hapus produk "${currentRow.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-                permanen akun{' '}
+                permanen produk{' '}
                 <span className='text-foreground font-semibold'>
                   "{currentRow.name}"
                 </span>{' '}
