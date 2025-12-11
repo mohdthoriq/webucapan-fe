@@ -1,14 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useProducts } from '../../product-list/components/products-provider'
 import type {
   CreateProductFormData,
   UpdateProductFormData,
 } from '../types/product-form.schema'
 
 export function useCreateProductMutation() {
-  const { setOpen } = useProducts()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -23,7 +21,6 @@ export function useCreateProductMutation() {
       toast.dismiss('products-toast')
       await queryClient.invalidateQueries({ queryKey: ['products'] })
       toast.success('Produk berhasil ditambahkan.')
-      setOpen(null)
     },
     onError: () => {
       toast.dismiss('products-toast')
@@ -33,7 +30,6 @@ export function useCreateProductMutation() {
 }
 
 export function useUpdateProductMutation() {
-  const { setOpen } = useProducts()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -51,7 +47,6 @@ export function useUpdateProductMutation() {
       toast.dismiss('products-toast')
       await queryClient.invalidateQueries({ queryKey: ['products'] })
       toast.success('Produk berhasil diperbarui.')
-      setOpen(null)
     },
     onError: () => {
       toast.dismiss('products-toast')
