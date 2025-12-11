@@ -33,7 +33,14 @@ export function CompanySettingsForm() {
               <FormItem>
                 <FormLabel>Nama Perusahaan</FormLabel>
                 <FormControl>
-                  <Input placeholder='Masukkan nama perusahaan' {...field} />
+                  <Input 
+                    placeholder='Masukkan nama perusahaan' 
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
                 </FormControl>
                 <FormDescription>Nama resmi perusahaan Anda</FormDescription>
                 <FormMessage />
@@ -53,7 +60,11 @@ export function CompanySettingsForm() {
                       <Textarea
                         placeholder='Masukkan alamat lengkap perusahaan'
                         className='min-h-[100px] resize-none'
-                        {...field}
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                     </div>
                   </div>
@@ -73,7 +84,14 @@ export function CompanySettingsForm() {
               <FormItem>
                 <FormLabel>NPWP</FormLabel>
                 <FormControl>
-                  <Input placeholder='Masukkan NPWP perusahaan' {...field} />
+                  <Input 
+                    placeholder='Masukkan NPWP perusahaan' 
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
                 </FormControl>
                 <FormDescription>NPWP perusahaan Anda</FormDescription>
                 <FormMessage />
