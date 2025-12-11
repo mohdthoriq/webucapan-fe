@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteProductMutation } from '../../product-form/hooks/use-products-form-mutation'
+import { useDeleteProductMutation } from '../../product-list/hooks/use-product-list-mutation'
 import { useProducts } from './products-provider'
 
 export function ProductsDialogs() {

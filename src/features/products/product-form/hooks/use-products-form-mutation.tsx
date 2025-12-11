@@ -50,12 +50,12 @@ export function useUpdateProductMutation() {
     onSuccess: async (_) => {
       toast.dismiss('products-toast')
       await queryClient.invalidateQueries({ queryKey: ['products'] })
-      toast.success('Produk berhasil diubah.')
+      toast.success('Produk berhasil diperbarui.')
       setOpen(null)
     },
     onError: () => {
       toast.dismiss('products-toast')
-      toast.error('Produk gagal diubah.')
+      toast.error('Produk gagal diperbarui.')
     },
   })
 }
