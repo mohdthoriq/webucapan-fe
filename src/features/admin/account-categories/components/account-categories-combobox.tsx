@@ -33,7 +33,6 @@ export function AccountCategoriesCombobox({
   value = '',
   onValueChange,
   placeholder = 'Select account type...',
-  companyId,
   limit = 20,
 }: AccountCategoriesComboboxProps) {
   const [open, setOpen] = React.useState(false)
@@ -52,14 +51,13 @@ export function AccountCategoriesCombobox({
     page: currentPage,
     limit,
     name: debouncedSearchTerm || undefined,
-    company_id: companyId,
   })
 
   React.useEffect(() => {
     setCurrentPage(1)
     setAllAccountTypes([])
     setHasMore(true)
-  }, [debouncedSearchTerm, companyId])
+  }, [debouncedSearchTerm])
 
   React.useEffect(() => {
     if (data?.data) {

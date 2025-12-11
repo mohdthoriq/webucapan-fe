@@ -1,36 +1,34 @@
 import { useQuery } from '@tanstack/react-query'
-import type { AccountCategory, PaginationApiResponse } from '@/types'
+import type { PaginationApiResponse, Product } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface AccountCategoryQueryParams {
+interface ProductsQueryParams {
   page?: number
   limit?: number
   name?: string
-  type_id?: string
 }
 
-export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
+export function useProductsQuery(params?: ProductsQueryParams) {
+
   return useQuery({
     queryKey: [
-      'account-categories',
+      'products',
       params?.page,
       params?.limit,
       params?.name,
-      params?.type_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        ...(params?.type_id ? { type_id: params.type_id } : {}),
       })
 
       const url = queryParams.toString()
-        ? `/account-categories?${queryParams.toString()}`
-        : '/account-categories'
+        ? `/products?${queryParams.toString()}`
+        : '/products'
       const response =
-        await apiClient.get<PaginationApiResponse<AccountCategory>>(url)
+        await apiClient.get<PaginationApiResponse<Product>>(url)
 
       return response.data ?? []
     },
