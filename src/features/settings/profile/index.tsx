@@ -15,7 +15,7 @@ export function UserSettings() {
               <p className='text-muted-foreground'>Kelola data pribadi Anda.</p>
             </div>
             <div>
-              <Button variant={'link'} onClick={() => history.go(-1)}>
+              <Button variant={'link'} onClick={() => history.back()}>
                 Kembali
               </Button>
             </div>
