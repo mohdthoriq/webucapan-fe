@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteTagMutation } from '../hooks/use-tags-mutation'
+import { useDeleteTagMutation } from '../hooks/use-invoice-form-mutation'
 import { TagsActionDialog } from './tags-action-dialog'
 import { TagsDetailDialog } from './tags-detail-dialog'
 import { useTags } from './tags-provider'

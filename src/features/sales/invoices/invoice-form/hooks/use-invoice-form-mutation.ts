@@ -1,0 +1,58 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
+import { useTags } from '../components/tags-provider'
+import type { CreateInvoiceFormData, UpdateInvoiceFormData } from '../types/invoice-form.schema'
+
+export function useCreateInvoiceMutation() {
+  const { setOpen } = useTags()
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: CreateInvoiceFormData) => {
+      const response = await apiClient.post(`sales-invoices`, credentials)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'invoices-form-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('invoices-form-toast')
+      await queryClient.invalidateQueries({ queryKey: ['invoices'] })
+      toast.success('Invoice berhasil ditambahkan.')
+      setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('invoices-form-toast')
+      toast.error('Invoice gagal ditambahkan.')
+    },
+  })
+}
+
+export function useUpdateInvoiceMutation() {
+  const { setOpen } =   useTags()
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: UpdateInvoiceFormData) => {
+      const response = await apiClient.patch(
+        `sales-invoices/${credentials.id}`,
+        credentials
+      )
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'invoices-form-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('invoices-form-toast')
+      await queryClient.invalidateQueries({ queryKey: ['invoices'] })
+      toast.success('Invoice berhasil diubah.')
+      setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('invoices-form-toast')
+      toast.error('Invoice gagal diubah.')
+    },
+  })
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { PaginationMeta, Tag } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useTagsQuery } from '../hooks/use-tags-query'
+import { useTagsQuery } from '../hooks/use-invoice-form-query'
 
 type TagsDialogType = 'view' | 'edit' | 'add' | 'delete'
 

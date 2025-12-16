@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useTagsForm } from '../hooks/use-tags-form'
+import { useTagsForm } from '../hooks/use-invoice-form'
 
 type TagsActionDialogProps = {
   currentRow?: Tag
