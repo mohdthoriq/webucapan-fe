@@ -16,7 +16,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       const { sku } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{sku}</LongText>
+          <LongText className='min-w-sm'>{sku}</LongText>
         </div>
       )
     },
@@ -42,7 +42,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {
@@ -59,7 +59,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {
@@ -76,7 +76,7 @@ export const productsColumns: ColumnDef<Product>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {

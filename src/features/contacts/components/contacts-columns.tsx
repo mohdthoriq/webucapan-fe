@@ -16,7 +16,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{name}</LongText>
+          <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
     },
@@ -42,7 +42,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {
@@ -59,7 +59,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[250px]',
     },
   },
   {
@@ -70,13 +70,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { email } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden'>
           <LongText className='truncate'>{email}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[250px]',
     },
   },
   {
@@ -87,13 +87,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { phone } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden'>
           <LongText className='truncate'>{phone}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[250px]',
     },
   },
   {
@@ -104,13 +104,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { address } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden'>
           <LongText className='truncate'>{address}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[250px]',
     },
   },
   {
