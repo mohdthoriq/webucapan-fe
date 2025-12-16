@@ -98,7 +98,6 @@ export function AccountsActionDialog({
                         <Input
                           placeholder='Masukkan kode akun...'
                           autoComplete='off'
-                          type='number'
                           {...field}
                         />
                       </FormControl>
