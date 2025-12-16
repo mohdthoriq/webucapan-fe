@@ -40,6 +40,7 @@ import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
+import { Route as AuthenticatedSalesInvoicesAddIndexRouteImport } from './routes/_authenticated/sales/invoices/add/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -213,6 +214,12 @@ const AuthenticatedAdminAccountCategoriesIndexRoute =
     path: '/account-categories/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedSalesInvoicesAddIndexRoute =
+  AuthenticatedSalesInvoicesAddIndexRouteImport.update({
+    id: '/sales/invoices/add/',
+    path: '/sales/invoices/add/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -245,6 +252,7 @@ export interface FileRoutesByFullPath {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/sales/invoices/add': typeof AuthenticatedSalesInvoicesAddIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -277,6 +285,7 @@ export interface FileRoutesByTo {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/sales/invoices/add': typeof AuthenticatedSalesInvoicesAddIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -311,6 +320,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
   '/_authenticated/settings/users/': typeof AuthenticatedSettingsUsersIndexRoute
+  '/_authenticated/sales/invoices/add/': typeof AuthenticatedSalesInvoicesAddIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/sales/invoices/add'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -377,6 +388,7 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/sales/invoices/add'
   id:
     | '__root__'
     | '/_authenticated'
@@ -410,6 +422,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
     | '/_authenticated/settings/users/'
+    | '/_authenticated/sales/invoices/add/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -645,6 +658,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAccountCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/sales/invoices/add/': {
+      id: '/_authenticated/sales/invoices/add/'
+      path: '/sales/invoices/add'
+      fullPath: '/sales/invoices/add'
+      preLoaderRoute: typeof AuthenticatedSalesInvoicesAddIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -686,6 +706,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
   AuthenticatedSettingsUsersIndexRoute: typeof AuthenticatedSettingsUsersIndexRoute
+  AuthenticatedSalesInvoicesAddIndexRoute: typeof AuthenticatedSalesInvoicesAddIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -711,6 +732,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
   AuthenticatedSettingsUsersIndexRoute: AuthenticatedSettingsUsersIndexRoute,
+  AuthenticatedSalesInvoicesAddIndexRoute:
+    AuthenticatedSalesInvoicesAddIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
