@@ -19,7 +19,6 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
     defaultValues: isEdit
       ? {
           name: currentRow?.name,
-          type_id: currentRow?.type?.id ?? '',
           code: currentRow?.code ?? '',
           category_id: currentRow?.category?.id ?? '',
           parent_id: currentRow?.parent?.id ?? null,
@@ -29,7 +28,6 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
         }
       : {
           name: '',
-          type_id: '',
           code: '',
           category_id: '',
           parent_id: null,
@@ -47,7 +45,6 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
       const updateData: UpdateAccountFormData = {
         id: currentRow.id,
         name: data.name,
-        type_id: data.type_id,
         code: data.code,
         category_id: data.category_id,
         parent_id: data.parent_id,

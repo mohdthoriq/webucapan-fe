@@ -3,7 +3,6 @@ import { z } from 'zod'
 export const createAccountSchema = z.object({
   code: z.string().min(1, 'Kode harus diisi'),
   name: z.string().min(1, 'Nama harus diisi'),
-  type_id: z.string().min(1, 'Tipe harus diisi'),
   category_id: z.string().optional(),
   parent_id: z.string().optional().nullable(),
   allow_transaction: z.boolean().optional(),
@@ -16,7 +15,6 @@ export type CreateAccountFormData = z.infer<typeof createAccountSchema>
 export const updateAccountSchema = z.object({
   id: z.uuid(),
   name: z.string().min(1, 'Nama harus diisi'),
-  type_id: z.string().min(1, 'Tipe harus diisi'),
   code: z.string().min(1, 'Kode harus diisi'),
   category_id: z.string().optional(),
   parent_id: z.string().optional().nullable(),
