@@ -60,7 +60,7 @@ export function ProfileDropdown() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant='default'
-            onClick={() => navigate({ to: '/settings' })}
+            onClick={() => navigate({ to: '/settings/profile' })}
           >
             <User className='h-4 w-4' />
             Profil
