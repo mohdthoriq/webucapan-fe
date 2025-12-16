@@ -31,6 +31,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 import { useAccountsForm } from '../hooks/use-account-form'
 import { AccountsCombobox } from './account-combobox'
+import { useEffect, useRef } from 'react'
 
 type AccountsActionDialogProps = {
   currentRow?: Account
@@ -50,6 +51,17 @@ export function AccountsActionDialog({
   })
 
   const { data: accountCategories } = useAccountCategoriesQuery()
+
+  const categoryId = form.watch('category_id')
+
+  const prevCategoryId = useRef(categoryId)
+
+  useEffect(() => {
+    if (prevCategoryId.current !== categoryId) {
+      form.setValue('parent_id', '')
+      prevCategoryId.current = categoryId
+    }
+  }, [categoryId, form])
 
   return (
     <Dialog
@@ -153,6 +165,7 @@ export function AccountsActionDialog({
                           placeholder='Pilih parent akun...'
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
+                          categoryId={categoryId}
                         />
                       </FormControl>
                       <FormMessage />

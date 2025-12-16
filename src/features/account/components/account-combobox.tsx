@@ -26,6 +26,7 @@ interface AccountsComboboxProps {
   onValueChange?: (value: string | null) => void
   placeholder?: string
   limit?: number
+  categoryId?: string
 }
 
 export function AccountsCombobox({
@@ -33,6 +34,7 @@ export function AccountsCombobox({
   onValueChange,
   placeholder = 'Select account parent...',
   limit = 20,
+  categoryId,
 }: AccountsComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -50,6 +52,7 @@ export function AccountsCombobox({
     page: currentPage,
     limit,
     name: debouncedSearchTerm || undefined,
+    category_id: categoryId || undefined,
   })
 
   React.useEffect(() => {
@@ -120,7 +123,7 @@ export function AccountsCombobox({
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild disabled={data?.data.length === 0}>
+      <PopoverTrigger asChild disabled={data?.data.length === 0 || !categoryId}>
         <Button
           variant='outline'
           role='combobox'
