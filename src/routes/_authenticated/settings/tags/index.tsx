@@ -1,9 +1,6 @@
+import Tags from '@/features/settings/tags'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/settings/tags/')({
-  component: RouteComponent,
+  component: Tags,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/settings/tags/"!</div>
-}
