@@ -68,8 +68,8 @@ export function AccountsActionDialog({
               : 'Tambah akun baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[50vh] w-full px-4'>
-          <div className='py-4'>
+        <ScrollArea className='h-[50vh] w-full'>
+          <div className='py-4 px-4'>
             <Form {...form}>
               <form
                 id='account-form'
