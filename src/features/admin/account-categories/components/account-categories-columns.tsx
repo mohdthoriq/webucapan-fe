@@ -16,7 +16,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{name}</LongText>
+          <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
     },
@@ -42,24 +42,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
-    },
-  },
-  {
-    accessorKey: 'type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tipe Akun' />
-    ),
-    cell: ({ row }) => {
-      const { type } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{type.name}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[200px]',
     },
   },
   {

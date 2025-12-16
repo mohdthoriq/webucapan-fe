@@ -40,12 +40,6 @@ export function AccountCategoriesDetailDialog({
             </h4>
             <p className='text-sm'>{currentRow.description || '-'}</p>
           </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Tipe Akun
-            </h4>
-            <p className='text-sm'>{currentRow.type.name || '-'}</p>
-          </div>
         </div>
       </DialogContent>
     </Dialog>

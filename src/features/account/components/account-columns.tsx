@@ -16,7 +16,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       const { code } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{code}</LongText>
+          <LongText className='min-w-sm'>{code}</LongText>
         </div>
       )
     },
@@ -42,7 +42,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {

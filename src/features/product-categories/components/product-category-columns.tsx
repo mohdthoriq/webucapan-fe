@@ -15,7 +15,7 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{name}</LongText>
+          <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
     },
@@ -35,15 +35,13 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='px-4'>
-          <LongText>{description}</LongText>
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{description}</LongText>
         </div>
       )
     },
     meta: {
-      className: cn(
-        'w-full min-w-[150px] px-8'
-      ),
+      className: cn('w-full min-w-[150px]'),
     },
   },
   {

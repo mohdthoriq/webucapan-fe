@@ -16,7 +16,7 @@ export const usersColumns: ColumnDef<User>[] = [
       const { full_name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{full_name}</LongText>
+          <LongText className='min-w-sm'>{full_name}</LongText>
         </div>
       )
     },
@@ -42,7 +42,7 @@ export const usersColumns: ColumnDef<User>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
+      className: 'w-full min-w-[150px]',
     },
   },
   {

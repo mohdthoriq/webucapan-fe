@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAccountCategoriesForm } from '../hooks/use-account-categories-form'
-import { AccountCategoriesCombobox } from './account-categories-combobox'
 import { Textarea } from '@/components/ui/textarea'
 
 type AccountCategoriesActionDialogProps = {
@@ -66,24 +65,6 @@ export function AccountCategoriesActionDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className='space-y-4'
             >
-              <FormField
-                control={form.control}
-                name='type_id'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tipe Akun</FormLabel>
-                    <FormControl>
-                      <AccountCategoriesCombobox
-                        value={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value)
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name='name'

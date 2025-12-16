@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { type Account } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,9 +29,9 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
-import { useAccountTypesQuery } from '@/features/admin/account-types/hooks/use-account-types-query'
 import { useAccountsForm } from '../hooks/use-account-form'
 import { AccountsCombobox } from './account-combobox'
+import { useEffect, useRef } from 'react'
 
 type AccountsActionDialogProps = {
   currentRow?: Account
@@ -51,21 +50,18 @@ export function AccountsActionDialog({
     currentRow,
   })
 
-  const { data: accountTypes } = useAccountTypesQuery()
+  const { data: accountCategories } = useAccountCategoriesQuery()
 
-  const typeId = form.watch('type_id')
-  const { data: accountCategories } = useAccountCategoriesQuery({
-    type_id: typeId,
-  })
+  const categoryId = form.watch('category_id')
 
-  const prevTypeIdRef = useRef(typeId)
-  // Reset category when type changes
+  const prevCategoryId = useRef(categoryId)
+
   useEffect(() => {
-    if (prevTypeIdRef.current !== typeId) {
-      form.setValue('category_id', '')
-      prevTypeIdRef.current = typeId
+    if (prevCategoryId.current !== categoryId) {
+      form.setValue('parent_id', '')
+      prevCategoryId.current = categoryId
     }
-  }, [typeId, form])
+  }, [categoryId, form])
 
   return (
     <Dialog
@@ -84,8 +80,8 @@ export function AccountsActionDialog({
               : 'Tambah akun baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[50vh] w-full px-4'>
-          <div className='py-4'>
+        <ScrollArea className='h-[50vh] w-full'>
+          <div className='py-4 px-4'>
             <Form {...form}>
               <form
                 id='account-form'
@@ -102,7 +98,6 @@ export function AccountsActionDialog({
                         <Input
                           placeholder='Masukkan kode akun...'
                           autoComplete='off'
-                          type='number'
                           {...field}
                         />
                       </FormControl>
@@ -129,37 +124,6 @@ export function AccountsActionDialog({
                 />
                 <FormField
                   control={form.control}
-                  name='type_id'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipe Akun</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          value={field.value}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih tipe akun...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {accountTypes?.data?.map((accountType) => (
-                              <SelectItem
-                                key={accountType.id}
-                                value={accountType.id}
-                              >
-                                {accountType.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name='category_id'
                   render={({ field }) => (
                     <FormItem>
@@ -169,7 +133,6 @@ export function AccountsActionDialog({
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           value={field.value}
-                          disabled={!typeId}
                         >
                           <SelectTrigger className='w-full'>
                             <SelectValue placeholder='Pilih kategori akun...' />
@@ -201,6 +164,7 @@ export function AccountsActionDialog({
                           placeholder='Pilih parent akun...'
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
+                          categoryId={categoryId}
                         />
                       </FormControl>
                       <FormMessage />

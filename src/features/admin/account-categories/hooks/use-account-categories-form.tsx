@@ -24,11 +24,9 @@ export function useAccountCategoriesForm({ currentRow }: useAccountCategoriesFor
       ? {
           name: currentRow?.name,
           description: currentRow?.description,
-          type_id: currentRow?.type?.id ?? '',
         }
       : {
           name: '',
-          type_id: '',
           description: '',
         },
   })
@@ -41,7 +39,6 @@ export function useAccountCategoriesForm({ currentRow }: useAccountCategoriesFor
       const updateData: UpdateAccountCategoryFormData = {
         id: currentRow.id,
         name: data.name,
-        type_id: data.type_id,
         description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
