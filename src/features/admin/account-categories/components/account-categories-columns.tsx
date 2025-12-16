@@ -23,7 +23,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     meta: {
       className: cn(
         'w-full min-w-[250px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'ps-0.5 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'ps-0.5 max-md:sticky @xl/content:table-cell @xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,

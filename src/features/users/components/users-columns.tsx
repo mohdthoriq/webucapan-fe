@@ -15,15 +15,15 @@ export const usersColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const { full_name } = row.original
       return (
-        <div className='px-4'>
-          <LongText>{full_name}</LongText>
+        <div className='px-2'>
+          <LongText className='min-w-36'>{full_name}</LongText>
         </div>
       )
     },
     meta: {
       className: cn(
         'w-full min-w-[150px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'ps-0.5 max-md:sticky @xl/content:table-cell @xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
