@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Tag } from '@/types'
+import type { SalesInvoice } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useTags } from './tags-provider'
+import { useInvoiceLists } from './invoice-list-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Tag>
+  row: Row<SalesInvoice>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const tag = row.original
-  const { setOpen, setCurrentRow } = useTags()
+  const invoice = row.original
+  const { setOpen, setCurrentRow } = useInvoiceLists()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${tag?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${invoice?.invoice_number}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(tag)
+              setCurrentRow(invoice)
               setOpen('view')
             }}
           >
@@ -44,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(tag)
+              setCurrentRow(invoice)
               setOpen('edit')
             }}
           >
@@ -53,7 +53,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(tag)
+              setCurrentRow(invoice)
               setOpen('delete')
             }}
             className='text-red-500!'

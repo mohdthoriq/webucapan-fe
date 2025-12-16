@@ -1,21 +1,21 @@
 import { type ColumnDef } from '@tanstack/react-table'
-import { type Tag } from '@/types'
+import type { SalesInvoice } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './tags-row-actions'
+import { DataTableRowActions } from './invoice-list-row-actions'
 
-export const tagsColumns: ColumnDef<Tag>[] = [
+export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'invoice_number',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nama Tag' />
+      <DataTableColumnHeader column={column} title='No. Invoice' />
     ),
     cell: ({ row }) => {
-      const { name } = row.original
+      const { invoice_number } = row.original
       return (
         <div className='px-2'>
-          <LongText>{name}</LongText>
+          <LongText>{invoice_number}</LongText>
         </div>
       )
     },
@@ -28,15 +28,15 @@ export const tagsColumns: ColumnDef<Tag>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'payment_term_id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Deskripsi' />
+      <DataTableColumnHeader column={column} title='Jatuh Tempo' />
     ),
     cell: ({ row }) => {
-      const { description } = row.original
+      const { payment_term_id } = row.original
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{description}</LongText>
+          <LongText className='truncate'>{payment_term_id.name}</LongText>
         </div>
       )
     },

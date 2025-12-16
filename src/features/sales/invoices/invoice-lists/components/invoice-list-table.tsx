@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Tag } from '@/types'
+import type { SalesInvoice } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,16 +25,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { tagsColumns } from './tags-columns'
-import { useTags } from './tags-provider'
+import { invoiceListsColumns } from './invoice-list-columns'
+import { useInvoiceLists } from './invoice-list-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function TagsTable({ search, navigate }: DataTableProps) {
-  const { tagsData, pagination: serverPagination, isLoading } = useTags()
+export function InvoiceListsTable({ search, navigate }: DataTableProps) {
+  const { invoiceListsData, pagination: serverPagination, isLoading } = useInvoiceLists()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -61,8 +61,8 @@ export function TagsTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: tagsData,
-    columns: tagsColumns,
+    data: invoiceListsData,
+    columns: invoiceListsColumns,
     state: {
       sorting,
       pagination,
@@ -140,7 +140,7 @@ export function TagsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={tagsColumns.length} />
+              <TableEmpty colSpan={invoiceListsColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -166,7 +166,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Tag> }) {
+function TableRows({ table }: { table: TanstackTable<SalesInvoice> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

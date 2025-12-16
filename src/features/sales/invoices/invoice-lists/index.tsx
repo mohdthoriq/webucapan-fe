@@ -2,16 +2,15 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { TagsDialogs } from './components/tags-dialogs'
-import { TagsProvider, useTags } from './components/tags-provider'
-import { TagsTable } from './components/tags-table'
+// import { InvoiceListsDialogs } from './components/invoice-list-dialogs'
+import { InvoiceListsProvider } from './components/invoice-list-provider'
+import { InvoiceListsTable } from './components/invoice-list-table'
 
-const route = getRouteApi('/_authenticated/settings/tags/')
+const route = getRouteApi('/_authenticated/sales/invoices/')
 
-function TagsContent() {
+function InvoiceListsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useTags()
 
   return (
     <Card>
@@ -19,33 +18,33 @@ function TagsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Tag
+              Tagihan Penjualan
             </h2>
             <p className='text-muted-foreground'>
-              Kelola Tag di Perusahaan Anda.
+              Kelola Tagihan Penjualan.
             </p>
           </div>
           <div className='flex'>
             <Button variant={'link'} onClick={() => history.go(-1)}>
               Kembali
             </Button>
-            <Button onClick={() => setOpen('add')}>
+            <Button onClick={() => navigate({ to: '/sales/invoices/add' })}>
               <Plus className='mr-2 h-4 w-4' />
-              Tambah Tag
+              Tambah Tagihan
             </Button>
           </div>
         </div>
         <hr />
       </CardHeader>
       <CardContent>
-        <TagsTable search={search} navigate={navigate} />
-        <TagsDialogs />
+        <InvoiceListsTable search={search} navigate={navigate} />
+        {/* <InvoiceListsDialogs /> */}
       </CardContent>
     </Card>
   )
 }
 
-function Tags() {
+function InvoiceLists() {
   const search = route.useSearch() as Record<string, string>
 
   // Extract pagination parameters from URL search
@@ -54,10 +53,10 @@ function Tags() {
   const name = search?.name ? search.name : undefined
 
   return (
-    <TagsProvider paginationParams={{ page, limit, name }}>
-      <TagsContent />
-    </TagsProvider>
+    <InvoiceListsProvider paginationParams={{ page, limit, name }}>
+      <InvoiceListsContent />
+    </InvoiceListsProvider>
   )
 }
 
-export default Tags
+export default InvoiceLists

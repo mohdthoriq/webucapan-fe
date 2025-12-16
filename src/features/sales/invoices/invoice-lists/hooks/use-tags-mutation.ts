@@ -1,11 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useTags } from '../components/tags-provider'
-import type { CreateTagFormData, DeleteTagFormData, UpdateTagFormData } from '../types/tags.schema'
+// import { useTags } from '../components/invoice-list-provider'
+import type {
+  CreateTagFormData,
+  DeleteTagFormData,
+  UpdateTagFormData,
+} from '../types/tags.schema'
 
 export function useCreateTagMutation() {
-  const { setOpen } = useTags()
+  // const { setOpen } = useTags()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,7 +24,7 @@ export function useCreateTagMutation() {
       toast.dismiss('tags-toast')
       await queryClient.invalidateQueries({ queryKey: ['tags'] })
       toast.success('Tag berhasil ditambahkan.')
-      setOpen(null)
+       // setOpen(null)
     },
     onError: () => {
       toast.dismiss('tags-toast')
@@ -30,7 +34,7 @@ export function useCreateTagMutation() {
 }
 
 export function useUpdateTagMutation() {
-  const { setOpen } =   useTags()
+  // const { setOpen } = useTags()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,7 +52,7 @@ export function useUpdateTagMutation() {
       toast.dismiss('tags-toast')
       await queryClient.invalidateQueries({ queryKey: ['tags'] })
       toast.success('Tag berhasil diubah.')
-      setOpen(null)
+      // setOpen(null)
     },
     onError: () => {
       toast.dismiss('tags-toast')
@@ -58,7 +62,7 @@ export function useUpdateTagMutation() {
 }
 
 export function useDeleteTagMutation() {
-  const { setOpen } = useTags()
+  // const { setOpen } = useTags()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -74,7 +78,7 @@ export function useDeleteTagMutation() {
       toast.dismiss('tags-toast')
       await queryClient.invalidateQueries({ queryKey: ['tags'] })
       toast.success('Tag berhasil dihapus.')
-      setOpen(null)
+      // setOpen(null)
     },
     onError: () => {
       toast.dismiss('tags-toast')
