@@ -15,15 +15,15 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-4'>
-          <LongText>{name}</LongText>
+        <div className='px-2'>
+          <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
     },
     meta: {
       className: cn(
         'w-full min-w-[250px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'px-8 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'ps-0.5 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
@@ -42,24 +42,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px] px-8',
-    },
-  },
-  {
-    accessorKey: 'type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tipe Akun' />
-    ),
-    cell: ({ row }) => {
-      const { type } = row.original
-      return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
-          <LongText className='truncate'>{type.name}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full min-w-[200px]',
     },
   },
   {
