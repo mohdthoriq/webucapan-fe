@@ -14,6 +14,7 @@ import {
   Ruler,
   Settings as SettingsIcon,
   Shield,
+  Tag,
   Users,
   Workflow,
 } from 'lucide-react'
@@ -110,7 +111,7 @@ export const settingsTabs = [
         title: 'Pengguna',
         description: 'Undang staff dan kolega untuk menggunakan Manajerku',
         icon: Users,
-        url: `/users`,
+        url: '/settings/users',
       },
       {
         title: 'Peran',
@@ -154,6 +155,12 @@ export const settingsTabs = [
         url: '/settings/payment-terms',
         icon: Calendar,
       },
+      {
+        title: 'Tags',
+        description: 'Atur tag untuk pemisahan laporan',
+        url: '/settings/tags',
+        icon: Tag,
+      }
     ],
   },
   {

@@ -6,7 +6,7 @@ import { UsersDialogs } from './components/users-dialogs'
 import { UsersProvider, useUsers } from './components/users-provider'
 import { UsersTable } from './components/users-table'
 
-const route = getRouteApi('/_authenticated/users/')
+const route = getRouteApi('/_authenticated/settings/users/')
 
 function UsersContent() {
   const search = route.useSearch() as Record<string, string>

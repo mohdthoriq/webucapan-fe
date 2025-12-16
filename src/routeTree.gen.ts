@@ -22,14 +22,15 @@ import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
-import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './routes/_authenticated/product-categories/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
+import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
+import { Route as AuthenticatedSettingsTagsIndexRouteImport } from './routes/_authenticated/settings/tags/index'
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
@@ -103,11 +104,6 @@ const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
-  id: '/users/',
-  path: '/users/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/settings/',
@@ -138,6 +134,12 @@ const AuthenticatedAccountIndexRoute =
     path: '/account/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsUsersIndexRoute =
+  AuthenticatedSettingsUsersIndexRouteImport.update({
+    id: '/settings/users/',
+    path: '/settings/users/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsUnitsIndexRoute =
   AuthenticatedSettingsUnitsIndexRouteImport.update({
     id: '/settings/units/',
@@ -148,6 +150,12 @@ const AuthenticatedSettingsTaxesIndexRoute =
   AuthenticatedSettingsTaxesIndexRouteImport.update({
     id: '/settings/taxes/',
     path: '/settings/taxes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsTagsIndexRoute =
+  AuthenticatedSettingsTagsIndexRouteImport.update({
+    id: '/settings/tags/',
+    path: '/settings/tags/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsProfileIndexRoute =
@@ -217,7 +225,6 @@ export interface FileRoutesByFullPath {
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/users': typeof AuthenticatedUsersIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -226,8 +233,10 @@ export interface FileRoutesByFullPath {
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/tags': typeof AuthenticatedSettingsTagsIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
+  '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -247,7 +256,6 @@ export interface FileRoutesByTo {
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/users': typeof AuthenticatedUsersIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -256,8 +264,10 @@ export interface FileRoutesByTo {
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/tags': typeof AuthenticatedSettingsTagsIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
+  '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -279,7 +289,6 @@ export interface FileRoutesById {
   '/_authenticated/product-categories/': typeof AuthenticatedProductCategoriesIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -288,8 +297,10 @@ export interface FileRoutesById {
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
+  '/_authenticated/settings/tags/': typeof AuthenticatedSettingsTagsIndexRoute
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
+  '/_authenticated/settings/users/': typeof AuthenticatedSettingsUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -311,7 +322,6 @@ export interface FileRouteTypes {
     | '/product-categories'
     | '/products'
     | '/settings'
-    | '/users'
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
@@ -320,8 +330,10 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/payment-terms'
     | '/settings/profile'
+    | '/settings/tags'
     | '/settings/taxes'
     | '/settings/units'
+    | '/settings/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -341,7 +353,6 @@ export interface FileRouteTypes {
     | '/product-categories'
     | '/products'
     | '/settings'
-    | '/users'
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
@@ -350,8 +361,10 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/payment-terms'
     | '/settings/profile'
+    | '/settings/tags'
     | '/settings/taxes'
     | '/settings/units'
+    | '/settings/users'
   id:
     | '__root__'
     | '/_authenticated'
@@ -372,7 +385,6 @@ export interface FileRouteTypes {
     | '/_authenticated/product-categories/'
     | '/_authenticated/products/'
     | '/_authenticated/settings/'
-    | '/_authenticated/users/'
     | '/_authenticated/admin/account-categories/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
@@ -381,8 +393,10 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/payment-terms/'
     | '/_authenticated/settings/profile/'
+    | '/_authenticated/settings/tags/'
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
+    | '/_authenticated/settings/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -492,13 +506,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/users/': {
-      id: '/_authenticated/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/settings'
@@ -534,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/users/': {
+      id: '/_authenticated/settings/users/'
+      path: '/settings/users'
+      fullPath: '/settings/users'
+      preLoaderRoute: typeof AuthenticatedSettingsUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/units/': {
       id: '/_authenticated/settings/units/'
       path: '/settings/units'
@@ -546,6 +560,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/taxes'
       fullPath: '/settings/taxes'
       preLoaderRoute: typeof AuthenticatedSettingsTaxesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/tags/': {
+      id: '/_authenticated/settings/tags/'
+      path: '/settings/tags'
+      fullPath: '/settings/tags'
+      preLoaderRoute: typeof AuthenticatedSettingsTagsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/profile/': {
@@ -635,14 +656,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
-  AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
   AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
+  AuthenticatedSettingsTagsIndexRoute: typeof AuthenticatedSettingsTagsIndexRoute
   AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
+  AuthenticatedSettingsUsersIndexRoute: typeof AuthenticatedSettingsUsersIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -654,7 +676,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedProductCategoriesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
-  AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
   AuthenticatedSettingsCompanyRolesIndexRoute:
     AuthenticatedSettingsCompanyRolesIndexRoute,
@@ -664,8 +685,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsPaymentTermsIndexRoute,
   AuthenticatedSettingsProfileIndexRoute:
     AuthenticatedSettingsProfileIndexRoute,
+  AuthenticatedSettingsTagsIndexRoute: AuthenticatedSettingsTagsIndexRoute,
   AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
+  AuthenticatedSettingsUsersIndexRoute: AuthenticatedSettingsUsersIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
