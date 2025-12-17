@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import type { useForm } from 'react-hook-form'
 import {
   Table,
@@ -17,7 +18,7 @@ import type { InvoiceItem } from '../types/invoice-item.types'
 import { InvoiceItemRow } from './invoice-item-row'
 
 type InvoiceItemsTableProps = {
-  fields: InvoiceItem[]
+  fields: (InvoiceItem & { id: string })[]
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
   >
@@ -32,8 +33,11 @@ export function InvoiceItemsTable({
   const { data: products } = useProductsQuery({ page: 1, limit: 100 })
   const { data: taxes } = useTaxesQuery({ page: 1, limit: 100 })
 
-  const productsData = products?.data || []
-  const taxesData = taxes?.data || []
+  const productsData = useMemo(
+    () => ({ data: products?.data || [] }),
+    [products?.data]
+  )
+  const taxesData = useMemo(() => ({ data: taxes?.data || [] }), [taxes?.data])
 
   return (
     <div className='rounded-md border'>
@@ -53,13 +57,13 @@ export function InvoiceItemsTable({
         <TableBody>
           {fields.map((field, index) => (
             <InvoiceItemRow
-              key={field.product_id}
+              key={field.id}
               field={field}
               index={index}
               form={form}
               remove={remove}
-              products={{ data: productsData }}
-              taxes={{ data: taxesData }}
+              products={productsData}
+              taxes={taxesData}
             />
           ))}
           {fields.length === 0 && (

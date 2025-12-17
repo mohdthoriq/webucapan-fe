@@ -1,15 +1,26 @@
-import { Button } from "@/components/ui/button"
-import { FormControl, FormField, FormItem } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { TableCell, TableRow } from "@/components/ui/table"
-import type { Product, Tax } from "@/types"
-import { Trash2 } from "lucide-react"
-import type { useForm } from "react-hook-form"
-import type { InvoiceItem } from "../types/invoice-item.types"
-import type { CreateInvoiceFormData, UpdateInvoiceFormData } from "../types/invoice-form.schema"
+import { memo } from 'react'
+import type { useForm } from 'react-hook-form'
+import type { Product, Tax } from '@/types'
+import { Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { TableCell, TableRow } from '@/components/ui/table'
+import type {
+  CreateInvoiceFormData,
+  UpdateInvoiceFormData,
+} from '../types/invoice-form.schema'
+import type { InvoiceItem } from '../types/invoice-item.types'
 
-export function InvoiceItemRow({
+// Memoize the row so it doesn't re-render when other rows change
+export const InvoiceItemRow = memo(function InvoiceItemRow({
   field,
   index,
   form,
@@ -17,7 +28,7 @@ export function InvoiceItemRow({
   products,
   taxes,
 }: {
-  field: InvoiceItem
+  field: (InvoiceItem & { id: string })
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
@@ -27,7 +38,7 @@ export function InvoiceItemRow({
   taxes: { data: Tax[] }
 }) {
   return (
-    <TableRow key={field.product_id}>
+    <TableRow key={field.id}>
       <TableCell>
         <FormField
           control={form.control}
@@ -176,4 +187,4 @@ export function InvoiceItemRow({
       </TableCell>
     </TableRow>
   )
-}
+})
