@@ -1,9 +1,14 @@
-import { memo } from 'react'
-import type { useForm } from 'react-hook-form'
+import { memo, useEffect } from 'react'
+import { useWatch, type useForm } from 'react-hook-form'
 import type { Product, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { FormControl, FormField, FormItem } from '@/components/ui/form'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -19,7 +24,6 @@ import type {
 } from '../types/invoice-form.schema'
 import type { InvoiceItem } from '../types/invoice-item.types'
 
-// Memoize the row so it doesn't re-render when other rows change
 export const InvoiceItemRow = memo(function InvoiceItemRow({
   field,
   index,
@@ -28,7 +32,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   products,
   taxes,
 }: {
-  field: (InvoiceItem & { id: string })
+  field: InvoiceItem & { id: string }
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
@@ -37,6 +41,24 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   products: { data: Product[] }
   taxes: { data: Tax[] }
 }) {
+  const itemValues = useWatch({
+    control: form.control,
+    name: `invoice_items.${index}`,
+  })
+
+  const quantity = Number(itemValues?.quantity) || 0
+  const unitPrice = Number(itemValues?.unit_price) || 0
+  const discount = Number(itemValues?.discount) || 0
+  const rowTotal = quantity * unitPrice - discount
+
+  // Sync row total to form state whenever it changes
+  useEffect(() => {
+    const currentTotal = form.getValues(`invoice_items.${index}.total`)
+    if (currentTotal !== rowTotal) {
+      form.setValue(`invoice_items.${index}.total`, rowTotal)
+    }
+  }, [rowTotal, form, index])
+
   return (
     <TableRow key={field.id}>
       <TableCell>
@@ -56,7 +78,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                     )
                     form.setValue(
                       `invoice_items.${index}.unit_price`,
-                      prod.sale_price || 0
+                      Number(prod.sale_price) || 0
                     )
                   }
                 }}
@@ -102,9 +124,11 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  value={field.value ?? 0}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -119,9 +143,11 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  value={field.value ?? 0}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -136,9 +162,10 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -149,7 +176,10 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           name={`invoice_items.${index}.tax_id`}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value ?? undefined}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder='Pajak' />
@@ -168,11 +198,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
         />
       </TableCell>
       <TableCell className='text-right font-medium'>
-        {(
-          (form.watch(`invoice_items.${index}.quantity`) || 0) *
-            (form.watch(`invoice_items.${index}.unit_price`) || 0) -
-          (form.watch(`invoice_items.${index}.discount`) || 0)
-        ).toLocaleString()}
+        {rowTotal.toLocaleString()}
       </TableCell>
       <TableCell>
         <Button

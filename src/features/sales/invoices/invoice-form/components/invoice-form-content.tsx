@@ -46,7 +46,7 @@ export function InvoiceFormContent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8' id='invoice-form'>
         {/* Header Section */}
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Invoice Number */}
@@ -137,7 +137,7 @@ export function InvoiceFormContent() {
                     <Calendar
                       mode='single'
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => field.onChange(date)}
                       disabled={(date) => date < new Date('1900-01-01')}
                       autoFocus
                     />
@@ -178,7 +178,7 @@ export function InvoiceFormContent() {
                     <Calendar
                       mode='single'
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => field.onChange(date)}
                       disabled={(date) => date < new Date('1900-01-01')}
                       autoFocus
                     />
@@ -303,7 +303,7 @@ export function InvoiceFormContent() {
           >
             Batal
           </Button>
-          <Button type='submit' disabled={isSubmitting}>
+          <Button type='submit' disabled={isSubmitting} form='invoice-form'>
             {isSubmitting
               ? 'Menyimpan...'
               : isEdit

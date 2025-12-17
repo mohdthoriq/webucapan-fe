@@ -3,7 +3,7 @@ export type InvoiceItem = {
     description: string
     quantity: number
     unit_price: number
-    discount: number
-    tax_id: string
+    discount: number | null
+    tax_id: string | null
     total: number
 }   

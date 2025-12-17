@@ -1,17 +1,17 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeleteTagMutation } from '../hooks/use-tags-mutation'
 import { useInvoiceLists } from './invoice-list-provider'
+import { useDeleteInvoiceMutation } from '../hooks/use-invoice-list-mutation'
 
-export function TagsDialogs() {
+export function InvoiceListsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useInvoiceLists()
 
-  const { mutate: deleteTag, isPending } = useDeleteTagMutation()
+  const { mutate: deleteInvoice, isPending } = useDeleteInvoiceMutation()
 
   return (
     <>
       {currentRow && (
         <ConfirmDialog
-          key={`tag-delete-${currentRow.id}`}
+          key={`invoice-delete-${currentRow.id}`}
           destructive
           open={open === 'delete'}
           onOpenChange={() => {
@@ -21,7 +21,7 @@ export function TagsDialogs() {
             }, 500)
           }}
           handleConfirm={() => {
-            deleteTag({
+            deleteInvoice({
               id: currentRow.id,
             })
             setOpen(null)
@@ -31,11 +31,11 @@ export function TagsDialogs() {
           }}
           disabled={isPending}
           className='max-w-md'
-          title={`Hapus satuan "${currentRow.invoice_number}" ?`}
+          title={`Hapus tagihan "${currentRow.invoice_number}" ?`}
           desc={
             <>
               Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-              permanen satuan{' '}
+              permanen tagihan{' '}
               <span className='text-foreground font-semibold'>
                 "{currentRow.invoice_number}"
               </span>{' '}
