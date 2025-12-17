@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import { DataTableToolbar } from '@/components/data-table'
 import { accountsColumns } from './account-columns'
 import { useAccounts } from './account-provider'
 
@@ -146,7 +146,6 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} className='mt-auto' />
     </div>
   )
 }
