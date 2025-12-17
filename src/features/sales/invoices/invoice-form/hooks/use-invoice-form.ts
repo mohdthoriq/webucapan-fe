@@ -81,13 +81,13 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
   const createMutation = useCreateInvoiceMutation()
   const updateMutation = useUpdateInvoiceMutation()
 
-  const onSubmit = async (data: CreateInvoiceFormData | UpdateInvoiceFormData) => {
+  const onSubmit = async (data: CreateInvoiceFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateInvoiceFormData = {
         id: currentRow.id,
         ...data,
         invoice_items: data.invoice_items.map((item) => ({
-          id: item.id,
+          id: currentRow.invoice_items?.id,
           ...item,
         })),
       }

@@ -46,9 +46,34 @@ export function InvoiceFormContent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8' id='invoice-form'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-8'
+        id='invoice-form'
+      >
         {/* Header Section */}
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+          {/* Customer */}
+          <FormField
+            control={form.control}
+            name='customer_id'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Pelanggan</FormLabel>
+                <FormControl>
+                  <InvoiceFormCombobox
+                    value={field.value}
+                    onValueChange={(value) => {
+                      field.onChange(value)
+                    }}
+                    placeholder='Pilih Pelanggan'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Invoice Number */}
           <FormField
             control={form.control}
@@ -63,7 +88,8 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
-
+        </div>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Status */}
           <FormField
             control={form.control}
@@ -225,28 +251,7 @@ export function InvoiceFormContent() {
         <Separator />
 
         {/* Customer & Company Details */}
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-          {/* Customer */}
-          <FormField
-            control={form.control}
-            name='customer_id'
-            render={({ field }) => (
-              <FormItem className='flex flex-col'>
-                <FormLabel>Pelanggan</FormLabel>
-                <FormControl>
-                  <InvoiceFormCombobox
-                    value={field.value}
-                    onValueChange={(value) => {
-                      field.onChange(value)
-                    }}
-                    placeholder='Pilih Pelanggan'
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'></div>
 
         <Separator />
 
