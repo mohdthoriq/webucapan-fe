@@ -1,4 +1,5 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -19,6 +20,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const invoice = row.original
   const { setOpen, setCurrentRow } = useInvoiceLists()
 
+  const navigate = useNavigate()
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -36,16 +39,22 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(invoice)
-              setOpen('view')
+              navigate({
+                to: `/sales/invoices/${invoice.id}`,
+                search: {},
+                state: { currentRowId: invoice.id } as Record<string, unknown>,
+              })
             }}
           >
             Detail
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(invoice)
-              setOpen('edit')
+              navigate({
+                to: `/sales/invoices/add`,
+                search: {},
+                state: { currentRowId: invoice.id } as Record<string, unknown>,
+              })
             }}
           >
             Edit

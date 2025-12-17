@@ -3,7 +3,7 @@ import type { PaginationMeta, SalesInvoice } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useInvoiceListQuery } from '../hooks/use-invoice-list-query'
 
-type InvoiceListsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type InvoiceListsDialogType = 'delete'
 
 type InvoiceListsContextType = {
   open: InvoiceListsDialogType | null
