@@ -1,11 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useTags } from '../components/tags-provider'
 import type { CreateInvoiceFormData, UpdateInvoiceFormData } from '../types/invoice-form.schema'
 
 export function useCreateInvoiceMutation() {
-  const { setOpen } = useTags()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,7 +18,6 @@ export function useCreateInvoiceMutation() {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: ['invoices'] })
       toast.success('Invoice berhasil ditambahkan.')
-      setOpen(null)
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
@@ -30,7 +27,6 @@ export function useCreateInvoiceMutation() {
 }
 
 export function useUpdateInvoiceMutation() {
-  const { setOpen } =   useTags()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,7 +44,6 @@ export function useUpdateInvoiceMutation() {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: ['invoices'] })
       toast.success('Invoice berhasil diubah.')
-      setOpen(null)
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
