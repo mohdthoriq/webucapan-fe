@@ -6,7 +6,6 @@ import { Calendar } from '@/components/ui/calendar'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -189,28 +188,44 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
+
+          {/* Payment Term */}
+          <FormField
+            control={form.control}
+            name='payment_term_id'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Syarat Pembayaran</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger
+                      className='w-full'
+                      disabled={paymentTerms?.data.length === 0}
+                    >
+                      <SelectValue placeholder='Pilih syarat pembayaran' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {paymentTerms?.data.map((term) => (
+                      <SelectItem key={term.id} value={term.id}>
+                        {term.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <Separator />
 
         {/* Customer & Company Details */}
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-          {/* Company (Just ID input for now, ideally a selector or hidden if auto-assigned) */}
-          <FormField
-            control={form.control}
-            name='company_id'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Perusahaan (ID)</FormLabel>
-                <FormControl>
-                  <Input placeholder='Company ID' {...field} />
-                </FormControl>
-                <FormDescription>ID Perusahaan Anda</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           {/* Customer */}
           <FormField
             control={form.control}
@@ -231,64 +246,35 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
-
-          {/* Payment Term */}
-          <FormField
-            control={form.control}
-            name='payment_term_id'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Syarat Pembayaran</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Pilih syarat pembayaran' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {paymentTerms?.data.map((term) => (
-                      <SelectItem key={term.id} value={term.id}>
-                        {term.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
 
         <Separator />
 
-        {/* Invoice Items Table */}
-        <div className='space-y-4'>
-          <div className='flex items-center justify-between'>
-            <h3 className='text-lg font-medium'>Item Invoice</h3>
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() =>
-                append({
-                  product_id: '',
-                  description: '',
-                  quantity: 1,
-                  unit_price: 0,
-                  tax_id: '',
-                  discount: 0,
-                  total: 0,
-                })
-              }
-            >
-              <Plus className='mr-2 h-4 w-4' /> Tambah Item
-            </Button>
-          </div>
-
+        <div className='flex flex-col space-y-4'>
+          <h3 className='text-lg font-medium'>Item Invoice</h3>
           <InvoiceItemsTable fields={fields} remove={remove} form={form} />
+        </div>
+
+        {/* Invoice Items Table */}
+        <div className='space-y-2'>
+          <Button
+            type='button'
+            variant='outline'
+            size='sm'
+            onClick={() =>
+              append({
+                product_id: '',
+                description: '',
+                quantity: 1,
+                unit_price: 0,
+                tax_id: '',
+                discount: 0,
+                total: 0,
+              })
+            }
+          >
+            <Plus className='mr-2 h-4 w-4' /> Tambah Item
+          </Button>
         </div>
 
         {/* Footer / Totals */}
