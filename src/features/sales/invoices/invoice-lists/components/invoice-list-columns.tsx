@@ -16,7 +16,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { invoice_number } = row.original
       return (
         <div className='px-2'>
-          <LongText>{invoice_number}</LongText>
+          <LongText className='min-w-xs'>{invoice_number}</LongText>
         </div>
       )
     },
@@ -36,8 +36,8 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     cell: ({ row }) => {
       const { customer } = row.original
       return (
-        <div className='px-2'>
-          <LongText>{customer.name}</LongText>
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>{customer.name}</LongText>
         </div>
       )
     },
