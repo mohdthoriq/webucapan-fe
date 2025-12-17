@@ -25,7 +25,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from './invoice-form-combobox'
 import { useInvoiceFormContext } from './invoice-form-context'
 import { InvoiceItemsTable } from './invoice-items-table'
@@ -43,6 +45,8 @@ export function InvoiceFormContent() {
   } = useInvoiceFormContext()
 
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
+
+  const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
   return (
     <Form {...form}>
@@ -246,12 +250,32 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name='tags'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tag</FormLabel>
+                <FormControl>
+                  <MultiSelectDropdown
+                    options={
+                      tags?.data.map((tag) => ({
+                        label: tag.name,
+                        value: tag.id,
+                      })) || []
+                    }
+                    selected={field.value || []}
+                    onChange={field.onChange}
+                    placeholder='Pilih tag'
+                    disabled={tags?.data.length === 0}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-
-        <Separator />
-
-        {/* Customer & Company Details */}
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'></div>
 
         <Separator />
 

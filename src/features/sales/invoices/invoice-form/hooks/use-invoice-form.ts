@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Status, type SalesInvoice } from '@/types'
+import { Status } from '@/types'
 import {
   CreateInvoiceSchema,
   UpdateInvoiceSchema,
@@ -13,7 +13,7 @@ import {
 } from './use-invoice-form-mutation'
 
 type UseInvoiceFormProps = {
-  currentRow?: SalesInvoice
+  currentRow?: UpdateInvoiceFormData
 }
 
 export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
@@ -24,10 +24,8 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
       ? {
           ...currentRow,
           id: currentRow.id,
-          company_id: currentRow.company?.id ?? currentRow.company,
-          customer_id: currentRow.customer?.id ?? currentRow.customer,
-          payment_term_id:
-            currentRow.payment_term?.id ?? currentRow.payment_term,
+          customer_id: currentRow.customer_id,
+          payment_term_id: currentRow.payment_term_id,
 
           invoice_date: currentRow.invoice_date
             ? new Date(currentRow.invoice_date)
@@ -39,13 +37,13 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
           invoice_items:
             currentRow.invoice_items?.map((item) => ({
               ...item,
-              product_id: item.product?.id ?? item.product,
-              tax_id: item.tax?.id ?? item.tax,
+              product_id: item.product_id,
+              tax_id: item.tax_id,
             })) || [],
+          tags: currentRow.tags || null,
         }
       : {
           invoice_number: '',
-          company_id: '',
           customer_id: '',
           payment_term_id: '',
           currency: 'IDR',
@@ -66,6 +64,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
               total: 0,
             },
           ],
+          tags: [],
         }
 
   const form = useForm<CreateInvoiceFormData | UpdateInvoiceFormData>({
@@ -87,7 +86,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
         id: currentRow.id,
         ...data,
         invoice_items: data.invoice_items.map((item) => ({
-          id: currentRow.invoice_items?.id,
+          id: currentRow.invoice_items[0].id,
           ...item,
         })),
       }
