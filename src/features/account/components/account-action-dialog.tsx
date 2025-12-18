@@ -50,7 +50,7 @@ export function AccountsActionDialog({
     currentRow,
   })
 
-  const { data: accountCategories } = useAccountCategoriesQuery()
+  const { data: accountCategories } = useAccountCategoriesQuery({limit: 50})
 
   const categoryId = form.watch('category_id')
 
