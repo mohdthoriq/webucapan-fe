@@ -50,11 +50,11 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
       </CardHeader>
       <hr />
       <CardContent>
-        <div className='mb-10 grid grid-cols-1 gap-10 md:grid-cols-2'>
+        <div className='mb-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3'>
           <div className='space-y-4'>
             <div className='space-y-3'>
               <div>
-                <p className='text-primary text-lg font-bold mb-2'>
+                <p className='text-primary mb-2 text-lg font-bold'>
                   {invoice.customer?.name}
                 </p>
                 <div className='flex items-center gap-2'>
@@ -123,6 +123,28 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     {invoice.payment_term?.name || '-'}
                   </span>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className='space-y-1'>
+            <div>
+              <p className='text-muted-foreground mb-3 text-[10px] font-bold tracking-[0.2em] uppercase'>
+                Tag
+              </p>
+              <div className='flex flex-wrap gap-2'>
+                {invoice.tags && invoice.tags.length > 0 ? (
+                  invoice.tags.map((tag, idx) => (
+                    <Badge
+                      key={idx}
+                      variant='outline'
+                      className='text-[12px] font-semibold uppercase px-2 py-1'
+                    >
+                      {typeof tag === 'object' ? tag.name : tag}
+                    </Badge>
+                  ))
+                ) : (
+                  <span className='text-muted-foreground text-sm'>-</span>
+                )}
               </div>
             </div>
           </div>
