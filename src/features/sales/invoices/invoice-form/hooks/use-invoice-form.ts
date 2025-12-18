@@ -24,28 +24,36 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
     () =>
       isEdit && currentRow
         ? {
-            ...currentRow,
             id: currentRow.id,
+            invoice_number: currentRow.invoice_number,
             customer_id: currentRow.customer?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? '',
-
+            status: currentRow.status,
+            currency: currentRow.currency,
+            subtotal: Number(currentRow.subtotal),
+            tax_total: Number(currentRow.tax_total),
+            total: Number(currentRow.total),
             invoice_date: currentRow.invoice_date
               ? new Date(currentRow.invoice_date)
               : new Date(),
             due_date: currentRow.due_date
               ? new Date(currentRow.due_date)
               : new Date(),
-
             invoice_items:
               currentRow.invoice_items?.map((item) => ({
-                ...item,
+                id: item.id,
                 product_id: item.product?.id ?? '',
+                description: item.description || '',
+                quantity: Number(item.quantity) || 0,
+                unit_price: Number(item.unit_price) || 0,
                 tax_id: item.tax?.id ?? '',
-                unit_price: Number(item.unit_price),
-                total: Number(item.line_total),
-                quantity: Number(item.quantity),
+                discount: Number(item.discount) || 0,
+                line_total: Number(item.line_total) || 0,
               })) || [],
-            tags: currentRow.tags || [],
+            tags:
+              currentRow.tags?.map((tag: string | { id: string }) =>
+                typeof tag === 'object' ? tag.id : tag
+              ) || [],
           }
         : {
             invoice_number: '',
@@ -63,8 +71,10 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
                 product_id: '',
                 description: '',
                 quantity: 1,
+                unit_price: 0,
                 tax_id: '',
-                total: 0,
+                discount: 0,
+                line_total: 0,
               },
             ],
             tags: [],

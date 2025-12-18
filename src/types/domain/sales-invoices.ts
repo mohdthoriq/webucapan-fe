@@ -3,6 +3,7 @@ import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
 import type { Product } from './product'
+import type { Tag } from './tag'
 import type { Tax } from './tax'
 
 export enum Status {
@@ -34,6 +35,6 @@ export interface SalesInvoice extends GlobalResponse {
   total: number
   status: Status
   invoice_items: InvoiceItem[]
-  tags: string[]
+  tags: (string | Tag)[]
   taxes: Tax[]
 }

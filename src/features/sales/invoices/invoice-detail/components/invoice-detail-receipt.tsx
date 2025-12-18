@@ -1,8 +1,9 @@
 import { format } from 'date-fns'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
-import { Printer } from 'lucide-react'
+import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -24,10 +25,23 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
       <CardHeader>
         <div className='flex items-center justify-between'>
-          <CardTitle className='text-1xl'>{invoice.status}</CardTitle>
+          <div className='flex flex-col gap-1'>
+            <span className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
+              Invoice
+            </span>
+            <CardTitle className='text-2xl font-bold tracking-tight'>
+              #{invoice.invoice_number}
+            </CardTitle>
+            <Badge
+              variant={invoice.status === 'paid' ? 'default' : 'outline'}
+              className='mt-1 w-fit text-[10px] uppercase'
+            >
+              {invoice.status}
+            </Badge>
+          </div>
           <Button
             variant='outline'
-            className='gap-2'
+            className='gap-2 shadow-sm'
             onClick={() => window.print()}
           >
             <Printer className='h-4 w-4' /> Cetak Struk
@@ -38,32 +52,51 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
       <CardContent>
         <div className='mb-10 grid grid-cols-1 gap-10 md:grid-cols-2'>
           <div className='space-y-4'>
-            <div>
-              <p className='text-muted-foreground mb-1 text-[10px] font-bold tracking-[0.2em] uppercase'>
-                Tagihan Untuk
-              </p>
-              <p className='text-lg font-bold'>{invoice.customer?.name}</p>
-              <p className='text-muted-foreground text-sm'>
-                {invoice.customer?.email || '-'}
-              </p>
-              <p className='text-muted-foreground text-sm'>
-                {invoice.customer?.phone || '-'}
-              </p>
-              {invoice.customer?.address && (
-                <p className='text-muted-foreground mt-2 max-w-xs text-sm'>
-                  {invoice.customer.address}
+            <div className='space-y-3'>
+              <div>
+                <p className='text-primary text-lg font-bold mb-2'>
+                  {invoice.customer?.name}
                 </p>
-              )}
+                <div className='flex items-center gap-2'>
+                  <Building2 className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-sm'>
+                    {invoice.company?.name || '-'}
+                  </p>
+                </div>
+              </div>
+
+              <div className='space-y-1.5'>
+                <div className='flex items-center gap-2'>
+                  <Mail className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-sm'>
+                    {invoice.customer?.email || '-'}
+                  </p>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <Phone className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-sm'>
+                    {invoice.customer?.phone || '-'}
+                  </p>
+                </div>
+                {invoice.customer?.address && (
+                  <div className='flex items-start gap-2 pt-1'>
+                    <MapPin className='text-muted-foreground mt-0.5 h-3.5 w-3.5 flex-shrink-0' />
+                    <p className='text-muted-foreground max-w-xs text-sm leading-relaxed'>
+                      {invoice.customer.address}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className='space-y-4 md:text-right'>
+          <div className='space-y-1'>
             <div>
-              <p className='text-muted-foreground mb-1 text-[10px] font-bold tracking-[0.2em] uppercase'>
+              <p className='text-muted-foreground mb-3 text-[10px] font-bold tracking-[0.2em] uppercase'>
                 Detail Waktu
               </p>
-              <div className='space-y-1'>
-                <div className='flex justify-between gap-4 md:justify-end'>
-                  <span className='text-muted-foreground text-sm'>
+              <div className='space-y-2'>
+                <div className='flex items-baseline gap-3'>
+                  <span className='text-muted-foreground w-32 text-sm'>
                     Tanggal Invoice:
                   </span>
                   <span className='text-sm font-semibold'>
@@ -72,8 +105,8 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     })}
                   </span>
                 </div>
-                <div className='flex justify-between gap-4 md:justify-end'>
-                  <span className='text-muted-foreground text-sm'>
+                <div className='flex items-baseline gap-3'>
+                  <span className='text-muted-foreground w-32 text-sm'>
                     Jatuh Tempo:
                   </span>
                   <span className='text-sm font-semibold'>
@@ -82,9 +115,9 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     })}
                   </span>
                 </div>
-                <div className='flex justify-between gap-4 md:justify-end'>
-                  <span className='text-muted-foreground text-sm'>
-                    Metode Pembayaran:
+                <div className='flex items-baseline gap-3'>
+                  <span className='text-muted-foreground w-32 text-sm'>
+                    Termin Pembayaran:
                   </span>
                   <span className='text-sm font-semibold'>
                     {invoice.payment_term?.name || '-'}
@@ -111,7 +144,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
                   Harga
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-10 p-4 text-center font-semibold tracking-wider uppercase'>
                   Qty
                 </TableHead>
                 <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
@@ -120,7 +153,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
                   Pajak
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-10 p-4 text-right font-semibold tracking-wider uppercase'>
                   Total Harga
                 </TableHead>
               </TableRow>
@@ -135,19 +168,33 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     <p className='font-semibold'>{item.description}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.unit_price}</p>
+                    <p className='text-sm font-medium'>
+                      {formatCurrency(
+                        Number(item.unit_price),
+                        invoice.currency
+                      )}
+                    </p>
+                  </TableCell>
+                  <TableCell className='p-4 text-center align-top'>
+                    <p className='text-sm font-medium'>{item.quantity}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.quantity}</p>
+                    <p className='text-sm font-medium'>
+                      {item.discount
+                        ? formatCurrency(
+                            Number(item.discount),
+                            invoice.currency
+                          )
+                        : '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.discount ?? '-'}</p>
+                    <p className='text-sm font-medium'>
+                      {item.tax?.name ?? '-'}
+                    </p>
                   </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.tax?.name ?? '-'}</p>
-                  </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>
+                  <TableCell className='p-4 text-right align-top'>
+                    <p className='text-sm font-bold'>
                       {formatCurrency(
                         Number(item.line_total),
                         invoice.currency
