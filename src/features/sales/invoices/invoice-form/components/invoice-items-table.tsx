@@ -12,12 +12,13 @@ import { useProductsQuery } from '@/features/products/product-list/hooks/use-pro
 import { useTaxesQuery } from '@/features/settings/taxes/hooks/use-taxes-query'
 import type {
   CreateInvoiceFormData,
+  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { InvoiceItemRow } from './invoice-item-row'
 
 type InvoiceItemsTableProps = {
-  fields: any[]
+  fields: InvoiceItemFormData[]
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
   >
@@ -56,7 +57,7 @@ export function InvoiceItemsTable({
         <TableBody>
           {fields.map((field, index) => (
             <InvoiceItemRow
-              key={field.id}
+              key={field.product_id}
               field={field}
               index={index}
               form={form}

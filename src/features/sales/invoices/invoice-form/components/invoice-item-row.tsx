@@ -20,6 +20,7 @@ import {
 import { TableCell, TableRow } from '@/components/ui/table'
 import type {
   CreateInvoiceFormData,
+  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 
@@ -31,7 +32,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   products,
   taxes,
 }: {
-  field: any
+  field: InvoiceItemFormData
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
@@ -60,7 +61,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   }, [rowTotal, form, index])
 
   return (
-    <TableRow key={field.id}>
+    <TableRow key={field.product_id}>
       <TableCell>
         <FormField
           control={form.control}
