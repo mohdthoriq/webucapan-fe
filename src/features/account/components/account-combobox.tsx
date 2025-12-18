@@ -51,7 +51,7 @@ export function AccountsCombobox({
   const { data, isLoading, isError, refetch } = useAccountsQuery({
     page: currentPage,
     limit,
-    name: debouncedSearchTerm || undefined,
+    search: debouncedSearchTerm || undefined,
     category_id: categoryId || undefined,
   })
 
