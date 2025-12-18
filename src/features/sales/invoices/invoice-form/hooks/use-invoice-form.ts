@@ -42,7 +42,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
                 product_id: item.product?.id ?? '',
                 tax_id: item.tax?.id ?? '',
                 unit_price: Number(item.unit_price),
-                total: Number(item.total),
+                total: Number(item.line_total),
                 quantity: Number(item.quantity),
               })) || [],
             tags: currentRow.tags || [],

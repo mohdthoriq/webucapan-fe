@@ -1,5 +1,6 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -57,4 +58,12 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
   }
 
   return rangeWithDots
+}
+
+export const formatCurrency = (amount: number, currency: string) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: currency || 'IDR',
+    minimumFractionDigits: 0,
+  }).format(amount)
 }

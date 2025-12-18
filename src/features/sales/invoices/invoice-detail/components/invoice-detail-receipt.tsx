@@ -1,64 +1,41 @@
 import { format } from 'date-fns'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
-import { Badge } from '@/components/ui/badge'
+import { Printer } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 interface InvoiceDetailReceiptProps {
   invoice: SalesInvoice
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case 'paid':
-        return 'default'
-      case 'draft':
-        return 'secondary'
-      case 'cancelled':
-        return 'destructive'
-      case 'sent':
-        return 'outline'
-      default:
-        return 'default'
-    }
-  }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: invoice.currency || 'IDR',
-      minimumFractionDigits: 0,
-    }).format(amount)
-  }
-
   return (
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
-      <CardHeader className='bg-primary/5 border-b border-dashed pb-8'>
-        <div className='flex flex-col items-center space-y-2 text-center'>
-          <div className='bg-primary text-primary-foreground mb-2 flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold'>
-            {invoice.company?.name?.charAt(0) || 'M'}
-          </div>
-          <CardTitle className='text-3xl font-bold'>
-            {invoice.company?.name || 'Manajerku'}
-          </CardTitle>
-          <div className='flex items-center gap-2'>
-            <span className='text-muted-foreground font-medium'>
-              Invoice #{invoice.invoice_number}
-            </span>
-            <Badge
-              variant={getStatusVariant(invoice.status)}
-              className='capitalize'
-            >
-              {invoice.status}
-            </Badge>
-          </div>
+      <CardHeader>
+        <div className='flex items-center justify-between'>
+          <CardTitle className='text-1xl'>{invoice.status}</CardTitle>
+          <Button
+            variant='outline'
+            className='gap-2'
+            onClick={() => window.print()}
+          >
+            <Printer className='h-4 w-4' /> Cetak Struk
+          </Button>
         </div>
       </CardHeader>
-
-      <CardContent className='p-8'>
-        {/* Info Grid */}
+      <hr />
+      <CardContent>
         <div className='mb-10 grid grid-cols-1 gap-10 md:grid-cols-2'>
           <div className='space-y-4'>
             <div>
@@ -121,38 +98,66 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
         <Separator className='mb-8' />
 
         {/* Invoice Items */}
-        <div className='space-y-6'>
-          <div className='text-muted-foreground grid grid-cols-12 gap-4 border-b pb-2 text-[10px] font-bold tracking-wider uppercase'>
-            <div className='col-span-6 md:col-span-7'>Item Deskripsi</div>
-            <div className='col-span-2 text-center'>Kuantitas</div>
-            <div className='col-span-4 text-right md:col-span-3'>
-              Total Harga
-            </div>
-          </div>
-
-          <div className='space-y-4'>
-            {invoice.invoice_items.map((item, idx) => (
-              <div
-                key={idx}
-                className='grid grid-cols-12 items-start gap-4 py-1'
-              >
-                <div className='col-span-6 md:col-span-7'>
-                  <p className='font-semibold'>{item.product?.name}</p>
-                  {item.description && (
-                    <p className='text-muted-foreground mt-0.5 text-xs'>
-                      {item.description}
+        <div className='rounded-md border'>
+          <Table>
+            <TableHeader>
+              <TableRow className='hover:bg-transparent'>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Item
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Deskripsi
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Harga
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Qty
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Discount
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Pajak
+                </TableHead>
+                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                  Total Harga
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {invoice.invoice_items.map((item, idx) => (
+                <TableRow key={idx} className='hover:bg-transparent'>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.product?.name}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.description}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.unit_price}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.quantity}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.discount ?? '-'}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>{item.tax.name}</p>
+                  </TableCell>
+                  <TableCell className='p-4 align-top'>
+                    <p className='font-semibold'>
+                      {formatCurrency(
+                        Number(item.line_total),
+                        invoice.currency
+                      )}
                     </p>
-                  )}
-                </div>
-                <div className='col-span-2 text-center text-sm font-medium'>
-                  {item.quantity}
-                </div>
-                <div className='col-span-4 text-right font-semibold md:col-span-3'>
-                  {formatCurrency(item.total)}
-                </div>
-              </div>
-            ))}
-          </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
 
         <div className='mt-10 flex flex-col items-start justify-between gap-8 md:flex-row'>
@@ -160,29 +165,27 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             {/* Space for notes or signatures if needed */}
           </div>
 
-          <div className='bg-muted/30 w-full space-y-3 rounded-lg p-6 md:w-80'>
+          <div className='bg-muted/30 w-full space-y-3 rounded-lg p-6 md:w-120'>
             <div className='flex justify-between text-sm'>
               <span className='text-muted-foreground'>Subtotal</span>
               <span className='font-medium'>
-                {formatCurrency(invoice.subtotal)}
+                {formatCurrency(Number(invoice.subtotal), invoice.currency)}
               </span>
             </div>
             <div className='flex justify-between text-sm font-medium'>
               <span className='text-muted-foreground'>Pajak</span>
-              <span>{formatCurrency(invoice.tax_total)}</span>
+              <span>
+                {formatCurrency(Number(invoice.tax_total), invoice.currency)}
+              </span>
             </div>
             <Separator className='my-2 bg-zinc-300 dark:bg-zinc-700' />
             <div className='flex items-center justify-between'>
               <span className='text-base font-bold'>Total Tagihan</span>
               <span className='text-primary text-2xl font-black'>
-                {formatCurrency(invoice.total)}
+                {formatCurrency(Number(invoice.total), invoice.currency)}
               </span>
             </div>
           </div>
-        </div>
-
-        <div className='text-muted-foreground mt-16 border-t border-dashed pt-8 text-center text-[11px] tracking-[0.3em] uppercase'>
-          Terima kasih telah mempercayai {invoice.company?.name || 'kami'}.
         </div>
       </CardContent>
     </Card>

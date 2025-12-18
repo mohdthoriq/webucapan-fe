@@ -19,7 +19,7 @@ export interface InvoiceItem extends GlobalResponse {
   unit_price: number
   discount: number
   tax: Tax
-  total: number
+  line_total: number
 }
 
 export interface SalesInvoice extends GlobalResponse {
@@ -36,4 +36,5 @@ export interface SalesInvoice extends GlobalResponse {
   status: Status
   invoice_items: InvoiceItem[]
   tags: string[]
+  taxes: Tax[]
 }
