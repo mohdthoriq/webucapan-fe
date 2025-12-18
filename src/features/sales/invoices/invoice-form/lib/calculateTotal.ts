@@ -19,7 +19,8 @@ export const calculateTotals = (form: ReturnType<typeof useForm<CreateInvoiceFor
     const unitPrice = Number(item.unit_price) || 0
     const discount = Number(item.discount) || 0
 
-    const lineTotal = quantity * unitPrice - discount
+    const discountAmount = (quantity * unitPrice * discount) / 100
+    const lineTotal = quantity * unitPrice - discountAmount
     newSubtotal += lineTotal
 
     // Tax Logic

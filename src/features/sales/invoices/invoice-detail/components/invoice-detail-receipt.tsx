@@ -144,7 +144,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     <p className='font-semibold'>{item.discount ?? '-'}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.tax.name}</p>
+                    <p className='font-semibold'>{item.tax?.name ?? '-'}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='font-semibold'>

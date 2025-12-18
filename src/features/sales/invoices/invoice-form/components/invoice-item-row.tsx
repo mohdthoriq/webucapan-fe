@@ -48,7 +48,8 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   const quantity = Number(itemValues?.quantity) || 0
   const unitPrice = Number(itemValues?.unit_price) || 0
   const discount = Number(itemValues?.discount) || 0
-  const rowTotal = quantity * unitPrice - discount
+  const discountAmount = (quantity * unitPrice * discount) / 100
+  const rowTotal = quantity * unitPrice - discountAmount
 
   // Sync row total to form state whenever it changes
   useEffect(() => {
