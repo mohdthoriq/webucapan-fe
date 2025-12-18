@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react'
 import { useWatch, type useForm } from 'react-hook-form'
-import type { InvoiceItem, Product, Tax } from '@/types'
+import type { Product, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,7 +31,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   products,
   taxes,
 }: {
-  field: InvoiceItem & { id: string }
+  field: any
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>

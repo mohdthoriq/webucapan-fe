@@ -15,10 +15,9 @@ import type {
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { InvoiceItemRow } from './invoice-item-row'
-import type { InvoiceItem } from '@/types'
 
 type InvoiceItemsTableProps = {
-  fields: (InvoiceItem & { id: string })[]
+  fields: any[]
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
   >
