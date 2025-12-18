@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useInvoiceLists } from './invoice-list-provider'
 
 type DataTableRowActionsProps = {
   row: Row<SalesInvoice>
@@ -18,7 +17,6 @@ type DataTableRowActionsProps = {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const invoice = row.original
-  const { setOpen, setCurrentRow } = useInvoiceLists()
 
   const navigate = useNavigate()
 
@@ -58,16 +56,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             }}
           >
             Edit
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(invoice)
-              setOpen('delete')
-            }}
-            className='text-red-500!'
-          >
-            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

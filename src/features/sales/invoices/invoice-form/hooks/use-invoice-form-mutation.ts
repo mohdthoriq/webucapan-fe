@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { CreateInvoiceFormData, UpdateInvoiceFormData } from '../types/invoice-form.schema'
+import type {
+  CreateInvoiceFormData,
+  UpdateInvoiceFormData,
+} from '../types/invoice-form.schema'
 
 export function useCreateInvoiceMutation() {
-
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: CreateInvoiceFormData) => {
@@ -16,7 +18,7 @@ export function useCreateInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['invoices'] })
+      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
       toast.success('Invoice berhasil ditambahkan.')
       history.back()
     },
@@ -28,7 +30,6 @@ export function useCreateInvoiceMutation() {
 }
 
 export function useUpdateInvoiceMutation() {
-
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: UpdateInvoiceFormData) => {
@@ -43,7 +44,7 @@ export function useUpdateInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['invoices'] })
+      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
       toast.success('Invoice berhasil diubah.')
       history.back()
     },

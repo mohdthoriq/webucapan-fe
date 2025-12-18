@@ -2,7 +2,6 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { InvoiceListsDialogs } from './components/invoice-list-dialogs'
 import { InvoiceListsProvider } from './components/invoice-list-provider'
 import { InvoiceListsTable } from './components/invoice-list-table'
 
@@ -38,7 +37,6 @@ function InvoiceListsContent() {
       </CardHeader>
       <CardContent>
         <InvoiceListsTable search={search} navigate={navigate} />
-        <InvoiceListsDialogs />
       </CardContent>
     </Card>
   )

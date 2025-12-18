@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
@@ -22,30 +22,43 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
   const router = useRouter()
 
   const isEdit = !!currentRow
+  const defaultValues = useMemo(
+    () =>
+      isEdit
+        ? {
+            sku: currentRow?.sku ?? '',
+            name: currentRow?.name ?? '',
+            description: currentRow?.description ?? '',
+            purchase_price: Number(currentRow?.purchase_price ?? 0),
+            sale_price: Number(currentRow?.sale_price ?? 0),
+            taxable: currentRow?.taxable ?? false,
+            unit_id: currentRow?.unit?.id ?? '',
+            product_category_id: currentRow?.product_category?.id ?? '',
+            images: currentRow?.images ?? [],
+          }
+        : {
+            sku: '',
+            name: '',
+            description: '',
+            taxable: false,
+            unit_id: '',
+            product_category_id: '',
+            images: [],
+          },
+    [currentRow, isEdit]
+  )
+
   const form = useForm<CreateProductFormData>({
     resolver: zodResolver(createProductSchema),
-    defaultValues: isEdit
-      ? {
-          sku: currentRow?.sku ?? '',
-          name: currentRow?.name ?? '',
-          description: currentRow?.description ?? '',
-          purchase_price: Number(currentRow?.purchase_price ?? 0),
-          sale_price: Number(currentRow?.sale_price ?? 0),
-          taxable: currentRow?.taxable ?? false,
-          unit_id: currentRow?.unit.id ?? '',
-          product_category_id: currentRow?.product_category.id ?? '',
-          images: currentRow?.images ?? [],
-        }
-      : {
-          sku: '',
-          name: '',
-          description: '',
-          taxable: false,
-          unit_id: '',
-          product_category_id: '',
-          images: [],
-        },
+    defaultValues: defaultValues,
   })
+
+  // Update form values when currentRow changes (e.g. after fetch)
+  useEffect(() => {
+    if (currentRow) {
+      form.reset(defaultValues)
+    }
+  }, [currentRow, form, defaultValues])
 
   const handleBoxClick = () => {
     fileInputRef.current?.click()
