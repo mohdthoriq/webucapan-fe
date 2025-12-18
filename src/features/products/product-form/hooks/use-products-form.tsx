@@ -6,7 +6,6 @@ import type { Product } from '@/types'
 import {
   type CreateProductFormData,
   createProductSchema,
-  type UpdateProductFormData,
 } from '../types/product-form.schema'
 import {
   useCreateProductMutation,
@@ -41,8 +40,6 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
           sku: '',
           name: '',
           description: '',
-          purchase_price: 0,
-          sale_price: 0,
           taxable: false,
           unit_id: '',
           product_category_id: '',
@@ -90,7 +87,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
     setUploadedFiles((prev) =>
       prev.filter((_, index) => index !== indexToRemove)
     )
-    const currentImages = form.getValues('images') || []
+    const currentImages = (form.getValues('images') as string[]) || []
     form.setValue(
       'images',
       currentImages.filter((_, index) => index !== indexToRemove)
@@ -100,25 +97,45 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
   const createMutation = useCreateProductMutation()
   const updateMutation = useUpdateProductMutation()
 
+  const prepareFormData = (data: CreateProductFormData) => {
+    const formData = new FormData()
+    formData.append('sku', data.sku)
+    formData.append('name', data.name)
+    if (data.description) formData.append('description', data.description)
+    formData.append('purchase_price', data.purchase_price.toString())
+    formData.append('sale_price', data.sale_price.toString())
+    formData.append('taxable', String(data.taxable ?? false))
+    formData.append('unit_id', data.unit_id)
+    formData.append('product_category_id', data.product_category_id)
+
+    // Append new files
+    uploadedFiles.forEach((file) => {
+      formData.append('images', file)
+    })
+
+    // If there's existing images (urls/strings) and we are not overwriting everything,
+    // we might need to handle them. But for now, let's assume we send new files.
+    // If you want to keep existing images, you can filter them and append them back as strings
+    if (isEdit && Array.isArray(data.images)) {
+      data.images.forEach((img: string) => {
+        if (typeof img === 'string' && !img.startsWith('data:')) {
+          formData.append('existing_images[]', img)
+        }
+      })
+    }
+
+    return formData
+  }
+
   const onSubmit = async (data: CreateProductFormData) => {
+    const formData = prepareFormData(data)
+
     if (isEdit && currentRow) {
-      const updateData: UpdateProductFormData = {
-        id: currentRow.id,
-        sku: data.sku,
-        name: data.name,
-        description: data.description,
-        purchase_price: data.purchase_price,
-        sale_price: data.sale_price,
-        taxable: data.taxable,
-        unit_id: data.unit_id,
-        product_category_id: data.product_category_id,
-        images: data.images,
-      }
-      await updateMutation.mutateAsync(updateData)
+      await updateMutation.mutateAsync({ id: currentRow.id, formData })
       form.reset()
       router.history.back()
     } else {
-      await createMutation.mutateAsync(data)
+      await createMutation.mutateAsync(formData)
       form.reset()
       router.history.back()
     }

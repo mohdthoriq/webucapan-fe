@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Status } from '@/types'
+import { type SalesInvoice, Status } from '@/types'
 import {
   CreateInvoiceSchema,
   UpdateInvoiceSchema,
@@ -13,7 +13,7 @@ import {
 } from './use-invoice-form-mutation'
 
 type UseInvoiceFormProps = {
-  currentRow?: UpdateInvoiceFormData
+  currentRow?: SalesInvoice
 }
 
 export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
@@ -24,8 +24,8 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
       ? {
           ...currentRow,
           id: currentRow.id,
-          customer_id: currentRow.customer_id,
-          payment_term_id: currentRow.payment_term_id,
+          customer_id: currentRow.customer.id ?? '',
+          payment_term_id: currentRow.payment_term.id ?? '',
 
           invoice_date: currentRow.invoice_date
             ? new Date(currentRow.invoice_date)
@@ -37,8 +37,8 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
           invoice_items:
             currentRow.invoice_items?.map((item) => ({
               ...item,
-              product_id: item.product_id,
-              tax_id: item.tax_id,
+              product_id: item.product.id ?? '',
+              tax_id: item.tax.id ?? '',
             })) || [],
           tags: currentRow.tags || null,
         }

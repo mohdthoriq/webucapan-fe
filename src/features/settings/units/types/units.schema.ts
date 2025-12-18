@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const createUnitSchema = z.object({
-  name: z.string(),
-  code: z.string(),
+  name: z.string().min(1, 'Nama satuan tidak boleh kosong'),
+  code: z.string().min(1, 'Kode satuan tidak boleh kosong'),
   company_id: z.string(),
 })
 
@@ -10,8 +10,8 @@ export type CreateUnitFormData = z.infer<typeof createUnitSchema>
 
 export const updateUnitSchema = z.object({
   id: z.uuid(),
-  name: z.string(),
-  code: z.string(),
+  name: z.string().min(1, 'Nama satuan tidak boleh kosong'),
+  code: z.string().min(1, 'Kode satuan tidak boleh kosong'),
 })
 
 export type UpdateUnitFormData = z.infer<typeof updateUnitSchema>

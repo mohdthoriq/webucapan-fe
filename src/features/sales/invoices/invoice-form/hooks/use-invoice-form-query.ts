@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { PaginationApiResponse, SalesInvoice } from '@/types'
+import type { SalesInvoice } from '@/types'
 import apiClient from '@/lib/api-client'
 
 interface InvoiceFormQueryParams {
@@ -15,7 +15,7 @@ export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
     ],
     queryFn: async () => {
       const url = `/invoices/${params?.id}`
-      const response = await apiClient.get<PaginationApiResponse<SalesInvoice>>(url)
+      const response = await apiClient.get<SalesInvoice>(url)
 
       return response.data
     },

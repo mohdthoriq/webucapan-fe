@@ -77,9 +77,3 @@ export const UpdateInvoiceSchema = z
   })
 
 export type UpdateInvoiceFormData = z.infer<typeof UpdateInvoiceSchema>
-
-export const DeleteInvoiceSchema = z.object({
-  id: z.uuid().min(1, 'ID invoice tidak boleh kosong'),
-})
-
-export type DeleteInvoiceFormData = z.infer<typeof DeleteInvoiceSchema>

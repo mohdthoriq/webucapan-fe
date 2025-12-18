@@ -14,8 +14,8 @@ import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-import type { InvoiceItem } from '../types/invoice-item.types'
 import { InvoiceItemRow } from './invoice-item-row'
+import type { InvoiceItem } from '@/types'
 
 type InvoiceItemsTableProps = {
   fields: (InvoiceItem & { id: string })[]

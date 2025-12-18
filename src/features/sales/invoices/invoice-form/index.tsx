@@ -3,11 +3,17 @@ import { InvoiceFormContent } from './components/invoice-form-content'
 import { InvoiceFormProvider } from './components/invoice-form-provider'
 import { useInvoiceForm } from './hooks/use-invoice-form'
 import { Button } from '@/components/ui/button'
+import { useLocation } from '@tanstack/react-router'
+import { useInvoiceFormQuery } from './hooks/use-invoice-form-query'
 
 export function InvoiceFormPage() {
-  const currentRow = undefined
+  const location = useLocation()
 
-  const invoiceForm = useInvoiceForm({ currentRow })
+  const currentRowId = (location.state as { currentRowId?: string })?.currentRowId
+
+  const currentRow = useInvoiceFormQuery({ id: currentRowId })
+
+  const invoiceForm = useInvoiceForm({ currentRow: currentRow.data })
 
   return (
     <InvoiceFormProvider value={invoiceForm}>

@@ -6,20 +6,20 @@ import type { Product } from './product'
 import type { Tax } from './tax'
 
 export enum Status {
-    draft = 'draft',
-    sent = 'sent',
-    paid = 'paid',
-    cancelled = 'cancelled',
+  draft = 'draft',
+  sent = 'sent',
+  paid = 'paid',
+  cancelled = 'cancelled',
 }
 
-interface InvoiceItem extends GlobalResponse {
-    product: Product
-    description: string
-    quantity: number
-    unit_price: number
-    discount: number
-    tax: Tax
-    total: number
+export interface InvoiceItem extends GlobalResponse {
+  product: Product
+  description: string
+  quantity: number
+  unit_price: number
+  discount: number
+  tax: Tax
+  total: number
 }
 
 export interface SalesInvoice extends GlobalResponse {
@@ -35,4 +35,5 @@ export interface SalesInvoice extends GlobalResponse {
   total: number
   status: Status
   invoice_items: InvoiceItem[]
+  tags: string[]
 }
