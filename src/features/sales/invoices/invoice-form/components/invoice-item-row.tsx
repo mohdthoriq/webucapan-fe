@@ -52,9 +52,9 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
 
   // Sync row total to form state whenever it changes
   useEffect(() => {
-    const currentTotal = form.getValues(`invoice_items.${index}.total`)
+    const currentTotal = form.getValues(`invoice_items.${index}.line_total`)
     if (currentTotal !== rowTotal) {
-      form.setValue(`invoice_items.${index}.total`, rowTotal)
+      form.setValue(`invoice_items.${index}.line_total`, rowTotal)
     }
   }, [rowTotal, form, index])
 
@@ -162,6 +162,8 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   type='number'
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
+                  endAdornment={'%'}
+                  className='w-[80px]'
                 />
               </FormControl>
               <FormMessage />

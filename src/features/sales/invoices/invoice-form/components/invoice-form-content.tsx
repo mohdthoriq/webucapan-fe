@@ -106,15 +106,12 @@ export function InvoiceFormContent() {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className='w-full'>
+                    <SelectTrigger className='w-full' disabled>
                       <SelectValue placeholder='Pilih status' />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value='draft'>Draft</SelectItem>
-                    <SelectItem value='issued'>Issued</SelectItem>
-                    <SelectItem value='paid'>Paid</SelectItem>
-                    <SelectItem value='cancelled'>Cancelled</SelectItem>
+                    <SelectItem value='unpaid'>Belum Dibayar</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -225,7 +222,7 @@ export function InvoiceFormContent() {
             name='payment_term_id'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Syarat Pembayaran</FormLabel>
+                <FormLabel>Termin Pembayaran</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -235,7 +232,7 @@ export function InvoiceFormContent() {
                       className='w-full'
                       disabled={paymentTerms?.data.length === 0}
                     >
-                      <SelectValue placeholder='Pilih syarat pembayaran' />
+                      <SelectValue placeholder='Pilih termin pembayaran' />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -298,7 +295,7 @@ export function InvoiceFormContent() {
                 unit_price: 0,
                 tax_id: '',
                 discount: 0,
-                total: 0,
+                line_total: 0,
               })
             }
           >

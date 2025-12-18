@@ -6,10 +6,9 @@ import type { Product } from './product'
 import type { Tax } from './tax'
 
 export enum Status {
-  draft = 'draft',
-  issued = 'issued',
+  unpaid = 'unpaid',
+  partially_paid = 'partially_paid',
   paid = 'paid',
-  cancelled = 'cancelled',
 }
 
 export interface InvoiceItem extends GlobalResponse {

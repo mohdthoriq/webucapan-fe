@@ -55,7 +55,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
             subtotal: 0,
             tax_total: 0,
             total: 0,
-            status: Status.draft,
+            status: Status.unpaid,
             invoice_date: new Date(),
             due_date: new Date(),
             invoice_items: [

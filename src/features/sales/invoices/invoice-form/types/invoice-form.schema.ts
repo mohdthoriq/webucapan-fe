@@ -7,7 +7,7 @@ const invoiceItemSchema = z.object({
   unit_price: z.number().positive(),
   tax_id: z.string().optional(),
   discount: z.number().nonnegative().optional(),
-  total: z.number().positive(),
+  line_total: z.number().positive(),
 })
 
 const invoiceItemUpdateSchema = z.object({
@@ -18,7 +18,7 @@ const invoiceItemUpdateSchema = z.object({
   unit_price: z.number().nonnegative(),
   tax_id: z.string().optional(),
   discount: z.number().nonnegative().optional(),
-  total: z.number().positive(),
+  line_total: z.number().positive(),
 })
 
 export const CreateInvoiceSchema = z
@@ -35,7 +35,7 @@ export const CreateInvoiceSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['draft', 'issued', 'paid', 'cancelled']),
+    status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
     invoice_items: z
       .array(invoiceItemSchema)
@@ -64,7 +64,7 @@ export const UpdateInvoiceSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['draft', 'issued', 'paid', 'cancelled']),
+    status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
     invoice_items: z
       .array(invoiceItemUpdateSchema)
