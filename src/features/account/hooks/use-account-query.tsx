@@ -5,7 +5,7 @@ import apiClient from '@/lib/api-client'
 interface AccountQueryParams {
   page?: number
   limit?: number
-  name?: string
+  search?: string
   category_id?: string
 }
 
@@ -16,14 +16,14 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       'accounts',
       params?.page,
       params?.limit,
-      params?.name,
+      params?.search,
       params?.category_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
-        ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        limit: '1000',
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.category_id ? { category_id: params.category_id } : {}),
       })
 
