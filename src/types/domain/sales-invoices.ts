@@ -7,7 +7,7 @@ import type { Tax } from './tax'
 
 export enum Status {
   draft = 'draft',
-  sent = 'sent',
+  issued = 'issued',
   paid = 'paid',
   cancelled = 'cancelled',
 }

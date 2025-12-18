@@ -38,7 +38,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               navigate({
-                to: `/sales/invoices/${invoice.id}`,
+                to: `/sales/invoices/detail`,
                 search: {},
                 state: { currentRowId: invoice.id } as Record<string, unknown>,
               })

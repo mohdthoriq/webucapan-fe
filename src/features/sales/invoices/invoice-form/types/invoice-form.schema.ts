@@ -35,7 +35,7 @@ export const CreateInvoiceSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['draft', 'sent', 'paid', 'cancelled']),
+    status: z.enum(['draft', 'issued', 'paid', 'cancelled']),
 
     invoice_items: z
       .array(invoiceItemSchema)
@@ -64,7 +64,7 @@ export const UpdateInvoiceSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['draft', 'sent', 'paid', 'cancelled']),
+    status: z.enum(['draft', 'issued', 'paid', 'cancelled']),
 
     invoice_items: z
       .array(invoiceItemUpdateSchema)

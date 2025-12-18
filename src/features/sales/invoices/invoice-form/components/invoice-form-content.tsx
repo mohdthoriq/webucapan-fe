@@ -112,7 +112,7 @@ export function InvoiceFormContent() {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value='draft'>Draft</SelectItem>
-                    <SelectItem value='sent'>Sent</SelectItem>
+                    <SelectItem value='issued'>Issued</SelectItem>
                     <SelectItem value='paid'>Paid</SelectItem>
                     <SelectItem value='cancelled'>Cancelled</SelectItem>
                   </SelectContent>
