@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Account } from '@/types'
+import type { SalesInvoice } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -24,26 +24,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTableToolbar } from '@/components/data-table'
-import { accountsColumns } from './account-columns'
-import { useAccounts } from './account-provider'
+import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import { invoiceListsColumns } from './invoice-list-columns'
+import { useInvoiceLists } from './invoice-list-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function AccountsTable({ search, navigate }: DataTableProps) {
-  const {
-    accountsData,
-    pagination: serverPagination,
-    isLoading,
-  } = useAccounts()
+export function InvoiceListsTable({ search, navigate }: DataTableProps) {
+  const { invoiceListsData, pagination: serverPagination, isLoading } = useInvoiceLists()
 
+  // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
+  // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
     onColumnFiltersChange,
@@ -56,14 +54,15 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
+      // name per-column text filter
       { columnId: 'name', searchKey: 'name', type: 'string' },
     ],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: accountsData,
-    columns: accountsColumns,
+    data: invoiceListsData,
+    columns: invoiceListsColumns,
     state: {
       sorting,
       pagination,
@@ -96,13 +95,13 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', 
+        'max-sm:has-[div[role="toolbar"]]:mb-16', // Add margin bottom to the table on mobile when the toolbar is visible
         'flex flex-1 flex-col gap-4'
       )}
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari akun...'
+        searchPlaceholder='Cari satuan...'
         searchKey='name'
       />
       <div className='overflow-hidden rounded-md border'>
@@ -141,11 +140,12 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={accountsColumns.length} />
+              <TableEmpty colSpan={invoiceListsColumns.length} />
             )}
           </TableBody>
         </Table>
       </div>
+      <DataTablePagination table={table} className='mt-auto' />
     </div>
   )
 }
@@ -166,7 +166,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Account> }) {
+function TableRows({ table }: { table: TanstackTable<SalesInvoice> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

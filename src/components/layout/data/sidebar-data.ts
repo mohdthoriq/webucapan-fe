@@ -1,12 +1,6 @@
-import {
-  ContactRound,
-  GalleryHorizontalEnd,
-  LayoutDashboard,
-  Settings,
-  Store,
-  WalletCards,
-} from 'lucide-react'
-import { type SidebarData } from '../types'
+import { ContactRound, FileText, GalleryHorizontalEnd, LayoutDashboard, Settings, ShoppingBasket, Store, WalletCards } from 'lucide-react';
+import { type SidebarData } from '../types';
+
 
 export const sidebarData: SidebarData = {
   navGroups: [
@@ -31,6 +25,17 @@ export const sidebarData: SidebarData = {
               title: 'Produk',
               url: '/products',
               icon: Store,
+            },
+          ],
+        },
+        {
+          title: 'Penjualan',
+          icon: ShoppingBasket,
+          items: [
+            {
+              title: 'Tagihan',
+              url: '/sales/invoices',
+              icon: FileText,
             },
           ],
         },

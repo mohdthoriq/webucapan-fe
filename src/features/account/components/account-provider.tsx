@@ -43,7 +43,7 @@ export function AccountsProvider({
     accountsData: accountsData?.data ?? [],
     pagination: accountsData?.pagination ?? {
       page: 1,
-      limit: 10,
+      limit: 1000,
       total: 0,
       total_pages: 1,
     },

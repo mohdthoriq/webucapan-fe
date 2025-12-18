@@ -1,17 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import apiClient from '@/lib/api-client'
-import type {
-  CreateProductFormData,
-  UpdateProductFormData,
-} from '../types/product-form.schema'
+import apiClientFormData from '@/lib/api-client-form-data'
 
 export function useCreateProductMutation() {
-
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreateProductFormData) => {
-      const response = await apiClient.post(`products/with-images`, credentials)
+    mutationFn: async (formData: FormData) => {
+      const response = await apiClientFormData.post(`products/with-images`, formData)
       return response.data
     },
     onMutate: () => {
@@ -30,13 +25,18 @@ export function useCreateProductMutation() {
 }
 
 export function useUpdateProductMutation() {
-
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateProductFormData) => {
-      const response = await apiClient.patch(
-        `products/${credentials.id}/with-images`,
-        credentials
+    mutationFn: async ({
+      id,
+      formData,
+    }: {
+      id: string
+      formData: FormData
+    }) => {
+      const response = await apiClientFormData.patch(
+        `products/${id}/with-images`,
+        formData
       )
       return response.data
     },
