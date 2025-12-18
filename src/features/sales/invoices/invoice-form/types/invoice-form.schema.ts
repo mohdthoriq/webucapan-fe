@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const invoiceItemSchema = z.object({
+export const invoiceItemSchema = z.object({
   product_id: z.string().min(1, 'Produk tidak boleh kosong'),
   description: z.string().optional(),
   quantity: z.number().positive(),
@@ -10,7 +10,9 @@ const invoiceItemSchema = z.object({
   line_total: z.number().positive(),
 })
 
-const invoiceItemUpdateSchema = z.object({
+export type InvoiceItemFormData = z.infer<typeof invoiceItemSchema>
+
+export const invoiceItemUpdateSchema = z.object({
   id: z.uuid().min(1, 'ID item tidak boleh kosong'),
   product_id: z.string().min(1, 'Produk tidak boleh kosong'),
   description: z.string().optional(),
@@ -20,6 +22,8 @@ const invoiceItemUpdateSchema = z.object({
   discount: z.number().nonnegative().optional(),
   line_total: z.number().positive(),
 })
+
+export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
 
 export const CreateInvoiceSchema = z
   .object({
