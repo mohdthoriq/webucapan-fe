@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useInvoiceFormQuery } from '../invoice-form/hooks/use-invoice-form-query'
 import { InvoiceDetailReceipt } from './components/invoice-detail-receipt'
 import { InvoicePaymentsCard } from './components/invoice-payments-card'
+import { TransactionTable } from './components/transaction-table'
 
 export function InvoiceDetail() {
   const location = useLocation()
@@ -34,6 +35,9 @@ export function InvoiceDetail() {
     )
   }
 
+  const showTransactionTable =
+    invoice.status === 'paid' || invoice.status === 'partially_paid'
+
   return (
     <div className='space-y-6'>
       <Card>
@@ -58,6 +62,13 @@ export function InvoiceDetail() {
         <CardContent>
           <InvoiceDetailReceipt invoice={invoice} />
           <InvoicePaymentsCard invoice={invoice} />
+
+          {showTransactionTable && (
+            <TransactionTable
+              payments={invoice.invoice_payments}
+              currency={invoice.currency}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

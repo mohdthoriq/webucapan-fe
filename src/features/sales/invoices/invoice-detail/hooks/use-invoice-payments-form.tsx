@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -26,6 +27,13 @@ export function useInvoicePaymentsForm({
       note: '',
     },
   })
+
+  // Sync amount when defaultAmount changes (e.g. after partial payment)
+  useEffect(() => {
+    if (defaultAmount !== undefined) {
+      form.setValue('amount', defaultAmount)
+    }
+  }, [defaultAmount, form])
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
 

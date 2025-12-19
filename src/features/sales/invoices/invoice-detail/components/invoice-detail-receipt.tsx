@@ -29,15 +29,15 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <span className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
               Invoice
             </span>
-            <CardTitle className='text-2xl font-bold tracking-tight'>
-              #{invoice.invoice_number}
+            <CardTitle className='flex items-center gap-4 text-2xl font-bold tracking-tight'>
+              # {invoice.invoice_number}
+              <Badge
+                variant={invoice.status === 'paid' ? 'default' : 'outline'}
+                className='w-fit text-[10px] uppercase px-2 py-1'
+              >
+                {invoice.status}
+              </Badge>
             </CardTitle>
-            <Badge
-              variant={invoice.status === 'paid' ? 'default' : 'outline'}
-              className='mt-1 w-fit text-[10px] uppercase'
-            >
-              {invoice.status}
-            </Badge>
           </div>
           <Button
             variant='outline'

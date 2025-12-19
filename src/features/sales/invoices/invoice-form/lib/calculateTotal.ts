@@ -26,7 +26,6 @@ export const calculateTotals = (
     const lineTotal = quantity * unitPrice - discountAmount
     newSubtotal += lineTotal
 
-    // Tax Logic
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
@@ -34,7 +33,7 @@ export const calculateTotals = (
         newTaxTotal += itemTax
 
         if (tax.name) {
-          taxBreakdown[tax.name] = (taxBreakdown[tax.name]) + itemTax
+          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + itemTax
         }
       }
     }

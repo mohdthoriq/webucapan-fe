@@ -40,8 +40,10 @@ interface InvoicePaymentsCardProps {
 export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
   const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
     invoiceId: invoice.id,
-    defaultAmount: Number(invoice.total),
+    defaultAmount: Number(invoice.outstanding),
   })
+
+  if (invoice.status === 'paid') return null
 
   const paymentMethods = [
     { label: 'Tunai (Cash)', value: 'cash' },
@@ -118,15 +120,17 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                         onValueChange={field.onChange}
                         placeholder='0'
                         prefix='Rp'
-                        className='min-w-[200px]'
+                        className='min-w-[100px]'
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
 
-              {/* Payment Method */}
+            {/* Payment Method */}
+            <div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-3'>
               <FormField
                 control={form.control}
                 name='method'
