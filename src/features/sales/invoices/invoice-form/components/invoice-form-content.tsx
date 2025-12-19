@@ -269,7 +269,7 @@ export function InvoiceFormContent() {
                 quantity: 1,
                 unit_price: 0,
                 tax_id: '',
-                discount: 0,
+                discount: undefined,
                 line_total: 0,
               })
             }
@@ -285,15 +285,15 @@ export function InvoiceFormContent() {
               <span className='text-muted-foreground'>Subtotal</span>
               <span>{totals.subtotal.toLocaleString()}</span>
             </div>
-            <div className='flex flex-col border-b gap-2 pb-2'>
+            <div className='flex flex-col gap-2 border-b pb-2'>
               {Object.entries(totals.taxBreakdown).map(([name, amount]) => (
-                <div key={name} className='flex justify-between text-md'>
+                <div key={name} className='text-md flex justify-between'>
                   <span className='text-muted-foreground'>{name}</span>
                   <span>{amount.toLocaleString()}</span>
                 </div>
               ))}
               {Object.keys(totals.taxBreakdown).length === 0 && (
-                <div className='flex justify-between text-md'>
+                <div className='text-md flex justify-between'>
                   <span className='text-muted-foreground'>Total Pajak</span>
                   <span>{totals.taxTotal.toLocaleString()}</span>
                 </div>

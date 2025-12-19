@@ -245,11 +245,8 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     const taxName = item.tax.name
                     const quantity = Number(item.quantity) || 0
                     const unitPrice = Number(item.unit_price) || 0
-                    const discount = Number(item.discount) || 0
-                    const lineTotal =
-                      quantity * unitPrice -
-                      (quantity * unitPrice * discount) / 100
-                    const taxAmount = (lineTotal * (item.tax.rate || 0)) / 100
+                    const taxAmount =
+                      (quantity * unitPrice * (item.tax.rate || 0)) / 100
 
                     acc[taxName] = (acc[taxName] || 0) + taxAmount
                   }

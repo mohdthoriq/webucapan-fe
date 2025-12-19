@@ -47,7 +47,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
                 quantity: Number(item.quantity) || 1,
                 tax_id: item.tax?.id ?? '',
                 unit_price: Number(item.unit_price) || 0,
-                discount: Number(item.discount) || 0,
+                discount: Number(item.discount) || undefined,
                 line_total: Number(item.line_total) || 0,
               })) || [],
             tags:
@@ -71,6 +71,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
                 product_id: '',
                 description: '',
                 tax_id: '',
+                discount: undefined,
               },
             ],
             tags: [],

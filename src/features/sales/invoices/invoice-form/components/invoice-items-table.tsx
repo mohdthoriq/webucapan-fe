@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import type { useForm } from 'react-hook-form'
 import {
   Table,
@@ -56,15 +56,15 @@ export function InvoiceItemsTable({
         </TableHeader>
         <TableBody>
           {fields.map((field, index) => (
-            <InvoiceItemRow
-              key={field.product_id}
-              field={field}
-              index={index}
-              form={form}
-              remove={remove}
-              products={productsData}
-              taxes={taxesData}
-            />
+            <Fragment key={`${field.product_id}-${index}`}>
+              <InvoiceItemRow
+                index={index}
+                form={form}
+                remove={remove}
+                products={productsData}
+                taxes={taxesData}
+              />
+            </Fragment>
           ))}
           {fields.length === 0 && (
             <TableRow>

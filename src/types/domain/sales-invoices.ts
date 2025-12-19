@@ -17,7 +17,7 @@ export interface InvoiceItem extends GlobalResponse {
   description: string
   quantity: number
   unit_price: number
-  discount: number
+  discount: number | undefined
   tax: Tax
   line_total: number
 }

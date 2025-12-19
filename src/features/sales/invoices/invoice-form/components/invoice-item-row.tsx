@@ -21,19 +21,16 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import type {
   CreateInvoiceFormData,
-  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 
 export const InvoiceItemRow = memo(function InvoiceItemRow({
-  field,
   index,
   form,
   remove,
   products,
   taxes,
 }: {
-  field: InvoiceItemFormData
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
@@ -62,7 +59,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   }, [rowTotal, form, index])
 
   return (
-    <TableRow key={field.product_id}>
+    <TableRow>
       <TableCell>
         <FormField
           control={form.control}
