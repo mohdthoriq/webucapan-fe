@@ -26,7 +26,7 @@ function TaxesContent() {
             </p>
           </div>
           <div>
-            <div className='flex'>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
               <Button variant={'link'} onClick={() => history.go(-1)}>
                 Kembali
               </Button>
