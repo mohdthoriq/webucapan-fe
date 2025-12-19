@@ -3,6 +3,7 @@ import type { InvoicePayment } from '@/types'
 import { id } from 'date-fns/locale'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -24,46 +25,60 @@ export function TransactionTable({
   if (!payments || payments.length === 0) return null
 
   return (
-    <div className='mt-8 space-y-4'>
-      <h3 className='text-lg font-semibold'>Riwayat Transaksi</h3>
-      <div className='rounded-md border'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Tanggal</TableHead>
-              <TableHead>No. Referensi</TableHead>
-              <TableHead>Akun</TableHead>
-              <TableHead>Metode</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className='text-right'>Jumlah</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {payments.map((payment) => (
-              <TableRow key={payment.id}>
-                <TableCell>
-                  {format(new Date(payment.payment_date), 'dd MMMM yyyy', {
-                    locale: id,
-                  })}
-                </TableCell>
-                <TableCell>{payment.reference_no || '-'}</TableCell>
-                <TableCell>{payment.account?.name}</TableCell>
-                <TableCell className='capitalize'>
-                  {payment.method.replace('_', ' ')}
-                </TableCell>
-                <TableCell>
-                  <Badge variant='outline' className='capitalize'>
-                    {payment.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className='text-right font-medium'>
-                  {formatCurrency(payment.amount, currency)}
-                </TableCell>
+    <Card className='overflow-hidden'>
+      <CardHeader>
+        <CardTitle className='text-lg font-semibold'>
+          Riwayat Transaksi
+        </CardTitle>
+      </CardHeader>
+      <hr />
+      <CardContent className='pt-2'>
+        <div className='rounded-md border'>
+          <Table>
+            <TableHeader>
+              <TableRow className='bg-muted/50'>
+                <TableHead className='w-[180px] p-4'>Tanggal</TableHead>
+                <TableHead className='p-4'>No. Referensi</TableHead>
+                <TableHead className='p-4'>Akun</TableHead>
+                <TableHead className='p-4'>Metode</TableHead>
+                <TableHead className='p-4'>Status</TableHead>
+                <TableHead className='p-4 text-right'>Jumlah</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+            </TableHeader>
+            <TableBody>
+              {payments.map((payment) => (
+                <TableRow
+                  key={payment.id}
+                  className='hover:bg-muted/30 transition-colors'
+                >
+                  <TableCell className='p-4 font-medium'>
+                    {format(new Date(payment.payment_date), 'dd MMMM yyyy', {
+                      locale: id,
+                    })}
+                  </TableCell>
+                  <TableCell className='text-muted-foreground p-4'>
+                    {payment.reference_no || '-'}
+                  </TableCell>
+                  <TableCell className='p-4'>{payment.account?.name}</TableCell>
+                  <TableCell className='p-4 capitalize'>
+                    <span className='bg-secondary text-secondary-foreground inline-flex items-center rounded px-2 py-0.5 text-xs font-medium'>
+                      {payment.method.replace('_', ' ')}
+                    </span>
+                  </TableCell>
+                  <TableCell className='p-4'>
+                    <Badge variant='outline' className='font-normal capitalize'>
+                      {payment.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className='p-4 text-right font-semibold'>
+                    {formatCurrency(payment.amount, currency)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   )
 }

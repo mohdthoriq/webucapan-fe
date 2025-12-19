@@ -59,7 +59,7 @@ export function InvoiceDetail() {
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className='space-y-6'>
           <InvoiceDetailReceipt invoice={invoice} />
           <InvoicePaymentsCard invoice={invoice} />
 

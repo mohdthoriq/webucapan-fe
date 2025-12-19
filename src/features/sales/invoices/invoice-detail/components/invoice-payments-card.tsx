@@ -52,7 +52,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
   ]
 
   return (
-    <Card className='mt-6'>
+    <Card>
       <CardHeader>
         <CardTitle>Terima Pembayaran</CardTitle>
       </CardHeader>
