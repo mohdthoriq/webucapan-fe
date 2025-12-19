@@ -32,7 +32,6 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
       : {
           company_id: company?.id ?? '',
           name: '',
-          rate: 0,
           description: '',
         },
   })

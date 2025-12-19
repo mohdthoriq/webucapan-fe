@@ -125,8 +125,8 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  value={field.value ?? 0}
+                  value={field.value ?? ''}
+                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -144,8 +144,9 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  value={field.value ?? 0}
+                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                  value={field.value ?? ''}
+                  placeholder='0'
                 />
               </FormControl>
               <FormMessage />
@@ -163,9 +164,11 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                  value={field.value ?? ''}
                   endAdornment={'%'}
                   className='w-[80px]'
+                  placeholder='0'
                 />
               </FormControl>
               <FormMessage />

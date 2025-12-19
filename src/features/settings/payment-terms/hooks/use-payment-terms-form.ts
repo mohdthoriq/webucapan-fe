@@ -32,7 +32,6 @@ export function usePaymentTermsForm({ currentRow }: usePaymentTermsFormProps) {
       : {
           company_id: company?.id ?? '',
           name: '',
-          days: 0,
           description: '',
         },
   })

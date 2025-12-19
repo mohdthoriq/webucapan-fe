@@ -29,9 +29,7 @@ type ProductsFormContentProps = {
   currentRow?: Product
 }
 
-export function ProductsFormContent({
-  currentRow,
-}: ProductsFormContentProps) {
+export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
   const { data: units } = useUnitsQuery()
   const { data: categories } = useProductCategoryQuery()
   const {
@@ -143,7 +141,14 @@ export function ProductsFormContent({
                     type='number'
                     placeholder='0'
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value ?? ''}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value === ''
+                          ? undefined
+                          : Number(e.target.value)
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -161,7 +166,14 @@ export function ProductsFormContent({
                     type='number'
                     placeholder='0'
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value ?? ''}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value === ''
+                          ? undefined
+                          : Number(e.target.value)
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />

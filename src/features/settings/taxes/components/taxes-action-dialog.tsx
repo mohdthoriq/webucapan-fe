@@ -93,11 +93,10 @@ export function TaxesActionDialog({
                         placeholder='Masukkan rate pajak...'
                         autoComplete='off'
                         onChange={(e) => {
-                          const value = e.target.valueAsNumber
-                          field.onChange(isNaN(value) ? 0 : value)
+                          field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
                         }}
                         type='number'
-                        value={field.value}
+                        value={field.value ?? ''}
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
