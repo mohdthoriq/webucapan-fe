@@ -35,6 +35,7 @@ export const InputFieldRupiah = React.forwardRef<HTMLInputElement, InputFieldRup
     }
 
     const numericValue = parseInt(rawValue, 10)
+
     if (!isNaN(numericValue)) {
       setDisplayValue(formatNumber(numericValue))
       onValueChange?.(numericValue)

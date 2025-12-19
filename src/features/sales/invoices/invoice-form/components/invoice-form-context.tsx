@@ -8,6 +8,7 @@ export type InvoiceFormContextType = UseInvoiceFormReturn & {
     subtotal: number
     taxTotal: number
     total: number
+    taxBreakdown: Record<string, number>
   }
 }
 
