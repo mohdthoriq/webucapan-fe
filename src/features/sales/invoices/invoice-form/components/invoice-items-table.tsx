@@ -45,12 +45,12 @@ export function InvoiceItemsTable({
         <TableHeader>
           <TableRow>
             <TableHead className='w-[200px]'>Produk</TableHead>
-            <TableHead className='w-[250px]'>Deskripsi</TableHead>
+            <TableHead className='w-[200px]'>Deskripsi</TableHead>
             <TableHead className='w-[100px]'>Qty</TableHead>
-            <TableHead className='w-[150px]'>Harga</TableHead>
+            <TableHead className='w-[100px]'>Harga</TableHead>
             <TableHead className='w-[100px]'>Disc</TableHead>
-            <TableHead className='w-[150px]'>Pajak</TableHead>
-            <TableHead className='w-[150px] text-right'>Total</TableHead>
+            <TableHead className='w-[100px]'>Pajak</TableHead>
+            <TableHead className='w-[100px] text-right'>Total</TableHead>
             <TableHead className='w-[50px]'></TableHead>
           </TableRow>
         </TableHeader>

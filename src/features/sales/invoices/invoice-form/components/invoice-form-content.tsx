@@ -92,47 +92,6 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
-        </div>
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {/* Status */}
-          <FormField
-            control={form.control}
-            name='status'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className='w-full' disabled>
-                      <SelectValue placeholder='Pilih status' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='unpaid'>Belum Dibayar</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Currency */}
-          <FormField
-            control={form.control}
-            name='currency'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mata Uang</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           {/* Invoice Date */}
           <FormField
@@ -216,6 +175,24 @@ export function InvoiceFormContent() {
             )}
           />
 
+        </div>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {/* Currency */}
+          <FormField
+            control={form.control}
+            name='currency'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mata Uang</FormLabel>
+                <FormControl>
+                  <Input {...field} readOnly />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          
           {/* Payment Term */}
           <FormField
             control={form.control}

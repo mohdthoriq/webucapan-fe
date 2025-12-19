@@ -27,7 +27,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
             id: currentRow.id,
             invoice_number: currentRow.invoice_number,
             customer_id: currentRow.customer?.id ?? '',
-            payment_term_id: currentRow.payment_term?.id ?? '',
+            payment_term_id: currentRow.payment_term?.id ?? undefined,
             status: currentRow.status,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
@@ -58,7 +58,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
         : {
             invoice_number: '',
             customer_id: '',
-            payment_term_id: '',
+            payment_term_id: undefined,
             currency: 'IDR',
             subtotal: 0,
             tax_total: 0,

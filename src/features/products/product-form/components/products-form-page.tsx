@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
@@ -137,18 +138,10 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
               <FormItem>
                 <FormLabel>Harga Beli</FormLabel>
                 <FormControl>
-                  <Input
-                    type='number'
+                  <InputFieldRupiah
                     placeholder='0'
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value === ''
-                          ? undefined
-                          : Number(e.target.value)
-                      )
-                    }
+                    value={field.value}
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
@@ -162,18 +155,10 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
               <FormItem>
                 <FormLabel>Harga Jual</FormLabel>
                 <FormControl>
-                  <Input
-                    type='number'
+                  <InputFieldRupiah
                     placeholder='0'
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value === ''
-                          ? undefined
-                          : Number(e.target.value)
-                      )
-                    }
+                    value={field.value}
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
