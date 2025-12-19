@@ -28,7 +28,7 @@ export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
 export const CreateInvoiceSchema = z
   .object({
     customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
-    payment_term_id: z.string().min(1, 'Jatuh tempo tidak boleh kosong'),
+    payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
 
     invoice_date: z.date(),
@@ -57,7 +57,7 @@ export const UpdateInvoiceSchema = z
   .object({
     id: z.uuid().min(1, 'ID invoice tidak boleh kosong'),
     customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
-    payment_term_id: z.string().min(1, 'Jatuh tempo tidak boleh kosong'),
+    payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
 
     invoice_date: z.date(),

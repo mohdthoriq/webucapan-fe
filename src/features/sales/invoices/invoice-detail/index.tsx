@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useInvoiceFormQuery } from '../invoice-form/hooks/use-invoice-form-query'
 import { InvoiceDetailReceipt } from './components/invoice-detail-receipt'
+import { InvoicePaymentsCard } from './components/invoice-payments-card'
+import { TransactionTable } from './components/transaction-table'
 
 export function InvoiceDetail() {
   const location = useLocation()
@@ -33,29 +35,42 @@ export function InvoiceDetail() {
     )
   }
 
+  const showTransactionTable =
+    invoice.status === 'paid' || invoice.status === 'partially_paid'
+
   return (
-    <Card>
-      <CardHeader>
-        <div className='mb-8 flex items-center justify-between'>
-          <div>
-            <h1 className='text-3xl font-semibold tracking-tight'>
-              Detail Tagihan Pembelian {invoice.invoice_number}
-            </h1>
+    <div className='space-y-6'>
+      <Card>
+        <CardHeader>
+          <div className='mb-2 flex items-center justify-between'>
+            <div>
+              <h1 className='text-4xl font-semibold tracking-tight'>
+                Detail Tagihan Pembelian {invoice.invoice_number}
+              </h1>
+            </div>
+            <div className='mr-4 flex gap-2'>
+              <Button
+                variant='ghost'
+                onClick={() => history.back()}
+                className='gap-2'
+              >
+                <ArrowLeft className='h-4 w-4' /> Kembali
+              </Button>
+            </div>
           </div>
-          <div className='mr-4 flex gap-2'>
-            <Button
-              variant='ghost'
-              onClick={() => history.back()}
-              className='gap-2'
-            >
-              <ArrowLeft className='h-4 w-4' /> Kembali
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <InvoiceDetailReceipt invoice={invoice} />
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent className='space-y-6'>
+          <InvoiceDetailReceipt invoice={invoice} />
+          <InvoicePaymentsCard invoice={invoice} />
+
+          {showTransactionTable && (
+            <TransactionTable
+              payments={invoice.invoice_payments}
+              currency={invoice.currency}
+            />
+          )}
+        </CardContent>
+      </Card>
+    </div>
   )
 }

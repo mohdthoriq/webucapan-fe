@@ -18,21 +18,19 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import type {
   CreateInvoiceFormData,
-  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 
 export const InvoiceItemRow = memo(function InvoiceItemRow({
-  field,
   index,
   form,
   remove,
   products,
   taxes,
 }: {
-  field: InvoiceItemFormData
   index: number
   form: ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
@@ -61,7 +59,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   }, [rowTotal, form, index])
 
   return (
-    <TableRow key={field.product_id}>
+    <TableRow>
       <TableCell>
         <FormField
           control={form.control}
@@ -86,7 +84,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 defaultValue={field.value}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Pilih Produk' />
                   </SelectTrigger>
                 </FormControl>
@@ -125,8 +123,13 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  value={field.value ?? 0}
+                  value={field.value ?? ''}
+                  onChange={(e) =>
+                    field.onChange(
+                      e.target.value === '' ? undefined : Number(e.target.value)
+                    )
+                  }
+                  className='w-[70px]'
                 />
               </FormControl>
               <FormMessage />
@@ -141,11 +144,12 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  type='number'
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  value={field.value ?? 0}
+                <InputFieldRupiah
+                  placeholder='0'
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  prefix='Rp'
+                  className='text-right w-[150px]'
                 />
               </FormControl>
               <FormMessage />
@@ -163,9 +167,15 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 <Input
                   type='number'
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) =>
+                    field.onChange(
+                      e.target.value === '' ? undefined : Number(e.target.value)
+                    )
+                  }
+                  value={field.value ?? ''}
                   endAdornment={'%'}
-                  className='w-[80px]'
+                  className='w-[70px]'
+                  placeholder='0'
                 />
               </FormControl>
               <FormMessage />
@@ -184,7 +194,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 defaultValue={field.value ?? undefined}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Pajak' />
                   </SelectTrigger>
                 </FormControl>

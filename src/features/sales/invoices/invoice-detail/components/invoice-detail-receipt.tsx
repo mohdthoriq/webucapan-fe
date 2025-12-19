@@ -29,15 +29,15 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <span className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
               Invoice
             </span>
-            <CardTitle className='text-2xl font-bold tracking-tight'>
-              #{invoice.invoice_number}
+            <CardTitle className='flex items-center gap-4 text-2xl font-bold tracking-tight'>
+              # {invoice.invoice_number}
+              <Badge
+                variant={invoice.status === 'paid' ? 'default' : 'outline'}
+                className='w-fit text-[10px] uppercase px-2 py-1'
+              >
+                {invoice.status}
+              </Badge>
             </CardTitle>
-            <Badge
-              variant={invoice.status === 'paid' ? 'default' : 'outline'}
-              className='mt-1 w-fit text-[10px] uppercase'
-            >
-              {invoice.status}
-            </Badge>
           </div>
           <Button
             variant='outline'
@@ -137,7 +137,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     <Badge
                       key={idx}
                       variant='outline'
-                      className='text-[12px] font-semibold uppercase px-2 py-1'
+                      className='px-2 py-1 text-[12px] font-semibold uppercase'
                     >
                       {typeof tag === 'object' ? tag.name : tag}
                     </Badge>
@@ -202,12 +202,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
-                      {item.discount
-                        ? formatCurrency(
-                            Number(item.discount),
-                            invoice.currency
-                          )
-                        : '-'}
+                      {item.discount ? item.discount + '%' : '-'}
                     </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
@@ -241,12 +236,47 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 {formatCurrency(Number(invoice.subtotal), invoice.currency)}
               </span>
             </div>
-            <div className='flex justify-between text-sm font-medium'>
-              <span className='text-muted-foreground'>Pajak</span>
-              <span>
-                {formatCurrency(Number(invoice.tax_total), invoice.currency)}
-              </span>
-            </div>
+
+            {/* Tax Breakdown */}
+            {Object.entries(
+              invoice.invoice_items.reduce(
+                (acc, item) => {
+                  if (item.tax) {
+                    const taxName = item.tax.name
+                    const quantity = Number(item.quantity) || 0
+                    const unitPrice = Number(item.unit_price) || 0
+                    const taxAmount =
+                      (quantity * unitPrice * (item.tax.rate || 0)) / 100
+
+                    acc[taxName] = (acc[taxName] || 0) + taxAmount
+                  }
+                  return acc
+                },
+                {} as Record<string, number>
+              )
+            ).map(([name, amount]) => (
+              <div key={name} className='flex justify-between text-sm'>
+                <span className='text-muted-foreground'>{name}</span>
+                <span className='font-medium'>
+                  {formatCurrency(amount, invoice.currency)}
+                </span>
+              </div>
+            ))}
+
+            {/* Fallback if no specific tax items but a total exists */}
+            {invoice.invoice_items.every((item) => !item.tax) &&
+              Number(invoice.tax_total) > 0 && (
+                <div className='flex justify-between text-sm font-medium'>
+                  <span className='text-muted-foreground'>Pajak</span>
+                  <span>
+                    {formatCurrency(
+                      Number(invoice.tax_total),
+                      invoice.currency
+                    )}
+                  </span>
+                </div>
+              )}
+
             <Separator className='my-2 bg-zinc-300 dark:bg-zinc-700' />
             <div className='flex items-center justify-between'>
               <span className='text-base font-bold'>Total Tagihan</span>

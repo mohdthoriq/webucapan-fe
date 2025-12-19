@@ -1,4 +1,5 @@
 import type { GlobalResponse } from '../api/global-response'
+import type { Account } from './account'
 import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
@@ -17,9 +18,19 @@ export interface InvoiceItem extends GlobalResponse {
   description: string
   quantity: number
   unit_price: number
-  discount: number
+  discount: number | undefined
   tax: Tax
   line_total: number
+}
+
+export interface InvoicePayment extends GlobalResponse {
+  payment_date: Date
+  amount: number
+  method: string
+  reference_no: string
+  note: string
+  status: string
+  account: Account
 }
 
 export interface SalesInvoice extends GlobalResponse {
@@ -33,8 +44,11 @@ export interface SalesInvoice extends GlobalResponse {
   subtotal: number
   tax_total: number
   total: number
+  paid_amount: number
+  outstanding: number
   status: Status
   invoice_items: InvoiceItem[]
+  invoice_payments: InvoicePayment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }

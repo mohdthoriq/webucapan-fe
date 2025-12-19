@@ -92,47 +92,6 @@ export function InvoiceFormContent() {
               </FormItem>
             )}
           />
-        </div>
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {/* Status */}
-          <FormField
-            control={form.control}
-            name='status'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className='w-full' disabled>
-                      <SelectValue placeholder='Pilih status' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='unpaid'>Belum Dibayar</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Currency */}
-          <FormField
-            control={form.control}
-            name='currency'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mata Uang</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           {/* Invoice Date */}
           <FormField
@@ -211,6 +170,22 @@ export function InvoiceFormContent() {
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {/* Currency */}
+          <FormField
+            control={form.control}
+            name='currency'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mata Uang</FormLabel>
+                <FormControl>
+                  <Input {...field} readOnly />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -294,7 +269,7 @@ export function InvoiceFormContent() {
                 quantity: 1,
                 unit_price: 0,
                 tax_id: '',
-                discount: 0,
+                discount: undefined,
                 line_total: 0,
               })
             }
@@ -306,15 +281,25 @@ export function InvoiceFormContent() {
         {/* Footer / Totals */}
         <div className='flex justify-end'>
           <div className='w-full space-y-2 md:w-1/3'>
-            <div className='flex justify-between py-2'>
+            <div className='flex justify-between'>
               <span className='text-muted-foreground'>Subtotal</span>
               <span>{totals.subtotal.toLocaleString()}</span>
             </div>
-            <div className='flex justify-between border-b py-2'>
-              <span className='text-muted-foreground'>Total Pajak</span>
-              <span>{totals.taxTotal.toLocaleString()}</span>
+            <div className='flex flex-col gap-2 border-b pb-2'>
+              {Object.entries(totals.taxBreakdown).map(([name, amount]) => (
+                <div key={name} className='text-md flex justify-between'>
+                  <span className='text-muted-foreground'>{name}</span>
+                  <span>{amount.toLocaleString()}</span>
+                </div>
+              ))}
+              {Object.keys(totals.taxBreakdown).length === 0 && (
+                <div className='text-md flex justify-between'>
+                  <span className='text-muted-foreground'>Total Pajak</span>
+                  <span>{totals.taxTotal.toLocaleString()}</span>
+                </div>
+              )}
             </div>
-            <div className='flex justify-between py-2 text-lg font-bold'>
+            <div className='flex justify-between text-lg font-bold'>
               <span>Total Invoice</span>
               <span>{totals.total.toLocaleString()}</span>
             </div>
