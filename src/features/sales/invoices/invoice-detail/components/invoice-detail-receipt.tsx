@@ -137,7 +137,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     <Badge
                       key={idx}
                       variant='outline'
-                      className='text-[12px] font-semibold uppercase px-2 py-1'
+                      className='px-2 py-1 text-[12px] font-semibold uppercase'
                     >
                       {typeof tag === 'object' ? tag.name : tag}
                     </Badge>
@@ -202,12 +202,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
-                      {item.discount
-                        ? formatCurrency(
-                            Number(item.discount),
-                            invoice.currency
-                          )
-                        : '-'}
+                      {item.discount ? item.discount + '%' : '-'}
                     </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
