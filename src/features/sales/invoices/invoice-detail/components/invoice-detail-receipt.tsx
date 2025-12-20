@@ -23,7 +23,7 @@ interface InvoiceDetailReceiptProps {
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
   const invoiceLabel: Record<string, string> = {
     unpaid: 'Belum Dibayar',
-    paid: 'Dibayar',
+    paid: 'Lunas',
     partially_paid: 'Dibayar Sebagian',
     overdue: 'Terlambat',
   }
