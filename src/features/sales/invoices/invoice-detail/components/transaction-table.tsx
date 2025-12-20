@@ -37,7 +37,7 @@ export function TransactionTable({
           <Table>
             <TableHeader>
               <TableRow className='bg-muted/50'>
-                <TableHead className='w-[180px] p-4'>Tanggal</TableHead>
+                <TableHead className='w-[100px] p-4'>Tanggal</TableHead>
                 <TableHead className='p-4'>No. Referensi</TableHead>
                 <TableHead className='p-4'>Akun</TableHead>
                 <TableHead className='p-4'>Metode</TableHead>

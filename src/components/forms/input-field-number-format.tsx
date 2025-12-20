@@ -1,32 +1,39 @@
 import * as React from 'react'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 
-interface InputFieldRupiahProps extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange'> {
+interface InputFieldRupiahProps
+  extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange'> {
   value?: number | string
   onValueChange?: (value: number | undefined) => void
   prefix?: string
 }
 
-export const InputFieldRupiah = React.forwardRef<HTMLInputElement, InputFieldRupiahProps>(({ value, onValueChange, className, prefix, ...props }, ref) => {
-  const [displayValue, setDisplayValue] = React.useState<string>('')
+export const InputFieldRupiah = React.forwardRef<
+  HTMLInputElement,
+  InputFieldRupiahProps
+>(({ value, onValueChange, className, prefix, ...props }, ref) => {
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
-  // Format number to currency string without symbol
-  const formatNumber = (num: number | string | undefined): string => {
-    if (num === undefined || num === null || num === '') return ''
-    const val =
-      typeof num === 'string' ? parseFloat(num.replace(/[^\d]/g, '')) : num
-    if (isNaN(val)) return ''
-    return new Intl.NumberFormat('id-ID').format(val)
-  }
+  const [displayValue, setDisplayValue] = React.useState<string>(
+    formatNumber(value)
+  )
 
-  // Update display value when prop value changes
+  // Sync display value when prop value changes from outside (e.g. form reset)
   React.useEffect(() => {
-    setDisplayValue(formatNumber(value))
-  }, [value])
+    const formatted = formatNumber(value)
+    if (formatted !== displayValue) {
+      setDisplayValue(formatted)
+    }
+  }, [value, displayValue])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/[^\d]/g, '')
+    const input = e.target
+    const originalValue = input.value
+    const selectionStart = input.selectionStart || 0
+
+    // Get digits only
+    const rawValue = originalValue.replace(/[^\d]/g, '')
 
     if (rawValue === '') {
       setDisplayValue('')
@@ -35,17 +42,46 @@ export const InputFieldRupiah = React.forwardRef<HTMLInputElement, InputFieldRup
     }
 
     const numericValue = parseInt(rawValue, 10)
+    const formattedValue = formatNumber(numericValue)
 
-    if (!isNaN(numericValue)) {
-      setDisplayValue(formatNumber(numericValue))
-      onValueChange?.(numericValue)
+    // Calculate how many non-digits were before the cursor in the original value
+    const nonDigitsBefore = (
+      originalValue.slice(0, selectionStart).match(/[^\d]/g) || []
+    ).length
+    // Calculate how many non-digits are in the new value up to the same number of digits
+    const digitsBefore = selectionStart - nonDigitsBefore
+
+    let newSelectionStart = 0
+    let digitsCount = 0
+    for (
+      let i = 0;
+      i < formattedValue.length && digitsCount < digitsBefore;
+      i++
+    ) {
+      if (/\d/.test(formattedValue[i])) {
+        digitsCount++
+      }
+      newSelectionStart++
     }
+
+    // Set value and position
+    setDisplayValue(formattedValue)
+    onValueChange?.(numericValue)
+
+    // Selection position must be set after React updates the DOM
+    window.requestAnimationFrame(() => {
+      if (inputRef.current) {
+        inputRef.current.setSelectionRange(newSelectionStart, newSelectionStart)
+      }
+    })
   }
+
+  React.useImperativeHandle(ref, () => inputRef.current!)
 
   return (
     <Input
       {...props}
-      ref={ref}
+      ref={inputRef}
       type='text'
       value={displayValue}
       onChange={handleChange}

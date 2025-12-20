@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, cn, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,6 +21,7 @@ interface InvoiceDetailReceiptProps {
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
+
   return (
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
       <CardHeader>
@@ -32,10 +33,13 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <CardTitle className='flex items-center gap-4 text-2xl font-bold tracking-tight'>
               # {invoice.invoice_number}
               <Badge
-                variant={invoice.status === 'paid' ? 'default' : 'outline'}
-                className='w-fit text-[10px] uppercase px-2 py-1'
+                variant='outline'
+                className={cn(
+                  'w-fit px-2 py-1 text-[12 px] font-bold uppercase tracking-wider',
+                  getStatusStyles(invoice.status)
+                )}
               >
-                {invoice.status}
+                {invoiceLabel[invoice.status] || invoice.status}
               </Badge>
             </CardTitle>
           </div>

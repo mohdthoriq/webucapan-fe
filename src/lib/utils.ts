@@ -67,3 +67,32 @@ export const formatCurrency = (amount: number, currency: string) => {
     minimumFractionDigits: 0,
   }).format(amount)
 }
+
+// Format number to currency string without symbol
+export const formatNumber = (num: number | string | undefined): string => {
+  if (num === undefined || num === null || num === '') return ''
+  const val =
+    typeof num === 'string' ? parseFloat(num.replace(/[^\d]/g, '')) : num
+  if (isNaN(val)) return ''
+  return new Intl.NumberFormat('id-ID').format(val)
+}
+
+export const invoiceLabel: Record<string, string> = {
+  unpaid: 'Belum Dibayar',
+  paid: 'Lunas',
+  partially_paid: 'Dibayar Sebagian',
+  overdue: 'Terlambat',
+}
+
+export const getStatusStyles = (status: string) => {
+  switch (status) {
+    case 'paid':
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    case 'partially_paid':
+      return 'bg-yellow-50 text-yellow-700 border-yellow-200'
+    case 'unpaid':
+      return 'bg-red-50 text-red-700 border-red-200'
+    default:
+      return ''
+  }
+}

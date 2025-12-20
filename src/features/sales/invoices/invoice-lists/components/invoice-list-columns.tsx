@@ -1,10 +1,11 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './invoice-list-row-actions'
+import { Badge } from '@/components/ui/badge'
 
 export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
   {
@@ -16,7 +17,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { invoice_number } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-xs'>{invoice_number}</LongText>
+          <LongText>{invoice_number}</LongText>
         </div>
       )
     },
@@ -36,7 +37,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     cell: ({ row }) => {
       const { customer } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{customer.name}</LongText>
         </div>
       )
@@ -64,13 +65,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
     accessorKey: 'due_date',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tanggal Jatuh Tempo' />
+      <DataTableColumnHeader column={column} title='Jatuh Tempo' />
     ),
     cell: ({ row }) => {
       const { due_date } = row.original
@@ -86,15 +87,51 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     },
   },
   {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ row }) => {
+      const { status } = row.original
+      return (
+        <div className='px-2'>
+          <Badge className={cn(getStatusStyles(status))}>{invoiceLabel[status] || status}</Badge>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[150px]',
+    },
+  },
+  {
+    accessorKey: 'outstanding',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Sisa Tagihan' />
+    ),
+    cell: ({ row }) => {
+      const { outstanding } = row.original
+      const formattedOutstanding = formatNumber(outstanding)
+      return (
+        <div className='px-2'>
+          <LongText className='truncate'>{formattedOutstanding}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[150px]',
+    },
+  },
+  {
     accessorKey: 'total',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Total' />
     ),
     cell: ({ row }) => {
       const { total } = row.original
+      const formattedTotal = formatNumber(total)
       return (
         <div className='px-2'>
-          <LongText className='truncate'>{total}</LongText>
+          <LongText className='truncate'>{formattedTotal}</LongText>
         </div>
       )
     },

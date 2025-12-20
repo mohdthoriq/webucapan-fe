@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -17,7 +16,17 @@ export function useInvoicePaymentsForm({
   defaultAmount,
 }: UseInvoicePaymentsFormProps) {
   const form = useForm<InvoicePaymentsFormData>({
-    resolver: zodResolver(invoicePaymentsSchema),
+    resolver: zodResolver(
+      invoicePaymentsSchema.refine(
+        (data) => data.amount <= (defaultAmount || 0),
+        {
+          message: `Jumlah pembayaran tidak boleh melebihi sisa tagihan (${(
+            defaultAmount || 0
+          ).toLocaleString()})`,
+          path: ['amount'],
+        }
+      )
+    ),
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
@@ -27,13 +36,6 @@ export function useInvoicePaymentsForm({
       note: '',
     },
   })
-
-  // Sync amount when defaultAmount changes (e.g. after partial payment)
-  useEffect(() => {
-    if (defaultAmount !== undefined) {
-      form.setValue('amount', defaultAmount)
-    }
-  }, [defaultAmount, form])
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
 
