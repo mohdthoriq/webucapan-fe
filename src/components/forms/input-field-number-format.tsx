@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 
 interface InputFieldRupiahProps
@@ -14,15 +14,6 @@ export const InputFieldRupiah = React.forwardRef<
   InputFieldRupiahProps
 >(({ value, onValueChange, className, prefix, ...props }, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null)
-
-  // Format number to currency string without symbol
-  const formatNumber = (num: number | string | undefined): string => {
-    if (num === undefined || num === null || num === '') return ''
-    const val =
-      typeof num === 'string' ? parseFloat(num.replace(/[^\d]/g, '')) : num
-    if (isNaN(val)) return ''
-    return new Intl.NumberFormat('id-ID').format(val)
-  }
 
   const [displayValue, setDisplayValue] = React.useState<string>(
     formatNumber(value)

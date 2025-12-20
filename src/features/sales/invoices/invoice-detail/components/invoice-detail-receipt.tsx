@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
-import { formatCurrency, cn } from '@/lib/utils'
+import { formatCurrency, cn, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,25 +21,6 @@ interface InvoiceDetailReceiptProps {
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
-  const invoiceLabel: Record<string, string> = {
-    unpaid: 'Belum Dibayar',
-    paid: 'Lunas',
-    partially_paid: 'Dibayar Sebagian',
-    overdue: 'Terlambat',
-  }
-
-  const getStatusStyles = (status: string) => {
-    switch (status) {
-      case 'paid':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-      case 'partially_paid':
-        return 'bg-yellow-50 text-yellow-700 border-yellow-200'
-      case 'unpaid':
-        return 'bg-red-50 text-red-700 border-red-200'
-      default:
-        return ''
-    }
-  }
 
   return (
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
