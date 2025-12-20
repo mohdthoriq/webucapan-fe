@@ -12,6 +12,7 @@ interface InvoiceFormComboboxProps {
   placeholder?: string
   limit?: number
   type?: 'contact' | 'product'
+  excludeIds?: string[]
 }
 
 export function InvoiceFormCombobox({
@@ -29,6 +30,7 @@ function ContactCombobox({
   onValueChange,
   placeholder = 'Pilih Pelanggan',
   limit = 20,
+  excludeIds = [],
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -46,6 +48,13 @@ function ContactCombobox({
     limit,
   })
 
+  const filteredItems = React.useMemo(() => {
+    if (!excludeIds || excludeIds.length === 0) return allItems
+    return allItems.filter(
+      (item) => !excludeIds.includes(item.id) || item.id === value
+    )
+  }, [allItems, excludeIds, value])
+
   const selectedItem = React.useMemo(
     () => allItems.find((item) => item.id === value) || null,
     [allItems, value]
@@ -57,7 +66,7 @@ function ContactCombobox({
       onValueChange={onValueChange}
       placeholder={placeholder}
       searchPlaceholder='Cari kontak...'
-      items={allItems}
+      items={filteredItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
       isError={isError}
@@ -85,6 +94,7 @@ function ProductCombobox({
   onValueChange,
   placeholder = 'Pilih Produk',
   limit = 20,
+  excludeIds = [],
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -102,6 +112,13 @@ function ProductCombobox({
     limit,
   })
 
+  const filteredItems = React.useMemo(() => {
+    if (!excludeIds || excludeIds.length === 0) return allItems
+    return allItems.filter(
+      (item) => !excludeIds.includes(item.id) || item.id === value
+    )
+  }, [allItems, excludeIds, value])
+
   const selectedItem = React.useMemo(
     () => allItems.find((item) => item.id === value) || null,
     [allItems, value]
@@ -113,7 +130,7 @@ function ProductCombobox({
       onValueChange={onValueChange}
       placeholder={placeholder}
       searchPlaceholder='Cari produk...'
-      items={allItems}
+      items={filteredItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
       isError={isError}
