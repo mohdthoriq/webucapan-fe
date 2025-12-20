@@ -21,7 +21,6 @@ interface InvoiceDetailReceiptProps {
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
-
   return (
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
       <CardHeader>
@@ -35,7 +34,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               <Badge
                 variant='outline'
                 className={cn(
-                  'w-fit px-2 py-1 text-[12 px] font-bold uppercase tracking-wider',
+                  'text-[12 px] w-fit px-2 py-1 font-bold tracking-wider uppercase',
                   getStatusStyles(invoice.status)
                 )}
               >
@@ -281,11 +280,18 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 </div>
               )}
 
+            <div className='flex justify-between text-sm'>
+              <span className='text-muted-foreground'>Total</span>
+              <span className='font-medium'>
+                {formatCurrency(Number(invoice.total), invoice.currency)}
+              </span>
+            </div>
+
             <Separator className='my-2 bg-zinc-300 dark:bg-zinc-700' />
             <div className='flex items-center justify-between'>
-              <span className='text-base font-bold'>Total Tagihan</span>
+              <span className='text-base font-bold'>Sisa Tagihan</span>
               <span className='text-primary text-2xl font-black'>
-                {formatCurrency(Number(invoice.total), invoice.currency)}
+                {formatCurrency(Number(invoice.outstanding), invoice.currency)}
               </span>
             </div>
           </div>
