@@ -174,13 +174,10 @@ export function InvoicePaymentsCombobox({
                           value === account.id ? 'opacity-100' : 'opacity-0'
                         )}
                       />
-                      <div className='flex flex-col'>
+                      <div className='flex gap-2'>
+                        <span className='font-medium'>{account.code}</span>
+                        <span>-</span>
                         <span className='font-medium'>{account.name}</span>
-                        {account.description && (
-                          <span className='text-muted-foreground text-xs'>
-                            {account.description}
-                          </span>
-                        )}
                       </div>
                     </CommandItem>
                   ))}

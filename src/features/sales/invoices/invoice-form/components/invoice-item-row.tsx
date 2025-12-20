@@ -72,10 +72,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   const prod = products?.data.find((p) => p.id === val)
                   if (prod) {
                     form.setValue(
-                      `invoice_items.${index}.description`,
-                      prod.description || prod.name
-                    )
-                    form.setValue(
                       `invoice_items.${index}.unit_price`,
                       Number(prod.sale_price) || 0
                     )
@@ -126,7 +122,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   value={field.value ?? ''}
                   onChange={(e) =>
                     field.onChange(
-                      e.target.value === '' ? undefined : Number(e.target.value)
+                      e.target.value === '' ? '' : Number(e.target.value)
                     )
                   }
                   className='w-[70px]'
@@ -149,7 +145,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   value={field.value}
                   onValueChange={field.onChange}
                   prefix='Rp'
-                  className='text-right w-[150px]'
+                  className='w-[150px] text-right'
                 />
               </FormControl>
               <FormMessage />
@@ -169,7 +165,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   {...field}
                   onChange={(e) =>
                     field.onChange(
-                      e.target.value === '' ? undefined : Number(e.target.value)
+                      e.target.value === '' ? '' : Number(e.target.value)
                     )
                   }
                   value={field.value ?? ''}

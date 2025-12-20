@@ -70,8 +70,11 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
               {
                 product_id: '',
                 description: '',
+                quantity: 1,
+                unit_price: 0,
                 tax_id: '',
                 discount: undefined,
+                line_total: 0,
               },
             ],
             tags: [],

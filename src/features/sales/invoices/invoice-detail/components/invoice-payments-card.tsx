@@ -113,7 +113,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                 name='amount'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Jumlah Pembayaran</FormLabel>
+                    <FormLabel>{invoice.status === 'paid' ? 'Jumlah Pembayaran' : 'Pembayaran Sisa'}</FormLabel>
                     <FormControl>
                       <InputFieldRupiah
                         value={field.value}
