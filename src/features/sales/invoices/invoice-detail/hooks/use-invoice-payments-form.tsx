@@ -31,7 +31,7 @@ export function useInvoicePaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: undefined,
+      method: "",
       account_id: undefined,
       reference_no: '',
       note: '',
@@ -51,7 +51,7 @@ export function useInvoicePaymentsForm({
     form.reset({
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: undefined,
+      method: "",
       account_id: undefined,
       reference_no: '',
       note: '',
