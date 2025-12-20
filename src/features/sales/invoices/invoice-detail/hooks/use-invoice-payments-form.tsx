@@ -1,8 +1,9 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  invoicePaymentsSchema,
   type InvoicePaymentsFormData,
+  invoicePaymentsSchema,
 } from '../types/invoice-payments.schema'
 import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation'
 
@@ -30,7 +31,7 @@ export function useInvoicePaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: undefined as unknown as string,
+      method: undefined,
       account_id: undefined,
       reference_no: '',
       note: '',
@@ -39,11 +40,19 @@ export function useInvoicePaymentsForm({
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
 
+  useEffect(() => {
+    if (defaultAmount !== undefined) {
+      form.setValue('amount', defaultAmount)
+    }
+  }, [defaultAmount, form])
+
   const onSubmit = async (data: InvoicePaymentsFormData) => {
     await createMutation.mutateAsync(data)
     form.reset({
-      ...data,
+      payment_date: new Date(),
       amount: defaultAmount || 0,
+      method: undefined,
+      account_id: undefined,
       reference_no: '',
       note: '',
     })
