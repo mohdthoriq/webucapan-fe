@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Contact, PaginationApiResponse, ContactType } from '@/types'
-import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 
 interface ContactQueryParams {
@@ -11,8 +10,6 @@ interface ContactQueryParams {
 }
 
 export function useContactsQuery(params?: ContactQueryParams) {
-  const user = useAuthStore((state) => state.auth.user)
-
   return useQuery({
     queryKey: [
       'contacts',
@@ -20,16 +17,13 @@ export function useContactsQuery(params?: ContactQueryParams) {
       params?.limit,
       params?.company_id,
       params?.name,
-      user?.company?.id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        company_id: params?.company_id
-          ? params.company_id
-          : user?.company?.id || '',
+        ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 
       const url = queryParams.toString()
@@ -46,8 +40,6 @@ export function useContactsQuery(params?: ContactQueryParams) {
 }
 
 export function useContactTypesQuery(params?: ContactQueryParams) {
-  const user = useAuthStore((state) => state.auth.user)
-
   return useQuery({
     queryKey: [
       'contact-types',
@@ -55,16 +47,13 @@ export function useContactTypesQuery(params?: ContactQueryParams) {
       params?.limit,
       params?.company_id,
       params?.name,
-      user?.company?.id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        company_id: params?.company_id
-          ? params.company_id
-          : user?.company?.id || '',
+        ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 
       const url = queryParams.toString()
