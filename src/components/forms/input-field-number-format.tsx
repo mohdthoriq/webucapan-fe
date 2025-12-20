@@ -29,7 +29,7 @@ export const InputFieldRupiah = React.forwardRef<
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target
-    const originalValue = input.value
+    const originalValue = input.value ?? ''
     const selectionStart = input.selectionStart || 0
 
     // Get digits only

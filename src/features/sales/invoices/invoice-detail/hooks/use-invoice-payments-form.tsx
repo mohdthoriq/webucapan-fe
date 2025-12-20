@@ -43,7 +43,7 @@ export function useInvoicePaymentsForm({
     await createMutation.mutateAsync(data)
     form.reset({
       ...data,
-      amount: 0,
+      amount: defaultAmount || 0,
       reference_no: '',
       note: '',
     })

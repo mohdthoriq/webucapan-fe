@@ -117,9 +117,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                     <FormControl>
                       <InputFieldRupiah
                         value={field.value ?? ''}
-                        onValueChange={(value) => {
-                          field.onChange(value === '' ? '' : value)
-                        }}
+                        onValueChange={(value) => field.onChange(value)}
                         placeholder='0'
                         prefix='Rp'
                         className='min-w-[100px]'
