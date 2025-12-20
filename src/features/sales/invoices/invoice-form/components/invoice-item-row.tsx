@@ -23,6 +23,7 @@ import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
+import { InvoiceFormCombobox } from './invoice-form-combobox'
 
 export const InvoiceItemRow = memo(function InvoiceItemRow({
   index,
@@ -66,32 +67,23 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           name={`invoice_items.${index}.product_id`}
           render={({ field }) => (
             <FormItem>
-              <Select
-                onValueChange={(val) => {
-                  field.onChange(val)
-                  const prod = products?.data.find((p) => p.id === val)
-                  if (prod) {
-                    form.setValue(
-                      `invoice_items.${index}.unit_price`,
-                      Number(prod.sale_price) || 0
+              <InvoiceFormCombobox
+                type='product'
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  if (value) {
+                    const product = products.data.find(
+                      (p) => p.id === value
                     )
+                    if (product) {
+                      form.setValue(`invoice_items.${index}.unit_price`,
+                        product.sale_price
+                      )
+                    }
                   }
                 }}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Pilih Produk' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {products?.data.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </FormItem>
           )}
         />

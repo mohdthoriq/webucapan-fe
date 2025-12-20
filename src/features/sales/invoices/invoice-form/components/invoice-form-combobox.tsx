@@ -1,217 +1,136 @@
-'use client'
-
 import * as React from 'react'
-import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useDebounce } from '@/hooks/use-debounce'
-import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import type { Contact } from '@/types/domain/contact'
+import type { Product } from '@/types/domain/product'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import type { Contact } from '@/types'
+import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
+import { useComboboxQuery } from '../hooks/use-combobox-query'
+import { ComboboxBase } from './combobox-base'
 
 interface InvoiceFormComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
-  companyId?: string
   limit?: number
+  type?: 'contact' | 'product'
 }
 
 export function InvoiceFormCombobox({
-  value = '',
-  onValueChange,
-  placeholder = 'Select contact...',
-  companyId,
-  limit = 20,
+  type = 'contact',
+  ...props
 }: InvoiceFormComboboxProps) {
-  const [open, setOpen] = React.useState(false)
-  const [searchTerm, setSearchTerm] = React.useState('')
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const [allContacts, setAllContacts] = React.useState<Contact[]>([])
-  const [selectedContact, setSelectedContact] = React.useState<Contact | null>(
-    null
-  )
-  const [hasMore, setHasMore] = React.useState(true)
+  if (type === 'product') {
+    return <ProductCombobox {...props} />
+  }
+  return <ContactCombobox {...props} />
+}
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 500)
-
-  const { data, isLoading, isError, refetch } = useContactsQuery({
-    page: currentPage,
+function ContactCombobox({
+  value,
+  onValueChange,
+  placeholder = 'Pilih Pelanggan',
+  limit = 20,
+}: Omit<InvoiceFormComboboxProps, 'type'>) {
+  const {
+    allItems,
+    isLoading,
+    isError,
+    hasMore,
+    refetch,
+    loadMore,
+    setSearchTerm,
+  } = useComboboxQuery<
+    Contact,
+    { page?: number; limit?: number; name?: string }
+  >({
+    queryHook: useContactsQuery,
     limit,
-    name: debouncedSearchTerm || undefined,
-    company_id: companyId,
   })
 
-  React.useEffect(() => {
-    setCurrentPage(1)
-    setAllContacts([])
-    setHasMore(true)
-  }, [debouncedSearchTerm, companyId])
-
-  React.useEffect(() => {
-    if (data?.data) {
-      if (currentPage === 1) {
-        setAllContacts(data.data)
-      } else {
-        setAllContacts((prev) => {
-          const newContacts = data.data.filter(
-            (newContact) =>
-              !prev.some(
-                (existingContact) => existingContact.id === newContact.id
-              )
-          )
-          return [...prev, ...newContacts]
-        })
-      }
-
-      const pagination = data.pagination
-      if (pagination) {
-        setHasMore(currentPage < pagination.total_pages)
-      }
-    }
-  }, [data, currentPage])
-
-  React.useEffect(() => {
-    if (value && allContacts.length > 0) {
-      const contact = allContacts.find((p) => p.id === value)
-      setSelectedContact(contact || null)
-    } else {
-      setSelectedContact(null)
-    }
-  }, [value, allContacts])
-
-  const handleSearch = (searchValue: string) => {
-    setSearchTerm(searchValue)
-  }
-
-  const handleSelect = (contactId: string) => {
-    const contact = allContacts.find((p) => p.id === contactId)
-    if (contact) {
-      setSelectedContact(contact)
-      onValueChange?.(contactId)
-      setOpen(false)
-    }
-  }
-
-  const loadMore = () => {
-    if (!isLoading && hasMore) {
-      setCurrentPage((prev) => prev + 1)
-    }
-  }
-
-  // Reset when closing popover
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen)
-    if (!newOpen) {
-      setSearchTerm('')
-    }
-  }
+  const selectedItem = React.useMemo(
+    () => allItems.find((item) => item.id === value) || null,
+    [allItems, value]
+  )
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
-        <Button
-          variant='outline'
-          role='combobox'
-          aria-expanded={open}
-          className='w-full justify-between'
-        >
-          {selectedContact ? selectedContact.name : placeholder}
-          <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className='w-full p-0'>
-        <Command shouldFilter={false}>
-          <CommandInput
-            placeholder='Search contact types...'
-            value={searchTerm}
-            onValueChange={handleSearch}
-          />
-          <CommandList>
-            {isLoading && currentPage === 1 ? (
-              <div className='flex items-center justify-center py-6'>
-                <Loader2 className='h-4 w-4 animate-spin' />
-                <span className='text-muted-foreground ml-2 text-sm'>
-                  Loading...
-                </span>
-              </div>
-            ) : isError ? (
-              <CommandEmpty>
-                <div className='flex flex-col items-center py-4'>
-                  <span className='text-muted-foreground mb-2 text-sm'>
-                    Failed to load contact
-                  </span>
-                  <Button variant='outline' size='sm' onClick={() => refetch()}>
-                    Retry
-                  </Button>
-                </div>
-              </CommandEmpty>
-            ) : allContacts.length === 0 ? (
-              <CommandEmpty>No contacts found.</CommandEmpty>
-            ) : (
-              <>
-                <CommandGroup>
-                  {allContacts.map((contact) => (
-                    <CommandItem
-                      key={contact.id}
-                      value={contact.id}
-                      onSelect={() => handleSelect(contact.id)}
-                    >
-                      <CheckIcon
-                        className={cn(
-                          'mr-2 h-4 w-4',
-                          value === contact.id ? 'opacity-100' : 'opacity-0'
-                        )}
-                      />
-                      <div className='flex flex-col'>
-                        <span className='font-medium'>{contact.name}</span>
-                        {contact.company.name && (
-                          <span className='text-muted-foreground text-xs'>
-                            {contact.company.name}
-                          </span>
-                        )}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+    <ComboboxBase
+      value={value}
+      onValueChange={onValueChange}
+      placeholder={placeholder}
+      searchPlaceholder='Cari kontak...'
+      items={allItems}
+      selectedItem={selectedItem}
+      isLoading={isLoading}
+      isError={isError}
+      hasMore={hasMore}
+      onSearch={setSearchTerm}
+      onLoadMore={loadMore}
+      onRetry={refetch}
+      getLabel={(item) => item.name}
+      renderItem={(item) => (
+        <div className='flex flex-col'>
+          <span className='font-medium'>{item.name}</span>
+          {item.company?.name && (
+            <span className='text-muted-foreground text-xs'>
+              {item.company.name}
+            </span>
+          )}
+        </div>
+      )}
+    />
+  )
+}
 
-                {/* Load more indicator */}
-                {hasMore && (
-                  <div className='border-t'>
-                    <Button
-                      variant='ghost'
-                      className='w-full justify-center py-2'
-                      onClick={loadMore}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                          Loading...
-                        </>
-                      ) : (
-                        'Load more'
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+function ProductCombobox({
+  value,
+  onValueChange,
+  placeholder = 'Pilih Produk',
+  limit = 20,
+}: Omit<InvoiceFormComboboxProps, 'type'>) {
+  const {
+    allItems,
+    isLoading,
+    isError,
+    hasMore,
+    refetch,
+    loadMore,
+    setSearchTerm,
+  } = useComboboxQuery<
+    Product,
+    { page?: number; limit?: number; name?: string }
+  >({
+    queryHook: useProductsQuery,
+    limit,
+  })
+
+  const selectedItem = React.useMemo(
+    () => allItems.find((item) => item.id === value) || null,
+    [allItems, value]
+  )
+
+  return (
+    <ComboboxBase
+      value={value}
+      onValueChange={onValueChange}
+      placeholder={placeholder}
+      searchPlaceholder='Cari produk...'
+      items={allItems}
+      selectedItem={selectedItem}
+      isLoading={isLoading}
+      isError={isError}
+      hasMore={hasMore}
+      onSearch={setSearchTerm}
+      onLoadMore={loadMore}
+      onRetry={refetch}
+      getLabel={(item) => item.name}
+      renderItem={(item) => (
+        <div className='flex flex-col'>
+          <span className='font-medium'>{item.name}</span>
+          <span className='text-muted-foreground text-xs'>
+            SKU: {item.sku} • Rp{' '}
+            {Number(item.sale_price).toLocaleString('id-ID')}
+          </span>
+        </div>
+      )}
+    />
   )
 }
