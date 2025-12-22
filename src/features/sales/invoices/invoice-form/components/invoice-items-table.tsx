@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react'
-import { type useForm, useWatch } from 'react-hook-form'
+import { type useForm } from 'react-hook-form'
 import {
   Table,
   TableBody,
@@ -39,18 +39,6 @@ export function InvoiceItemsTable({
   )
   const taxesData = useMemo(() => ({ data: taxes?.data || [] }), [taxes?.data])
 
-  // Optimization: Watch all items once here to calculate excludeIds for all rows
-  // This prevents each row from having its own watcher for the entire array
-  const invoiceItems = useWatch({
-    control: form.control,
-    name: 'invoice_items',
-  })
-
-  const allProductIds = useMemo(
-    () => invoiceItems?.map((item) => item.product_id).filter(Boolean) || [],
-    [invoiceItems]
-  )
-
   return (
     <div className='rounded-md border'>
       <Table>
@@ -75,7 +63,6 @@ export function InvoiceItemsTable({
                 remove={remove}
                 products={productsData}
                 taxes={taxesData}
-                allProductIds={allProductIds}
               />
             </Fragment>
           ))}

@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from 'react'
+import { memo, useEffect } from 'react'
 import { useWatch, type useForm } from 'react-hook-form'
 import type { Product, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
@@ -31,7 +31,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   remove,
   products,
   taxes,
-  allProductIds,
 }: {
   index: number
   form: ReturnType<
@@ -40,7 +39,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   remove: (index: number) => void
   products: { data: Product[] }
   taxes: { data: Tax[] }
-  allProductIds: string[]
 }) {
   const itemValues = useWatch({
     control: form.control,
@@ -61,14 +59,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
     }
   }, [rowTotal, form, index])
 
-  const excludeIds = useMemo(
-    () =>
-      allProductIds.filter(
-        (id) => id && id !== itemValues?.product_id
-      ),
-    [allProductIds, itemValues?.product_id]
-  )
-
   return (
     <TableRow>
       <TableCell>
@@ -80,7 +70,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
               <InvoiceFormCombobox
                 type='product'
                 value={field.value}
-                excludeIds={excludeIds}
                 onValueChange={(value) => {
                   field.onChange(value)
                   if (value) {
