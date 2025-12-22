@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { useWatch, type useForm } from 'react-hook-form'
 import type { Product, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
@@ -21,7 +21,6 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import type {
   CreateInvoiceFormData,
-  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { InvoiceFormCombobox } from './invoice-form-combobox'
@@ -32,6 +31,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   remove,
   products,
   taxes,
+  allProductIds,
 }: {
   index: number
   form: ReturnType<
@@ -40,6 +40,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
   remove: (index: number) => void
   products: { data: Product[] }
   taxes: { data: Tax[] }
+  allProductIds: string[]
 }) {
   const itemValues = useWatch({
     control: form.control,
@@ -60,14 +61,13 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
     }
   }, [rowTotal, form, index])
 
-  const allItems = useWatch({
-    control: form.control,
-    name: 'invoice_items',
-  }) as InvoiceItemFormData[]
-
-  const excludeIds = allItems
-    ?.map((item) => item.product_id)
-    .filter((id) => id && id !== itemValues?.product_id)
+  const excludeIds = useMemo(
+    () =>
+      allProductIds.filter(
+        (id) => id && id !== itemValues?.product_id
+      ),
+    [allProductIds, itemValues?.product_id]
+  )
 
   return (
     <TableRow>

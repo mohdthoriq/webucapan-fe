@@ -87,7 +87,6 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
     defaultValues: defaultValues,
   })
 
-  // Update form values when currentRow changes (e.g. after fetch)
   useEffect(() => {
     if (currentRow) {
       form.reset(defaultValues)
