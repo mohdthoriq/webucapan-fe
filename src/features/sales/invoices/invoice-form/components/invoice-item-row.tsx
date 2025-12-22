@@ -21,7 +21,6 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import type {
   CreateInvoiceFormData,
-  InvoiceItemFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { InvoiceFormCombobox } from './invoice-form-combobox'
@@ -60,15 +59,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
     }
   }, [rowTotal, form, index])
 
-  const allItems = useWatch({
-    control: form.control,
-    name: 'invoice_items',
-  }) as InvoiceItemFormData[]
-
-  const excludeIds = allItems
-    ?.map((item) => item.product_id)
-    .filter((id) => id && id !== itemValues?.product_id)
-
   return (
     <TableRow>
       <TableCell>
@@ -80,7 +70,6 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
               <InvoiceFormCombobox
                 type='product'
                 value={field.value}
-                excludeIds={excludeIds}
                 onValueChange={(value) => {
                   field.onChange(value)
                   if (value) {

@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react'
-import type { useForm } from 'react-hook-form'
+import { type useForm } from 'react-hook-form'
 import {
   Table,
   TableBody,

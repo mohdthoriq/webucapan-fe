@@ -1,8 +1,8 @@
-import { useNavigate, useLocation } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-
+import { useQueryClient } from '@tanstack/react-query'
 interface LogoutDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -10,18 +10,18 @@ interface LogoutDialogProps {
 
 export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
   const navigate = useNavigate()
-  const location = useLocation()
   const { auth } = useAuthStore()
+  const queryClient = useQueryClient()
 
   const handleSignOut = async () => {
     await apiClient.post('/auth/logout')
 
+    queryClient.cancelQueries()
+    queryClient.clear()
+
     auth.reset()
-    // Preserve current location for redirect after login
-    const currentPath = location.href
     navigate({
       to: '/login',
-      search: { redirect: currentPath },
       replace: true,
     })
   }
