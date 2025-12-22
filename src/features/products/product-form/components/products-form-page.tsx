@@ -142,6 +142,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
                     placeholder='0'
                     value={field.value}
                     onValueChange={field.onChange}
+                    prefix='Rp'
                   />
                 </FormControl>
                 <FormMessage />
@@ -159,6 +160,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
                     placeholder='0'
                     value={field.value}
                     onValueChange={field.onChange}
+                    prefix='Rp'
                   />
                 </FormControl>
                 <FormMessage />
