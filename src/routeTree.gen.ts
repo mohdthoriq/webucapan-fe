@@ -35,6 +35,7 @@ import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
+import { Route as AuthenticatedSalesOverviewIndexRouteImport } from './routes/_authenticated/sales/overview/index'
 import { Route as AuthenticatedSalesInvoicesIndexRouteImport } from './routes/_authenticated/sales/invoices/index'
 import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_authenticated/products/add/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
@@ -185,6 +186,12 @@ const AuthenticatedSettingsCompanyRolesIndexRoute =
     path: '/settings/company-roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSalesOverviewIndexRoute =
+  AuthenticatedSalesOverviewIndexRouteImport.update({
+    id: '/sales/overview/',
+    path: '/sales/overview/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSalesInvoicesIndexRoute =
   AuthenticatedSalesInvoicesIndexRouteImport.update({
     id: '/sales/invoices/',
@@ -251,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
+  '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -285,6 +293,7 @@ export interface FileRoutesByTo {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
+  '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -321,6 +330,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/products/add/': typeof AuthenticatedProductsAddIndexRoute
   '/_authenticated/sales/invoices/': typeof AuthenticatedSalesInvoicesIndexRoute
+  '/_authenticated/sales/overview/': typeof AuthenticatedSalesOverviewIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -357,6 +367,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/products/add'
     | '/sales/invoices'
+    | '/sales/overview'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -391,6 +402,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/products/add'
     | '/sales/invoices'
+    | '/sales/overview'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -426,6 +438,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/products/add/'
     | '/_authenticated/sales/invoices/'
+    | '/_authenticated/sales/overview/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/payment-terms/'
@@ -636,6 +649,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsCompanyRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/sales/overview/': {
+      id: '/_authenticated/sales/overview/'
+      path: '/sales/overview'
+      fullPath: '/sales/overview'
+      preLoaderRoute: typeof AuthenticatedSalesOverviewIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/sales/invoices/': {
       id: '/_authenticated/sales/invoices/'
       path: '/sales/invoices'
@@ -718,6 +738,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
   AuthenticatedSalesInvoicesIndexRoute: typeof AuthenticatedSalesInvoicesIndexRoute
+  AuthenticatedSalesOverviewIndexRoute: typeof AuthenticatedSalesOverviewIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -741,6 +762,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
   AuthenticatedSalesInvoicesIndexRoute: AuthenticatedSalesInvoicesIndexRoute,
+  AuthenticatedSalesOverviewIndexRoute: AuthenticatedSalesOverviewIndexRoute,
   AuthenticatedSettingsCompanyRolesIndexRoute:
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:

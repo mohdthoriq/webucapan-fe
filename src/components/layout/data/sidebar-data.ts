@@ -1,4 +1,4 @@
-import { ContactRound, FileText, GalleryHorizontalEnd, LayoutDashboard, Settings, ShoppingBasket, Store, WalletCards } from 'lucide-react';
+import { ChartPie, ContactRound, FileText, GalleryHorizontalEnd, LayoutDashboard, Settings, ShoppingBasket, Store, WalletCards } from 'lucide-react';
 import { type SidebarData } from '../types';
 
 
@@ -32,6 +32,11 @@ export const sidebarData: SidebarData = {
           title: 'Penjualan',
           icon: ShoppingBasket,
           items: [
+            {
+              title: 'Overview',
+              url: '/sales/overview',
+              icon: ChartPie,
+            },
             {
               title: 'Tagihan',
               url: '/sales/invoices',
