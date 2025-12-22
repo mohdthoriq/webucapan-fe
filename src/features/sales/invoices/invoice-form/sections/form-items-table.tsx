@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { InvoiceItemsTable } from '../components/invoice-items-table'
 import type { CreateInvoiceFormData } from '../types/invoice-form.schema'
+import { Badge } from '@/components/ui/badge'
 
 export function InvoiceFormItems() {
   const form = useFormContext<CreateInvoiceFormData>()
@@ -21,7 +22,7 @@ export function InvoiceFormItems() {
         form={form} 
       />
 
-      <div className='space-y-2'>
+      <div className='flex gap-4'>
         <Button
           type='button'
           variant='outline'
@@ -40,6 +41,9 @@ export function InvoiceFormItems() {
         >
           <Plus className='mr-2 h-4 w-4' /> Tambah Item
         </Button>
+        <Badge variant={'outline'} className='text-sm text-muted-foreground bg-secondary'>
+          Total: {fields.length}
+        </Badge>
       </div>
     </div>
   )
