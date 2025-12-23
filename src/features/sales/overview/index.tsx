@@ -1,8 +1,12 @@
 import { Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { TotalSales } from './components/total-sales'
+import { Overdue } from './components/overdue'
+import { PaymentChartCard } from './components/payment-chart-card'
 import { PaymentsReceived } from './components/payments-received'
+import { SalesChartCard } from './components/sales-chart-card'
+import { TotalSales } from './components/total-sales'
+import { WaitingPayments } from './components/waiting-payments'
 
 export function SalesOverview() {
   return (
@@ -27,8 +31,14 @@ export function SalesOverview() {
           </Tabs>
         </div>
         <div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-          <TotalSales />
-          <PaymentsReceived />
+          <div className='grid grid-cols-1 items-center gap-4 md:col-span-2 md:grid-cols-2'>
+            <TotalSales />
+            <PaymentsReceived />
+            <WaitingPayments />
+            <Overdue />
+            <PaymentChartCard className='col-span-2' />
+            <SalesChartCard className='col-span-2' />
+          </div>
         </div>
       </div>
     </>
