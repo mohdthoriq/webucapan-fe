@@ -31,7 +31,7 @@ export function useTopCustomerQuery(params?: TopCustomerQueryParams) {
             const response =
                 await apiClient.get<ApiResponse<TopCustomer>>(url)
 
-            return response.data.data ?? {}
+            return response.data.data
         },
         staleTime: 5 * 60 * 1000,
         retry: 1,

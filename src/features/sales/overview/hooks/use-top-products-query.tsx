@@ -31,7 +31,7 @@ export function useTopProductsQuery(params?: TopProductsQueryParams) {
             const response =
                 await apiClient.get<ApiResponse<TopSellingProducts>>(url)
 
-            return response.data.data ?? {}
+            return response.data.data
         },
         staleTime: 5 * 60 * 1000,
         retry: 1,

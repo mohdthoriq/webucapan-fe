@@ -31,7 +31,7 @@ export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
             const response =
                 await apiClient.get<ApiResponse<PaidRatio>>(url)
 
-            return response.data.data ?? {}
+            return response.data.data
         },
         staleTime: 5 * 60 * 1000,
         retry: 1,

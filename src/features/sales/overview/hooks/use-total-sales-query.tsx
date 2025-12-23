@@ -31,7 +31,7 @@ export function useTotalSalesQuery(params?: TotalSalesQueryParams) {
             const response =
                 await apiClient.get<ApiResponse<TotalSales>>(url)
 
-            return response.data.data ?? {}
+            return response.data.data
         },
         staleTime: 5 * 60 * 1000,
         retry: 1,

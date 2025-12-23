@@ -31,7 +31,7 @@ export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
             const response =
                 await apiClient.get<ApiResponse<PaymentReceived>>(url)
 
-            return response.data.data ?? {}
+            return response.data.data
         },
         staleTime: 5 * 60 * 1000,
         retry: 1,

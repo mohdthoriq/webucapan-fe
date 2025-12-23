@@ -1,9 +1,6 @@
+import { SalesOverview } from '@/features/sales/overview'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/sales/overview/')({
-  component: RouteComponent,
+  component: SalesOverview,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/sales/overview/"!</div>
-}
