@@ -2,19 +2,19 @@ import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, SalesInvoice } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface RoleSettingsQueryParams {
+interface InvoiceListQueryParams {
   page?: number
   limit?: number
   order?: string
   company_id?: string
   customer_id?: string
-  status?: 'draft' | 'issued' | 'paid' | 'cancelled'
+  status?: 'unpaid' | 'partially_paid' | 'paid'
   invoice_number?: string
   date_from?: Date
   date_to?: Date
 }
 
-export function useInvoiceListQuery(params?: RoleSettingsQueryParams) {
+export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
 
   return useQuery({
     queryKey: [
