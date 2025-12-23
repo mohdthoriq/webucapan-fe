@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
@@ -13,11 +13,12 @@ import {
 } from './use-products-form-mutation'
 
 type useProductsFormProps = {
-  currentRow?: Product
+  currentRow?: Product | null
 }
 
 export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+  const [existingImages, setExistingImages] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -34,7 +35,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
             taxable: currentRow?.taxable ?? false,
             unit_id: currentRow?.unit?.id ?? '',
             product_category_id: currentRow?.product_category?.id ?? '',
-            images: currentRow?.images ?? [],
+            images: [],
           }
         : {
             sku: '',
@@ -54,9 +55,15 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
   })
 
   // Update form values when currentRow changes (e.g. after fetch)
-  useEffect(() => {
+  React.useEffect(() => {
     if (currentRow) {
       form.reset(defaultValues)
+      const imgs =
+        Array.isArray(currentRow.images)
+          ? currentRow.images.filter((img) => typeof img === 'string')
+          : []
+      setExistingImages(imgs)
+      form.setValue('images', [])
     }
   }, [currentRow, form, defaultValues])
 
@@ -96,15 +103,14 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
     })
   }
 
-  const removeFile = (indexToRemove: number) => {
-    setUploadedFiles((prev) =>
-      prev.filter((_, index) => index !== indexToRemove)
-    )
-    const currentImages = (form.getValues('images') as string[]) || []
-    form.setValue(
-      'images',
-      currentImages.filter((_, index) => index !== indexToRemove)
-    )
+  const removeFile = (indexToRemove: number, source: 'new' | 'existing') => {
+    if (source === 'new') {
+      setUploadedFiles((prev) => prev.filter((_, index) => index !== indexToRemove))
+      const currentImages = (form.getValues('images') as string[]) || []
+      form.setValue('images', currentImages.filter((_, index) => index !== indexToRemove))
+    } else {
+      setExistingImages((prev) => prev.filter((_, index) => index !== indexToRemove))
+    }
   }
 
   const createMutation = useCreateProductMutation()
@@ -126,14 +132,9 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
       formData.append('images', file)
     })
 
-    // If there's existing images (urls/strings) and we are not overwriting everything,
-    // we might need to handle them. But for now, let's assume we send new files.
-    // If you want to keep existing images, you can filter them and append them back as strings
-    if (isEdit && Array.isArray(data.images)) {
-      data.images.forEach((img: string) => {
-        if (typeof img === 'string' && !img.startsWith('data:')) {
-          formData.append('existing_images[]', img)
-        }
+    if (isEdit && Array.isArray(existingImages)) {
+      existingImages.forEach((img: string) => {
+        formData.append('images', img)
       })
     }
 
@@ -160,6 +161,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     removeFile,
     uploadedFiles,
+    existingImages,
     handleBoxClick,
     handleDragOver,
     handleDrop,

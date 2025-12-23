@@ -1,7 +1,6 @@
 'use client'
 
 import { useLocation } from '@tanstack/react-router'
-import type { Product } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -11,16 +10,20 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { ProductsFormContent } from './components/products-form-page'
+import { useProductsByIdQuery } from './hooks/use-product-query'
 
 export function ProductsForm() {
   const location = useLocation()
-  const currentRow = (location.state as { currentRow?: Product })?.currentRow
+  const currentRowId = (location.state as { currentRowId?: string })?.currentRowId
+
+  const response = useProductsByIdQuery({ id: currentRowId ?? '' })
+  const currentRow = response.data
 
   return (
     <Card>
       <CardHeader className='flex flex-row justify-between'>
         <div className='flex flex-col gap-3'>
-          <CardTitle>Tambah Produk Baru</CardTitle>
+          <CardTitle>{currentRow ? 'Edit Produk' : 'Tambah Produk Baru'}</CardTitle>
           <CardDescription>
             Isi form dibawah ini untuk menambahkan produk baru
           </CardDescription>
