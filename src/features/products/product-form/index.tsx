@@ -14,9 +14,10 @@ import { useProductsByIdQuery } from './hooks/use-product-query'
 
 export function ProductsForm() {
   const location = useLocation()
-  const currentRowId = (location.state as { currentRowId?: string })?.currentRowId
+  const state = location.state as { currentRowId?: string } | undefined
+  const currentRowId = state?.currentRowId
 
-  const response = useProductsByIdQuery({ id: currentRowId ?? '' })
+  const response = useProductsByIdQuery(currentRowId ? { id: currentRowId } : undefined)
   const currentRow = response.data
 
   return (

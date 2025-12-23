@@ -20,6 +20,7 @@ export function useProductsByIdQuery(params?: ProductsQueryParams) {
 
       return response.data.data
     },
+    enabled: !!params?.id,
     staleTime: 5 * 60 * 1000,
     retry: 1,
   })
