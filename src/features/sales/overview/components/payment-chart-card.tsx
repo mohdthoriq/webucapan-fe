@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
-import { MoreVertical, Calendar as CalendarIcon } from 'lucide-react'
+import { MoreVertical, Filter } from 'lucide-react'
+import type { DateRange } from 'react-day-picker'
 import {
   LineChart,
   Line,
@@ -21,23 +22,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
 
 type Period = 'day' | 'week' | 'month' | 'year' | 'custom'
-
-const periodLabels: Record<Period, string> = {
-  day: 'Harian',
-  week: 'Mingguan',
-  month: 'Bulanan',
-  year: 'Tahunan',
-  custom: 'Custom',
-}
 
 interface PaymentChartCardProps {
   className?: string
@@ -45,15 +36,13 @@ interface PaymentChartCardProps {
 
 export function PaymentChartCard({ className }: PaymentChartCardProps) {
   const [period, setPeriod] = useState<Period>('month')
-  const [dateFrom, setDateFrom] = useState<Date>()
-  const [dateTo, setDateTo] = useState<Date>()
-  const [isCustomDateOpen, setIsCustomDateOpen] = useState(false)
+  const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
   const queryParams =
-    period === 'custom' && dateFrom && dateTo
+    period === 'custom' && dateRange?.from && dateRange?.to
       ? {
-          date_from: format(dateFrom, 'yyyy-MM-dd'),
-          date_to: format(dateTo, 'yyyy-MM-dd'),
+          date_from: format(dateRange.from, 'yyyy-MM-dd'),
+          date_to: format(dateRange.to, 'yyyy-MM-dd'),
           period: 'month' as const,
         }
       : {
@@ -67,16 +56,13 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
   const handlePeriodChange = (newPeriod: Period) => {
     setPeriod(newPeriod)
     if (newPeriod !== 'custom') {
-      setDateFrom(undefined)
-      setDateTo(undefined)
-    } else {
-      setIsCustomDateOpen(true)
+      setDateRange(undefined)
     }
   }
 
   const formatYAxis = (value: number) => {
     if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(0)}jt`
+      return `${value / 1000000}jt`
     }
     if (value >= 1000) {
       return `${(value / 1000).toFixed(0)}rb`
@@ -90,53 +76,26 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
 
   return (
     <Card className={cn('bg-card border-border', className)}>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-4'>
-        <h3 className='text-sm font-semibold tracking-wide uppercase'>
-          Pembayaran Diterima
-        </h3>
-        <div className='flex items-center gap-2'>
-          {period === 'custom' && dateFrom && dateTo && (
-            <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  className='h-8 gap-2 text-xs'
-                >
-                  <CalendarIcon className='h-3 w-3' />
-                  {format(dateFrom, 'dd/MM/yy', { locale: id })} -{' '}
-                  {format(dateTo, 'dd/MM/yy', { locale: id })}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className='w-auto p-0' align='end'>
-                <div className='flex gap-2 p-3'>
-                  <div className='space-y-2'>
-                    <p className='text-muted-foreground text-xs font-medium'>
-                      Dari
-                    </p>
-                    <Calendar
-                      mode='single'
-                      selected={dateFrom}
-                      onSelect={setDateFrom}
-                      locale={id}
-                    />
-                  </div>
-                  <div className='space-y-2'>
-                    <p className='text-muted-foreground text-xs font-medium'>
-                      Sampai
-                    </p>
-                    <Calendar
-                      mode='single'
-                      selected={dateTo}
-                      onSelect={setDateTo}
-                      locale={id}
-                      disabled={(date) => (dateFrom ? date < dateFrom : false)}
-                    />
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0'>
+        <div className='flex flex-col gap-1'>
+          <h3 className='text-sm font-semibold tracking-wide uppercase'>
+            Pembayaran Diterima
+          </h3>
+          {period === 'custom' && dateRange?.from && dateRange?.to && (
+            <span className='text-muted-foreground text-xs font-medium'>
+              {format(dateRange.from, 'dd MMM yyyy', { locale: id })} -{' '}
+              {format(dateRange.to, 'dd MMM yyyy', { locale: id })}
+            </span>
           )}
+        </div>
+        <div className='flex items-center gap-1'>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='text-muted-foreground hover:text-foreground h-8 w-8'
+          >
+            <Filter className='h-4 w-4' />
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -147,75 +106,124 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
                 <MoreVertical className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end' className='w-40'>
-              <div className='text-muted-foreground px-2 py-1.5 text-xs font-semibold'>
-                Filter Periode
-              </div>
+            <DropdownMenuContent align='end' className='w-48'>
+              <DropdownMenuItem
+                onClick={() => handlePeriodChange('day')}
+                className={cn(period === 'day' && 'bg-accent')}
+              >
+                Harian
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePeriodChange('week')}
+                className={cn(period === 'week' && 'bg-accent')}
+              >
+                Mingguan
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePeriodChange('month')}
+                className={cn(period === 'month' && 'bg-accent')}
+              >
+                Bulanan
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePeriodChange('year')}
+                className={cn(period === 'year' && 'bg-accent')}
+              >
+                Tahunan
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              {(Object.keys(periodLabels) as Period[]).map((p) => (
-                <DropdownMenuItem
-                  key={p}
-                  onClick={() => handlePeriodChange(p)}
-                  className={cn(
-                    'cursor-pointer',
-                    period === p && 'bg-accent text-accent-foreground'
-                  )}
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger
+                  className={cn(period === 'custom' && 'bg-accent')}
                 >
-                  {periodLabels[p]}
-                </DropdownMenuItem>
-              ))}
+                  Custom
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className='p-0' sideOffset={8}>
+                  <div className='border-b p-3'>
+                    <div className='flex items-center justify-between gap-2'>
+                      <div className='border-input rounded-md border px-3 py-1 text-xs'>
+                        {dateRange?.from
+                          ? format(dateRange.from, 'dd/MM/yyyy')
+                          : 'Pilih tanggal'}
+                      </div>
+                      <span className='text-muted-foreground text-xs'>s/d</span>
+                      <div className='border-input rounded-md border px-3 py-1 text-xs'>
+                        {dateRange?.to
+                          ? format(dateRange.to, 'dd/MM/yyyy')
+                          : 'Pilih tanggal'}
+                      </div>
+                    </div>
+                  </div>
+                  <Calendar
+                    mode='range'
+                    selected={dateRange}
+                    onSelect={(range) => {
+                      setDateRange(range)
+                      if (range?.from && range?.to) {
+                        setPeriod('custom')
+                      }
+                    }}
+                    locale={id}
+                    autoFocus
+                  />
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className='flex h-[300px] items-center justify-center'>
+          <div className='flex h-[400px] items-center justify-center'>
             <div className='border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent' />
           </div>
         ) : (
-          <ResponsiveContainer width='100%' height={300}>
-            <LineChart
-              data={data?.chart_data || []}
-              margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid
-                strokeDasharray='3 3'
-                stroke='hsl(var(--border))'
-              />
+          <ResponsiveContainer width='100%' height={400}>
+            <LineChart data={data?.chart_data || []}>
+              <CartesianGrid stroke='#e5e5e5' className='stroke-[0.2px]' />
               <XAxis
                 dataKey='label'
-                stroke='hsl(var(--muted-foreground))'
+                stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                height={40}
+                dy={15}
+                tickMargin={10}
               />
               <YAxis
-                stroke='hsl(var(--muted-foreground))'
+                stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={formatYAxis}
+                dx={-30}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '6px',
+                  backgroundColor: '#18181b',
+                  border: '1px solid #27272a',
+                  borderRadius: 'var(--radius)',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                itemStyle={{ color: '#fafafa' }}
+                cursor={{
+                  stroke: '#71717a',
+                  strokeWidth: 1,
+                  strokeDasharray: '4 4',
+                }}
                 formatter={(value: number) => [
                   formatTooltipValue(value),
                   'Pembayaran',
                 ]}
               />
               <Line
-                type='monotone'
+                type='natural'
                 dataKey='value'
-                stroke='hsl(var(--primary))'
-                strokeWidth={2}
-                dot={{ fill: 'hsl(var(--primary))', r: 4 }}
-                activeDot={{ r: 6 }}
+                stroke='#36a2eb'
+                strokeWidth={3}
+                animationEasing='ease-in-out'
+                dot={{ fill: '#36a2eb', r: 4, strokeWidth: 1 }}
               />
             </LineChart>
           </ResponsiveContainer>
