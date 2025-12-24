@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CustomerSalesCard } from './components/customer-sales-card'
 import { Overdue } from './components/overdue'
 import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
@@ -51,6 +52,7 @@ export function SalesOverview() {
           <div className='flex flex-col gap-4'>
             <PaidRatioCard className='h-auto' globalPeriod={period} />
             <ProductSalesCard className='h-auto' globalPeriod={period} />
+            <CustomerSalesCard className='h-auto' globalPeriod={period} />
           </div>
         </div>
       </div>
