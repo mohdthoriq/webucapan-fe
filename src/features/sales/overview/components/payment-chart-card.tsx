@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import type { DateRange } from 'react-day-picker'
@@ -19,11 +19,25 @@ import { CardAction } from './card-action'
 
 interface PaymentChartCardProps {
   className?: string
+  globalPeriod?: Period
 }
 
-export function PaymentChartCard({ className }: PaymentChartCardProps) {
+export function PaymentChartCard({
+  className,
+  globalPeriod,
+}: PaymentChartCardProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
+
+  useEffect(() => {
+    const handleChangePeriod = () => {
+      if (globalPeriod && globalPeriod !== 'custom') {
+        setPeriod(globalPeriod)
+        setDateRange(undefined)
+      }
+    }
+    handleChangePeriod()
+  }, [globalPeriod])
 
   const queryParams =
     period === 'custom' && dateRange?.from && dateRange?.to

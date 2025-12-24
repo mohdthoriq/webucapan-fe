@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
@@ -6,9 +6,23 @@ import type { Period } from '../types/sales-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
 
-export function PaymentsReceived() {
+interface PaymentsReceivedProps {
+  globalPeriod?: Period
+}
+
+export function PaymentsReceived({ globalPeriod }: PaymentsReceivedProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
+
+  useEffect(() => {
+    const handleChangePeriod = () => {
+      if (globalPeriod && globalPeriod !== 'custom') {
+        setPeriod(globalPeriod)
+        setDateRange(undefined)
+      }
+    }
+    handleChangePeriod()
+  }, [globalPeriod])
 
   const queryParams =
     period === 'custom' && dateRange?.from && dateRange?.to

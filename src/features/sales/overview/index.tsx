@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import { Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Overdue } from './components/overdue'
+import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
 import { PaymentsReceived } from './components/payments-received'
 import { TotalSales } from './components/total-sales'
 import { WaitingPayments } from './components/waiting-payments'
 
 export function SalesOverview() {
+  const [period, setPeriod] = useState<'month' | 'year'>('month')
+
   return (
     <>
       <div className='flex w-full flex-col items-center justify-between space-y-8'>
@@ -22,7 +26,10 @@ export function SalesOverview() {
           </Button>
         </div>
         <div className='flex w-full items-center justify-end'>
-          <Tabs defaultValue='month'>
+          <Tabs
+            defaultValue='month'
+            onValueChange={(v) => setPeriod(v as 'month' | 'year')}
+          >
             <TabsList className='h-10 w-[200px]'>
               <TabsTrigger value='month'>Bulan</TabsTrigger>
               <TabsTrigger value='year'>Tahun</TabsTrigger>
@@ -30,13 +37,17 @@ export function SalesOverview() {
           </Tabs>
         </div>
         <div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className='grid grid-cols-1 items-center gap-4 md:col-span-2 md:grid-cols-2'>
-            <TotalSales />
-            <PaymentsReceived />
-            <WaitingPayments />
-            <Overdue />
-            <PaymentChartCard className='col-span-2' />
+          <div className='grid w-full grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2'>
+            <TotalSales globalPeriod={period} />
+            <PaymentsReceived globalPeriod={period} />
+            <WaitingPayments globalPeriod={period} />
+            <Overdue globalPeriod={period} />
+            <PaymentChartCard
+              className='col-span-1 md:col-span-2'
+              globalPeriod={period}
+            />
           </div>
+          <PaidRatioCard className='h-[300px]' globalPeriod={period} />
         </div>
       </div>
     </>
