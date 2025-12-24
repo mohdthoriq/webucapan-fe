@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { TrendingDown, TrendingUp, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -11,6 +12,7 @@ interface CardStatisticProps {
   trend?: Trend
   variant?: 'default' | 'clock'
   isLoading?: boolean
+  cardAction?: ReactNode
 }
 
 const defaultFormatValue = (value: number | undefined) => {
@@ -31,9 +33,9 @@ const getTrendColor = (direction?: Direction) => {
 const getTrendIcon = (direction?: Direction) => {
   switch (direction) {
     case Direction.Up:
-      return <TrendingUp className='h-14 w-14' />
+      return <TrendingUp className='h-16 w-16' />
     case Direction.Down:
-      return <TrendingDown className='h-14 w-14' />
+      return <TrendingDown className='h-16 w-16' />
     default:
       return null
   }
@@ -47,6 +49,7 @@ export function CardStatistic({
   trend,
   variant = 'default',
   isLoading = false,
+  cardAction,
 }: CardStatisticProps) {
   const getVariantIcon = () => {
     if (variant === 'clock') {
@@ -81,43 +84,27 @@ export function CardStatistic({
   }
 
   return (
-    <Card className='bg-card border-border hover:border-primary/50 transition-colors'>
-      <CardHeader className='flex items-start justify-between'>
-        <h3 className='text-sm font-semibold tracking-wide uppercase'>
+    <Card className='bg-card border-border hover:border-primary/50 flex flex-col gap-0 px-5 transition-colors min-h-[180px]'>
+      <div className='flex items-start justify-between'>
+        <h3 className='text-md font-semibold tracking-wide uppercase'>
           {title}
         </h3>
-        <button className='text-muted-foreground hover:text-foreground transition-colors'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='16'
-            height='16'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          >
-            <circle cx='12' cy='12' r='1' />
-            <circle cx='12' cy='5' r='1' />
-            <circle cx='12' cy='19' r='1' />
-          </svg>
-        </button>
-      </CardHeader>
-      <CardContent className='flex items-start justify-between'>
+        {cardAction}
+      </div>
+      <div className='flex items-start justify-between'>
         <div className='flex flex-col justify-start gap-1'>
-          <div className='text-foreground text-md font-bold'>
+          <div className='text-foreground text-lg font-bold'>
             {defaultFormatValue(value)}
           </div>
           {count !== undefined && (
-            <div className='text-muted-foreground text-xs'>
+            <div className='text-muted-foreground text-sm'>
               {count} {countLabel}
             </div>
           )}
         </div>
         <div
           className={cn(
-            'flex flex-col justify-start items-center gap-1',
+            'flex flex-col justify-start mr-10 gap-1',
             getTrendColor(trend?.direction)
           )}
         >
@@ -128,19 +115,19 @@ export function CardStatistic({
             {trend?.direction === Direction.Down ? '-' : '+'}
             {Math.abs(trend?.percentage ?? 0).toFixed(1)}%
           </span>
-          {trend && variant !== 'clock' && (
-            <span className='text-muted-foreground text-xs'>
-              {trend.comparison_text}
-            </span>
-          )}
-
-          {variant === 'clock' && trend && (
-            <div className='text-muted-foreground text-xs'>
-              {trend.comparison_text}
-            </div>
-          )}
         </div>
-      </CardContent>
+      </div>
+      {trend && variant !== 'clock' && (
+        <span className='text-muted-foreground text-xs'>
+          {trend.comparison_text}
+        </span>
+      )}
+
+      {variant === 'clock' && trend && (
+        <div className='text-muted-foreground text-xs'>
+          {trend.comparison_text}
+        </div>
+      )}
     </Card>
   )
 }

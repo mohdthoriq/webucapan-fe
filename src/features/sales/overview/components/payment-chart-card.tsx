@@ -131,7 +131,7 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
                 ]}
               />
               <Line
-                type='natural'
+                type='linear'
                 dataKey='value'
                 stroke='#36a2eb'
                 strokeWidth={3}

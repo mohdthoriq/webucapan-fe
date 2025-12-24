@@ -4,7 +4,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Overdue } from './components/overdue'
 import { PaymentChartCard } from './components/payment-chart-card'
 import { PaymentsReceived } from './components/payments-received'
-import { SalesChartCard } from './components/sales-chart-card'
 import { TotalSales } from './components/total-sales'
 import { WaitingPayments } from './components/waiting-payments'
 
@@ -37,7 +36,6 @@ export function SalesOverview() {
             <WaitingPayments />
             <Overdue />
             <PaymentChartCard className='col-span-2' />
-            <SalesChartCard className='col-span-2' />
           </div>
         </div>
       </div>

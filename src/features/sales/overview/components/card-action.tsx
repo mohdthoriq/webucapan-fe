@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-import { Filter, MoreVertical } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 import type { Period } from "../types/sales-overview"
 import type { DateRange } from "react-day-picker"
 import { id } from "date-fns/locale"
@@ -18,13 +18,13 @@ interface CardActionProps {
 export function CardAction({ period, dateRange, setPeriod, setDateRange, onChange }: CardActionProps) {
     return (
         <>
-            <Button
+            {/* <Button
                 variant='ghost'
                 size='icon'
                 className='text-muted-foreground hover:text-foreground h-8 w-8'
             >
                 <Filter className='h-4 w-4' />
-            </Button>
+            </Button> */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
