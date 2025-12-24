@@ -8,6 +8,7 @@ import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
 import { PaymentsReceived } from './components/payments-received'
 import { ProductSalesCard } from './components/product-sales-card'
+import { SalesChartCard } from './components/sales-chart-card'
 import { TotalSales } from './components/total-sales'
 import { WaitingPayments } from './components/waiting-payments'
 
@@ -44,12 +45,16 @@ export function SalesOverview() {
             <PaymentsReceived globalPeriod={period} />
             <WaitingPayments globalPeriod={period} />
             <Overdue globalPeriod={period} />
+            <SalesChartCard
+              className='col-span-1 md:col-span-2'
+              globalPeriod={period}
+            />
             <PaymentChartCard
               className='col-span-1 md:col-span-2'
               globalPeriod={period}
             />
           </div>
-          <div className='flex flex-col gap-4'>
+          <div className='grid gap-4'>
             <PaidRatioCard className='h-auto' globalPeriod={period} />
             <ProductSalesCard className='h-auto' globalPeriod={period} />
             <CustomerSalesCard className='h-auto' globalPeriod={period} />

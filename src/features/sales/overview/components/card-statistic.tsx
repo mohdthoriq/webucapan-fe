@@ -94,7 +94,7 @@ export function CardStatistic({
   }
 
   return (
-    <Card className='bg-card border-border hover:border-primary/50 flex min-h-[180px] flex-col gap-0 px-5 transition-colors'>
+    <Card className='bg-card border-border hover:border-primary/50 flex min-h-[150px] max-h-[180px] flex-col gap-0 px-5 transition-colors'>
       <div className='flex items-start justify-between'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
           {title}
