@@ -1,5 +1,7 @@
 import type { Status } from "@/types"
 
+export type Period = 'day' | 'week' | 'month' | 'year' | 'custom'
+
 export enum Direction {
     Up = 'up',
     Down = 'down',
