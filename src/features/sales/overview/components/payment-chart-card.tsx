@@ -138,8 +138,8 @@ export function PaymentChartCard({
                   strokeWidth: 1,
                   strokeDasharray: '4 4',
                 }}
-                formatter={(value: number) => [
-                  formatTooltipValue(value),
+                formatter={(value: number | undefined) => [
+                  formatTooltipValue(value || 0),
                   'Pembayaran',
                 ]}
               />

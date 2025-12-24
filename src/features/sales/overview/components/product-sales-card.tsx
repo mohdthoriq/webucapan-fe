@@ -149,7 +149,9 @@ export function ProductSalesCard({
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(value: number) => formatNumber(value)}
+                    formatter={(value: number | undefined) =>
+                      formatNumber(value || 0)
+                    }
                     contentStyle={{
                       backgroundColor: '#18181b',
                       borderColor: 'hsl(var(--border))',
