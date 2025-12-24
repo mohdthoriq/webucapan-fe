@@ -27,7 +27,7 @@ import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
 
 type ProductsFormContentProps = {
-  currentRow?: Product
+  currentRow?: Product | null
 }
 
 export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
@@ -45,6 +45,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
     handleFileSelect,
     isSubmitting,
     router,
+    existingImages
   } = useProductsForm({ currentRow })
 
   return (
@@ -222,6 +223,9 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
               </span>{' '}
               (4MB max)
             </p>
+            <p className='text-muted-foreground mt-1 text-sm'>
+              (type: JPG, JPEG, GIF, WEBP)
+            </p>
             <input
               type='file'
               ref={fileInputRef}
@@ -251,7 +255,31 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
                     type='button'
                     variant='ghost'
                     size='sm'
-                    onClick={() => removeFile(index)}
+                    onClick={() => removeFile(index, 'new')}
+                  >
+                    <Trash2 className='text-destructive h-4 w-4' />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+          {existingImages.length > 0 && (
+            <div className='mt-4 grid gap-4'>
+              {existingImages.map((file, index) => (
+                <div
+                  key={index}
+                  className='flex items-center justify-between rounded-md border p-2'
+                >
+                  <div className='flex items-center gap-2'>
+                    <span className='max-w-[200px] truncate text-sm'>
+                      {file}
+                    </span>
+                  </div>
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => removeFile(index, 'existing')}
                   >
                     <Trash2 className='text-destructive h-4 w-4' />
                   </Button>
@@ -270,7 +298,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
             Batal
           </Button>
           <Button type='submit' disabled={isSubmitting}>
-            {isSubmitting ? 'Menyimpan...' : 'Simpan Produk'}
+            {currentRow ? 'Update Produk' : 'Simpan Produk'}
           </Button>
         </div>
       </form>

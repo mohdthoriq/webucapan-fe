@@ -41,7 +41,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
               navigate({
                 to: '/products/add',
                 search: {},
-                state: { currentRow: product } as Record<string, unknown>,
+                state: { currentRowId: product.id } as Record<string, unknown>,
               })
             }}
           >
