@@ -11,7 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
 import type { Period } from '../types/sales-overview'
@@ -48,17 +48,11 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
   }
 
   const formatYAxis = (value: number) => {
-    if (value >= 1000000) {
-      return `${value / 1000000}jt`
-    }
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(0)}rb`
-    }
-    return value.toString()
+    return formatNumber(value)
   }
 
   const formatTooltipValue = (value: number) => {
-    return new Intl.NumberFormat('id-ID').format(value)
+    return formatNumber(value)
   }
 
   return (
@@ -108,9 +102,10 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
+                tickCount={8}
                 axisLine={false}
                 tickFormatter={formatYAxis}
-                dx={-30}
+                dx={1}
               />
               <Tooltip
                 contentStyle={{
