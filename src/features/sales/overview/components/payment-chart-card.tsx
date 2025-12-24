@@ -39,6 +39,7 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
         }
 
   const { data, isLoading } = useTotalPaymentsQuery(queryParams)
+  const chartData = data?.chart_data || []
 
   const handlePeriodChange = (newPeriod: Period) => {
     setPeriod(newPeriod)
@@ -86,7 +87,7 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
           </div>
         ) : (
           <ResponsiveContainer width='100%' height={400}>
-            <LineChart data={data?.chart_data || []}>
+            <LineChart data={chartData}>
               <CartesianGrid stroke='#e5e5e5' className='stroke-[0.2px]' />
               <XAxis
                 dataKey='label'
@@ -94,9 +95,12 @@ export function PaymentChartCard({ className }: PaymentChartCardProps) {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                height={40}
+                height={chartData.length > 10 ? 60 : 40}
                 dy={15}
                 tickMargin={10}
+                interval={chartData.length > 10 ? 0 : 'preserveStartEnd'}
+                angle={chartData.length > 10 ? -45 : 0}
+                textAnchor={chartData.length > 10 ? 'end' : 'middle'}
               />
               <YAxis
                 stroke='#71717a'
