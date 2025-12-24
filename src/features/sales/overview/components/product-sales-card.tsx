@@ -97,7 +97,7 @@ export function ProductSalesCard({
   return (
     <Card className={cn('bg-card border-border flex flex-col', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-        <h3 className='text-sm font-bold tracking-wide uppercase'>
+        <h3 className='text-md font-semibold tracking-wide uppercase'>
           PRODUCT SALES {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
@@ -118,8 +118,8 @@ export function ProductSalesCard({
           value={viewType}
         >
           <TabsList>
-            <TabsTrigger value='type'>Type</TabsTrigger>
-            <TabsTrigger value='category'>Category</TabsTrigger>
+            <TabsTrigger value='type'>Produk</TabsTrigger>
+            <TabsTrigger value='category'>Kategori</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>

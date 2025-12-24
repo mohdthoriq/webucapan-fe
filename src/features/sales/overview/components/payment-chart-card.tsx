@@ -74,7 +74,7 @@ export function PaymentChartCard({
     <Card className={cn('bg-card border-border', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <div className='flex flex-col gap-1'>
-          <h3 className='text-sm font-semibold tracking-wide uppercase'>
+          <h3 className='text-md font-semibold tracking-wide uppercase'>
             Pembayaran Diterima
           </h3>
           {period === 'custom' && dateRange?.from && dateRange?.to && (

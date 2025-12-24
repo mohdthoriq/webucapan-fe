@@ -74,7 +74,7 @@ export function SalesChartCard({
     <Card className={cn('bg-card border-border flex flex-col', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <div className='flex flex-col gap-1'>
-          <h3 className='text-sm font-bold tracking-wide uppercase'>
+          <h3 className='text-md font-semibold tracking-wide uppercase'>
             Penjualan
           </h3>
           {period === 'custom' && dateRange?.from && dateRange?.to && (
