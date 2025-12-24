@@ -51,6 +51,7 @@ export function Overdue({ globalPeriod }: OverdueProps) {
       value={overdue?.value}
       count={overdue?.count}
       trend={overdue?.trend}
+      variant='graph'
       cardAction={
         <CardAction
           period={period}

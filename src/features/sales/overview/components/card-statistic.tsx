@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { TrendingDown, TrendingUp, Clock } from 'lucide-react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
+import { Pie, PieChart } from 'recharts'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Direction, type Trend } from '../types/sales-overview'
@@ -10,7 +11,7 @@ interface CardStatisticProps {
   count?: number
   countLabel?: string
   trend?: Trend
-  variant?: 'default' | 'clock'
+  variant?: 'default' | 'graph'
   isLoading?: boolean
   cardAction?: ReactNode
 }
@@ -52,17 +53,26 @@ export function CardStatistic({
   cardAction,
 }: CardStatisticProps) {
   const getVariantIcon = () => {
-    if (variant === 'clock') {
+    if (variant === 'graph') {
       return (
-        <div className='relative'>
-          <div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20'>
-            <Clock className='h-6 w-6 text-red-500' />
-          </div>
-          {trend && (
-            <div className='absolute -right-1 -bottom-1 text-xs font-semibold text-red-500'>
-              {Math.abs(trend.percentage).toFixed(1)}%
-            </div>
-          )}
+        <div className='relative flex p-2'>
+          <PieChart width={40} height={40}>
+            <Pie
+              data={[
+                { value: Math.abs(trend?.percentage ?? 0), fill: '#f43f5e' }, // rose-500
+                {
+                  value: 100 - Math.abs(trend?.percentage ?? 0),
+                  fill: '#fde047',
+                }, // yellow-300
+              ]}
+              dataKey='value'
+              outerRadius={18}
+              stroke='#ffffff'
+              strokeWidth={2}
+              startAngle={90}
+              endAngle={-270}
+            />
+          </PieChart>
         </div>
       )
     }
@@ -84,7 +94,7 @@ export function CardStatistic({
   }
 
   return (
-    <Card className='bg-card border-border hover:border-primary/50 flex flex-col gap-0 px-5 transition-colors min-h-[180px]'>
+    <Card className='bg-card border-border hover:border-primary/50 flex min-h-[180px] flex-col gap-0 px-5 transition-colors'>
       <div className='flex items-start justify-between'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
           {title}
@@ -104,11 +114,12 @@ export function CardStatistic({
         </div>
         <div
           className={cn(
-            'flex flex-col justify-start mr-10 gap-1',
+            'mr-10 flex flex-col gap-1',
+            variant === 'graph' ? 'items-center' : 'justify-start',
             getTrendColor(trend?.direction)
           )}
         >
-          {variant === 'clock'
+          {variant === 'graph'
             ? getVariantIcon()
             : getTrendIcon(trend?.direction)}
           <span className='text-xs font-medium'>
@@ -117,13 +128,13 @@ export function CardStatistic({
           </span>
         </div>
       </div>
-      {trend && variant !== 'clock' && (
+      {trend && variant !== 'graph' && (
         <span className='text-muted-foreground text-xs'>
           {trend.comparison_text}
         </span>
       )}
 
-      {variant === 'clock' && trend && (
+      {variant === 'graph' && trend && (
         <div className='text-muted-foreground text-xs'>
           {trend.comparison_text}
         </div>
