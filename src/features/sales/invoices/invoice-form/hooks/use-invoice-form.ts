@@ -42,10 +42,10 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
             invoice_items:
               currentRow.invoice_items?.map((item) => ({
                 id: item.id,
-                product_id: item.product?.id ?? '',
-                description: item.description || '',
+                product_id: item.product?.id ?? undefined,
+                description: item.description || undefined,
                 quantity: Number(item.quantity) || 1,
-                tax_id: item.tax?.id ?? '',
+                tax_id: item.tax?.id ?? undefined,
                 unit_price: Number(item.unit_price) || 0,
                 discount: Number(item.discount) || undefined,
                 line_total: Number(item.line_total) || 0,
