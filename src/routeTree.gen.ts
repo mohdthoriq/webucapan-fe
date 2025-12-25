@@ -35,6 +35,7 @@ import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
+import { Route as AuthenticatedSettingsAutoSequencingIndexRouteImport } from './routes/_authenticated/settings/auto-sequencing/index'
 import { Route as AuthenticatedSalesOverviewIndexRouteImport } from './routes/_authenticated/sales/overview/index'
 import { Route as AuthenticatedSalesInvoicesIndexRouteImport } from './routes/_authenticated/sales/invoices/index'
 import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_authenticated/products/add/index'
@@ -186,6 +187,12 @@ const AuthenticatedSettingsCompanyRolesIndexRoute =
     path: '/settings/company-roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsAutoSequencingIndexRoute =
+  AuthenticatedSettingsAutoSequencingIndexRouteImport.update({
+    id: '/settings/auto-sequencing/',
+    path: '/settings/auto-sequencing/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSalesOverviewIndexRoute =
   AuthenticatedSalesOverviewIndexRouteImport.update({
     id: '/sales/overview/',
@@ -259,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
+  '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -294,6 +302,7 @@ export interface FileRoutesByTo {
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
+  '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -331,6 +340,7 @@ export interface FileRoutesById {
   '/_authenticated/products/add/': typeof AuthenticatedProductsAddIndexRoute
   '/_authenticated/sales/invoices/': typeof AuthenticatedSalesInvoicesIndexRoute
   '/_authenticated/sales/overview/': typeof AuthenticatedSalesOverviewIndexRoute
+  '/_authenticated/settings/auto-sequencing/': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/products/add'
     | '/sales/invoices'
     | '/sales/overview'
+    | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/products/add'
     | '/sales/invoices'
     | '/sales/overview'
+    | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -439,6 +451,7 @@ export interface FileRouteTypes {
     | '/_authenticated/products/add/'
     | '/_authenticated/sales/invoices/'
     | '/_authenticated/sales/overview/'
+    | '/_authenticated/settings/auto-sequencing/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/payment-terms/'
@@ -649,6 +662,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsCompanyRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/auto-sequencing/': {
+      id: '/_authenticated/settings/auto-sequencing/'
+      path: '/settings/auto-sequencing'
+      fullPath: '/settings/auto-sequencing'
+      preLoaderRoute: typeof AuthenticatedSettingsAutoSequencingIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/sales/overview/': {
       id: '/_authenticated/sales/overview/'
       path: '/sales/overview'
@@ -739,6 +759,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
   AuthenticatedSalesInvoicesIndexRoute: typeof AuthenticatedSalesInvoicesIndexRoute
   AuthenticatedSalesOverviewIndexRoute: typeof AuthenticatedSalesOverviewIndexRoute
+  AuthenticatedSettingsAutoSequencingIndexRoute: typeof AuthenticatedSettingsAutoSequencingIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -763,6 +784,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
   AuthenticatedSalesInvoicesIndexRoute: AuthenticatedSalesInvoicesIndexRoute,
   AuthenticatedSalesOverviewIndexRoute: AuthenticatedSalesOverviewIndexRoute,
+  AuthenticatedSettingsAutoSequencingIndexRoute:
+    AuthenticatedSettingsAutoSequencingIndexRoute,
   AuthenticatedSettingsCompanyRolesIndexRoute:
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:
