@@ -54,7 +54,7 @@ export function SalesOverview() {
               globalPeriod={period}
             />
           </div>
-          <div className='grid gap-4'>
+          <div className='flex flex-col gap-4'>
             <PaidRatioCard className='h-auto' globalPeriod={period} />
             <ProductSalesCard className='h-auto' globalPeriod={period} />
             <CustomerSalesCard className='h-auto' globalPeriod={period} />
