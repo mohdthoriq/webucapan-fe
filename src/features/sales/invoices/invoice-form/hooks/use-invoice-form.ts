@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type SalesInvoice, Status } from '@/types'
+import { type FinanceNumber, type SalesInvoice, Status } from '@/types'
 import {
   CreateInvoiceSchema,
   UpdateInvoiceSchema,
@@ -15,9 +15,13 @@ import {
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice
+  autoNumbering?: FinanceNumber | null
 }
 
-export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
+export function useInvoiceForm({
+  currentRow,
+  autoNumbering,
+}: UseInvoiceFormProps) {
   const isEdit = !!currentRow
 
   const defaultValues = useMemo(
@@ -56,7 +60,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
               ) || [],
           }
         : {
-            invoice_number: '',
+            invoice_number: autoNumbering?.format ?? '',
             customer_id: '',
             payment_term_id: undefined,
             currency: 'IDR',
@@ -79,7 +83,7 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
             ],
             tags: [],
           },
-    [currentRow, isEdit]
+    [currentRow, isEdit, autoNumbering]
   )
 
   const form = useForm<CreateInvoiceFormData | UpdateInvoiceFormData>({
@@ -88,10 +92,12 @@ export function useInvoiceForm({ currentRow }: UseInvoiceFormProps) {
   })
 
   useEffect(() => {
-    if (currentRow) {
+    if (isEdit && currentRow) {
+      form.reset(defaultValues)
+    } else if (!isEdit && autoNumbering) {
       form.reset(defaultValues)
     }
-  }, [currentRow, form, defaultValues])
+  }, [currentRow, isEdit, autoNumbering, form, defaultValues])
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,

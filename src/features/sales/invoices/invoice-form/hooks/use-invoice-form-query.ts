@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import type { SalesInvoice, ApiResponse } from '@/types'
+import type {
+  SalesInvoice,
+  ApiResponse,
+  FinanceNumberType,
+  FinanceNumber,
+} from '@/types'
 import apiClient from '@/lib/api-client'
 
 interface InvoiceFormQueryParams {
@@ -18,5 +23,54 @@ export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
     enabled: !!params?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1, // optional: retry once only
+  })
+}
+
+interface InvoiceAutoNumberingQueryParams {
+  type: FinanceNumberType
+}
+
+export function useInvoiceAutoNumberingQuery(
+  params: InvoiceAutoNumberingQueryParams
+) {
+  return useQuery({
+    queryKey: ['invoice-auto-numbering', params.type],
+    queryFn: async () => {
+      const url = `/auto-numbering/type/${params.type}`
+      const response = await apiClient.get<ApiResponse<FinanceNumber>>(url)
+
+      return response.data.data
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1, // optional: retry once only
+  })
+}
+
+interface CheckFinanceNumberParams {
+  type: FinanceNumberType
+  number: string
+}
+
+export interface CheckFinanceNumberResponse {
+  exists: boolean
+  available: boolean
+  message: string
+}
+
+export function useCheckFinanceNumberQuery(params: CheckFinanceNumberParams) {
+  return useQuery({
+    queryKey: ['check-finance-number', params.type, params.number],
+    queryFn: async () => {
+      const response = await apiClient.get<
+        ApiResponse<CheckFinanceNumberResponse>
+      >('/auto-numbering/check', {
+        params: {
+          type: params.type,
+          number: params.number,
+        },
+      })
+      return response.data.data
+    },
+    enabled: !!params.number && params.number.length > 3,
   })
 }

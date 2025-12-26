@@ -1,4 +1,4 @@
-enum FinanceNumberType {
+export enum FinanceNumberType {
   expense = 'expense',
   sales_payment = 'sales_payment',
   sales_invoice = 'sales_invoice',
@@ -19,6 +19,7 @@ export interface FinanceNumber {
   reset_every_date: string
   reset_every_month: number
 }
+
 export interface AutoNumbering {
   id: string
   title: string
@@ -33,4 +34,10 @@ export interface FinanceNumberCodes {
 export interface AutoNumberingResponse {
   data: AutoNumbering[]
   finance_number_codes: FinanceNumberCodes[]
+}
+
+export interface GenerateAutoNumberingResponse {
+  type: FinanceNumberType
+  number: string
+  message: string
 }
