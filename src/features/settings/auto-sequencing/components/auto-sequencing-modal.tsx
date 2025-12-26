@@ -42,9 +42,8 @@ export function AutoSequencingModal({
   isOpen,
   onClose,
 }: AutoSequencingModalProps) {
-  const { form, exampleOutput, handleAddCode, onSubmit } = useAutoNumberingForm(
-    { item }
-  )
+  const { form, exampleOutput, handleAddCode, onSubmit, isPreviewLoading } =
+    useAutoNumberingForm({ item, onSuccess: onClose })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -59,7 +58,7 @@ export function AutoSequencingModal({
               <div className='col-span-1 md:col-span-2'>
                 <FormField
                   control={form.control}
-                  name='format'
+                  name='format_only'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='required-field'>
@@ -91,14 +90,18 @@ export function AutoSequencingModal({
 
             <div className='space-y-2'>
               <FormLabel>Contoh Output Nomor Otomatis</FormLabel>
-              <div className='text-muted-foreground text-sm'>
-                {exampleOutput}
+              <div className='text-muted-foreground text-sm font-medium'>
+                {isPreviewLoading ? (
+                  <span className='animate-pulse'>Generating preview...</span>
+                ) : (
+                  exampleOutput || '-'
+                )}
               </div>
             </div>
 
             <FormField
               control={form.control}
-              name='current_number'
+              name='sequence'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className='required-field'>
@@ -109,7 +112,11 @@ export function AutoSequencingModal({
                       type='number'
                       {...field}
                       value={field.value ?? ''}
-                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : '')}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) : ''
+                        )
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -119,7 +126,7 @@ export function AutoSequencingModal({
 
             <FormField
               control={form.control}
-              name='reset_frequency'
+              name='reset_every'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className='required-field mb-2'>
@@ -127,20 +134,20 @@ export function AutoSequencingModal({
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={(value) => field.onChange(value)}
-                      value={field.value}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      value={String(field.value)}
                       className='flex flex-col space-y-1'
                     >
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='never' id='r0' />
+                        <RadioGroupItem value='0' id='r0' />
                         <label htmlFor='r0'>Never reset</label>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='monthly' id='r1' />
+                        <RadioGroupItem value='1' id='r1' />
                         <label htmlFor='r1'>Every month</label>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='yearly' id='r2' />
+                        <RadioGroupItem value='2' id='r2' />
                         <label htmlFor='r2'>Every year</label>
                       </div>
                     </RadioGroup>

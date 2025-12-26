@@ -3,11 +3,15 @@ import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { FinanceNumber } from '@/types/domain/auto-numbering'
 import { toast } from 'sonner'
+import { useDebounce } from '@/hooks/use-debounce'
 import {
   autoSequencingFormSchema,
   type AutoSequencingFormValues,
 } from '../types/auto-sequencing.schema'
-import { useUpdateAutoNumberingMutation } from './use-auto-numbering-mutation'
+import {
+  useUpdateAutoNumberingMutation,
+  useAutoNumberingPreview,
+} from './use-auto-numbering-mutation'
 
 interface UseAutoNumberingFormProps {
   item: FinanceNumber | null
@@ -19,33 +23,25 @@ export function useAutoNumberingForm({
   onSuccess,
 }: UseAutoNumberingFormProps) {
   const mutation = useUpdateAutoNumberingMutation()
+  const previewMutation = useAutoNumberingPreview()
 
   const form = useForm<AutoSequencingFormValues>({
     resolver: zodResolver(autoSequencingFormSchema),
     defaultValues: {
-      format: '',
-      current_number: 1,
-      reset_frequency: 'never',
+      title: item?.title,
+      format_only: '',
+      sequence: 1,
+      reset_every: 0,
     },
   })
-
-  const getResetFrequency = (frequency: number) => {
-    switch (frequency) {
-      case 0:
-        return 'never'
-      case 30:
-        return 'monthly'
-      case 365:
-        return 'yearly'
-    }
-  }
 
   useEffect(() => {
     if (item) {
       form.reset({
-        format: item.format_only,
-        current_number: item.sequence,
-        reset_frequency: item.reset_every ? getResetFrequency(item.reset_every) : 'never',
+        title: item.title,
+        format_only: item.format_only,
+        sequence: item.sequence,
+        reset_every: item.reset_every,
       })
     }
   }, [item, form])
@@ -70,37 +66,30 @@ export function useAutoNumberingForm({
     )
   }
 
-  const formatValue = useWatch({ control: form.control, name: 'format' })
+  const formatValue = useWatch({ control: form.control, name: 'format_only' })
   const sequenceValue = useWatch({
     control: form.control,
-    name: 'current_number',
+    name: 'sequence',
   })
 
-  const getExampleOutput = (fmt: string, seq: number) => {
-    if (!fmt) return ''
-    let output = fmt
-    const paddedSeq = seq.toString().padStart(5, '0')
-    output = output.replace(/\[NUMBER\]/g, paddedSeq)
+  const debouncedFormat = useDebounce(formatValue, 500)
+  const debouncedSequence = useDebounce(sequenceValue, 500)
 
-    const now = new Date()
-    output = output.replace(/\[YEAR\]/g, now.getFullYear().toString())
-    output = output.replace(
-      /\[MONTH\]/g,
-      (now.getMonth() + 1).toString().padStart(2, '0')
-    )
-    output = output.replace(
-      /\[DAY\]/g,
-      now.getDate().toString().padStart(2, '0')
-    )
+  useEffect(() => {
+    if (debouncedFormat && debouncedSequence) {
+      previewMutation.mutate({
+        format_only: debouncedFormat,
+        sequence: Number(debouncedSequence),
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedFormat, debouncedSequence])
 
-    return output
-  }
-
-  const exampleOutput = getExampleOutput(formatValue, sequenceValue)
+  const exampleOutput = previewMutation.data || ''
 
   const handleAddCode = (code: string) => {
-    const currentFormat = form.getValues('format')
-    form.setValue('format', `${currentFormat}/${code}`)
+    const currentFormat = form.getValues('format_only')
+    form.setValue('format_only', `${currentFormat}/${code}`)
   }
 
   return {
@@ -109,5 +98,6 @@ export function useAutoNumberingForm({
     exampleOutput,
     handleAddCode,
     isPending: mutation.isPending,
+    isPreviewLoading: previewMutation.isPending,
   }
 }

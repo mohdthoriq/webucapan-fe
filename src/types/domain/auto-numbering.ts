@@ -1,6 +1,7 @@
 export interface FinanceNumber {
   id: string
   title: string
+  type: string
   format: string
   format_only: string
   sequence: number
