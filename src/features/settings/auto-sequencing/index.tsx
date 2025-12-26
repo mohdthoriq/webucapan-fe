@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import type { FinanceNumber } from '@/types/domain/auto-numbering'
 import { ArrowLeft, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -7,8 +9,26 @@ import {
   CardHeader,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { AutoSequencingCard } from './components/auto-sequencing-card'
+import { AutoSequencingModal } from './components/auto-sequencing-modal'
+import { useAutoNumberingQuery } from './hooks/use-auto-numbering-query'
 
 export function AutoSequencing() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedItem, setSelectedItem] = useState<FinanceNumber | null>(null)
+
+  const { data: autoNumberingData, isLoading } = useAutoNumberingQuery()
+
+  const allItems =
+    autoNumberingData?.data.data.flatMap((group) => group.finance_numbers) || []
+
+  const filteredItems =
+    allItems.filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || []
+
+  const codes = autoNumberingData?.data.finance_number_codes || []
+
   return (
     <Card className='w-full'>
       <CardHeader className='flex w-full flex-col gap-8 p-4 px-6'>
@@ -17,27 +37,51 @@ export function AutoSequencing() {
             Penomoran Otomatis
           </h1>
           <Button variant='ghost' onClick={() => history.back()}>
-            <ArrowLeft />
-            Kembali
+            <ArrowLeft className='mr-2 h-4 w-4' />
+            Back
           </Button>
         </div>
         <CardDescription className='text-sm font-medium'>
           Tentukan nomor yang akan digunakan saat membuat faktur atau pesanan
-          pembelian. Nomor tersebut <br /> akan secara otomatis bertambah setiap
+          pembelian. Nomor tersebut akan <br /> secara otomatis bertambah setiap
           kali Anda membuat dokumen baru.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex w-full items-center justify-end'>
-            <Input
-              title='Cari Penomoran'
-              placeholder='cari penomoran..'
-              startAdornment={<Search className='h-4 w-4' />}
-            />
+            <div className='w-[300px]'>
+              <Input
+                placeholder='Search'
+                startAdornment={<Search className='h-4 w-4' />}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
+
+          {isLoading ? (
+            <div className='flex justify-center p-8'>Loading...</div>
+          ) : (
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {filteredItems.map((item) => (
+                <AutoSequencingCard
+                  key={item.id}
+                  item={item}
+                  onClick={setSelectedItem}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </CardContent>
+
+      <AutoSequencingModal
+        item={selectedItem}
+        codes={codes}
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+      />
     </Card>
   )
 }
