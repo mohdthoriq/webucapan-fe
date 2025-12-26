@@ -19,13 +19,16 @@ export function AutoSequencing() {
 
   const { data: autoNumberingData, isLoading } = useAutoNumberingQuery()
 
-  const allItems =
-    autoNumberingData?.data.data.flatMap((group) => group.finance_numbers) || []
+  const groupedData = autoNumberingData?.data.data || []
 
-  const filteredItems =
-    allItems.filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || []
+  const filteredGroupedData = groupedData
+    .map((group) => ({
+      ...group,
+      finance_numbers: group.finance_numbers.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((group) => group.finance_numbers.length > 0)
 
   const codes = autoNumberingData?.data.finance_number_codes || []
 
@@ -63,13 +66,22 @@ export function AutoSequencing() {
           {isLoading ? (
             <div className='flex justify-center p-8'>Loading...</div>
           ) : (
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {filteredItems.map((item) => (
-                <AutoSequencingCard
-                  key={item.id}
-                  item={item}
-                  onClick={setSelectedItem}
-                />
+            <div className='flex flex-col gap-10'>
+              {filteredGroupedData.map((group) => (
+                <div key={group.id} className='flex flex-col gap-4'>
+                  <h2 className='text-md font-semibold tracking-tight'>
+                    {group.title}
+                  </h2>
+                  <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                    {group.finance_numbers.map((item) => (
+                      <AutoSequencingCard
+                        key={item.id}
+                        item={item}
+                        onClick={setSelectedItem}
+                      />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
