@@ -39,7 +39,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               navigate({
-                to: '/products/add',
+                to: '/products/edit',
                 search: {},
                 state: { currentRowId: product.id } as Record<string, unknown>,
               })
