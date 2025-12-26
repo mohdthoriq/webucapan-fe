@@ -1,7 +1,16 @@
+enum FinanceNumberType {
+  expense = 'expense',
+  sales_payment = 'sales_payment',
+  sales_invoice = 'sales_invoice',
+  purchase_invoice = 'purchase_invoice',
+  purchase_payment = 'purchase_payment',
+  product_sku = 'product_sku',
+}
+
 export interface FinanceNumber {
   id: string
   title: string
-  type: string
+  type: FinanceNumberType
   format: string
   format_only: string
   sequence: number
