@@ -54,7 +54,6 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
     removeFile,
     handleFileSelect,
     isSubmitting,
-    router,
     existingImages,
   } = useProductsForm({ currentRow, autoNumbering: productsAutoNumbering })
 
@@ -341,7 +340,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
           <Button
             type='button'
             variant='outline'
-            onClick={() => router.history.back()}
+            onClick={() => history.back()}
           >
             Batal
           </Button>

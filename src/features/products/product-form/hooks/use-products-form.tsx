@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from '@tanstack/react-router'
 import { FinanceNumberType, type FinanceNumber, type Product } from '@/types'
 import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
 import {
@@ -11,6 +10,7 @@ import {
 import {
   useCreateProductMutation,
   useUpdateProductMutation,
+  useUploadImageProduct,
 } from './use-products-form-mutation'
 
 type useProductsFormProps = {
@@ -25,7 +25,6 @@ export function useProductsForm({
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
 
   const isEdit = !!currentRow
   const defaultValues = useMemo(
@@ -46,10 +45,12 @@ export function useProductsForm({
             sku: autoNumbering?.format ?? '',
             name: '',
             description: '',
-            taxable: false,
+            taxable: false, // Provide default boolean
             unit_id: '',
             product_category_id: '',
             images: [],
+            purchase_price: 0,
+            sale_price: 0,
           },
     [currentRow, isEdit, autoNumbering]
   )
@@ -132,52 +133,62 @@ export function useProductsForm({
 
   const createMutation = useCreateProductMutation()
   const updateMutation = useUpdateProductMutation()
+  const uploadImageMutation = useUploadImageProduct()
   const generateNextNumber = useGenerateNextNumber()
 
-  const prepareFormData = (data: CreateProductFormData) => {
-    const formData = new FormData()
-    formData.append('sku', data.sku)
-    formData.append('name', data.name)
-    if (data.description) formData.append('description', data.description)
-    formData.append('purchase_price', data.purchase_price.toString())
-    formData.append('sale_price', data.sale_price.toString())
-    formData.append('taxable', String(data.taxable ?? false))
-    formData.append('unit_id', data.unit_id)
-    formData.append('product_category_id', data.product_category_id)
-
-    // Append new files
-    uploadedFiles.forEach((file) => {
-      formData.append('images', file)
-    })
-
-    if (isEdit && Array.isArray(existingImages)) {
-      existingImages.forEach((img: string) => {
-        formData.append('images', img)
-      })
-    }
-
-    return formData
-  }
-
   const onSubmit = async (data: CreateProductFormData) => {
-    const formData = prepareFormData(data)
+    try {
+      let newImageUrls: string[] = []
 
-    if (isEdit && currentRow) {
-      await updateMutation.mutateAsync({ id: currentRow.id, formData })
-      form.reset()
-      router.history.back()
-    } else {
-      await createMutation.mutateAsync(formData)
-      form.reset()
-      await generateNextNumber.mutateAsync(FinanceNumberType.product_sku)
-      router.history.back()
+      // 1. Upload images if there are any new files
+      if (uploadedFiles.length > 0) {
+        const formData = new FormData()
+        uploadedFiles.forEach((file) => {
+          formData.append('images', file)
+        })
+
+        const uploadResponse = await uploadImageMutation.mutateAsync(formData)
+
+        if (
+          uploadResponse?.status === 'success' &&
+          Array.isArray(uploadResponse.data?.urls)
+        ) {
+          newImageUrls = uploadResponse.data.urls
+        }
+      }
+
+      // 2. Combine existing images and new URLs
+      const finalImages = [...existingImages, ...newImageUrls]
+
+      // 3. Prepare payload
+      const payload: CreateProductFormData = {
+        ...data,
+        images: finalImages,
+      }
+
+      // 4. Create or Update Product
+      if (isEdit && currentRow) {
+        await updateMutation.mutateAsync({ id: currentRow.id, data: payload })
+        form.reset()
+        history.back()
+      } else {
+        await createMutation.mutateAsync(payload)
+        form.reset()
+        await generateNextNumber.mutateAsync(FinanceNumberType.product_sku)
+        history.back()
+      }
+    } catch (_error) {
+      // Error handling is managed by mutation hooks (toast)
     }
   }
 
   return {
     form,
     onSubmit,
-    isSubmitting: createMutation.isPending || updateMutation.isPending,
+    isSubmitting:
+      createMutation.isPending ||
+      updateMutation.isPending ||
+      uploadImageMutation.isPending,
     removeFile,
     uploadedFiles,
     existingImages,
@@ -186,6 +197,5 @@ export function useProductsForm({
     handleDrop,
     fileInputRef,
     handleFileSelect,
-    router,
   }
 }

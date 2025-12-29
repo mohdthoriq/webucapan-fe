@@ -1,12 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
 import apiClientFormData from '@/lib/api-client-form-data'
+import type { CreateProductFormData } from '../types/product-form.schema'
+
+export function useUploadImageProduct() {
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const response = await apiClientFormData.post(`products/images`, formData)
+      return response.data
+    },
+    onError: () => {
+      toast.error('Gambar produk gagal ditambahkan.')
+    },
+  })
+}
 
 export function useCreateProductMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (formData: FormData) => {
-      const response = await apiClientFormData.post(`products/with-images`, formData)
+    mutationFn: async (data: CreateProductFormData) => {
+      const response = await apiClient.post(`products`, data)
       return response.data
     },
     onMutate: () => {
@@ -29,15 +43,12 @@ export function useUpdateProductMutation() {
   return useMutation({
     mutationFn: async ({
       id,
-      formData,
+      data,
     }: {
       id: string
-      formData: FormData
+      data: CreateProductFormData
     }) => {
-      const response = await apiClientFormData.patch(
-        `products/${id}/with-images`,
-        formData
-      )
+      const response = await apiClient.patch(`products/${id}/`, data)
       return response.data
     },
     onMutate: () => {
