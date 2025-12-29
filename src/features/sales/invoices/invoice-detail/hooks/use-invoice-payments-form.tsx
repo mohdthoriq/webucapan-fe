@@ -6,15 +6,18 @@ import {
   invoicePaymentsSchema,
 } from '../types/invoice-payments.schema'
 import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation'
+import type { FinanceNumber } from '@/types'
 
 type UseInvoicePaymentsFormProps = {
   invoiceId: string
   defaultAmount?: number
+  defaultNumber?: FinanceNumber | null
 }
 
 export function useInvoicePaymentsForm({
   invoiceId,
   defaultAmount,
+  defaultNumber,
 }: UseInvoicePaymentsFormProps) {
   const form = useForm<InvoicePaymentsFormData>({
     resolver: zodResolver(
@@ -31,9 +34,9 @@ export function useInvoicePaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: "",
+      method: '',
       account_id: undefined,
-      reference_no: '',
+      reference_no: defaultNumber?.format || '',
       note: '',
     },
   })
@@ -44,16 +47,19 @@ export function useInvoicePaymentsForm({
     if (defaultAmount !== undefined) {
       form.setValue('amount', defaultAmount)
     }
-  }, [defaultAmount, form])
+    if (defaultNumber !== undefined) {
+      form.setValue('reference_no', defaultNumber?.format || '')
+    }
+  }, [defaultAmount, defaultNumber, form])
 
   const onSubmit = async (data: InvoicePaymentsFormData) => {
     await createMutation.mutateAsync(data)
     form.reset({
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: "",
+      method: '',
       account_id: undefined,
-      reference_no: '',
+      reference_no: defaultNumber?.format || '',
       note: '',
     })
   }

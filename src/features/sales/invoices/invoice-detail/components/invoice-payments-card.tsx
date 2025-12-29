@@ -1,7 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
-import type { SalesInvoice } from '@/types'
+import { FinanceNumberType, type SalesInvoice } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { useInvoiceAutoNumberingQuery } from '../../invoice-form/hooks/use-invoice-form-query'
 import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
 
@@ -38,9 +39,14 @@ interface InvoicePaymentsCardProps {
 }
 
 export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
+  const { data: invoicePaymentsAutoNumbering } = useInvoiceAutoNumberingQuery({
+    type: FinanceNumberType.sales_payment,
+  })
+
   const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
     invoiceId: invoice.id,
     defaultAmount: Number(invoice.outstanding),
+    defaultNumber: invoicePaymentsAutoNumbering,
   })
 
   if (invoice.status === 'paid') return null
