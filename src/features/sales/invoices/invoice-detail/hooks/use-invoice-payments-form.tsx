@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FinanceNumberType, type FinanceNumber } from '@/types'
+import { useGenerateNextNumber } from '../../invoice-form/hooks/use-invoice-form-mutation'
 import {
   type InvoicePaymentsFormData,
   invoicePaymentsSchema,
@@ -10,11 +12,13 @@ import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation
 type UseInvoicePaymentsFormProps = {
   invoiceId: string
   defaultAmount?: number
+  defaultNumber?: FinanceNumber | null
 }
 
 export function useInvoicePaymentsForm({
   invoiceId,
   defaultAmount,
+  defaultNumber,
 }: UseInvoicePaymentsFormProps) {
   const form = useForm<InvoicePaymentsFormData>({
     resolver: zodResolver(
@@ -31,31 +35,36 @@ export function useInvoicePaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: "",
+      method: '',
       account_id: undefined,
-      reference_no: '',
+      reference_no: defaultNumber?.format || '',
       note: '',
     },
   })
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
+  const generateNextNumber = useGenerateNextNumber()
 
   useEffect(() => {
     if (defaultAmount !== undefined) {
       form.setValue('amount', defaultAmount)
     }
-  }, [defaultAmount, form])
+    if (defaultNumber !== undefined) {
+      form.setValue('reference_no', defaultNumber?.format || '')
+    }
+  }, [defaultAmount, defaultNumber, form])
 
   const onSubmit = async (data: InvoicePaymentsFormData) => {
     await createMutation.mutateAsync(data)
     form.reset({
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: "",
+      method: '',
       account_id: undefined,
-      reference_no: '',
+      reference_no: defaultNumber?.format || '',
       note: '',
     })
+    generateNextNumber.mutate(FinanceNumberType.sales_payment)
   }
 
   return {

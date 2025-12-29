@@ -19,3 +19,5 @@ export * from './domain/product-categories'
 export * from './domain/product'
 export * from './domain/tag'
 export * from './domain/sales-invoices'
+export * from './domain/auto-numbering'
+

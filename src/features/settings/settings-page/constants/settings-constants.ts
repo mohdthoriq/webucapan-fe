@@ -51,6 +51,7 @@ export const settingsTabs = [
       {
         title: 'Penomoran Otomatis',
         description: 'Atur penomoran otomatis invoice',
+        url: '/settings/auto-sequencing',
         icon: FileText,
       },
       {

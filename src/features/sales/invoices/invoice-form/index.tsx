@@ -3,11 +3,12 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
 import { useInvoiceForm } from './hooks/use-invoice-form'
-import { useInvoiceFormQuery } from './hooks/use-invoice-form-query'
+import { useDefaultNumberingQuery, useInvoiceFormQuery } from './hooks/use-invoice-form-query'
 import { InvoiceFormActions } from './sections/form-actions'
 import { InvoiceFormHeader } from './sections/form-header'
 import { InvoiceFormItems } from './sections/form-items-table'
 import { InvoiceFormSummary } from './sections/form-summary'
+import { FinanceNumberType } from '@/types'
 
 export function InvoiceFormPage() {
   const location = useLocation()
@@ -17,8 +18,13 @@ export function InvoiceFormPage() {
 
   const currentRow = useInvoiceFormQuery({ id: currentRowId })
 
+  const { data: invoiceAutoNumbering } = useDefaultNumberingQuery({
+    type: FinanceNumberType.sales_invoice,
+  })
+
   const invoiceForm = useInvoiceForm({
     currentRow: currentRow.data ?? undefined,
+    autoNumbering: invoiceAutoNumbering,
   })
 
   if (currentRowId && currentRow.isLoading) {
@@ -54,7 +60,7 @@ export function InvoiceFormPage() {
             id='invoice-form'
           >
             <InvoiceFormHeader />
-            <div className="h-px bg-border" />
+            <div className='bg-border h-px' />
             <InvoiceFormItems />
             <InvoiceFormSummary />
             <InvoiceFormActions

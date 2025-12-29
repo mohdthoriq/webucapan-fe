@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
-import type { Product } from '@/types'
+import { FinanceNumberType, type FinanceNumber, type Product } from '@/types'
+import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
 import {
   type CreateProductFormData,
   createProductSchema,
@@ -14,9 +15,13 @@ import {
 
 type useProductsFormProps = {
   currentRow?: Product | null
+  autoNumbering?: FinanceNumber | null
 }
 
-export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
+export function useProductsForm({
+  currentRow,
+  autoNumbering,
+}: useProductsFormProps = {}) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -38,7 +43,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
             images: [],
           }
         : {
-            sku: '',
+            sku: autoNumbering?.format ?? '',
             name: '',
             description: '',
             taxable: false,
@@ -46,7 +51,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
             product_category_id: '',
             images: [],
           },
-    [currentRow, isEdit]
+    [currentRow, isEdit, autoNumbering]
   )
 
   const form = useForm<CreateProductFormData>({
@@ -55,17 +60,22 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
   })
 
   // Update form values when currentRow changes (e.g. after fetch)
-  React.useEffect(() => {
-    if (currentRow) {
-      form.reset(defaultValues)
-      const imgs =
-        Array.isArray(currentRow.images)
+  useEffect(() => {
+    const updateForm = () => {
+      if (currentRow) {
+        form.reset(defaultValues)
+        const imgs = Array.isArray(currentRow.images)
           ? currentRow.images.filter((img) => typeof img === 'string')
           : []
-      setExistingImages(imgs)
-      form.setValue('images', [])
+        setExistingImages(imgs)
+        form.setValue('images', [])
+      }
+      if (autoNumbering !== null) {
+        form.setValue('sku', autoNumbering?.format ?? '')
+      }
     }
-  }, [currentRow, form, defaultValues])
+    updateForm()
+  }, [currentRow, form, defaultValues, autoNumbering])
 
   const handleBoxClick = () => {
     fileInputRef.current?.click()
@@ -105,16 +115,24 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
 
   const removeFile = (indexToRemove: number, source: 'new' | 'existing') => {
     if (source === 'new') {
-      setUploadedFiles((prev) => prev.filter((_, index) => index !== indexToRemove))
+      setUploadedFiles((prev) =>
+        prev.filter((_, index) => index !== indexToRemove)
+      )
       const currentImages = (form.getValues('images') as string[]) || []
-      form.setValue('images', currentImages.filter((_, index) => index !== indexToRemove))
+      form.setValue(
+        'images',
+        currentImages.filter((_, index) => index !== indexToRemove)
+      )
     } else {
-      setExistingImages((prev) => prev.filter((_, index) => index !== indexToRemove))
+      setExistingImages((prev) =>
+        prev.filter((_, index) => index !== indexToRemove)
+      )
     }
   }
 
   const createMutation = useCreateProductMutation()
   const updateMutation = useUpdateProductMutation()
+  const generateNextNumber = useGenerateNextNumber()
 
   const prepareFormData = (data: CreateProductFormData) => {
     const formData = new FormData()
@@ -151,6 +169,7 @@ export function useProductsForm({ currentRow }: useProductsFormProps = {}) {
     } else {
       await createMutation.mutateAsync(formData)
       form.reset()
+      await generateNextNumber.mutateAsync(FinanceNumberType.product_sku)
       router.history.back()
     }
   }

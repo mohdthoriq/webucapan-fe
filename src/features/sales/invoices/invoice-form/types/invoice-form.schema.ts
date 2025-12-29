@@ -13,7 +13,7 @@ export const invoiceItemSchema = z.object({
 export type InvoiceItemFormData = z.infer<typeof invoiceItemSchema>
 
 export const invoiceItemUpdateSchema = z.object({
-  id: z.uuid().min(1, 'ID item tidak boleh kosong'),
+  id: z.uuid('ID item tidak boleh kosong').optional().nullable(),
   product_id: z.string().min(1, 'Produk tidak boleh kosong'),
   description: z.string().optional(),
   quantity: z.number().positive(),

@@ -1,9 +1,11 @@
 'use client'
 
 import { format } from 'date-fns'
-import type { SalesInvoice } from '@/types'
+import { useWatch } from 'react-hook-form'
+import { FinanceNumberType, type SalesInvoice } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,6 +32,10 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import {
+  useCheckFinanceNumberQuery,
+  useDefaultNumberingQuery,
+} from '../../invoice-form/hooks/use-invoice-form-query'
 import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
 
@@ -38,10 +44,38 @@ interface InvoicePaymentsCardProps {
 }
 
 export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
+  const { data: invoicePaymentsAutoNumbering } = useDefaultNumberingQuery({
+    type: FinanceNumberType.sales_payment,
+  })
+
   const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
     invoiceId: invoice.id,
     defaultAmount: Number(invoice.outstanding),
+    defaultNumber: invoicePaymentsAutoNumbering,
   })
+
+  const { control, formState } = form
+
+  const invoicePayments = useWatch({ control, name: 'reference_no' })
+  const debouncedInvoicePayments = useDebounce(invoicePayments, 500)
+
+  const isOriginalNumber =
+    !!debouncedInvoicePayments &&
+    debouncedInvoicePayments === (formState.defaultValues?.reference_no ?? '')
+
+  const {
+    data: checkResult,
+    isFetching: isCheckingNumber,
+    isError: hasCheckError,
+  } = useCheckFinanceNumberQuery({
+    type: FinanceNumberType.sales_payment,
+    number: debouncedInvoicePayments as string,
+  })
+
+  const numberIsTaken =
+    !isOriginalNumber &&
+    checkResult &&
+    (checkResult.exists === true || checkResult.available === false)
 
   if (invoice.status === 'paid') return null
 
@@ -185,9 +219,25 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                   <FormItem>
                     <FormLabel>Nomor Referensi</FormLabel>
                     <FormControl>
-                      <Input placeholder='Contoh: TRF-12345' {...field} />
+                      <div className='relative'>
+                        <Input placeholder='Contoh: TRF-12345' {...field} />
+                        {isCheckingNumber && (
+                          <div className='absolute top-1/2 right-2 -translate-y-1/2'>
+                            <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
+                          </div>
+                        )}
+                      </div>
                     </FormControl>
-                    <FormMessage />
+                    {numberIsTaken || hasCheckError ? (
+                      <p className='text-destructive text-[0.8rem] font-medium'>
+                        {checkResult?.message ||
+                          (hasCheckError
+                            ? 'Gagal memeriksa nomor referensi'
+                            : 'Nomor referensi sudah digunakan')}
+                      </p>
+                    ) : (
+                      <FormMessage />
+                    )}
                   </FormItem>
                 )}
               />

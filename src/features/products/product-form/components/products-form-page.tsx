@@ -1,7 +1,9 @@
 'use client'
 
-import type { Product } from '@/types'
+import { useWatch } from 'react-hook-form'
+import { FinanceNumberType, type Product } from '@/types'
 import { Trash2, Upload } from 'lucide-react'
+import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -23,6 +25,10 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
+import {
+  useCheckFinanceNumberQuery,
+  useDefaultNumberingQuery,
+} from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
 
@@ -33,6 +39,10 @@ type ProductsFormContentProps = {
 export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
   const { data: units } = useUnitsQuery()
   const { data: categories } = useProductCategoryQuery()
+  const { data: productsAutoNumbering } = useDefaultNumberingQuery({
+    type: FinanceNumberType.product_sku,
+  })
+
   const {
     form,
     onSubmit,
@@ -45,8 +55,30 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
     handleFileSelect,
     isSubmitting,
     router,
-    existingImages
-  } = useProductsForm({ currentRow })
+    existingImages,
+  } = useProductsForm({ currentRow, autoNumbering: productsAutoNumbering })
+
+  const { control, formState } = form
+
+  const sku = useWatch({ control, name: 'sku' })
+  const debouncedSku = useDebounce(sku, 500)
+
+  const isOriginalNumber =
+    !!debouncedSku && debouncedSku === (formState.defaultValues?.sku ?? '')
+
+  const {
+    data: checkResult,
+    isFetching: isCheckingNumber,
+    isError: hasCheckError,
+  } = useCheckFinanceNumberQuery({
+    type: FinanceNumberType.product_sku,
+    number: debouncedSku,
+  })
+
+  const numberIsTaken =
+    !isOriginalNumber &&
+    checkResult &&
+    (checkResult.exists === true || checkResult.available === false)
 
   return (
     <Form {...form}>
@@ -59,9 +91,25 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
               <FormItem>
                 <FormLabel>SKU</FormLabel>
                 <FormControl>
-                  <Input placeholder='SKU-001' {...field} />
+                  <div className='relative'>
+                    <Input placeholder='SKU-001' {...field} />
+                    {isCheckingNumber && (
+                      <div className='absolute top-1/2 right-2 -translate-y-1/2'>
+                        <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
+                      </div>
+                    )}
+                  </div>
                 </FormControl>
-                <FormMessage />
+                {numberIsTaken || hasCheckError ? (
+                  <p className='text-destructive text-[0.8rem] font-medium'>
+                    {checkResult?.message ||
+                      (hasCheckError
+                        ? 'Gagal memeriksa nomor referensi'
+                        : 'Nomor referensi sudah digunakan')}
+                  </p>
+                ) : (
+                  <FormMessage />
+                )}
               </FormItem>
             )}
           />

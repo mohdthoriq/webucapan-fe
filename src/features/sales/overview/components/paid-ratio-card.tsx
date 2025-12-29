@@ -111,7 +111,7 @@ export function PaidRatioCard({ className, globalPeriod }: PaidRatioCardProps) {
     'Invoices paid vs total Invoices for this month'
 
   return (
-    <Card className={cn('bg-card border-border ', className)}>
+    <Card className={cn('bg-card border-border max-h-[320px]', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
           Rasio Pembayaran

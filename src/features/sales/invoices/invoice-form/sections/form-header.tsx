@@ -1,7 +1,9 @@
 import { format } from 'date-fns'
+import { useFormContext, useWatch } from 'react-hook-form'
+import { FinanceNumberType } from '@/types'
 import { CalendarIcon } from 'lucide-react'
-import { useFormContext } from 'react-hook-form'
 import { cn } from '@/lib/utils'
+import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -28,11 +30,33 @@ import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
+import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
 
 export function InvoiceFormHeader() {
-  const { control } = useFormContext()
+  const { control, formState } = useFormContext()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
+
+  const invoiceNumber = useWatch({ control, name: 'invoice_number' })
+  const debouncedInvoiceNumber = useDebounce(invoiceNumber, 500)
+
+  const isOriginalNumber =
+    !!debouncedInvoiceNumber &&
+    debouncedInvoiceNumber === (formState.defaultValues?.invoice_number ?? '')
+
+  const {
+    data: checkResult,
+    isFetching: isCheckingNumber,
+    isError: hasCheckError,
+  } = useCheckFinanceNumberQuery({
+    type: FinanceNumberType.sales_invoice,
+    number: debouncedInvoiceNumber,
+  })
+
+  const numberIsTaken =
+    !isOriginalNumber &&
+    checkResult &&
+    (checkResult.exists === true || checkResult.available === false)
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -66,9 +90,25 @@ export function InvoiceFormHeader() {
           <FormItem>
             <FormLabel>Nomor Invoice</FormLabel>
             <FormControl>
-              <Input placeholder='INV-001' {...field} />
+              <div className='relative'>
+                <Input placeholder='INV-001' {...field} />
+                {isCheckingNumber && (
+                  <div className='absolute top-1/2 right-2 -translate-y-1/2'>
+                    <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
+                  </div>
+                )}
+              </div>
             </FormControl>
-            <FormMessage />
+            {numberIsTaken || hasCheckError ? (
+              <p className='text-destructive text-[0.8rem] font-medium'>
+                {checkResult?.message ||
+                  (hasCheckError
+                    ? 'Gagal memeriksa nomor invoice'
+                    : 'Nomor invoice sudah digunakan')}
+              </p>
+            ) : (
+              <FormMessage />
+            )}
           </FormItem>
         )}
       />
@@ -177,10 +217,7 @@ export function InvoiceFormHeader() {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Termin Pembayaran</FormLabel>
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger
                   className='w-full'

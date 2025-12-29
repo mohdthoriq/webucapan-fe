@@ -91,7 +91,7 @@ export function CustomerSalesCard({
   }, [topCustomers])
 
   return (
-    <Card className={cn('bg-card border-border flex flex-col', className)}>
+    <Card className={cn('bg-card border-border flex flex-col max-h-[500px]', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
           SALES PER CUSTOMER {getPeriodLabel()}

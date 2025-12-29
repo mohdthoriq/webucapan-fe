@@ -35,12 +35,15 @@ import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
+import { Route as AuthenticatedSettingsAutoSequencingIndexRouteImport } from './routes/_authenticated/settings/auto-sequencing/index'
 import { Route as AuthenticatedSalesOverviewIndexRouteImport } from './routes/_authenticated/sales/overview/index'
 import { Route as AuthenticatedSalesInvoicesIndexRouteImport } from './routes/_authenticated/sales/invoices/index'
+import { Route as AuthenticatedProductsEditIndexRouteImport } from './routes/_authenticated/products/edit/index'
 import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_authenticated/products/add/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
+import { Route as AuthenticatedSalesInvoicesEditIndexRouteImport } from './routes/_authenticated/sales/invoices/edit/index'
 import { Route as AuthenticatedSalesInvoicesDetailIndexRouteImport } from './routes/_authenticated/sales/invoices/detail/index'
 import { Route as AuthenticatedSalesInvoicesAddIndexRouteImport } from './routes/_authenticated/sales/invoices/add/index'
 
@@ -186,6 +189,12 @@ const AuthenticatedSettingsCompanyRolesIndexRoute =
     path: '/settings/company-roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsAutoSequencingIndexRoute =
+  AuthenticatedSettingsAutoSequencingIndexRouteImport.update({
+    id: '/settings/auto-sequencing/',
+    path: '/settings/auto-sequencing/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSalesOverviewIndexRoute =
   AuthenticatedSalesOverviewIndexRouteImport.update({
     id: '/sales/overview/',
@@ -196,6 +205,12 @@ const AuthenticatedSalesInvoicesIndexRoute =
   AuthenticatedSalesInvoicesIndexRouteImport.update({
     id: '/sales/invoices/',
     path: '/sales/invoices/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProductsEditIndexRoute =
+  AuthenticatedProductsEditIndexRouteImport.update({
+    id: '/products/edit/',
+    path: '/products/edit/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedProductsAddIndexRoute =
@@ -221,6 +236,12 @@ const AuthenticatedAdminAccountCategoriesIndexRoute =
     id: '/account-categories/',
     path: '/account-categories/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedSalesInvoicesEditIndexRoute =
+  AuthenticatedSalesInvoicesEditIndexRouteImport.update({
+    id: '/sales/invoices/edit/',
+    path: '/sales/invoices/edit/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSalesInvoicesDetailIndexRoute =
   AuthenticatedSalesInvoicesDetailIndexRouteImport.update({
@@ -257,8 +278,10 @@ export interface FileRoutesByFullPath {
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
+  '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
+  '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -269,6 +292,7 @@ export interface FileRoutesByFullPath {
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
   '/sales/invoices/add': typeof AuthenticatedSalesInvoicesAddIndexRoute
   '/sales/invoices/detail': typeof AuthenticatedSalesInvoicesDetailIndexRoute
+  '/sales/invoices/edit': typeof AuthenticatedSalesInvoicesEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -292,8 +316,10 @@ export interface FileRoutesByTo {
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
+  '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
+  '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -304,6 +330,7 @@ export interface FileRoutesByTo {
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
   '/sales/invoices/add': typeof AuthenticatedSalesInvoicesAddIndexRoute
   '/sales/invoices/detail': typeof AuthenticatedSalesInvoicesDetailIndexRoute
+  '/sales/invoices/edit': typeof AuthenticatedSalesInvoicesEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -329,8 +356,10 @@ export interface FileRoutesById {
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/products/add/': typeof AuthenticatedProductsAddIndexRoute
+  '/_authenticated/products/edit/': typeof AuthenticatedProductsEditIndexRoute
   '/_authenticated/sales/invoices/': typeof AuthenticatedSalesInvoicesIndexRoute
   '/_authenticated/sales/overview/': typeof AuthenticatedSalesOverviewIndexRoute
+  '/_authenticated/settings/auto-sequencing/': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -341,6 +370,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/users/': typeof AuthenticatedSettingsUsersIndexRoute
   '/_authenticated/sales/invoices/add/': typeof AuthenticatedSalesInvoicesAddIndexRoute
   '/_authenticated/sales/invoices/detail/': typeof AuthenticatedSalesInvoicesDetailIndexRoute
+  '/_authenticated/sales/invoices/edit/': typeof AuthenticatedSalesInvoicesEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -366,8 +396,10 @@ export interface FileRouteTypes {
     | '/admin/menus'
     | '/admin/permissions'
     | '/products/add'
+    | '/products/edit'
     | '/sales/invoices'
     | '/sales/overview'
+    | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -378,6 +410,7 @@ export interface FileRouteTypes {
     | '/settings/users'
     | '/sales/invoices/add'
     | '/sales/invoices/detail'
+    | '/sales/invoices/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -401,8 +434,10 @@ export interface FileRouteTypes {
     | '/admin/menus'
     | '/admin/permissions'
     | '/products/add'
+    | '/products/edit'
     | '/sales/invoices'
     | '/sales/overview'
+    | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
     | '/settings/payment-terms'
@@ -413,6 +448,7 @@ export interface FileRouteTypes {
     | '/settings/users'
     | '/sales/invoices/add'
     | '/sales/invoices/detail'
+    | '/sales/invoices/edit'
   id:
     | '__root__'
     | '/_authenticated'
@@ -437,8 +473,10 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/products/add/'
+    | '/_authenticated/products/edit/'
     | '/_authenticated/sales/invoices/'
     | '/_authenticated/sales/overview/'
+    | '/_authenticated/settings/auto-sequencing/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/payment-terms/'
@@ -449,6 +487,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/users/'
     | '/_authenticated/sales/invoices/add/'
     | '/_authenticated/sales/invoices/detail/'
+    | '/_authenticated/sales/invoices/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -649,6 +688,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsCompanyRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/auto-sequencing/': {
+      id: '/_authenticated/settings/auto-sequencing/'
+      path: '/settings/auto-sequencing'
+      fullPath: '/settings/auto-sequencing'
+      preLoaderRoute: typeof AuthenticatedSettingsAutoSequencingIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/sales/overview/': {
       id: '/_authenticated/sales/overview/'
       path: '/sales/overview'
@@ -661,6 +707,13 @@ declare module '@tanstack/react-router' {
       path: '/sales/invoices'
       fullPath: '/sales/invoices'
       preLoaderRoute: typeof AuthenticatedSalesInvoicesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/products/edit/': {
+      id: '/_authenticated/products/edit/'
+      path: '/products/edit'
+      fullPath: '/products/edit'
+      preLoaderRoute: typeof AuthenticatedProductsEditIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/products/add/': {
@@ -690,6 +743,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/account-categories'
       preLoaderRoute: typeof AuthenticatedAdminAccountCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/sales/invoices/edit/': {
+      id: '/_authenticated/sales/invoices/edit/'
+      path: '/sales/invoices/edit'
+      fullPath: '/sales/invoices/edit'
+      preLoaderRoute: typeof AuthenticatedSalesInvoicesEditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/sales/invoices/detail/': {
       id: '/_authenticated/sales/invoices/detail/'
@@ -737,8 +797,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
+  AuthenticatedProductsEditIndexRoute: typeof AuthenticatedProductsEditIndexRoute
   AuthenticatedSalesInvoicesIndexRoute: typeof AuthenticatedSalesInvoicesIndexRoute
   AuthenticatedSalesOverviewIndexRoute: typeof AuthenticatedSalesOverviewIndexRoute
+  AuthenticatedSettingsAutoSequencingIndexRoute: typeof AuthenticatedSettingsAutoSequencingIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
@@ -749,6 +811,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsUsersIndexRoute: typeof AuthenticatedSettingsUsersIndexRoute
   AuthenticatedSalesInvoicesAddIndexRoute: typeof AuthenticatedSalesInvoicesAddIndexRoute
   AuthenticatedSalesInvoicesDetailIndexRoute: typeof AuthenticatedSalesInvoicesDetailIndexRoute
+  AuthenticatedSalesInvoicesEditIndexRoute: typeof AuthenticatedSalesInvoicesEditIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -761,8 +824,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
+  AuthenticatedProductsEditIndexRoute: AuthenticatedProductsEditIndexRoute,
   AuthenticatedSalesInvoicesIndexRoute: AuthenticatedSalesInvoicesIndexRoute,
   AuthenticatedSalesOverviewIndexRoute: AuthenticatedSalesOverviewIndexRoute,
+  AuthenticatedSettingsAutoSequencingIndexRoute:
+    AuthenticatedSettingsAutoSequencingIndexRoute,
   AuthenticatedSettingsCompanyRolesIndexRoute:
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:
@@ -779,6 +845,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSalesInvoicesAddIndexRoute,
   AuthenticatedSalesInvoicesDetailIndexRoute:
     AuthenticatedSalesInvoicesDetailIndexRoute,
+  AuthenticatedSalesInvoicesEditIndexRoute:
+    AuthenticatedSalesInvoicesEditIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

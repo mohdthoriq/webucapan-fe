@@ -24,20 +24,20 @@ export function useContactsForm({ currentRow }: useContactsFormProps) {
     resolver: zodResolver(createContactSchema),
     defaultValues: isEdit
       ? {
-          name: currentRow?.name,
-          type_id: currentRow?.type?.id ?? '',
-          phone: currentRow?.phone,
-          email: currentRow?.email,
-          address: currentRow?.company?.address,
-          company_id: currentRow?.company?.id ?? company?.id ?? '',
+          name: currentRow?.name ?? undefined,
+          type_id: currentRow?.type?.id ?? undefined,
+          phone: currentRow?.phone ?? undefined,
+          email: currentRow?.email ?? undefined,
+          address: currentRow?.company?.address ?? undefined,
+          company_id: currentRow?.company?.id ?? company?.id ?? undefined,
         }
       : {
-          company_id: company?.id ?? '',
-          name: '',
-          type_id: '',
-          phone: '',
-          email: '',
-          address: '',
+          company_id: company?.id ?? undefined,
+          name: undefined,
+          type_id: undefined,
+          phone: undefined,
+          email: undefined,
+          address: undefined,
         },
   })
 
