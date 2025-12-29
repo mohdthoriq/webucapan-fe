@@ -12,7 +12,9 @@ export function useUpdateAutoNumberingMutation() {
       return response.data
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['auto-numbering'] })
+      queryClient.invalidateQueries({
+        queryKey: ['auto-numbering'],
+      })
     },
   })
 }

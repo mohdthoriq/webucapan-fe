@@ -19,7 +19,7 @@ export function useGenerateNextNumber() {
     },
     onSuccess: async (_) => {
       await queryClient.invalidateQueries({
-        queryKey: ['invoice-auto-numbering'],
+        queryKey: ['auto-numbering'],
       })
       toast.dismiss('invoices-form-toast')
     },

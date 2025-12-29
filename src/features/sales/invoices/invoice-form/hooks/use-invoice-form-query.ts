@@ -26,22 +26,20 @@ export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
   })
 }
 
-interface InvoiceAutoNumberingQueryParams {
+interface AutoNumberingQueryParams {
   type: FinanceNumberType
 }
 
-export function useInvoiceAutoNumberingQuery(
-  params: InvoiceAutoNumberingQueryParams
-) {
+export function useDefaultNumberingQuery(params: AutoNumberingQueryParams) {
   return useQuery({
-    queryKey: ['invoice-auto-numbering', params.type],
+    queryKey: ['auto-numbering', params.type],
     queryFn: async () => {
       const url = `/auto-numbering/type/${params.type}`
       const response = await apiClient.get<ApiResponse<FinanceNumber>>(url)
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 1 * 30 * 1000, // 30 seconds
     retry: 1, // optional: retry once only
   })
 }

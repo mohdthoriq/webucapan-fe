@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FinanceNumberType, type FinanceNumber } from '@/types'
+import { useGenerateNextNumber } from '../../invoice-form/hooks/use-invoice-form-mutation'
 import {
   type InvoicePaymentsFormData,
   invoicePaymentsSchema,
 } from '../types/invoice-payments.schema'
 import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation'
-import type { FinanceNumber } from '@/types'
 
 type UseInvoicePaymentsFormProps = {
   invoiceId: string
@@ -42,6 +43,7 @@ export function useInvoicePaymentsForm({
   })
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
+  const generateNextNumber = useGenerateNextNumber()
 
   useEffect(() => {
     if (defaultAmount !== undefined) {
@@ -62,6 +64,7 @@ export function useInvoicePaymentsForm({
       reference_no: defaultNumber?.format || '',
       note: '',
     })
+    generateNextNumber.mutate(FinanceNumberType.sales_payment)
   }
 
   return {
