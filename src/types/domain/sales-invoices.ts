@@ -43,7 +43,7 @@ export interface SalesInvoice extends GlobalResponse {
   currency: string
   subtotal: number
   tax_total: number
-  grand_total: number
+  total: number
   paid_amount: number
   outstanding: number
   status: Status
