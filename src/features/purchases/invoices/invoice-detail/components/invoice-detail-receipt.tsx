@@ -283,7 +283,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <div className='flex justify-between text-sm'>
               <span className='text-muted-foreground'>Total</span>
               <span className='font-medium'>
-                {formatCurrency(Number(invoice.grand_total), invoice.currency)}
+                {formatCurrency(Number(invoice.total), invoice.currency)}
               </span>
             </div>
 

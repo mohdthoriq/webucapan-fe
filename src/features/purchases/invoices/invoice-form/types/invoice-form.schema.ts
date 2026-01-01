@@ -37,7 +37,7 @@ export const CreateInvoiceSchema = z
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
-    grand_total: z.number().nonnegative(),
+    total: z.number().nonnegative(),
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
@@ -66,7 +66,7 @@ export const UpdateInvoiceSchema = z
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
-    grand_total: z.number().nonnegative(),
+    total: z.number().nonnegative(),
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 

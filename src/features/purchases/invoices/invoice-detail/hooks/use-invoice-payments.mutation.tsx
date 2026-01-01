@@ -8,7 +8,7 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
   return useMutation({
     mutationFn: async (data: InvoicePaymentsFormData) => {
       const response = await apiClient.post(
-        `sales-invoices/${invoiceId}/payments`,
+        `purchase-invoices/${invoiceId}/payments`,
         data
       )
       return response.data

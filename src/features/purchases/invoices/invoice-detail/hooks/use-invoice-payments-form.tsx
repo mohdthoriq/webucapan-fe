@@ -64,7 +64,7 @@ export function useInvoicePaymentsForm({
       reference_no: defaultNumber?.format || '',
       note: '',
     })
-    generateNextNumber.mutate(FinanceNumberType.sales_payment)
+    generateNextNumber.mutate(FinanceNumberType.purchase_payment)
   }
 
   return {

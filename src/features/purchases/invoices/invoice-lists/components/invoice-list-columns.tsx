@@ -122,13 +122,13 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'grand_total',
+    accessorKey: 'total',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Total' />
     ),
     cell: ({ row }) => {
-      const { grand_total } = row.original
-      const formattedTotal = formatNumber(grand_total)
+      const { total } = row.original
+      const formattedTotal = formatNumber(total)
       return (
         <div className='px-2'>
           <LongText className='truncate'>{formattedTotal}</LongText>

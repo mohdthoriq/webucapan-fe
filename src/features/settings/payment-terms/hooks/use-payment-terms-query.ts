@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaymentTerm, PaginationApiResponse } from '@/types'
-import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 
 interface PaymentTermsQueryParams {
@@ -11,7 +10,6 @@ interface PaymentTermsQueryParams {
 }
 
 export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
-  const user = useAuthStore((state) => state.auth.user)
 
   return useQuery({
     queryKey: [
@@ -19,17 +17,15 @@ export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
       params?.page,
       params?.limit,
       params?.name,
-      params?.company_id,
-      user?.company?.id,
+      params?.company_id
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        company_id: params?.company_id
-          ? params.company_id
-          : user?.company?.id || '',
+        ...(params?.company_id ? { company_id: params.company_id } : {}),
+
       })
 
       const url = queryParams.toString()

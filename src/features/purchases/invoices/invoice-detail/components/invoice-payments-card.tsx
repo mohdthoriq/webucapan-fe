@@ -45,7 +45,7 @@ interface InvoicePaymentsCardProps {
 
 export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
   const { data: invoicePaymentsAutoNumbering } = useDefaultNumberingQuery({
-    type: FinanceNumberType.sales_payment,
+    type: FinanceNumberType.purchase_payment,
   })
 
   const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
@@ -88,7 +88,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Terima Pembayaran</CardTitle>
+        <CardTitle>Kirim Pembayaran</CardTitle>
       </CardHeader>
       <hr />
       <CardContent>

@@ -45,13 +45,13 @@ export const calculateTotals = (
     form.setValue('subtotal', newSubtotal)
   if (form.getValues('tax_total') !== newTaxTotal)
     form.setValue('tax_total', newTaxTotal)
-  if (form.getValues('grand_total') !== newTotal)
-    form.setValue('grand_total', newTotal)
+  if (form.getValues('total') !== newTotal)
+    form.setValue('total', newTotal)
 
   return {
     subtotal: newSubtotal,
     taxTotal: newTaxTotal,
-    grandTotal: newTotal,
+    total: newTotal,
     taxBreakdown,
   }
 }
