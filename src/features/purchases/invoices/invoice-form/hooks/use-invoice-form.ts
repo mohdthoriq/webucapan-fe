@@ -44,7 +44,7 @@ export function useInvoiceForm({
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
-            grand_total: Number(currentRow.grand_total),
+            grand_total: Number(currentRow.total),
             invoice_date: currentRow.invoice_date
               ? new Date(currentRow.invoice_date)
               : new Date(),
