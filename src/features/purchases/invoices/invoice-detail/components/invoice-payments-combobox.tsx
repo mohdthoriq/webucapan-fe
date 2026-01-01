@@ -1,6 +1,7 @@
 'use client'
 
-import * as React from 'react'
+import { useEffect, useState } from 'react'
+import type { Account } from '@/types'
 import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -18,7 +19,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import type { Account } from '@/types'
 import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
 
 interface InvoicePaymentsComboboxProps {
@@ -34,15 +34,13 @@ export function InvoicePaymentsCombobox({
   placeholder = 'Select account parent...',
   limit = 20,
 }: InvoicePaymentsComboboxProps) {
-  const [open, setOpen] = React.useState(false)
-  const [searchTerm, setSearchTerm] = React.useState('')
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const [allAccounts, setAllAccounts] = React.useState<Account[]>(
-    []
-  )
+  const [open, setOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [allAccounts, setAllAccounts] = useState<Account[]>([])
   const [selectedContactType, setSelectedContactType] =
-    React.useState<Account | null>(null)
-  const [hasMore, setHasMore] = React.useState(true)
+    useState<Account | null>(null)
+  const [hasMore, setHasMore] = useState(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
@@ -52,43 +50,51 @@ export function InvoicePaymentsCombobox({
     search: debouncedSearchTerm || undefined,
   })
 
-  React.useEffect(() => {
-    setCurrentPage(1)
-    setAllAccounts([])
-    setHasMore(true)
+  useEffect(() => {
+    const resetData = () => {
+      setCurrentPage(1)
+      setAllAccounts([])
+      setHasMore(true)
+    }
+    resetData()
   }, [debouncedSearchTerm])
 
-  React.useEffect(() => {
-    if (data?.data) {
-      if (currentPage === 1) {
-        setAllAccounts(data.data)
-      } else {
-        setAllAccounts((prev) => {
-          const newAccounts = data.data.filter(
-            (newAccount) =>
-              !prev.some(
-                (existingAccount) =>
-                  existingAccount.id === newAccount.id
-              )
-          )
-          return [...prev, ...newAccounts]
-        })
-      }
+  useEffect(() => {
+    const handleData = () => {
+      if (data?.data) {
+        if (currentPage === 1) {
+          setAllAccounts(data.data)
+        } else {
+          setAllAccounts((prev) => {
+            const newAccounts = data.data.filter(
+              (newAccount) =>
+                !prev.some(
+                  (existingAccount) => existingAccount.id === newAccount.id
+                )
+            )
+            return [...prev, ...newAccounts]
+          })
+        }
 
-      const pagination = data.pagination
-      if (pagination) {
-        setHasMore(currentPage < pagination.total_pages)
+        const pagination = data.pagination
+        if (pagination) {
+          setHasMore(currentPage < pagination.total_pages)
+        }
       }
     }
+    handleData()
   }, [data, currentPage])
 
-  React.useEffect(() => {
-    if (value && allAccounts.length > 0) {
-      const account = allAccounts.find((p) => p.id === value)
-      setSelectedContactType(account || null)
-    } else {
-      setSelectedContactType(null)
+  useEffect(() => {
+    const handleValueChange = () => {
+      if (value && allAccounts.length > 0) {
+        const account = allAccounts.find((p) => p.id === value)
+        setSelectedContactType(account || null)
+      } else {
+        setSelectedContactType(null)
+      }
     }
+    handleValueChange()
   }, [value, allAccounts])
 
   const handleSearch = (searchValue: string) => {

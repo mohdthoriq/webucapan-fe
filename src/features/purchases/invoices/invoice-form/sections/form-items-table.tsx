@@ -13,7 +13,7 @@ export function InvoiceFormItems() {
   const form = useFormContext<CreateInvoiceFormData>()
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'invoice_items',
+    name: 'purchase_items',
   })
 
   const handleAddItems = () => {

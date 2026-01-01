@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns'
 import { useWatch } from 'react-hook-form'
-import { FinanceNumberType, type SalesInvoice } from '@/types'
+import { FinanceNumberType, type PurchaseInvoice } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -40,7 +40,7 @@ import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
 
 interface InvoicePaymentsCardProps {
-  invoice: SalesInvoice
+  invoice: PurchaseInvoice
 }
 
 export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {

@@ -19,7 +19,7 @@ export function InvoiceFormPage() {
   const currentRow = useInvoiceFormQuery({ id: currentRowId })
 
   const { data: invoiceAutoNumbering } = useDefaultNumberingQuery({
-    type: FinanceNumberType.sales_invoice,
+    type: FinanceNumberType.purchase_invoice,
   })
 
   const invoiceForm = useInvoiceForm({

@@ -9,7 +9,7 @@ export const calculateTotals = (
   form: Pick<ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
   >, 'setValue' | 'getValues'>,
-  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['invoice_items'],
+  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['purchase_items'],
   taxes: Tax[]
 ) => {
   let newSubtotal = 0
@@ -45,12 +45,13 @@ export const calculateTotals = (
     form.setValue('subtotal', newSubtotal)
   if (form.getValues('tax_total') !== newTaxTotal)
     form.setValue('tax_total', newTaxTotal)
-  if (form.getValues('total') !== newTotal) form.setValue('total', newTotal)
+  if (form.getValues('grand_total') !== newTotal)
+    form.setValue('grand_total', newTotal)
 
   return {
     subtotal: newSubtotal,
     taxTotal: newTaxTotal,
-    total: newTotal,
+    grandTotal: newTotal,
     taxBreakdown,
   }
 }

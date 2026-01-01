@@ -1,9 +1,9 @@
-import type { PaginationMeta, SalesInvoice } from '@/types'
+import type { PaginationMeta, PurchaseInvoice } from '@/types'
 import { useInvoiceListQuery } from '../hooks/use-invoice-list-query'
 import { createContext, type ReactNode, useContext } from 'react'
 
 type InvoiceListsContextType = {
-  invoiceListsData: SalesInvoice[]
+  invoiceListsData: PurchaseInvoice[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean

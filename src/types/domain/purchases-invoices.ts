@@ -4,16 +4,11 @@ import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
 import type { Product } from './product'
+import type { Status } from './sales-invoices'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
 
-export enum Status {
-  unpaid = 'unpaid',
-  partially_paid = 'partially_paid',
-  paid = 'paid',
-}
-
-export interface InvoiceItem extends GlobalResponse {
+export interface PurchaseItems extends GlobalResponse {
   product: Product
   description: string
   quantity: number
@@ -23,7 +18,7 @@ export interface InvoiceItem extends GlobalResponse {
   line_total: number
 }
 
-export interface InvoicePayment extends GlobalResponse {
+export interface PurchasePayment extends GlobalResponse {
   payment_date: Date
   amount: number
   method: string
@@ -33,9 +28,9 @@ export interface InvoicePayment extends GlobalResponse {
   account: Account
 }
 
-export interface SalesInvoice extends GlobalResponse {
+export interface PurchaseInvoice extends GlobalResponse {
   company: Company
-  customer: Contact
+  vendor: Contact
   payment_term: PaymentTerm
   invoice_number: string
   invoice_date: Date
@@ -47,8 +42,8 @@ export interface SalesInvoice extends GlobalResponse {
   paid_amount: number
   outstanding: number
   status: Status
-  invoice_items: InvoiceItem[]
-  invoice_payments: InvoicePayment[]
+  purchase_items: PurchaseItems[]
+  purchase_payments: PurchasePayment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }

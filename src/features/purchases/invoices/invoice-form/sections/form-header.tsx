@@ -63,17 +63,17 @@ export function InvoiceFormHeader() {
       <div className='col-span-1 md:col-span-2 lg:col-span-1'>
         <FormField
           control={control}
-          name='customer_id'
+          name='vendor_id'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Pelanggan</FormLabel>
+              <FormLabel>Vendor</FormLabel>
               <FormControl>
                 <InvoiceFormCombobox
                   value={field.value}
                   onValueChange={(value) => {
                     field.onChange(value)
                   }}
-                  placeholder='Pilih Pelanggan'
+                  placeholder='Pilih Vendor'
                 />
               </FormControl>
               <FormMessage />

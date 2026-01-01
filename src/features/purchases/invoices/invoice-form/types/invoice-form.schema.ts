@@ -27,7 +27,7 @@ export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
 
 export const CreateInvoiceSchema = z
   .object({
-    customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
+    vendor_id: z.string().min(1, 'Vendor tidak boleh kosong'),
     payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
 
@@ -37,11 +37,11 @@ export const CreateInvoiceSchema = z
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
-    total: z.number().nonnegative(),
+    grand_total: z.number().nonnegative(),
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    invoice_items: z
+    purchase_items: z
       .array(invoiceItemSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
@@ -56,7 +56,7 @@ export type CreateInvoiceFormData = z.infer<typeof CreateInvoiceSchema>
 export const UpdateInvoiceSchema = z
   .object({
     id: z.uuid().min(1, 'ID invoice tidak boleh kosong'),
-    customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
+    vendor_id: z.string().min(1, 'Vendor tidak boleh kosong'),
     payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
 
@@ -66,11 +66,11 @@ export const UpdateInvoiceSchema = z
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
-    total: z.number().nonnegative(),
+    grand_total: z.number().nonnegative(),
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    invoice_items: z
+    purchase_items: z
       .array(invoiceItemUpdateSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),

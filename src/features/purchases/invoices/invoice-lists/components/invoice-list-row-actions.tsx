@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
-import type { SalesInvoice } from '@/types'
+import type { PurchaseInvoice } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 type DataTableRowActionsProps = {
-  row: Row<SalesInvoice>
+  row: Row<PurchaseInvoice>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
@@ -38,7 +38,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               navigate({
-                to: `/sales/invoices/detail`,
+                to: `/purchases/invoices/detail`,
                 search: {},
                 state: { currentRowId: invoice.id } as Record<string, unknown>,
               })
@@ -49,7 +49,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               navigate({
-                to: `/sales/invoices/edit`,
+                to: `/purchases/invoices/edit`,
                 search: {},
                 state: { currentRowId: invoice.id } as Record<string, unknown>,
               })

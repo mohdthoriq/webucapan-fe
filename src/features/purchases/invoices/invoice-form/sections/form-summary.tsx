@@ -28,7 +28,7 @@ export function InvoiceFormSummary() {
         </div>
         <div className='flex justify-between text-lg font-bold'>
           <span>Total Invoice</span>
-          <span>{totals.total.toLocaleString()}</span>
+          <span>{totals.grandTotal.toLocaleString()}</span>
         </div>
       </div>
     </div>

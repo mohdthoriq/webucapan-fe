@@ -33,7 +33,7 @@ export function useCreateInvoiceMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: CreateInvoiceFormData) => {
-      const response = await apiClient.post(`sales-invoices`, credentials)
+      const response = await apiClient.post(`purchase-invoices`, credentials)
       return response.data
     },
     onMutate: () => {
@@ -56,7 +56,7 @@ export function useUpdateInvoiceMutation() {
   return useMutation({
     mutationFn: async (credentials: UpdateInvoiceFormData) => {
       const response = await apiClient.patch(
-        `sales-invoices/${credentials.id}`,
+        `purchase-invoices/${credentials.id}`,
         credentials
       )
       return response.data

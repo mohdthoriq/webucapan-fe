@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   type FinanceNumber,
   FinanceNumberType,
-  type SalesInvoice,
+  type PurchaseInvoice,
   Status,
 } from '@/types'
 import {
@@ -21,7 +21,7 @@ import {
 import { useNavigate } from '@tanstack/react-router'
 
 type UseInvoiceFormProps = {
-  currentRow?: SalesInvoice
+  currentRow?: PurchaseInvoice
   autoNumbering?: FinanceNumber | null
 }
 
@@ -38,21 +38,21 @@ export function useInvoiceForm({
         ? {
             id: currentRow.id,
             invoice_number: currentRow.invoice_number,
-            customer_id: currentRow.customer?.id ?? '',
+            vendor_id: currentRow.vendor?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? undefined,
             status: currentRow.status,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
-            total: Number(currentRow.total),
+            grand_total: Number(currentRow.grand_total),
             invoice_date: currentRow.invoice_date
               ? new Date(currentRow.invoice_date)
               : new Date(),
             due_date: currentRow.due_date
               ? new Date(currentRow.due_date)
               : new Date(),
-            invoice_items:
-              currentRow.invoice_items?.map((item) => ({
+            purchase_items:
+              currentRow.purchase_items?.map((item) => ({
                 id: item.id,
                 product_id: item.product?.id ?? undefined,
                 description: item.description || undefined,
@@ -69,16 +69,16 @@ export function useInvoiceForm({
           }
         : {
             invoice_number: autoNumbering?.format ?? '',
-            customer_id: '',
+            vendor_id: '',
             payment_term_id: undefined,
             currency: 'IDR',
             subtotal: 0,
             tax_total: 0,
-            total: 0,
+            grand_total: 0,
             status: Status.unpaid,
             invoice_date: new Date(),
             due_date: new Date(),
-            invoice_items: [
+            purchase_items: [
               {
                 product_id: '',
                 description: '',
@@ -109,7 +109,7 @@ export function useInvoiceForm({
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
-    name: 'invoice_items',
+    name: 'purchase_items',
   })
 
   const createMutation = useCreateInvoiceMutation()
@@ -125,15 +125,15 @@ export function useInvoiceForm({
       const response = await updateMutation.mutateAsync(updateData)
       form.reset(data)
       navigate({
-        to: `/sales/invoices/detail`,
+        to: `/purchases/invoices/detail`,
         state: { currentRowId: response.data.id } as Record<string, unknown>,
       })
     } else {
       const response = await createMutation.mutateAsync(data)
-      await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
+      await generateNextNumber.mutateAsync(FinanceNumberType.purchase_invoice)
       form.reset()
       navigate({
-        to: `/sales/invoices/detail`,
+        to: `/purchases/invoices/detail`,
         state: { currentRowId: response.data.id } as Record<string, unknown>,
       })
     }

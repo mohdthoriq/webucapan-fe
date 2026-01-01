@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import type { PaginationApiResponse, SalesInvoice } from '@/types'
+import type { PaginationApiResponse, PurchaseInvoice } from '@/types'
 import apiClient from '@/lib/api-client'
 
 interface InvoiceListQueryParams {
   page?: number
   limit?: number
   order?: string
-  company_id?: string
-  customer_id?: string
+  vendor_id?: string
   status?: 'unpaid' | 'partially_paid' | 'paid'
   invoice_number?: string
   date_from?: Date
@@ -26,8 +25,7 @@ export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
       params?.date_from,
       params?.date_to,
       params?.status,
-      params?.customer_id,
-      params?.company_id,
+      params?.vendor_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -37,15 +35,14 @@ export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
         ...(params?.date_from ? { date_from: params.date_from.toString() } : {}),
         ...(params?.date_to ? { date_to: params.date_to.toString() } : {}),
         ...(params?.status ? { status: params.status } : {}),
-        ...(params?.customer_id ? { customer_id: params.customer_id } : {}),
-        ...(params?.company_id ? { company_id: params.company_id } : {}),
+        ...(params?.vendor_id ? { vendor_id: params.vendor_id } : {}),
         ...(params?.order ? { order: params.order } : {}),
       })
 
       const url = queryParams.toString()
-        ? `/sales-invoices?${queryParams.toString()}`
-        : '/sales-invoices'
-      const response = await apiClient.get<PaginationApiResponse<SalesInvoice>>(url)
+        ? `/purchase-invoices?${queryParams.toString()}`
+        : '/purchase-invoices'
+      const response = await apiClient.get<PaginationApiResponse<PurchaseInvoice>>(url)
 
       return response.data
     },

@@ -12,7 +12,6 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { SalesInvoice } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -27,6 +26,7 @@ import {
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { invoiceListsColumns } from './invoice-list-columns'
 import { useInvoiceLists } from './invoice-list-provider'
+import type { PurchaseInvoice } from '@/types'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -166,7 +166,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<SalesInvoice> }) {
+function TableRows({ table }: { table: TanstackTable<PurchaseInvoice> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import type { SalesInvoice } from '@/types'
+import type { PurchaseInvoice } from '@/types'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
 import { formatCurrency, cn, getStatusStyles, invoiceLabel } from '@/lib/utils'
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table'
 
 interface InvoiceDetailReceiptProps {
-  invoice: SalesInvoice
+  invoice: PurchaseInvoice
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
@@ -58,7 +58,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <div className='space-y-3'>
               <div>
                 <p className='text-primary mb-2 text-lg font-bold'>
-                  {invoice.customer?.name}
+                  {invoice.vendor?.name}
                 </p>
                 <div className='flex items-center gap-2'>
                   <Building2 className='text-muted-foreground h-3.5 w-3.5' />
@@ -72,20 +72,20 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 <div className='flex items-center gap-2'>
                   <Mail className='text-muted-foreground h-3.5 w-3.5' />
                   <p className='text-muted-foreground text-sm'>
-                    {invoice.customer?.email || '-'}
+                    {invoice.vendor?.email || '-'}
                   </p>
                 </div>
                 <div className='flex items-center gap-2'>
                   <Phone className='text-muted-foreground h-3.5 w-3.5' />
                   <p className='text-muted-foreground text-sm'>
-                    {invoice.customer?.phone || '-'}
+                    {invoice.vendor?.phone || '-'}
                   </p>
                 </div>
-                {invoice.customer?.address && (
+                {invoice.vendor?.address && (
                   <div className='flex items-start gap-2 pt-1'>
                     <MapPin className='text-muted-foreground mt-0.5 h-3.5 w-3.5 flex-shrink-0' />
                     <p className='text-muted-foreground max-w-xs text-sm leading-relaxed'>
-                      {invoice.customer.address}
+                      {invoice.vendor.address}
                     </p>
                   </div>
                 )}
@@ -184,7 +184,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoice.invoice_items.map((item, idx) => (
+              {invoice.purchase_items.map((item, idx) => (
                 <TableRow key={idx} className='hover:bg-transparent'>
                   <TableCell className='p-4 align-top'>
                     <p className='font-semibold'>{item.product?.name}</p>
@@ -242,7 +242,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
 
             {/* Tax Breakdown */}
             {Object.entries(
-              invoice.invoice_items.reduce(
+              invoice.purchase_items.reduce(
                 (acc, item) => {
                   if (item.tax) {
                     const taxName = item.tax.name
@@ -267,7 +267,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             ))}
 
             {/* Fallback if no specific tax items but a total exists */}
-            {invoice.invoice_items.every((item) => !item.tax) &&
+            {invoice.purchase_items.every((item) => !item.tax) &&
               Number(invoice.tax_total) > 0 && (
                 <div className='flex justify-between text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>
@@ -283,7 +283,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             <div className='flex justify-between text-sm'>
               <span className='text-muted-foreground'>Total</span>
               <span className='font-medium'>
-                {formatCurrency(Number(invoice.total), invoice.currency)}
+                {formatCurrency(Number(invoice.grand_total), invoice.currency)}
               </span>
             </div>
 

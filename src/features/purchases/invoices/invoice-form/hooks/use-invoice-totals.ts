@@ -9,7 +9,7 @@ export function useInvoiceTotals(taxes: Tax[]) {
   // Subscribe to changes in invoice_items to trigger re-render of this hook
   const invoiceItems = useWatch({
     control: form.control,
-    name: 'invoice_items',
+    name: 'purchase_items',
   })
 
   // Calculate totals using the current form values

@@ -1,13 +1,13 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
-import type { SalesInvoice } from '@/types'
+import type { PurchaseInvoice } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './invoice-list-row-actions'
 import { Badge } from '@/components/ui/badge'
 
-export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
+export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
   {
     accessorKey: 'invoice_number',
     header: ({ column }) => (
@@ -30,15 +30,15 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'customer',
+    accessorKey: 'vendor',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Pelanggan' />
+      <DataTableColumnHeader column={column} title='Vendor' />
     ),
     cell: ({ row }) => {
-      const { customer } = row.original
+      const { vendor } = row.original
       return (
         <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{customer.name}</LongText>
+          <LongText className='truncate'>{vendor.name}</LongText>
         </div>
       )
     },
@@ -65,7 +65,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full min-w-[150px]',
     },
   },
   {
@@ -83,7 +83,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full min-w-[200px]',
     },
   },
   {
@@ -113,7 +113,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const formattedOutstanding = formatNumber(outstanding)
       return (
         <div className='px-2'>
-          <LongText className='truncate'>{formattedOutstanding}</LongText>
+          <LongText className='truncate'>{formattedOutstanding || 0}</LongText>
         </div>
       )
     },
@@ -122,13 +122,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     },
   },
   {
-    accessorKey: 'total',
+    accessorKey: 'grand_total',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Total' />
     ),
     cell: ({ row }) => {
-      const { total } = row.original
-      const formattedTotal = formatNumber(total)
+      const { grand_total } = row.original
+      const formattedTotal = formatNumber(grand_total)
       return (
         <div className='px-2'>
           <LongText className='truncate'>{formattedTotal}</LongText>
