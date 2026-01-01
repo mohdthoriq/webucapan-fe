@@ -3,7 +3,7 @@ import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Pie, PieChart } from 'recharts'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Direction, type Trend } from '../types/sales-overview'
+import { Direction, type Trend } from '../types/purchases-overview'
 
 interface CardStatisticProps {
   title: string
@@ -116,7 +116,9 @@ export function CardStatistic({
           className={cn(
             'mr-10 flex flex-col gap-1',
             variant === 'graph' ? 'items-center' : 'justify-start',
-            variant === 'graph' ? 'text-red-500' : getTrendColor(trend?.direction)
+            variant === 'graph'
+              ? 'text-red-500'
+              : getTrendColor(trend?.direction)
           )}
         >
           {variant === 'graph'

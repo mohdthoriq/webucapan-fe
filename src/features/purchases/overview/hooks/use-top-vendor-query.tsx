@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { PaidRatio } from '../types/purchases-overview'
+import type { TopVendor } from '../types/purchases-overview'
 
-interface PaidRatioQueryParams {
+interface TopCustomerQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
+export function useTopCustomerQuery(params?: TopCustomerQueryParams) {
   return useQuery({
     queryKey: [
-      'paid-ratio',
+      'top-customer',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/purchase-overview/paid-ratio?${queryParams.toString()}`
-        : '/purchase-overview/paid-ratio'
-      const response = await apiClient.get<ApiResponse<PaidRatio>>(url)
+        ? `/purchase-overview/top-vendors?${queryParams.toString()}`
+        : '/purchase-overview/top-vendors'
+      const response = await apiClient.get<ApiResponse<TopVendor>>(url)
 
       return response.data.data
     },

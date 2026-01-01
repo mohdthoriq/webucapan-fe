@@ -13,8 +13,8 @@ import {
 } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTotalSalesQuery } from '../hooks/use-total-sales-query'
-import type { Period } from '../types/sales-overview'
+import { useTotalPurchasesQuery } from '../hooks/use-total-purchases-query'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
 interface SalesChartCardProps {
@@ -52,7 +52,7 @@ export function SalesChartCard({
           period: period === 'custom' ? 'month' : period,
         }
 
-  const { data, isLoading } = useTotalSalesQuery(queryParams)
+  const { data, isLoading } = useTotalPurchasesQuery(queryParams)
   const chartData = data?.chart_data || []
 
   // Mocking value2 if it doesn't exist to at least show the legend structure or if we want to show 0
@@ -75,7 +75,7 @@ export function SalesChartCard({
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <div className='flex flex-col gap-1'>
           <h3 className='text-md font-semibold tracking-wide uppercase'>
-            Penjualan
+            Pembelian
           </h3>
           {period === 'custom' && dateRange?.from && dateRange?.to && (
             <span className='text-muted-foreground text-xs font-medium'>

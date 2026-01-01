@@ -63,17 +63,17 @@ export function CustomerSalesCard({
   const getPeriodLabel = () => {
     switch (period) {
       case 'day':
-        return 'TODAY'
+        return 'HARI INI'
       case 'week':
-        return 'THIS WEEK'
+        return 'MINGGU INI'
       case 'month':
-        return 'THIS MONTH'
+        return 'BULAN INI'
       case 'year':
-        return 'THIS YEAR'
+        return 'TAHUN INI'
       case 'custom':
-        return 'CUSTOM PERIOD'
+        return 'PERIODE KUSTOM'
       default:
-        return 'THIS MONTH'
+        return 'BULAN INI'
     }
   }
 
@@ -94,7 +94,7 @@ export function CustomerSalesCard({
     <Card className={cn('bg-card border-border flex flex-col max-h-[500px]', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          SALES PER CUSTOMER {getPeriodLabel()}
+          PENJUALAN PER CUSTOMER {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
           <CardAction

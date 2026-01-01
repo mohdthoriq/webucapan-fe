@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import { useOverdueQuery } from '../hooks/use-overdue-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
 
@@ -47,7 +47,7 @@ export function Overdue({ globalPeriod }: OverdueProps) {
   const { data: overdue } = useOverdueQuery(queryParams)
   return (
     <CardStatistic
-      title='Jatuh Tempo'
+      title='Jatuh Tempo Tagihan Pembelian'
       value={overdue?.value}
       count={overdue?.count}
       trend={overdue?.trend}

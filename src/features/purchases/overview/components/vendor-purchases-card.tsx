@@ -4,11 +4,11 @@ import type { DateRange } from 'react-day-picker'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTopCustomerQuery } from '../hooks/use-top-customer-query'
-import type { Period } from '../types/sales-overview'
+import { useTopCustomerQuery } from '../hooks/use-top-vendor-query'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
-interface CustomerSalesCardProps {
+interface VendorPurchasesCardProps {
   className?: string
   globalPeriod?: Period
 }
@@ -18,10 +18,10 @@ const generateRandomColor = () => {
   return `hsl(${hue}, 70%, 60%)`
 }
 
-export function CustomerSalesCard({
+export function VendorPurchasesCard({
   className,
   globalPeriod,
-}: CustomerSalesCardProps) {
+}: VendorPurchasesCardProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
@@ -63,17 +63,17 @@ export function CustomerSalesCard({
   const getPeriodLabel = () => {
     switch (period) {
       case 'day':
-        return 'TODAY'
+        return 'HARI INI'
       case 'week':
-        return 'THIS WEEK'
+        return 'MINGGU INI'
       case 'month':
-        return 'THIS MONTH'
+        return 'BULAN INI'
       case 'year':
-        return 'THIS YEAR'
+        return 'TAHUN INI'
       case 'custom':
-        return 'CUSTOM PERIOD'
+        return 'PERIODE KUSTOM'
       default:
-        return 'THIS MONTH'
+        return 'BULAN INI'
     }
   }
 
@@ -91,10 +91,15 @@ export function CustomerSalesCard({
   }, [topCustomers])
 
   return (
-    <Card className={cn('bg-card border-border flex flex-col max-h-[500px]', className)}>
+    <Card
+      className={cn(
+        'bg-card border-border flex max-h-[500px] flex-col',
+        className
+      )}
+    >
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          SALES PER CUSTOMER {getPeriodLabel()}
+          PEMBELIAN PER VENDOR {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
           <CardAction

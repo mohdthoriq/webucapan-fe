@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { usePaidRatioQuery } from '../hooks/use-paid-ratio-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
 interface PaidRatioCardProps {
@@ -114,7 +114,7 @@ export function PaidRatioCard({ className, globalPeriod }: PaidRatioCardProps) {
     <Card className={cn('bg-card border-border max-h-[320px]', className)}>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          Rasio Pembayaran
+          Rasio Lunas
         </h3>
         <CardAction
           period={period}

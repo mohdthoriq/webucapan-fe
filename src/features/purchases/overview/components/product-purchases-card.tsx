@@ -6,7 +6,7 @@ import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useTopProductsQuery } from '../hooks/use-top-products-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
 interface ProductSalesCardProps {
@@ -21,7 +21,7 @@ const generateRandomColor = () => {
   return `hsl(${hue}, 70%, 60%)`
 }
 
-export function ProductSalesCard({
+export function ProductPurchasesCard({
   className,
   globalPeriod,
 }: ProductSalesCardProps) {
@@ -95,10 +95,15 @@ export function ProductSalesCard({
   }, [topProducts])
 
   return (
-    <Card className={cn('bg-card border-border flex flex-col max-h-[500px]', className)}>
+    <Card
+      className={cn(
+        'bg-card border-border flex max-h-[500px] flex-col',
+        className
+      )}
+    >
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          PENJUALAN PRODUK {getPeriodLabel()}
+          TOTAL PEMBELIAN  {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
           <CardAction

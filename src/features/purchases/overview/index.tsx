@@ -2,24 +2,24 @@ import { useState } from 'react'
 import { Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CustomerSalesCard } from './components/customer-sales-card'
+import { VendorPurchasesCard } from './components/vendor-purchases-card'
 import { Overdue } from './components/overdue'
 import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
-import { PaymentsReceived } from './components/payments-received'
-import { ProductSalesCard } from './components/product-sales-card'
-import { SalesChartCard } from './components/sales-chart-card'
-import { TotalSales } from './components/total-sales'
+import { PaymentsReceived } from './components/payments-sent'
+import { ProductPurchasesCard } from './components/product-purchases-card'
+import { SalesChartCard } from './components/purchases-chart-card'
+import { TotalPurchases } from './components/total-purchases'
 import { WaitingPayments } from './components/waiting-payments'
 
-export function SalesOverview() {
+export function PurchaseOverview() {
   const [period, setPeriod] = useState<'month' | 'year'>('month')
 
   return (
     <>
       <div className='flex w-full flex-col items-center justify-between space-y-8'>
         <div className='flex w-full items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Sales Overview</h1>
+          <h1 className='text-2xl font-bold'>Overview Pembelian</h1>
           <Button
             variant='outline'
             className='gap-2 shadow-sm'
@@ -41,7 +41,7 @@ export function SalesOverview() {
         </div>
         <div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className='grid w-full grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2'>
-            <TotalSales globalPeriod={period} />
+            <TotalPurchases globalPeriod={period} />
             <PaymentsReceived globalPeriod={period} />
             <WaitingPayments globalPeriod={period} />
             <Overdue globalPeriod={period} />
@@ -56,8 +56,8 @@ export function SalesOverview() {
           </div>
           <div className='flex flex-col gap-4'>
             <PaidRatioCard className='h-auto' globalPeriod={period} />
-            <ProductSalesCard className='h-auto' globalPeriod={period} />
-            <CustomerSalesCard className='h-auto' globalPeriod={period} />
+            <ProductPurchasesCard className='h-auto' globalPeriod={period} />
+            <VendorPurchasesCard className='h-auto' globalPeriod={period} />
           </div>
         </div>
       </div>

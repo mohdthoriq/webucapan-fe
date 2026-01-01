@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { useTotalSalesQuery } from '../hooks/use-total-sales-query'
-import type { Period } from '../types/sales-overview'
+import { useTotalPurchasesQuery } from '../hooks/use-total-purchases-query'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
 
-interface TotalSalesProps {
+interface TotalPurchasesProps {
   globalPeriod?: Period
 }
 
-export function TotalSales({ globalPeriod }: TotalSalesProps) {
+export function TotalPurchases({ globalPeriod }: TotalPurchasesProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
@@ -44,13 +44,13 @@ export function TotalSales({ globalPeriod }: TotalSalesProps) {
     }
   }
 
-  const { data: totalSales } = useTotalSalesQuery(queryParams)
+  const { data: totalPurchases } = useTotalPurchasesQuery(queryParams)
   return (
     <CardStatistic
-      title='Penjualan'
-      value={totalSales?.value}
-      count={totalSales?.count}
-      trend={totalSales?.trend}
+      title='Pembelian'
+      value={totalPurchases?.value}
+      count={totalPurchases?.count}
+      trend={totalPurchases?.trend}
       cardAction={
         <CardAction
           period={period}

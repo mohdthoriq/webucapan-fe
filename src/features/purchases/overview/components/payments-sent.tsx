@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
 
@@ -47,7 +47,7 @@ export function PaymentsReceived({ globalPeriod }: PaymentsReceivedProps) {
   const { data: paymentsReceived } = useTotalPaymentsQuery(queryParams)
   return (
     <CardStatistic
-      title='Pembayaran Diterima'
+      title='Pembayaran Pembelian Dikirim'
       value={paymentsReceived?.value}
       count={paymentsReceived?.count}
       trend={paymentsReceived?.trend}

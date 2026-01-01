@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import { useWaitingPaymentsQuery } from '../hooks/use-waiting-payments-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
 
@@ -47,7 +47,7 @@ export function WaitingPayments({ globalPeriod }: WaitingPaymentsProps) {
   const { data: waitingPayments } = useWaitingPaymentsQuery(queryParams)
   return (
     <CardStatistic
-      title='Menunggu Pembayaran'
+      title='Menunggu Pembayaran Pembelian'
       value={waitingPayments?.value}
       count={waitingPayments?.count}
       trend={waitingPayments?.trend}

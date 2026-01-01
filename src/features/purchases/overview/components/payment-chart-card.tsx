@@ -14,7 +14,7 @@ import {
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
-import type { Period } from '../types/sales-overview'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
 interface PaymentChartCardProps {
