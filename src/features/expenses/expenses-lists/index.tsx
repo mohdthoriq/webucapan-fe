@@ -27,7 +27,7 @@ function ExpensesListsContent() {
             <Button variant={'link'} onClick={() => history.go(-1)}>
               Kembali
             </Button>
-            <Button onClick={() => navigate({ to: '/sales/invoices/add' })}>
+            <Button onClick={() => navigate({ to: '/expenses/add' })}>
               <Plus className='mr-2 h-4 w-4' />
               Tambah Tagihan
             </Button>
