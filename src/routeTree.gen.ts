@@ -43,6 +43,9 @@ import { Route as AuthenticatedPurchasesOverviewIndexRouteImport } from './route
 import { Route as AuthenticatedPurchasesInvoicesIndexRouteImport } from './routes/_authenticated/purchases/invoices/index'
 import { Route as AuthenticatedProductsEditIndexRouteImport } from './routes/_authenticated/products/edit/index'
 import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_authenticated/products/add/index'
+import { Route as AuthenticatedExpensesEditIndexRouteImport } from './routes/_authenticated/expenses/edit/index'
+import { Route as AuthenticatedExpensesDetailIndexRouteImport } from './routes/_authenticated/expenses/detail/index'
+import { Route as AuthenticatedExpensesAddIndexRouteImport } from './routes/_authenticated/expenses/add/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
@@ -243,6 +246,24 @@ const AuthenticatedProductsAddIndexRoute =
     path: '/products/add/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedExpensesEditIndexRoute =
+  AuthenticatedExpensesEditIndexRouteImport.update({
+    id: '/expenses/edit/',
+    path: '/expenses/edit/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExpensesDetailIndexRoute =
+  AuthenticatedExpensesDetailIndexRouteImport.update({
+    id: '/expenses/detail/',
+    path: '/expenses/detail/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExpensesAddIndexRoute =
+  AuthenticatedExpensesAddIndexRouteImport.update({
+    id: '/expenses/add/',
+    path: '/expenses/add/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminPermissionsIndexRoute =
   AuthenticatedAdminPermissionsIndexRouteImport.update({
     id: '/permissions/',
@@ -320,6 +341,9 @@ export interface FileRoutesByFullPath {
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
+  '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
+  '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -364,6 +388,9 @@ export interface FileRoutesByTo {
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
+  '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
+  '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -410,6 +437,9 @@ export interface FileRoutesById {
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/_authenticated/expenses/add/': typeof AuthenticatedExpensesAddIndexRoute
+  '/_authenticated/expenses/detail/': typeof AuthenticatedExpensesDetailIndexRoute
+  '/_authenticated/expenses/edit/': typeof AuthenticatedExpensesEditIndexRoute
   '/_authenticated/products/add/': typeof AuthenticatedProductsAddIndexRoute
   '/_authenticated/products/edit/': typeof AuthenticatedProductsEditIndexRoute
   '/_authenticated/purchases/invoices/': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -456,6 +486,9 @@ export interface FileRouteTypes {
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
+    | '/expenses/add'
+    | '/expenses/detail'
+    | '/expenses/edit'
     | '/products/add'
     | '/products/edit'
     | '/purchases/invoices'
@@ -500,6 +533,9 @@ export interface FileRouteTypes {
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
+    | '/expenses/add'
+    | '/expenses/detail'
+    | '/expenses/edit'
     | '/products/add'
     | '/products/edit'
     | '/purchases/invoices'
@@ -545,6 +581,9 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/account-categories/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
+    | '/_authenticated/expenses/add/'
+    | '/_authenticated/expenses/detail/'
+    | '/_authenticated/expenses/edit/'
     | '/_authenticated/products/add/'
     | '/_authenticated/products/edit/'
     | '/_authenticated/purchases/invoices/'
@@ -822,6 +861,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsAddIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/expenses/edit/': {
+      id: '/_authenticated/expenses/edit/'
+      path: '/expenses/edit'
+      fullPath: '/expenses/edit'
+      preLoaderRoute: typeof AuthenticatedExpensesEditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/expenses/detail/': {
+      id: '/_authenticated/expenses/detail/'
+      path: '/expenses/detail'
+      fullPath: '/expenses/detail'
+      preLoaderRoute: typeof AuthenticatedExpensesDetailIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/expenses/add/': {
+      id: '/_authenticated/expenses/add/'
+      path: '/expenses/add'
+      fullPath: '/expenses/add'
+      preLoaderRoute: typeof AuthenticatedExpensesAddIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/permissions/': {
       id: '/_authenticated/admin/permissions/'
       path: '/permissions'
@@ -917,6 +977,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+  AuthenticatedExpensesAddIndexRoute: typeof AuthenticatedExpensesAddIndexRoute
+  AuthenticatedExpensesDetailIndexRoute: typeof AuthenticatedExpensesDetailIndexRoute
+  AuthenticatedExpensesEditIndexRoute: typeof AuthenticatedExpensesEditIndexRoute
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
   AuthenticatedProductsEditIndexRoute: typeof AuthenticatedProductsEditIndexRoute
   AuthenticatedPurchasesInvoicesIndexRoute: typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -950,6 +1013,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedProductCategoriesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+  AuthenticatedExpensesAddIndexRoute: AuthenticatedExpensesAddIndexRoute,
+  AuthenticatedExpensesDetailIndexRoute: AuthenticatedExpensesDetailIndexRoute,
+  AuthenticatedExpensesEditIndexRoute: AuthenticatedExpensesEditIndexRoute,
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
   AuthenticatedProductsEditIndexRoute: AuthenticatedProductsEditIndexRoute,
   AuthenticatedPurchasesInvoicesIndexRoute:
