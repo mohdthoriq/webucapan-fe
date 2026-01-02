@@ -4,26 +4,30 @@ import type { DateRange } from 'react-day-picker'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTopCustomerQuery } from '../hooks/use-top-customer-query'
-import type { Period } from '../types/sales-overview'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useTopProductsQuery } from '../hooks/use-top-products-query'
+import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
-interface CustomerSalesCardProps {
+interface ProductSalesCardProps {
   className?: string
   globalPeriod?: Period
 }
 
+// Recharts tidak memiliki built-in random color, jadi kita buat helper function
+// Menggunakan HSL agar warna tetap cerah dan 'aesthetic' (Saturation 70%, Lightness 60%)
 const generateRandomColor = () => {
   const hue = Math.floor(Math.random() * 360)
   return `hsl(${hue}, 70%, 60%)`
 }
 
-export function CustomerSalesCard({
+export function ProductPurchasesCard({
   className,
   globalPeriod,
-}: CustomerSalesCardProps) {
+}: ProductSalesCardProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
+  const [viewType, setViewType] = useState<'type' | 'category'>('category')
 
   useEffect(() => {
     const syncPeriod = () => {
@@ -34,13 +38,6 @@ export function CustomerSalesCard({
     }
     syncPeriod()
   }, [globalPeriod])
-
-  const handlePeriodChange = (newPeriod: Period) => {
-    setPeriod(newPeriod)
-    if (newPeriod !== 'custom') {
-      setDateRange(undefined)
-    }
-  }
 
   const queryParams =
     period === 'custom' && dateRange?.from && dateRange?.to
@@ -58,7 +55,14 @@ export function CustomerSalesCard({
               : (period as 'day' | 'week' | 'month' | 'year'),
         }
 
-  const { data: topCustomers, isLoading } = useTopCustomerQuery(queryParams)
+  const handlePeriodChange = (newPeriod: Period) => {
+    setPeriod(newPeriod)
+    if (newPeriod !== 'custom') {
+      setDateRange(undefined)
+    }
+  }
+
+  const { data: topProducts, isLoading } = useTopProductsQuery(queryParams)
 
   const getPeriodLabel = () => {
     switch (period) {
@@ -78,23 +82,28 @@ export function CustomerSalesCard({
   }
 
   const chartData = useMemo(() => {
-    if (Array.isArray(topCustomers)) {
-      return topCustomers
+    if (Array.isArray(topProducts)) {
+      return topProducts
         .map((item) => ({
           name: item.name,
           value: item.total_sales,
           fill: generateRandomColor(),
         }))
-        .slice(0, 5) // Take top 5 for the chart
+        .slice(0, 6)
     }
     return []
-  }, [topCustomers])
+  }, [topProducts])
 
   return (
-    <Card className={cn('bg-card border-border flex flex-col max-h-[500px]', className)}>
+    <Card
+      className={cn(
+        'bg-card border-border flex max-h-[500px] flex-col',
+        className
+      )}
+    >
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          PENJUALAN PER CUSTOMER {getPeriodLabel()}
+          TOTAL PEMBELIAN  {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
           <CardAction
@@ -106,6 +115,19 @@ export function CustomerSalesCard({
           />
         </div>
       </CardHeader>
+
+      <div className='flex w-full items-center justify-end px-6'>
+        <Tabs
+          defaultValue='type'
+          onValueChange={(value) => setViewType(value as 'type' | 'category')}
+          value={viewType}
+        >
+          <TabsList>
+            <TabsTrigger value='type'>Produk</TabsTrigger>
+            <TabsTrigger value='category'>Kategori</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
 
       <CardContent className='flex min-h-[300px] flex-1 flex-col items-center justify-center'>
         {isLoading ? (
@@ -150,7 +172,7 @@ export function CustomerSalesCard({
               {chartData.map((entry, index) => (
                 <div key={index} className='flex items-center gap-2'>
                   <div
-                    className='h-5 w-12 rounded-sm'
+                    className='h-3 w-8 rounded-sm'
                     style={{ backgroundColor: entry.fill }}
                   />
                   <span className='text-muted-foreground text-xs'>
@@ -166,8 +188,8 @@ export function CustomerSalesCard({
 
         {/* Pagination Dots Mockup */}
         <div className='mt-6 flex gap-2'>
-          <div className='bg-muted h-2 w-2 rounded-full' />
           <div className='bg-primary/50 h-2 w-2 rounded-full' />
+          <div className='bg-muted h-2 w-2 rounded-full' />
         </div>
       </CardContent>
     </Card>
