@@ -1,11 +1,7 @@
-'use client'
-
 import { format } from 'date-fns'
-import { useWatch } from 'react-hook-form'
-import { FinanceNumberType, type SalesInvoice } from '@/types'
+import { type Expense } from '@/types/domain/expenses'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -32,52 +28,24 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
-import {
-  useCheckFinanceNumberQuery,
-  useDefaultNumberingQuery,
-} from '../../invoice-form/hooks/use-invoice-form-query'
-import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import { useExpensesPaymentsForm } from '../hooks/use-expenses-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
 
-interface InvoicePaymentsCardProps {
-  invoice: SalesInvoice
+interface ExpensesPaymentsCardProps {
+  expense: Expense
 }
 
-export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
-  const { data: invoicePaymentsAutoNumbering } = useDefaultNumberingQuery({
-    type: FinanceNumberType.sales_payment,
+export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
+  const { form, onSubmit, isSubmitting } = useExpensesPaymentsForm({
+    expenseId: expense.id,
+    defaultAmount: Number(expense.outstanding),
   })
 
-  const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
-    invoiceId: invoice.id,
-    defaultAmount: Number(invoice.outstanding),
-    defaultNumber: invoicePaymentsAutoNumbering,
-  })
+  const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
-  const { control, formState } = form
-
-  const invoicePayments = useWatch({ control, name: 'reference_no' })
-  const debouncedInvoicePayments = useDebounce(invoicePayments, 500)
-
-  const isOriginalNumber =
-    !!debouncedInvoicePayments &&
-    debouncedInvoicePayments === (formState.defaultValues?.reference_no ?? '')
-
-  const {
-    data: checkResult,
-    isFetching: isCheckingNumber,
-    isError: hasCheckError,
-  } = useCheckFinanceNumberQuery({
-    type: FinanceNumberType.sales_payment,
-    number: debouncedInvoicePayments as string,
-  })
-
-  const numberIsTaken =
-    !isOriginalNumber &&
-    checkResult &&
-    (checkResult.exists === true || checkResult.available === false)
-
-  if (invoice.status === 'paid') return null
+  if (expense.status === 'paid') return null
 
   const paymentMethods = [
     { label: 'Tunai (Cash)', value: 'cash' },
@@ -97,7 +65,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-4 pt-4'
           >
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
               {/* Payment Date */}
               <FormField
                 control={form.control}
@@ -148,7 +116,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {invoice.status === 'paid'
+                      {expense.status === 'paid'
                         ? 'Jumlah Pembayaran'
                         : 'Pembayaran Sisa'}
                     </FormLabel>
@@ -165,10 +133,6 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                   </FormItem>
                 )}
               />
-            </div>
-
-            {/* Payment Method */}
-            <div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-3'>
               <FormField
                 control={form.control}
                 name='method'
@@ -193,7 +157,10 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                   </FormItem>
                 )}
               />
+            </div>
 
+            {/* Payment Method */}
+            <div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-3'>
               {/* Account */}
               <FormField
                 control={form.control}
@@ -221,23 +188,34 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                     <FormControl>
                       <div className='relative'>
                         <Input placeholder='Contoh: TRF-12345' {...field} />
-                        {isCheckingNumber && (
-                          <div className='absolute top-1/2 right-2 -translate-y-1/2'>
-                            <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
-                          </div>
-                        )}
                       </div>
                     </FormControl>
-                    {numberIsTaken || hasCheckError ? (
-                      <p className='text-destructive text-[0.8rem] font-medium'>
-                        {checkResult?.message ||
-                          (hasCheckError
-                            ? 'Gagal memeriksa nomor referensi'
-                            : 'Nomor referensi sudah digunakan')}
-                      </p>
-                    ) : (
-                      <FormMessage />
-                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='tags'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tag</FormLabel>
+                    <FormControl>
+                      <MultiSelectDropdown
+                        options={
+                          tags?.data.map((tag) => ({
+                            label: tag.name,
+                            value: tag.id,
+                          })) || []
+                        }
+                        selected={field.value || []}
+                        onChange={field.onChange}
+                        placeholder='Pilih tag'
+                        disabled={tags?.data.length === 0}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

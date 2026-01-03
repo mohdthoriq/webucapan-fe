@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import type { InvoicePayment } from '@/types'
+import { type ExpensePayment } from '@/types/domain/expenses'
 import { id } from 'date-fns/locale'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/table'
 
 interface TransactionTableProps {
-  payments: InvoicePayment[]
+  payments: ExpensePayment[]
   currency: string
 }
 

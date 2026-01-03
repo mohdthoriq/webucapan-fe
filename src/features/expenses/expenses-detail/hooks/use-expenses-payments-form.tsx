@@ -1,28 +1,27 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FinanceNumberType, type FinanceNumber } from '@/types'
-import { useGenerateNextNumber } from '../../invoice-form/hooks/use-invoice-form-mutation'
+import { type FinanceNumber } from '@/types'
 import {
-  type InvoicePaymentsFormData,
-  invoicePaymentsSchema,
-} from '../types/invoice-payments.schema'
-import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation'
+  type ExpensesPaymentsFormData,
+  expensesPaymentsSchema,
+} from '../types/expenses-payments.schema'
+import { useCreateExpensesPaymentMutation } from './use-expenses-payments.mutation'
 
-type UseInvoicePaymentsFormProps = {
-  invoiceId: string
+type UseExpensesPaymentsFormProps = {
+  expenseId: string
   defaultAmount?: number
   defaultNumber?: FinanceNumber | null
 }
 
-export function useInvoicePaymentsForm({
-  invoiceId,
+export function useExpensesPaymentsForm({
+  expenseId,
   defaultAmount,
   defaultNumber,
-}: UseInvoicePaymentsFormProps) {
-  const form = useForm<InvoicePaymentsFormData>({
+}: UseExpensesPaymentsFormProps) {
+  const form = useForm<ExpensesPaymentsFormData>({
     resolver: zodResolver(
-      invoicePaymentsSchema.refine(
+      expensesPaymentsSchema.refine(
         (data) => data.amount <= (defaultAmount || 0),
         {
           message: `Jumlah pembayaran tidak boleh melebihi sisa tagihan (${(
@@ -39,11 +38,11 @@ export function useInvoicePaymentsForm({
       account_id: undefined,
       reference_no: defaultNumber?.format || '',
       note: '',
+      tags: [],
     },
   })
 
-  const createMutation = useCreateInvoicePaymentMutation(invoiceId)
-  const generateNextNumber = useGenerateNextNumber()
+  const createMutation = useCreateExpensesPaymentMutation(expenseId)
 
   useEffect(() => {
     if (defaultAmount !== undefined) {
@@ -54,7 +53,7 @@ export function useInvoicePaymentsForm({
     }
   }, [defaultAmount, defaultNumber, form])
 
-  const onSubmit = async (data: InvoicePaymentsFormData) => {
+  const onSubmit = async (data: ExpensesPaymentsFormData) => {
     await createMutation.mutateAsync(data)
     form.reset({
       payment_date: new Date(),
@@ -63,8 +62,8 @@ export function useInvoicePaymentsForm({
       account_id: undefined,
       reference_no: defaultNumber?.format || '',
       note: '',
+      tags: [],
     })
-    generateNextNumber.mutate(FinanceNumberType.sales_payment)
   }
 
   return {
