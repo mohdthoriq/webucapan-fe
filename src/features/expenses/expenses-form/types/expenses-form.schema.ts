@@ -36,7 +36,7 @@ export const CreateExpenseSchema = z
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    is_paylater: z.boolean(),
+    is_paylater: z.boolean().optional(),
 
     expense_items: z
       .array(expenseItemSchema)

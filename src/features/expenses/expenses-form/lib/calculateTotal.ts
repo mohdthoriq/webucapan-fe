@@ -1,15 +1,15 @@
 import type { useForm } from 'react-hook-form'
 import type { Tax } from '@/types'
 import type {
-  CreateInvoiceFormData,
-  UpdateInvoiceFormData,
+  CreateExpenseFormData,
+  UpdateExpenseFormData,
 } from '../types/expenses-form.schema'
 
 export const calculateTotals = (
   form: Pick<ReturnType<
-    typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
+    typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>
   >, 'setValue' | 'getValues'>,
-  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['invoice_items'],
+  items: (CreateExpenseFormData | UpdateExpenseFormData)['expense_items'],
   taxes: Tax[]
 ) => {
   let newSubtotal = 0
@@ -18,18 +18,15 @@ export const calculateTotals = (
   const taxBreakdown: Record<string, number> = {}
 
   items.forEach((item) => {
-    const quantity = Number(item.quantity) || 0
-    const unitPrice = Number(item.unit_price) || 0
-    const discount = Number(item.discount) || 0
+    const itemAmount = Number(item.amount) || 0
 
-    const discountAmount = (quantity * unitPrice * discount) / 100
-    const lineTotal = quantity * unitPrice - discountAmount
+    const lineTotal = itemAmount
     newSubtotal += lineTotal
 
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
-        const itemTax = (quantity * unitPrice * tax.rate) / 100
+        const itemTax = ( itemAmount * tax.rate) / 100
         newTaxTotal += itemTax
 
         if (tax.name) {
