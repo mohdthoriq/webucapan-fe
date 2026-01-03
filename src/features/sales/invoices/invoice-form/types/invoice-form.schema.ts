@@ -41,7 +41,7 @@ export const CreateInvoiceSchema = z
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    invoice_items: z
+    sales_invoice_items: z
       .array(invoiceItemSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
@@ -70,7 +70,7 @@ export const UpdateInvoiceSchema = z
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    invoice_items: z
+    sales_invoice_items: z
       .array(invoiceItemUpdateSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),

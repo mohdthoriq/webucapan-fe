@@ -9,7 +9,7 @@ export const calculateTotals = (
   form: Pick<ReturnType<
     typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
   >, 'setValue' | 'getValues'>,
-  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['invoice_items'],
+  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['sales_invoice_items'],
   taxes: Tax[]
 ) => {
   let newSubtotal = 0

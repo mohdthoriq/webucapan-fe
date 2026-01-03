@@ -47,8 +47,8 @@ export interface SalesInvoice extends GlobalResponse {
   paid_amount: number
   outstanding: number
   status: Status
-  invoice_items: InvoiceItem[]
-  invoice_payments: InvoicePayment[]
+  sales_invoice_items: InvoiceItem[]
+  sales_invoice_payments: InvoicePayment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }

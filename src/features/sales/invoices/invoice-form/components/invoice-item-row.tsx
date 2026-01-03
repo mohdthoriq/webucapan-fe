@@ -42,7 +42,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
 }) {
   const itemValues = useWatch({
     control: form.control,
-    name: `invoice_items.${index}`,
+    name: `sales_invoice_items.${index}`,
   })
 
   const quantity = Number(itemValues?.quantity) || 0
@@ -53,9 +53,9 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
 
   // Sync row total to form state whenever it changes
   useEffect(() => {
-    const currentTotal = form.getValues(`invoice_items.${index}.line_total`)
+    const currentTotal = form.getValues(`sales_invoice_items.${index}.line_total`)
     if (currentTotal !== rowTotal) {
-      form.setValue(`invoice_items.${index}.line_total`, rowTotal)
+      form.setValue(`sales_invoice_items.${index}.line_total`, rowTotal)
     }
   }, [rowTotal, form, index])
 
@@ -64,7 +64,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.product_id`}
+          name={`sales_invoice_items.${index}.product_id`}
           render={({ field }) => (
             <FormItem>
               <InvoiceFormCombobox
@@ -76,7 +76,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                     const product = products.data.find((p) => p.id === value)
                     if (product) {
                       form.setValue(
-                        `invoice_items.${index}.unit_price`,
+                        `sales_invoice_items.${index}.unit_price`,
                         product.sale_price
                       )
                     }
@@ -90,7 +90,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.description`}
+          name={`sales_invoice_items.${index}.description`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -103,7 +103,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.quantity`}
+          name={`sales_invoice_items.${index}.quantity`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -127,7 +127,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.unit_price`}
+          name={`sales_invoice_items.${index}.unit_price`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -147,7 +147,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.discount`}
+          name={`sales_invoice_items.${index}.discount`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -173,7 +173,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
       <TableCell>
         <FormField
           control={form.control}
-          name={`invoice_items.${index}.tax_id`}
+          name={`sales_invoice_items.${index}.tax_id`}
           render={({ field }) => (
             <FormItem>
               <Select
