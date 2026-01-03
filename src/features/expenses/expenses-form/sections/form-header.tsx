@@ -63,12 +63,12 @@ export function ExpensesFormHeader() {
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-      <div className='col-span-1 flex items-end gap-3'>
+      <div className='col-span-1 flex gap-6 md:col-span-2 lg:col-span-3'>
         <FormField
           control={control}
           name='account_id'
           render={({ field }) => (
-            <FormItem className='flex flex-1 flex-col'>
+            <FormItem className='flex min-w-[300px] flex-col'>
               <FormLabel>Dibayar Dari</FormLabel>
               <FormControl>
                 <ExpensesFormCombobox
@@ -76,7 +76,7 @@ export function ExpensesFormHeader() {
                   value={field.value}
                   onValueChange={field.onChange}
                   placeholder='Pilih Akun'
-                  disabled={Boolean(isPaylater)}
+                  disabled={isPaylater}
                 />
               </FormControl>
               <FormMessage />
@@ -110,26 +110,24 @@ export function ExpensesFormHeader() {
         />
       </div>
 
-      <div className='col-span-1 md:col-span-1 lg:col-span-1'>
-        <FormField
-          control={control}
-          name='contact_id'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Penerima</FormLabel>
-              <FormControl>
-                <ExpensesFormCombobox
-                  type='contact'
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  placeholder='Pilih Penerima'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      <FormField
+        control={control}
+        name='contact_id'
+        render={({ field }) => (
+          <FormItem className='flex flex-col'>
+            <FormLabel>Penerima</FormLabel>
+            <FormControl>
+              <ExpensesFormCombobox
+                type='contact'
+                value={field.value}
+                onValueChange={field.onChange}
+                placeholder='Pilih Penerima'
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <FormField
         control={control}
@@ -197,6 +195,31 @@ export function ExpensesFormHeader() {
             ) : (
               <FormMessage />
             )}
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name='tags'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Tag</FormLabel>
+            <FormControl>
+              <MultiSelectDropdown
+                options={
+                  tags?.data.map((tag) => ({
+                    label: tag.name,
+                    value: tag.id,
+                  })) || []
+                }
+                selected={field.value || []}
+                onChange={field.onChange}
+                placeholder='Pilih tag'
+                disabled={tags?.data.length === 0}
+              />
+            </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -272,33 +295,6 @@ export function ExpensesFormHeader() {
           )}
         />
       )}
-
-      <div className='md:col-span-2 lg:col-span-1'>
-        <FormField
-          control={control}
-          name='tags'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tag</FormLabel>
-              <FormControl>
-                <MultiSelectDropdown
-                  options={
-                    tags?.data.map((tag) => ({
-                      label: tag.name,
-                      value: tag.id,
-                    })) || []
-                  }
-                  selected={field.value || []}
-                  onChange={field.onChange}
-                  placeholder='Pilih tag'
-                  disabled={tags?.data.length === 0}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
     </div>
   )
 }
