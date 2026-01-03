@@ -1,37 +1,32 @@
 import { z } from 'zod'
 
-export const invoiceItemSchema = z.object({
-  product_id: z.string().min(1, 'Produk tidak boleh kosong'),
+export const expenseItemSchema = z.object({
+  account_id: z.string().min(1),
   description: z.string().optional(),
-  quantity: z.number().positive(),
-  unit_price: z.number().positive(),
   tax_id: z.string().optional(),
-  discount: z.number().nonnegative().optional(),
-  line_total: z.number().positive(),
+  amount: z.number().positive(),
 })
 
-export type InvoiceItemFormData = z.infer<typeof invoiceItemSchema>
+export type ExpenseItemFormData = z.infer<typeof expenseItemSchema>
 
-export const invoiceItemUpdateSchema = z.object({
+export const expenseItemUpdateSchema = z.object({
   id: z.uuid('ID item tidak boleh kosong').optional().nullable(),
-  product_id: z.string().min(1, 'Produk tidak boleh kosong'),
+  account_id: z.string().min(1),
   description: z.string().optional(),
-  quantity: z.number().positive(),
-  unit_price: z.number().nonnegative(),
   tax_id: z.string().optional(),
-  discount: z.number().nonnegative().optional(),
-  line_total: z.number().positive(),
+  amount: z.number().positive(),
 })
 
-export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
+export type ExpenseItemUpdateFormData = z.infer<typeof expenseItemUpdateSchema>
 
-export const CreateInvoiceSchema = z
+export const CreateExpenseSchema = z
   .object({
-    customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
+    contact_id: z.string().min(1, 'Penerima tidak boleh kosong'),
+    account_id: z.uuid('ID akun tidak boleh kosong').optional().nullable(),
     payment_term_id: z.string().optional(),
-    invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
+    expense_number: z.string().min(1, 'Nomor expense tidak boleh kosong'),
 
-    invoice_date: z.date(),
+    date: z.date(),
     due_date: z.date(),
 
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
@@ -41,26 +36,28 @@ export const CreateInvoiceSchema = z
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
 
-    invoice_items: z
-      .array(invoiceItemSchema)
-      .min(1, 'Invoice harus memiliki minimal 1 item'),
+    is_paylater: z.boolean(),
+
+    expense_items: z
+      .array(expenseItemSchema)
+      .min(1, 'Expense harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
   })
-  .refine((data) => data.invoice_date <= data.due_date, {
+  .refine((data) => data.date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
     path: ['due_date'],
   })
 
-export type CreateInvoiceFormData = z.infer<typeof CreateInvoiceSchema>
+export type CreateExpenseFormData = z.infer<typeof CreateExpenseSchema>
 
-export const UpdateInvoiceSchema = z
+export const UpdateExpenseSchema = z
   .object({
-    id: z.uuid().min(1, 'ID invoice tidak boleh kosong'),
-    customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
+    id: z.uuid().min(1, 'ID expense tidak boleh kosong'),
+    contact_id: z.string().min(1, 'Penerima tidak boleh kosong'),
     payment_term_id: z.string().optional(),
-    invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
+    expense_number: z.string().min(1, 'Nomor expense tidak boleh kosong'),
 
-    invoice_date: z.date(),
+    date: z.date(),
     due_date: z.date(),
 
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
@@ -69,15 +66,16 @@ export const UpdateInvoiceSchema = z
     total: z.number().nonnegative(),
 
     status: z.enum(['unpaid', 'partially_paid', 'paid']),
+    is_paylater: z.boolean(),
 
-    invoice_items: z
-      .array(invoiceItemUpdateSchema)
-      .min(1, 'Invoice harus memiliki minimal 1 item'),
+    expense_items: z
+      .array(expenseItemUpdateSchema)
+      .min(1, 'Expense harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
   })
-  .refine((data) => data.invoice_date <= data.due_date, {
-    message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
+  .refine((data) => data.date <= data.due_date, {
+    message: 'Tanggal jatuh tempo harus lebih dari tanggal expense',
     path: ['due_date'],
   })
 
-export type UpdateInvoiceFormData = z.infer<typeof UpdateInvoiceSchema>
+export type UpdateExpenseFormData = z.infer<typeof UpdateExpenseSchema>

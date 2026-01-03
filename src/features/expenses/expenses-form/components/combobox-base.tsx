@@ -35,6 +35,7 @@ interface ComboboxBaseProps<T extends { id: string }> {
   renderItem: (item: T) => React.ReactNode
   getLabel: (item: T) => string
   noItemsMessage?: string
+  disabled?: boolean
 }
 
 export function ComboboxBase<T extends { id: string }>({
@@ -54,6 +55,7 @@ export function ComboboxBase<T extends { id: string }>({
   renderItem,
   getLabel,
   noItemsMessage = 'No items found.',
+  disabled,
 }: ComboboxBaseProps<T>) {
   const [open, setOpen] = React.useState(false)
 
@@ -69,7 +71,7 @@ export function ComboboxBase<T extends { id: string }>({
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={disabled}>
         <Button
           variant='outline'
           role='combobox'

@@ -1,9 +1,9 @@
 import { useTaxesQuery } from '@/features/settings/taxes/hooks/use-taxes-query'
-import { useInvoiceTotals } from '../hooks/use-invoice-totals'
+import { useExpensesTotals } from '../hooks/use-expenses-totals'
 
-export function InvoiceFormSummary() {
+export function ExpensesFormSummary() {
   const { data: taxes } = useTaxesQuery({ page: 1, limit: 100 })
-  const totals = useInvoiceTotals(taxes?.data || [])
+  const totals = useExpensesTotals(taxes?.data || [])
 
   return (
     <div className='flex justify-end'>

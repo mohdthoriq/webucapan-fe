@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import type {
-  SalesInvoice,
   ApiResponse,
   FinanceNumberType,
   FinanceNumber,
+  Expense,
 } from '@/types'
 import apiClient from '@/lib/api-client'
 
@@ -11,12 +11,12 @@ interface InvoiceFormQueryParams {
   id?: string
 }
 
-export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
+export function useExpensesFormQuery(params?: InvoiceFormQueryParams) {
   return useQuery({
-    queryKey: ['invoice-list', params?.id],
+    queryKey: ['expenses-list', params?.id],
     queryFn: async () => {
-      const url = `/sales-invoices/${params?.id}`
-      const response = await apiClient.get<ApiResponse<SalesInvoice>>(url)
+      const url = `/expenses/${params?.id}`
+      const response = await apiClient.get<ApiResponse<Expense>>(url)
 
       return response.data.data
     },

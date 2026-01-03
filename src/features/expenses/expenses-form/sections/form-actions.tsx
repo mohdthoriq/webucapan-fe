@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
 
-type InvoiceFormActionsProps = {
+type ExpensesFormActionsProps = {
   isEdit?: boolean
   isSubmitting?: boolean
 }
 
-export function InvoiceFormActions({ isEdit, isSubmitting }: InvoiceFormActionsProps) {
+export function ExpensesFormActions({ isEdit, isSubmitting }: ExpensesFormActionsProps) {
   // We can use context here if we want, but props are fine too for simple flags
   // However, we need to handle the back button.
   
@@ -22,8 +22,8 @@ export function InvoiceFormActions({ isEdit, isSubmitting }: InvoiceFormActionsP
         {isSubmitting
           ? 'Menyimpan...'
           : isEdit
-            ? 'Update Invoice'
-            : 'Buat Invoice'}
+            ? 'Update Pengeluaran'
+            : 'Buat Pengeluaran'}
       </Button>
     </div>
   )

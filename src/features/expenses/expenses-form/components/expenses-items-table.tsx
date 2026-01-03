@@ -8,35 +8,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
 import { useTaxesQuery } from '@/features/settings/taxes/hooks/use-taxes-query'
 import type {
-  CreateInvoiceFormData,
-  InvoiceItemFormData,
-  UpdateInvoiceFormData,
+  CreateExpenseFormData,
+  ExpenseItemFormData,
+  UpdateExpenseFormData,
 } from '../types/expenses-form.schema'
-import { InvoiceItemRow } from './invoice-item-row'
+import { ExpensesItemRow } from './expenses-item-row'
 
-type InvoiceItemsTableProps = {
-  fields: InvoiceItemFormData[]
+type ExpensesItemsTableProps = {
+  fields: ExpenseItemFormData[]
   form: ReturnType<
-    typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
+    typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>
   >
   remove: (index: number) => void
 }
 
-export function InvoiceItemsTable({
+export function ExpensesItemsTable({
   fields,
   form,
   remove,
-}: InvoiceItemsTableProps) {
-  const { data: products } = useProductsQuery({ page: 1, limit: 100 })
+}: ExpensesItemsTableProps) {
   const { data: taxes } = useTaxesQuery({ page: 1, limit: 100 })
 
-  const productsData = useMemo(
-    () => ({ data: products?.data || [] }),
-    [products?.data]
-  )
   const taxesData = useMemo(() => ({ data: taxes?.data || [] }), [taxes?.data])
 
   return (
@@ -44,11 +38,8 @@ export function InvoiceItemsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Produk</TableHead>
+            <TableHead className='w-[200px]'>Akun</TableHead>
             <TableHead className='w-[200px]'>Deskripsi</TableHead>
-            <TableHead className='w-[100px]'>Qty</TableHead>
-            <TableHead className='w-[100px]'>Harga</TableHead>
-            <TableHead className='w-[100px]'>Disc</TableHead>
             <TableHead className='w-[100px]'>Pajak</TableHead>
             <TableHead className='w-[100px] text-right'>Total</TableHead>
             <TableHead className='w-[50px]'></TableHead>
@@ -56,12 +47,11 @@ export function InvoiceItemsTable({
         </TableHeader>
         <TableBody>
           {fields.map((field, index) => (
-            <Fragment key={`${field.product_id}-${index}`}>
-              <InvoiceItemRow
+            <Fragment key={`${field.account_id}-${index}`}>
+              <ExpensesItemRow
                 index={index}
                 form={form}
                 remove={remove}
-                products={productsData}
                 taxes={taxesData}
               />
             </Fragment>

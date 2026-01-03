@@ -22,7 +22,7 @@ export function useComboboxQuery<T extends { id: string }, P>({
   const query = queryHook({
     page: currentPage,
     limit,
-    name: debouncedSearchTerm || undefined,
+    search: debouncedSearchTerm || undefined,
   } as unknown as P)
 
   const { data, isLoading, isError, refetch } = query

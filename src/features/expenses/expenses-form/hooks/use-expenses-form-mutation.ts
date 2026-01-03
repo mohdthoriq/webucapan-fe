@@ -3,8 +3,8 @@ import type { FinanceNumberType } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import type {
-  CreateInvoiceFormData,
-  UpdateInvoiceFormData,
+  CreateExpenseFormData,
+  UpdateExpenseFormData,
 } from '../types/expenses-form.schema'
 
 export function useGenerateNextNumber() {
@@ -29,11 +29,11 @@ export function useGenerateNextNumber() {
   })
 }
 
-export function useCreateInvoiceMutation() {
+export function useCreateExpenseMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreateInvoiceFormData) => {
-      const response = await apiClient.post(`sales-invoices`, credentials)
+    mutationFn: async (credentials: CreateExpenseFormData) => {
+      const response = await apiClient.post(`expenses`, credentials)
       return response.data
     },
     onMutate: () => {
@@ -51,12 +51,12 @@ export function useCreateInvoiceMutation() {
   })
 }
 
-export function useUpdateInvoiceMutation() {
+export function useUpdateExpenseMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateInvoiceFormData) => {
+    mutationFn: async (credentials: UpdateExpenseFormData) => {
       const response = await apiClient.patch(
-        `sales-invoices/${credentials.id}`,
+        `expenses/${credentials.id}`,
         credentials
       )
       return response.data

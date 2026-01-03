@@ -1,8 +1,8 @@
 import * as React from 'react'
+import type { Account } from '@/types'
 import type { Contact } from '@/types/domain/contact'
-import type { Product } from '@/types/domain/product'
+import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
 import { useComboboxQuery } from '../hooks/use-combobox-query'
 import { ComboboxBase } from './combobox-base'
 
@@ -11,16 +11,17 @@ interface InvoiceFormComboboxProps {
   onValueChange?: (value: string) => void
   placeholder?: string
   limit?: number
-  type?: 'contact' | 'product'
+  type?: 'contact' | 'account'
   excludeIds?: string[]
+  disabled?: boolean
 }
 
-export function InvoiceFormCombobox({
+export function ExpensesFormCombobox({
   type = 'contact',
   ...props
 }: InvoiceFormComboboxProps) {
-  if (type === 'product') {
-    return <ProductCombobox {...props} />
+  if (type === 'account') {
+    return <AccountCombobox {...props} />
   }
   return <ContactCombobox {...props} />
 }
@@ -28,8 +29,9 @@ export function InvoiceFormCombobox({
 function ContactCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Pelanggan',
+  placeholder = 'Pilih Penerima',
   limit = 20,
+  disabled,
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -66,6 +68,7 @@ function ContactCombobox({
       onSearch={setSearchTerm}
       onLoadMore={loadMore}
       onRetry={refetch}
+      disabled={disabled}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
@@ -81,11 +84,12 @@ function ContactCombobox({
   )
 }
 
-function ProductCombobox({
+function AccountCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Produk',
+  placeholder = 'Pilih Akun',
   limit = 20,
+  disabled,
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -96,10 +100,10 @@ function ProductCombobox({
     loadMore,
     setSearchTerm,
   } = useComboboxQuery<
-    Product,
+    Account,
     { page?: number; limit?: number; name?: string }
   >({
-    queryHook: useProductsQuery,
+    queryHook: useAccountsQuery,
     limit,
   })
 
@@ -122,13 +126,13 @@ function ProductCombobox({
       onSearch={setSearchTerm}
       onLoadMore={loadMore}
       onRetry={refetch}
+      disabled={disabled}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
           <span className='text-muted-foreground text-xs'>
-            SKU: {item.sku} • Rp{' '}
-            {Number(item.sale_price).toLocaleString('id-ID')}
+            {item.name} - {item.code}
           </span>
         </div>
       )}

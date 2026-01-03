@@ -1,40 +1,38 @@
 import { Plus } from 'lucide-react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { InvoiceItemsTable } from '../components/invoice-items-table'
-import type { CreateInvoiceFormData } from '../types/expenses-form.schema'
+import { ExpensesItemsTable } from '../components/expenses-items-table'
+import type { CreateExpenseFormData } from '../types/expenses-form.schema'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 
-export function InvoiceFormItems() {
+export function ExpensesFormItems() {
   const [itemsAmount, setItemsAmount] = useState(1)
 
-  const form = useFormContext<CreateInvoiceFormData>()
+  const form = useFormContext<CreateExpenseFormData>()
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'invoice_items',
+    name: 'expense_items',
   })
 
   const handleAddItems = () => {
     const amount = itemsAmount > 0 ? itemsAmount : 1
     const newItems = Array.from({ length: amount }).map(() => ({
-      product_id: '',
+      account_id: '',
       description: '',
-      quantity: 1,
-      unit_price: 0,
       tax_id: '',
-      discount: undefined,
-      line_total: 0,
+      tax_amount: 0,
+      amount: 0,
     }))
     append(newItems)
   }
 
   return (
     <div className='flex flex-col space-y-4'>
-      <h3 className='text-lg font-medium'>Item Invoice</h3>
+      <h3 className='text-lg font-medium'>Item Expenses</h3>
 
-      <InvoiceItemsTable
+      <ExpensesItemsTable
         fields={fields}
         remove={remove}
         form={form}

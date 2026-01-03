@@ -1,9 +1,6 @@
+import { ExpensesFormPage } from '@/features/expenses/expenses-form'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/expenses/edit/')({
-  component: RouteComponent,
+  component: ExpensesFormPage,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/expenses/edit/"!</div>
-}
