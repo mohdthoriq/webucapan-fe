@@ -65,7 +65,7 @@ export function InvoiceDetail() {
 
           {showTransactionTable && (
             <TransactionTable
-              payments={invoice.purchase_payments}
+              payments={invoice.purchase_invoice_payments}
               currency={invoice.currency}
             />
           )}

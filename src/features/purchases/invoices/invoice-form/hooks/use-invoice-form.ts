@@ -51,8 +51,8 @@ export function useInvoiceForm({
             due_date: currentRow.due_date
               ? new Date(currentRow.due_date)
               : new Date(),
-            purchase_items:
-              currentRow.purchase_items?.map((item) => ({
+            purchase_invoice_items:
+              currentRow.purchase_invoice_items?.map((item) => ({
                 id: item.id,
                 product_id: item.product?.id ?? undefined,
                 description: item.description || undefined,
@@ -78,7 +78,7 @@ export function useInvoiceForm({
             status: Status.unpaid,
             invoice_date: new Date(),
             due_date: new Date(),
-            purchase_items: [
+            purchase_invoice_items: [
               {
                 product_id: '',
                 description: '',
@@ -109,7 +109,7 @@ export function useInvoiceForm({
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
-    name: 'purchase_items',
+    name: 'purchase_invoice_items',
   })
 
   const createMutation = useCreateInvoiceMutation()

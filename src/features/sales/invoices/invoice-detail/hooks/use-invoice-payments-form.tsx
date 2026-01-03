@@ -56,9 +56,11 @@ export function useInvoicePaymentsForm({
 
   const onSubmit = async (data: InvoicePaymentsFormData) => {
     await createMutation.mutateAsync(data)
+    const remaining = (defaultAmount || 0) - data.amount
+
     form.reset({
       payment_date: new Date(),
-      amount: defaultAmount || 0,
+      amount: remaining > 0 ? remaining : 0,
       method: '',
       account_id: undefined,
       reference_no: defaultNumber?.format || '',

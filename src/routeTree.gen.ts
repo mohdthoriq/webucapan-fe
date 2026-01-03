@@ -25,6 +25,7 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './routes/_authenticated/product-categories/index'
+import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
@@ -42,6 +43,9 @@ import { Route as AuthenticatedPurchasesOverviewIndexRouteImport } from './route
 import { Route as AuthenticatedPurchasesInvoicesIndexRouteImport } from './routes/_authenticated/purchases/invoices/index'
 import { Route as AuthenticatedProductsEditIndexRouteImport } from './routes/_authenticated/products/edit/index'
 import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_authenticated/products/add/index'
+import { Route as AuthenticatedExpensesEditIndexRouteImport } from './routes/_authenticated/expenses/edit/index'
+import { Route as AuthenticatedExpensesDetailIndexRouteImport } from './routes/_authenticated/expenses/detail/index'
+import { Route as AuthenticatedExpensesAddIndexRouteImport } from './routes/_authenticated/expenses/add/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
@@ -132,6 +136,12 @@ const AuthenticatedProductCategoriesIndexRoute =
   AuthenticatedProductCategoriesIndexRouteImport.update({
     id: '/product-categories/',
     path: '/product-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExpensesIndexRoute =
+  AuthenticatedExpensesIndexRouteImport.update({
+    id: '/expenses/',
+    path: '/expenses/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedContactsIndexRoute =
@@ -236,6 +246,24 @@ const AuthenticatedProductsAddIndexRoute =
     path: '/products/add/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedExpensesEditIndexRoute =
+  AuthenticatedExpensesEditIndexRouteImport.update({
+    id: '/expenses/edit/',
+    path: '/expenses/edit/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExpensesDetailIndexRoute =
+  AuthenticatedExpensesDetailIndexRouteImport.update({
+    id: '/expenses/detail/',
+    path: '/expenses/detail/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExpensesAddIndexRoute =
+  AuthenticatedExpensesAddIndexRouteImport.update({
+    id: '/expenses/add/',
+    path: '/expenses/add/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminPermissionsIndexRoute =
   AuthenticatedAdminPermissionsIndexRouteImport.update({
     id: '/permissions/',
@@ -306,12 +334,16 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
+  '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
+  '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -349,12 +381,16 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
+  '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
+  '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
+  '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
   '/products/add': typeof AuthenticatedProductsAddIndexRoute
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -394,12 +430,16 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
+  '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
   '/_authenticated/product-categories/': typeof AuthenticatedProductCategoriesIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
+  '/_authenticated/expenses/add/': typeof AuthenticatedExpensesAddIndexRoute
+  '/_authenticated/expenses/detail/': typeof AuthenticatedExpensesDetailIndexRoute
+  '/_authenticated/expenses/edit/': typeof AuthenticatedExpensesEditIndexRoute
   '/_authenticated/products/add/': typeof AuthenticatedProductsAddIndexRoute
   '/_authenticated/products/edit/': typeof AuthenticatedProductsEditIndexRoute
   '/_authenticated/purchases/invoices/': typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -439,12 +479,16 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/expenses'
     | '/product-categories'
     | '/products'
     | '/settings'
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
+    | '/expenses/add'
+    | '/expenses/detail'
+    | '/expenses/edit'
     | '/products/add'
     | '/products/edit'
     | '/purchases/invoices'
@@ -482,12 +526,16 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/contacts'
+    | '/expenses'
     | '/product-categories'
     | '/products'
     | '/settings'
     | '/admin/account-categories'
     | '/admin/menus'
     | '/admin/permissions'
+    | '/expenses/add'
+    | '/expenses/detail'
+    | '/expenses/edit'
     | '/products/add'
     | '/products/edit'
     | '/purchases/invoices'
@@ -526,12 +574,16 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/account/'
     | '/_authenticated/contacts/'
+    | '/_authenticated/expenses/'
     | '/_authenticated/product-categories/'
     | '/_authenticated/products/'
     | '/_authenticated/settings/'
     | '/_authenticated/admin/account-categories/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
+    | '/_authenticated/expenses/add/'
+    | '/_authenticated/expenses/detail/'
+    | '/_authenticated/expenses/edit/'
     | '/_authenticated/products/add/'
     | '/_authenticated/products/edit/'
     | '/_authenticated/purchases/invoices/'
@@ -683,6 +735,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/expenses/': {
+      id: '/_authenticated/expenses/'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof AuthenticatedExpensesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/contacts/': {
       id: '/_authenticated/contacts/'
       path: '/contacts'
@@ -802,6 +861,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsAddIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/expenses/edit/': {
+      id: '/_authenticated/expenses/edit/'
+      path: '/expenses/edit'
+      fullPath: '/expenses/edit'
+      preLoaderRoute: typeof AuthenticatedExpensesEditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/expenses/detail/': {
+      id: '/_authenticated/expenses/detail/'
+      path: '/expenses/detail'
+      fullPath: '/expenses/detail'
+      preLoaderRoute: typeof AuthenticatedExpensesDetailIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/expenses/add/': {
+      id: '/_authenticated/expenses/add/'
+      path: '/expenses/add'
+      fullPath: '/expenses/add'
+      preLoaderRoute: typeof AuthenticatedExpensesAddIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/permissions/': {
       id: '/_authenticated/admin/permissions/'
       path: '/permissions'
@@ -893,9 +973,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
+  AuthenticatedExpensesIndexRoute: typeof AuthenticatedExpensesIndexRoute
   AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+  AuthenticatedExpensesAddIndexRoute: typeof AuthenticatedExpensesAddIndexRoute
+  AuthenticatedExpensesDetailIndexRoute: typeof AuthenticatedExpensesDetailIndexRoute
+  AuthenticatedExpensesEditIndexRoute: typeof AuthenticatedExpensesEditIndexRoute
   AuthenticatedProductsAddIndexRoute: typeof AuthenticatedProductsAddIndexRoute
   AuthenticatedProductsEditIndexRoute: typeof AuthenticatedProductsEditIndexRoute
   AuthenticatedPurchasesInvoicesIndexRoute: typeof AuthenticatedPurchasesInvoicesIndexRoute
@@ -924,10 +1008,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
+  AuthenticatedExpensesIndexRoute: AuthenticatedExpensesIndexRoute,
   AuthenticatedProductCategoriesIndexRoute:
     AuthenticatedProductCategoriesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+  AuthenticatedExpensesAddIndexRoute: AuthenticatedExpensesAddIndexRoute,
+  AuthenticatedExpensesDetailIndexRoute: AuthenticatedExpensesDetailIndexRoute,
+  AuthenticatedExpensesEditIndexRoute: AuthenticatedExpensesEditIndexRoute,
   AuthenticatedProductsAddIndexRoute: AuthenticatedProductsAddIndexRoute,
   AuthenticatedProductsEditIndexRoute: AuthenticatedProductsEditIndexRoute,
   AuthenticatedPurchasesInvoicesIndexRoute:

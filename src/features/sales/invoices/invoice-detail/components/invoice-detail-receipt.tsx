@@ -184,7 +184,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoice.invoice_items.map((item, idx) => (
+              {invoice.sales_invoice_items.map((item, idx) => (
                 <TableRow key={idx} className='hover:bg-transparent'>
                   <TableCell className='p-4 align-top'>
                     <p className='font-semibold'>{item.product?.name}</p>
@@ -242,7 +242,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
 
             {/* Tax Breakdown */}
             {Object.entries(
-              invoice.invoice_items.reduce(
+              invoice.sales_invoice_items.reduce(
                 (acc, item) => {
                   if (item.tax) {
                     const taxName = item.tax.name
@@ -267,7 +267,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             ))}
 
             {/* Fallback if no specific tax items but a total exists */}
-            {invoice.invoice_items.every((item) => !item.tax) &&
+            {invoice.sales_invoice_items.every((item) => !item.tax) &&
               Number(invoice.tax_total) > 0 && (
                 <div className='flex justify-between text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>

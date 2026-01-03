@@ -24,7 +24,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     meta: {
       className: cn(
         'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        'ps-0.5 max-lg:sticky @xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
     enableHiding: false,
@@ -43,10 +43,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: cn(
-        'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
-      ),
+      className: 'w-full'
     },
     enableHiding: false,
   },
@@ -65,7 +62,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
@@ -83,7 +80,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[200px]',
+      className: 'w-full',
     },
   },
   {
@@ -100,7 +97,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
@@ -118,7 +115,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
@@ -136,7 +133,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
