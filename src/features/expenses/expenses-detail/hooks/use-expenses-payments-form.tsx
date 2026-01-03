@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type FinanceNumber } from '@/types'
 import {
   type ExpensesPaymentsFormData,
   expensesPaymentsSchema,
@@ -11,13 +10,11 @@ import { useCreateExpensesPaymentMutation } from './use-expenses-payments.mutati
 type UseExpensesPaymentsFormProps = {
   expenseId: string
   defaultAmount?: number
-  defaultNumber?: FinanceNumber | null
 }
 
 export function useExpensesPaymentsForm({
   expenseId,
   defaultAmount,
-  defaultNumber,
 }: UseExpensesPaymentsFormProps) {
   const form = useForm<ExpensesPaymentsFormData>({
     resolver: zodResolver(
@@ -36,7 +33,7 @@ export function useExpensesPaymentsForm({
       amount: defaultAmount || 0,
       method: '',
       account_id: undefined,
-      reference_no: defaultNumber?.format || '',
+      reference_no: '',
       note: '',
       tags: [],
     },
@@ -48,19 +45,18 @@ export function useExpensesPaymentsForm({
     if (defaultAmount !== undefined) {
       form.setValue('amount', defaultAmount)
     }
-    if (defaultNumber !== undefined) {
-      form.setValue('reference_no', defaultNumber?.format || '')
-    }
-  }, [defaultAmount, defaultNumber, form])
+  }, [defaultAmount, form])
 
   const onSubmit = async (data: ExpensesPaymentsFormData) => {
     await createMutation.mutateAsync(data)
+    const remaining = (defaultAmount || 0) - data.amount
+
     form.reset({
       payment_date: new Date(),
-      amount: defaultAmount || 0,
+      amount: remaining > 0 ? remaining : 0,
       method: '',
       account_id: undefined,
-      reference_no: defaultNumber?.format || '',
+      reference_no: '',
       note: '',
       tags: [],
     })
