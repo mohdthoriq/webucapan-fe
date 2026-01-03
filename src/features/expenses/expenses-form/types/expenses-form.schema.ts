@@ -34,8 +34,6 @@ export const CreateExpenseSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['unpaid', 'partially_paid', 'paid']),
-
     is_paylater: z.boolean().optional(),
 
     expense_items: z
@@ -65,7 +63,6 @@ export const UpdateExpenseSchema = z
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
 
-    status: z.enum(['unpaid', 'partially_paid', 'paid']),
     is_paylater: z.boolean(),
 
     expense_items: z

@@ -6,7 +6,6 @@ import {
   type FinanceNumber,
   FinanceNumberType,
   type Expense,
-  Status,
 } from '@/types'
 import {
   CreateExpenseSchema,
@@ -40,7 +39,6 @@ export function useExpensesForm({
             expense_number: currentRow.expense_number,
             account_id: currentRow.account?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? undefined,
-            status: currentRow.status,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
@@ -70,7 +68,6 @@ export function useExpensesForm({
             subtotal: 0,
             tax_total: 0,
             total: 0,
-            status: Status.unpaid,
             date: new Date(),
             due_date: new Date(),
             expense_items: [
