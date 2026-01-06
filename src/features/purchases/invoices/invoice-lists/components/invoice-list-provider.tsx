@@ -1,5 +1,5 @@
 import type { PaginationMeta, PurchaseInvoice } from '@/types'
-import { useInvoiceListQuery } from '../hooks/use-invoice-list-query'
+import { type InvoiceListQueryParams, useInvoiceListQuery } from '../hooks/use-invoice-list-query'
 import { createContext, type ReactNode, useContext } from 'react'
 
 type InvoiceListsContextType = {
@@ -17,7 +17,7 @@ export function InvoiceListsProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: InvoiceListQueryParams
 }) {
 
   const {

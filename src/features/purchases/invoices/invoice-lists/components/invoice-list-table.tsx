@@ -12,6 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
+import type { PurchaseInvoice } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -23,10 +24,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { invoiceListsColumns } from './invoice-list-columns'
 import { useInvoiceLists } from './invoice-list-provider'
-import type { PurchaseInvoice } from '@/types'
+import { InvoiceListFilter } from './invoice-list-filter'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -34,7 +36,11 @@ type DataTableProps = {
 }
 
 export function InvoiceListsTable({ search, navigate }: DataTableProps) {
-  const { invoiceListsData, pagination: serverPagination, isLoading } = useInvoiceLists()
+  const {
+    invoiceListsData,
+    pagination: serverPagination,
+    isLoading,
+  } = useInvoiceLists()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -104,6 +110,23 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         searchPlaceholder='Cari satuan...'
         searchKey='name'
       />
+      <div className='flex flex-col gap-2 md:flex-row md:items-center'>
+        <InvoiceListFilter search={search} navigate={navigate} />
+        <Tabs
+          defaultValue=''
+          value={search.status as string}
+          onValueChange={(value) =>
+            navigate({ search: { ...search, status: value } })
+          }
+        >
+          <TabsList className='h-10'>
+            <TabsTrigger value=''>Semua</TabsTrigger>
+            <TabsTrigger value='paid'>Dibayar</TabsTrigger>
+            <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
+            <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

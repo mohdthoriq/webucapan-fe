@@ -1,13 +1,16 @@
-import type { PaginationMeta, SalesInvoice } from '@/types'
-import { useInvoiceListQuery } from '../hooks/use-invoice-list-query'
 import { createContext, type ReactNode, useContext } from 'react'
+import type { PaginationMeta, SalesInvoice } from '@/types'
+import {
+  type InvoiceListQueryParams,
+  useInvoiceListQuery,
+} from '../hooks/use-invoice-list-query'
 
 type InvoiceListsContextType = {
   invoiceListsData: SalesInvoice[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: InvoiceListQueryParams
 }
 
 const InvoiceListsContext = createContext<InvoiceListsContextType | null>(null)
@@ -17,9 +20,8 @@ export function InvoiceListsProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: InvoiceListQueryParams
 }) {
-
   const {
     data: invoiceListsData,
     isLoading: isLoadingInvoiceLists,
@@ -39,7 +41,11 @@ export function InvoiceListsProvider({
     paginationParams,
   }
 
-  return <InvoiceListsContext value={invoiceListsProviderValues}>{children}</InvoiceListsContext>
+  return (
+    <InvoiceListsContext value={invoiceListsProviderValues}>
+      {children}
+    </InvoiceListsContext>
+  )
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -47,7 +53,9 @@ export const useInvoiceLists = () => {
   const invoiceListsContext = useContext(InvoiceListsContext)
 
   if (!invoiceListsContext) {
-    throw new Error('useInvoiceLists has to be used within <InvoiceListsContext>')
+    throw new Error(
+      'useInvoiceLists has to be used within <InvoiceListsContext>'
+    )
   }
 
   return invoiceListsContext

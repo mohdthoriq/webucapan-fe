@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { FinanceNumberType } from '@/types'
 import { CalendarIcon } from 'lucide-react'
@@ -31,18 +31,33 @@ import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/us
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
 import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
+import { useEffect } from 'react'
 
 export function InvoiceFormHeader() {
-  const { control, formState } = useFormContext()
+  const { control, formState, setValue } = useFormContext()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
   const invoiceNumber = useWatch({ control, name: 'invoice_number' })
+  const paymentTermsValue = useWatch({ control, name: 'payment_term_id' })
+  const invoiceDate = useWatch({ control, name: 'invoice_date' })
   const debouncedInvoiceNumber = useDebounce(invoiceNumber, 500)
 
   const isOriginalNumber =
     !!debouncedInvoiceNumber &&
     debouncedInvoiceNumber === (formState.defaultValues?.invoice_number ?? '')
+
+  useEffect(() => {
+    if (paymentTermsValue && paymentTerms?.data) {
+      const selectedTerm = paymentTerms.data.find(
+        (term) => term.id === paymentTermsValue
+      )
+      if (selectedTerm && invoiceDate) {
+        const dueDate = addDays(new Date(invoiceDate), selectedTerm.days)
+        setValue('due_date', dueDate)
+      }
+    }
+  }, [paymentTermsValue, invoiceDate, paymentTerms, setValue])
 
   const {
     data: checkResult,
