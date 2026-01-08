@@ -24,7 +24,7 @@ export interface PurchasePayment extends GlobalResponse {
   method: string
   reference_no: string
   note: string
-  status: string
+  payment_status: Status
   account: Account
 }
 
@@ -41,7 +41,7 @@ export interface PurchaseInvoice extends GlobalResponse {
   total: number
   paid_amount: number
   outstanding: number
-  status: Status
+  payment_status: Status
   purchase_invoice_items: PurchaseItems[]
   purchase_invoice_payments: PurchasePayment[]
   tags: (string | Tag)[]

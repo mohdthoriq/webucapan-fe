@@ -45,7 +45,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
 
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
-  if (expense.status === 'paid') return null
+  if (expense.payment_status === 'paid') return null
 
   const paymentMethods = [
     { label: 'Tunai (Cash)', value: 'cash' },
@@ -116,7 +116,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {expense.status === 'paid'
+                      {expense.payment_status === 'paid'
                         ? 'Jumlah Pembayaran'
                         : 'Pembayaran Sisa'}
                     </FormLabel>

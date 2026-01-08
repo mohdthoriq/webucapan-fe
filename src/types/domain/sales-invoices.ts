@@ -29,7 +29,7 @@ export interface InvoicePayment extends GlobalResponse {
   method: string
   reference_no: string
   note: string
-  status: string
+  payment_status: Status
   account: Account
 }
 
@@ -46,7 +46,7 @@ export interface SalesInvoice extends GlobalResponse {
   total: number
   paid_amount: number
   outstanding: number
-  status: Status
+  payment_status: Status
   sales_invoice_items: InvoiceItem[]
   sales_invoice_payments: InvoicePayment[]
   tags: (string | Tag)[]

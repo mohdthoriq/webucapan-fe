@@ -84,15 +84,15 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     },
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'payment_status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const { status } = row.original
+      const { payment_status } = row.original
       return (
         <div className='px-2'>
-          <Badge className={cn(getStatusStyles(status))}>{invoiceLabel[status] || status}</Badge>
+          <Badge className={cn(getStatusStyles(payment_status))}>{invoiceLabel[payment_status] || payment_status}</Badge>
         </div>
       )
     },

@@ -7,11 +7,11 @@ import type {
 } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface InvoiceFormQueryParams {
+interface ExpensesFormQueryParams {
   id?: string
 }
 
-export function useExpensesFormQuery(params?: InvoiceFormQueryParams) {
+export function useExpensesFormQuery(params?: ExpensesFormQueryParams) {
   return useQuery({
     queryKey: ['expenses-list', params?.id],
     queryFn: async () => {

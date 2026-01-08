@@ -40,7 +40,7 @@ export function useInvoiceForm({
             invoice_number: currentRow.invoice_number,
             vendor_id: currentRow.vendor?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? undefined,
-            status: currentRow.status,
+            payment_status: currentRow.payment_status,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),

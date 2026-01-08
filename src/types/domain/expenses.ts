@@ -20,7 +20,7 @@ export interface ExpensePayment extends GlobalResponse {
     method: string
     reference_no: string
     note: string
-    status: Status
+    payment_status: Status
     account: Account
     tags: (string | Tag)[]
 }
@@ -39,7 +39,7 @@ export interface Expense extends GlobalResponse {
     total: number
     paid_amount: number
     outstanding: number
-    status: Status
+    payment_status: Status
     is_paylater: boolean
     expense_items: ExpenseItem[]
     expense_payments: ExpensePayment[]
