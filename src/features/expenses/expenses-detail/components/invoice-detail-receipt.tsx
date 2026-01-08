@@ -27,12 +27,12 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 variant='outline'
                 className={cn(
                   'text-[12 px] w-fit px-2 py-1 font-bold tracking-wider uppercase',
-                  getStatusStyles(expense.status)
+                  getStatusStyles(expense.payment_status)
                 )}
               >
-                {invoiceLabel[expense.status] || expense.status}
+                {invoiceLabel[expense.payment_status] || expense.payment_status}
               </Badge>
-            </CardTitle>
+            </CardTitle>  
           </div>
           <Button
             variant='outline'

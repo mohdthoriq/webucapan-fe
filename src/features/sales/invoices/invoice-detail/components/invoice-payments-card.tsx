@@ -77,7 +77,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
     checkResult &&
     (checkResult.exists === true || checkResult.available === false)
 
-  if (invoice.status === 'paid') return null
+  if (invoice.payment_status === 'paid') return null
 
   const paymentMethods = [
     { label: 'Tunai (Cash)', value: 'cash' },
@@ -148,7 +148,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {invoice.status === 'paid'
+                      {invoice.payment_status === 'paid'
                         ? 'Jumlah Pembayaran'
                         : 'Pembayaran Sisa'}
                     </FormLabel>

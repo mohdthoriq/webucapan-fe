@@ -40,7 +40,7 @@ export function ExpensesDetail() {
   }
 
   const showTransactionTable =
-    expense.status === 'paid' || expense.status === 'partially_paid'
+    expense.payment_status === 'paid' || expense.payment_status === 'partially_paid'
 
   return (
     <div className='space-y-6'>

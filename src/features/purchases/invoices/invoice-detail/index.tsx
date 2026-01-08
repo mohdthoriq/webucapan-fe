@@ -36,7 +36,7 @@ export function InvoiceDetail() {
   }
 
   const showTransactionTable =
-    invoice.status === 'paid' || invoice.status === 'partially_paid'
+    invoice.payment_status === 'paid' || invoice.payment_status === 'partially_paid'
 
   return (
     <div className='space-y-6'>

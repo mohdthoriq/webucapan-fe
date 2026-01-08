@@ -35,10 +35,10 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 variant='outline'
                 className={cn(
                   'text-[12 px] w-fit px-2 py-1 font-bold tracking-wider uppercase',
-                  getStatusStyles(invoice.status)
+                  getStatusStyles(invoice.payment_status)
                 )}
               >
-                {invoiceLabel[invoice.status] || invoice.status}
+                {invoiceLabel[invoice.payment_status] || invoice.payment_status}
               </Badge>
             </CardTitle>
           </div>
