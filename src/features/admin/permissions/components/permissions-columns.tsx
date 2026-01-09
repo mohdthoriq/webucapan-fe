@@ -1,10 +1,9 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Permission } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './permissions-row-actions';
-
+import { type ColumnDef } from '@tanstack/react-table'
+import { type Permission } from '@/types'
+import { cn } from '@/lib/utils'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './permissions-row-actions'
 
 export const permissionsColumns: ColumnDef<Permission>[] = [
   {

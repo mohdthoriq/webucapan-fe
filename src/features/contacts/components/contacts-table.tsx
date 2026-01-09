@@ -34,7 +34,11 @@ type DataTableProps = {
 }
 
 export function ContactsTable({ search, navigate }: DataTableProps) {
-  const { contactsData, pagination: serverPagination, isLoading } = useContacts()
+  const {
+    contactsData,
+    pagination: serverPagination,
+    isLoading,
+  } = useContacts()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})

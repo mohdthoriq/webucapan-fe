@@ -34,11 +34,7 @@ type DataTableProps = {
 }
 
 export function UsersTable({ search, navigate }: DataTableProps) {
-  const {
-    usersData,
-    pagination: serverPagination,
-    isLoading,
-  } = useUsers()
+  const { usersData, pagination: serverPagination, isLoading } = useUsers()
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -55,9 +51,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
-    ],
+    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -124,9 +118,9 @@ export function UsersTable({ search, navigate }: DataTableProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   )
                 })}

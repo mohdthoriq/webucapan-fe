@@ -6,9 +6,10 @@ import type {
 } from '../types/invoice-form.schema'
 
 export const calculateTotals = (
-  form: Pick<ReturnType<
-    typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
-  >, 'setValue' | 'getValues'>,
+  form: Pick<
+    ReturnType<typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>>,
+    'setValue' | 'getValues'
+  >,
   items: (CreateInvoiceFormData | UpdateInvoiceFormData)['sales_invoice_items'],
   taxes: Tax[]
 ) => {

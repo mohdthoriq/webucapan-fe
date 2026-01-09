@@ -38,7 +38,6 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
   remove: (index: number) => void
   taxes: { data: Tax[] }
 }) {
-
   return (
     <TableRow>
       <TableCell>

@@ -188,7 +188,7 @@ export function InvoiceListFilter({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[calc(100vw-2rem)] md:w-[700px] p-0"
+        className='w-[calc(100vw-2rem)] p-0 md:w-[700px]'
         align='start'
         collisionPadding={16}
       >

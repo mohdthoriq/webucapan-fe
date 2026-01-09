@@ -15,8 +15,9 @@ type useAccountCategoriesFormProps = {
   currentRow?: AccountCategory
 }
 
-export function useAccountCategoriesForm({ currentRow }: useAccountCategoriesFormProps) {
-
+export function useAccountCategoriesForm({
+  currentRow,
+}: useAccountCategoriesFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreateAccountCategoryFormData>({
     resolver: zodResolver(createAccountCategorySchema),

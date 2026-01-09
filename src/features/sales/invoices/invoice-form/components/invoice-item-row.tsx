@@ -53,7 +53,9 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
 
   // Sync row total to form state whenever it changes
   useEffect(() => {
-    const currentTotal = form.getValues(`sales_invoice_items.${index}.line_total`)
+    const currentTotal = form.getValues(
+      `sales_invoice_items.${index}.line_total`
+    )
     if (currentTotal !== rowTotal) {
       form.setValue(`sales_invoice_items.${index}.line_total`, rowTotal)
     }

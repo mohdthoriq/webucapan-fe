@@ -103,7 +103,7 @@ export function ProductPurchasesCard({
     >
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <h3 className='text-md font-semibold tracking-wide uppercase'>
-          TOTAL PEMBELIAN  {getPeriodLabel()}
+          TOTAL PEMBELIAN {getPeriodLabel()}
         </h3>
         <div className='flex items-center gap-1'>
           <CardAction

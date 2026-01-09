@@ -7,7 +7,8 @@ import { useProductCategories } from './product-category-provider'
 export function ProductCategoryDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useProductCategories()
 
-  const { mutate: deleteProductCategory, isPending } = useDeleteProductCategoryMutation()
+  const { mutate: deleteProductCategory, isPending } =
+    useDeleteProductCategoryMutation()
 
   return (
     <>

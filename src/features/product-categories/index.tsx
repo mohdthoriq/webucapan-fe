@@ -2,9 +2,12 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ProductCategoryProvider, useProductCategories } from './components/product-category-provider'
-import { ProductCategoryTable } from './components/product-category-table'
 import { ProductCategoryDialogs } from './components/product-category-dialogs'
+import {
+  ProductCategoryProvider,
+  useProductCategories,
+} from './components/product-category-provider'
+import { ProductCategoryTable } from './components/product-category-table'
 
 const route = getRouteApi('/_authenticated/product-categories/')
 

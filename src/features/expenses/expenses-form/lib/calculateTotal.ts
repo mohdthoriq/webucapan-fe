@@ -6,9 +6,10 @@ import type {
 } from '../types/expenses-form.schema'
 
 export const calculateTotals = (
-  form: Pick<ReturnType<
-    typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>
-  >, 'setValue' | 'getValues'>,
+  form: Pick<
+    ReturnType<typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>>,
+    'setValue' | 'getValues'
+  >,
   items: (CreateExpenseFormData | UpdateExpenseFormData)['expense_items'],
   taxes: Tax[]
 ) => {
@@ -26,7 +27,7 @@ export const calculateTotals = (
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
-        const itemTax = ( itemAmount * tax.rate) / 100
+        const itemTax = (itemAmount * tax.rate) / 100
         newTaxTotal += itemTax
 
         if (tax.name) {

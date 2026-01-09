@@ -1,14 +1,17 @@
 import { useLocation } from '@tanstack/react-router'
+import { FinanceNumberType } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
 import { useExpensesForm } from './hooks/use-expenses-form'
-import { useDefaultNumberingQuery, useExpensesFormQuery } from './hooks/use-expenses-form-query'
+import {
+  useDefaultNumberingQuery,
+  useExpensesFormQuery,
+} from './hooks/use-expenses-form-query'
 import { ExpensesFormActions } from './sections/form-actions'
 import { ExpensesFormHeader } from './sections/form-header'
 import { ExpensesFormItems } from './sections/form-items-table'
 import { ExpensesFormSummary } from './sections/form-summary'
-import { FinanceNumberType } from '@/types'
 
 export function ExpensesFormPage() {
   const location = useLocation()

@@ -1,11 +1,22 @@
-import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useContactsQuery } from "@/features/contacts/hooks/use-contacts-query"
-import { cn } from "@/lib/utils"
-import type { Contact } from "@/types"
-import { CheckIcon, ChevronsUpDownIcon } from "lucide-react"
-import { useState } from "react"
+import { useState } from 'react'
+import type { Contact } from '@/types'
+import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 
 export function CustomerSelector({
   value,

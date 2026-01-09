@@ -46,7 +46,7 @@ export function AutoSequencing() {
         <div>
           <div className='flex w-full flex-col gap-8'>
             <div className='flex w-full items-center justify-end'>
-              <div className='w-[300px] mt-3'>
+              <div className='mt-3 w-[300px]'>
                 <Input
                   placeholder='Search'
                   // startAdornment={<Search className='h-4 w-4' />}

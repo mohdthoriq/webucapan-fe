@@ -32,7 +32,7 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
               >
                 {invoiceLabel[expense.payment_status] || expense.payment_status}
               </Badge>
-            </CardTitle>  
+            </CardTitle>
           </div>
           <Button
             variant='outline'
@@ -155,7 +155,7 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
 
         {/* Expense Items List */}
         <div className='mb-8 flex flex-col'>
-          {expense.expense_items.map((item,_) => (
+          {expense.expense_items.map((item, _) => (
             <div
               key={item.id}
               className='flex flex-col border-b py-4 last:border-0'

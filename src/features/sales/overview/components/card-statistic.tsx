@@ -116,7 +116,9 @@ export function CardStatistic({
           className={cn(
             'mr-10 flex flex-col gap-1',
             variant === 'graph' ? 'items-center' : 'justify-start',
-            variant === 'graph' ? 'text-red-500' : getTrendColor(trend?.direction)
+            variant === 'graph'
+              ? 'text-red-500'
+              : getTrendColor(trend?.direction)
           )}
         >
           {variant === 'graph'

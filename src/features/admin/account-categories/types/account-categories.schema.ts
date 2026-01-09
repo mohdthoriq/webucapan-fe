@@ -5,7 +5,9 @@ export const createAccountCategorySchema = z.object({
   description: z.string().min(1, 'Deskripsi kategori akun harus diisi'),
 })
 
-export type CreateAccountCategoryFormData = z.infer<typeof createAccountCategorySchema>
+export type CreateAccountCategoryFormData = z.infer<
+  typeof createAccountCategorySchema
+>
 
 export const updateAccountCategorySchema = z.object({
   id: z.uuid(),
@@ -13,10 +15,14 @@ export const updateAccountCategorySchema = z.object({
   description: z.string().min(1, 'Deskripsi kategori akun harus diisi'),
 })
 
-export type UpdateAccountCategoryFormData = z.infer<typeof updateAccountCategorySchema>
+export type UpdateAccountCategoryFormData = z.infer<
+  typeof updateAccountCategorySchema
+>
 
 export const deleteAccountCategorySchema = z.object({
   id: z.uuid(),
 })
 
-export type DeleteAccountCategoryFormData = z.infer<typeof deleteAccountCategorySchema>
+export type DeleteAccountCategoryFormData = z.infer<
+  typeof deleteAccountCategorySchema
+>

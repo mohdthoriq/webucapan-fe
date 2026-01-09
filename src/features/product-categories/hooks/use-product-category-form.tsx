@@ -15,7 +15,9 @@ type useProductCategoryFormProps = {
   currentRow?: ProductCategory
 }
 
-export function useProductCategoryForm({ currentRow }: useProductCategoryFormProps) {
+export function useProductCategoryForm({
+  currentRow,
+}: useProductCategoryFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreateProductCategoryFormData>({
     resolver: zodResolver(createProductCategorySchema),

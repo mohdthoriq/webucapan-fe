@@ -1,5 +1,5 @@
-import type { Company } from './company'
 import type { GlobalResponse } from '../api/global-response'
+import type { Company } from './company'
 
 export interface Tax extends GlobalResponse {
   company: Company

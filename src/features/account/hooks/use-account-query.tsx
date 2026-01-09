@@ -10,7 +10,6 @@ interface AccountQueryParams {
 }
 
 export function useAccountsQuery(params?: AccountQueryParams) {
-
   return useQuery({
     queryKey: [
       'accounts',
@@ -30,8 +29,7 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       const url = queryParams.toString()
         ? `/accounts?${queryParams.toString()}`
         : '/accounts'
-      const response =
-        await apiClient.get<PaginationApiResponse<Account>>(url)
+      const response = await apiClient.get<PaginationApiResponse<Account>>(url)
 
       return response.data ?? []
     },

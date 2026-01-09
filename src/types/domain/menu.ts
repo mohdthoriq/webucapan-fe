@@ -1,6 +1,6 @@
+import type { GlobalResponse } from '../api/global-response'
 import type { MenuCategory } from './menu_category'
 import type { Permission } from './permission'
-import type { GlobalResponse } from '../api/global-response'
 
 export interface Menu extends GlobalResponse {
   title: string

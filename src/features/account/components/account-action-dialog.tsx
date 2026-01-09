@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { type Account } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,7 +32,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 import { useAccountsForm } from '../hooks/use-account-form'
 import { AccountsCombobox } from './account-combobox'
-import { useEffect, useRef } from 'react'
 
 type AccountsActionDialogProps = {
   currentRow?: Account
@@ -50,7 +50,7 @@ export function AccountsActionDialog({
     currentRow,
   })
 
-  const { data: accountCategories } = useAccountCategoriesQuery({limit: 50})
+  const { data: accountCategories } = useAccountCategoriesQuery({ limit: 50 })
 
   const categoryId = form.watch('category_id')
 
@@ -81,7 +81,7 @@ export function AccountsActionDialog({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[50vh] w-full'>
-          <div className='py-4 px-4'>
+          <div className='px-4 py-4'>
             <Form {...form}>
               <form
                 id='account-form'

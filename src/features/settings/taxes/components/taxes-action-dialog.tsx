@@ -93,7 +93,11 @@ export function TaxesActionDialog({
                         placeholder='Masukkan rate pajak...'
                         autoComplete='off'
                         onChange={(e) => {
-                          field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          field.onChange(
+                            e.target.value === ''
+                              ? undefined
+                              : Number(e.target.value)
+                          )
                         }}
                         type='number'
                         value={field.value ?? ''}

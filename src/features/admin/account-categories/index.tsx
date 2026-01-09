@@ -3,7 +3,10 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { AccountCategoriesDialogs } from './components/account-categories-dialogs'
-import { AccountCategoriesProvider, useAccountCategories } from './components/account-categories-provider'
+import {
+  AccountCategoriesProvider,
+  useAccountCategories,
+} from './components/account-categories-provider'
 import { AccountCategoriesTable } from './components/account-categories-table'
 
 const route = getRouteApi('/_authenticated/admin/account-categories/')

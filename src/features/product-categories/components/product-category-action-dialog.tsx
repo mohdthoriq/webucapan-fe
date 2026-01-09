@@ -58,51 +58,51 @@ export function ProductCategoryActionDialog({
               : 'Tambah kategori produk baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-          <div className='py-4'>
-            <Form {...form}>
-              <form
-                id='account-form'
-                onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-4'
-              >
-                <FormField
-                  control={form.control}
-                  name='name'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nama Kategori Produk</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder='Masukkan nama kategori produk...'
-                          autoComplete='off'
-                          type='text'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='description'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Deskripsi</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder='Masukkan deskripsi...'
-                          {...field}
-                          className='min-h-[100px] resize-none'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
+        <div className='py-4'>
+          <Form {...form}>
+            <form
+              id='account-form'
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-4'
+            >
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nama Kategori Produk</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan nama kategori produk...'
+                        autoComplete='off'
+                        type='text'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deskripsi</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder='Masukkan deskripsi...'
+                        {...field}
+                        className='min-h-[100px] resize-none'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </div>
         <DialogFooter>
           <Button type='submit' form='account-form' disabled={isSubmitting}>
             {isEdit ? 'Update Akun' : 'Tambah Akun'}

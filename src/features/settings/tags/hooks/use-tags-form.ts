@@ -6,17 +6,13 @@ import {
   type CreateTagFormData,
   type UpdateTagFormData,
 } from '@/features/settings/tags/types/tags.schema'
-import {
-  useCreateTagMutation,
-  useUpdateTagMutation,
-} from './use-tags-mutation'
+import { useCreateTagMutation, useUpdateTagMutation } from './use-tags-mutation'
 
 type useTagsFormProps = {
   currentRow?: Tag
 }
 
 export function useTagsForm({ currentRow }: useTagsFormProps) {
-
   const isEdit = !!currentRow
   const form = useForm<CreateTagFormData>({
     resolver: zodResolver(createTagSchema),

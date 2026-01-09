@@ -39,7 +39,9 @@ export function ContactsCombobox({
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [allContactTypes, setAllContactTypes] = React.useState<ContactType[]>([])
+  const [allContactTypes, setAllContactTypes] = React.useState<ContactType[]>(
+    []
+  )
   const [selectedContactType, setSelectedContactType] =
     React.useState<ContactType | null>(null)
   const [hasMore, setHasMore] = React.useState(true)

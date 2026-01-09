@@ -47,9 +47,7 @@ export function ContactsDetailDialog({
             <p className='text-sm'>{currentRow.phone || '-'}</p>
           </div>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
-              Email
-            </h4>
+            <h4 className='text-muted-foreground text-sm font-medium'>Email</h4>
             <p className='text-sm'>{currentRow.email || '-'}</p>
           </div>
           <div>

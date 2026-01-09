@@ -1,10 +1,9 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Contact } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './contacts-row-actions';
-
+import { type ColumnDef } from '@tanstack/react-table'
+import { type Contact } from '@/types'
+import { cn } from '@/lib/utils'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './contacts-row-actions'
 
 export const contactsColumns: ColumnDef<Contact>[] = [
   {

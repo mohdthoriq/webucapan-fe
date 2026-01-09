@@ -1,4 +1,4 @@
-import type { GlobalResponse } from "../api/global-response"
+import type { GlobalResponse } from '../api/global-response'
 
 export interface MenuCategory extends GlobalResponse {
   title: string

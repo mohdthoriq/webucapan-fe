@@ -17,7 +17,8 @@ type AccountCategoriesContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const AccountCategoriesContext = createContext<AccountCategoriesContextType | null>(null)
+const AccountCategoriesContext =
+  createContext<AccountCategoriesContextType | null>(null)
 
 export function AccountCategoriesProvider({
   children,
@@ -53,7 +54,9 @@ export function AccountCategoriesProvider({
   }
 
   return (
-    <AccountCategoriesContext value={accountCategoriesProviderValues}>{children}</AccountCategoriesContext>
+    <AccountCategoriesContext value={accountCategoriesProviderValues}>
+      {children}
+    </AccountCategoriesContext>
   )
 }
 
@@ -62,7 +65,9 @@ export const useAccountCategories = () => {
   const accountCategoriesContext = useContext(AccountCategoriesContext)
 
   if (!accountCategoriesContext) {
-    throw new Error('useAccountCategories has to be used within <AccountCategoriesProvider>')
+    throw new Error(
+      'useAccountCategories has to be used within <AccountCategoriesProvider>'
+    )
   }
 
   return accountCategoriesContext

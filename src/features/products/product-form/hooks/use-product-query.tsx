@@ -7,16 +7,11 @@ interface ProductsQueryParams {
 }
 
 export function useProductsByIdQuery(params?: ProductsQueryParams) {
-
   return useQuery({
-    queryKey: [
-      'products',
-      params?.id
-    ],
+    queryKey: ['products', params?.id],
     queryFn: async () => {
       const url = `/products/${params?.id}`
-      const response =
-        await apiClient.get<ApiResponse<Product>>(url)
+      const response = await apiClient.get<ApiResponse<Product>>(url)
 
       return response.data.data
     },

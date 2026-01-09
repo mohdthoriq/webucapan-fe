@@ -1,6 +1,17 @@
-import { ChartPie, ContactRound, CreditCardIcon, FileText, GalleryHorizontalEnd, LayoutDashboard, Settings, ShoppingBasket, ShoppingCart, Store, WalletCards } from 'lucide-react';
-import { type SidebarData } from '../types';
-
+import {
+  ChartPie,
+  ContactRound,
+  CreditCardIcon,
+  FileText,
+  GalleryHorizontalEnd,
+  LayoutDashboard,
+  Settings,
+  ShoppingBasket,
+  ShoppingCart,
+  Store,
+  WalletCards,
+} from 'lucide-react'
+import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   navGroups: [

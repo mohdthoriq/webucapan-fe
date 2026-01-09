@@ -10,14 +10,8 @@ interface ProductCategoryQueryParams {
 }
 
 export function useProductCategoryQuery(params?: ProductCategoryQueryParams) {
-
   return useQuery({
-    queryKey: [
-      'product-categories',
-      params?.page,
-      params?.limit,
-      params?.name,
-    ],
+    queryKey: ['product-categories', params?.page, params?.limit, params?.name],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

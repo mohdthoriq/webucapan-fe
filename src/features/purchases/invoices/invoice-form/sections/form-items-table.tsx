@@ -1,11 +1,11 @@
-import { Plus } from 'lucide-react'
+import { useState } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
+import { Plus } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { InvoiceItemsTable } from '../components/invoice-items-table'
 import type { CreateInvoiceFormData } from '../types/invoice-form.schema'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { useState } from 'react'
 
 export function InvoiceFormItems() {
   const [itemsAmount, setItemsAmount] = useState(1)
@@ -34,11 +34,7 @@ export function InvoiceFormItems() {
     <div className='flex flex-col space-y-4'>
       <h3 className='text-lg font-medium'>Item Invoice</h3>
 
-      <InvoiceItemsTable
-        fields={fields}
-        remove={remove}
-        form={form}
-      />
+      <InvoiceItemsTable fields={fields} remove={remove} form={form} />
 
       <div className='flex items-center gap-4'>
         <Button
@@ -47,7 +43,8 @@ export function InvoiceFormItems() {
           size='sm'
           onClick={handleAddItems}
         >
-          <Plus className='mr-2 h-4 w-4' /> Tambah {itemsAmount > 1 ? `${itemsAmount} Item` : 'Item'}
+          <Plus className='mr-2 h-4 w-4' /> Tambah{' '}
+          {itemsAmount > 1 ? `${itemsAmount} Item` : 'Item'}
         </Button>
         <Input
           type='number'
@@ -57,7 +54,10 @@ export function InvoiceFormItems() {
           onChange={(e) => setItemsAmount(e.target.valueAsNumber)}
           className='w-16 text-sm'
         />
-        <Badge variant={'outline'} className='text-sm text-muted-foreground bg-secondary'>
+        <Badge
+          variant={'outline'}
+          className='text-muted-foreground bg-secondary text-sm'
+        >
           Total: {fields.length}
         </Badge>
       </div>

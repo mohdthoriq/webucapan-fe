@@ -27,7 +27,8 @@ export function useTopProductsQuery(params?: TopProductsQueryParams) {
       const url = queryParams.toString()
         ? `/purchase-overview/top-products?${queryParams.toString()}`
         : '/purchase-overview/top-products'
-      const response = await apiClient.get<ApiResponse<TopPurchasedProducts>>(url)
+      const response =
+        await apiClient.get<ApiResponse<TopPurchasedProducts>>(url)
 
       return response.data.data
     },

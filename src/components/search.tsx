@@ -30,7 +30,7 @@ export function Search({
       />
       <span className='ms-4'>{placeholder}</span>
       <kbd className='bg-muted group-hover:bg-accent pointer-events-none absolute end-[0.3rem] top-[0.3rem] hidden h-5 items-center gap-1 rounded border p-2 font-mono text-[10px] font-medium opacity-100 select-none sm:flex'>
-        <span className='text-[10px] mt-[2px]'>⌘</span>K
+        <span className='mt-[2px] text-[10px]'>⌘</span>K
       </kbd>
     </Button>
   )

@@ -7,7 +7,8 @@ import { useAccountCategories } from './account-categories-provider'
 export function AccountCategoriesDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useAccountCategories()
 
-  const { mutate: deleteAccountCategory, isPending } = useDeleteAccountCategoryMutation()
+  const { mutate: deleteAccountCategory, isPending } =
+    useDeleteAccountCategoryMutation()
 
   return (
     <>

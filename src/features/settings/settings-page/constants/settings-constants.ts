@@ -161,7 +161,7 @@ export const settingsTabs = [
         description: 'Atur tag untuk pemisahan laporan',
         url: '/settings/tags',
         icon: Tag,
-      }
+      },
     ],
   },
   {

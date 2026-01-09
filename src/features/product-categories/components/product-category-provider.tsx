@@ -17,7 +17,9 @@ type ProductCategoryContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const ProductCategoryContext = createContext<ProductCategoryContextType | null>(null)
+const ProductCategoryContext = createContext<ProductCategoryContextType | null>(
+  null
+)
 
 export function ProductCategoryProvider({
   children,
@@ -53,7 +55,9 @@ export function ProductCategoryProvider({
   }
 
   return (
-    <ProductCategoryContext value={productCategoriesProviderValues}>{children}</ProductCategoryContext>
+    <ProductCategoryContext value={productCategoriesProviderValues}>
+      {children}
+    </ProductCategoryContext>
   )
 }
 
@@ -62,7 +66,9 @@ export const useProductCategories = () => {
   const productCategoriesContext = useContext(ProductCategoryContext)
 
   if (!productCategoriesContext) {
-    throw new Error('useProductCategories has to be used within <ProductCategoryProvider>')
+    throw new Error(
+      'useProductCategories has to be used within <ProductCategoryProvider>'
+    )
   }
 
   return productCategoriesContext

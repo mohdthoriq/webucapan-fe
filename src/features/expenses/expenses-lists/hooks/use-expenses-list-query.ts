@@ -15,7 +15,6 @@ interface InvoiceListQueryParams {
 }
 
 export function useExpensesListQuery(params?: InvoiceListQueryParams) {
-
   return useQuery({
     queryKey: [
       'expenses-list',
@@ -33,8 +32,12 @@ export function useExpensesListQuery(params?: InvoiceListQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.expense_number ? { expense_number: params.expense_number } : {}),
-        ...(params?.date_from ? { date_from: params.date_from.toString() } : {}),
+        ...(params?.expense_number
+          ? { expense_number: params.expense_number }
+          : {}),
+        ...(params?.date_from
+          ? { date_from: params.date_from.toString() }
+          : {}),
         ...(params?.date_to ? { date_to: params.date_to.toString() } : {}),
         ...(params?.status ? { status: params.status } : {}),
         ...(params?.contact_id ? { contact_id: params.contact_id } : {}),

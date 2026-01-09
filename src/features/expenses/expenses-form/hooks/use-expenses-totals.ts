@@ -1,7 +1,10 @@
 import { useWatch, useFormContext } from 'react-hook-form'
-import { calculateTotals } from '../lib/calculateTotal'
 import type { Tax } from '@/types'
-import type { CreateExpenseFormData, UpdateExpenseFormData } from '../types/expenses-form.schema'
+import { calculateTotals } from '../lib/calculateTotal'
+import type {
+  CreateExpenseFormData,
+  UpdateExpenseFormData,
+} from '../types/expenses-form.schema'
 
 export function useExpensesTotals(taxes: Tax[]) {
   const form = useFormContext<CreateExpenseFormData | UpdateExpenseFormData>()

@@ -2,10 +2,10 @@ import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './invoice-list-row-actions'
-import { Badge } from '@/components/ui/badge'
 
 export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
   {
@@ -43,7 +43,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full'
+      className: 'w-full',
     },
     enableHiding: false,
   },
@@ -92,7 +92,9 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { payment_status } = row.original
       return (
         <div className='px-2'>
-          <Badge className={cn(getStatusStyles(payment_status))}>{invoiceLabel[payment_status] || payment_status}</Badge>
+          <Badge className={cn(getStatusStyles(payment_status))}>
+            {invoiceLabel[payment_status] || payment_status}
+          </Badge>
         </div>
       )
     },
