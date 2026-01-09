@@ -57,7 +57,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           >
             Edit
           </DropdownMenuItem>
-          <DropdownMenuSeparator className='mb-2'/>
+          <DropdownMenuSeparator className='mb-2' />
         </DropdownMenuContent>
       </DropdownMenu>
     </>

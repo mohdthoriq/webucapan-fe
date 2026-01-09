@@ -23,11 +23,15 @@ export function UsersDetailDialog({
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>Detail Pengguna</DialogTitle>
-          <DialogDescription>Informasi pengguna yang dipilih.</DialogDescription>
+          <DialogDescription>
+            Informasi pengguna yang dipilih.
+          </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Nama Lengkap</h4>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Nama Lengkap
+            </h4>
             <p className='text-sm font-medium'>{currentRow.full_name}</p>
           </div>
           <div>
@@ -39,16 +43,26 @@ export function UsersDetailDialog({
             <p className='text-sm'>{currentRow.role?.name || '-'}</p>
           </div>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Perusahaan</h4>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Perusahaan
+            </h4>
             <p className='text-sm'>{currentRow.company?.name || '-'}</p>
           </div>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Status</h4>
-            <p className='text-sm'>{currentRow.is_active ? 'Aktif' : 'Tidak Aktif'}</p>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Status
+            </h4>
+            <p className='text-sm'>
+              {currentRow.is_active ? 'Aktif' : 'Tidak Aktif'}
+            </p>
           </div>
           <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>Verifikasi Email</h4>
-            <p className='text-sm'>{currentRow.email_verified ? 'Terverifikasi' : 'Belum'}</p>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Verifikasi Email
+            </h4>
+            <p className='text-sm'>
+              {currentRow.email_verified ? 'Terverifikasi' : 'Belum'}
+            </p>
           </div>
         </div>
       </DialogContent>

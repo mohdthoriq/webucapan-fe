@@ -14,7 +14,11 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { useCompanyRoleSettingsQuery } from '@/features/settings/company-roles/hooks/use-company-roles-query'
 
 interface RolesComboboxProps {
@@ -36,7 +40,9 @@ export function RolesCombobox({
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
   const [allRoles, setAllRoles] = React.useState<CompanyRole[]>([])
-  const [selectedRole, setSelectedRole] = React.useState<CompanyRole | null>(null)
+  const [selectedRole, setSelectedRole] = React.useState<CompanyRole | null>(
+    null
+  )
   const [hasMore, setHasMore] = React.useState(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -60,7 +66,8 @@ export function RolesCombobox({
       } else {
         setAllRoles((prev) => {
           const newRoles = data.data.filter(
-            (newRole) => !prev.some((existingRole) => existingRole.id === newRole.id)
+            (newRole) =>
+              !prev.some((existingRole) => existingRole.id === newRole.id)
           )
           return [...prev, ...newRoles]
         })
@@ -109,25 +116,40 @@ export function RolesCombobox({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant='outline' role='combobox' aria-expanded={open} className='w-full justify-between'>
+        <Button
+          variant='outline'
+          role='combobox'
+          aria-expanded={open}
+          className='w-full justify-between'
+        >
           {selectedRole ? selectedRole.name : placeholder}
           <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-full p-0'>
         <Command shouldFilter={false}>
-          <CommandInput placeholder='Cari peran...' value={searchTerm} onValueChange={handleSearch} />
+          <CommandInput
+            placeholder='Cari peran...'
+            value={searchTerm}
+            onValueChange={handleSearch}
+          />
           <CommandList>
             {isLoading && currentPage === 1 ? (
               <div className='flex items-center justify-center py-6'>
                 <Loader2 className='h-4 w-4 animate-spin' />
-                <span className='text-muted-foreground ml-2 text-sm'>Loading...</span>
+                <span className='text-muted-foreground ml-2 text-sm'>
+                  Loading...
+                </span>
               </div>
             ) : isError ? (
               <CommandEmpty>
                 <div className='flex flex-col items-center py-4'>
-                  <span className='text-muted-foreground mb-2 text-sm'>Gagal memuat peran</span>
-                  <Button variant='outline' size='sm' onClick={() => refetch()}>Retry</Button>
+                  <span className='text-muted-foreground mb-2 text-sm'>
+                    Gagal memuat peran
+                  </span>
+                  <Button variant='outline' size='sm' onClick={() => refetch()}>
+                    Retry
+                  </Button>
                 </div>
               </CommandEmpty>
             ) : allRoles.length === 0 ? (
@@ -136,12 +158,23 @@ export function RolesCombobox({
               <>
                 <CommandGroup>
                   {allRoles.map((role) => (
-                    <CommandItem key={role.id} value={role.id} onSelect={() => handleSelect(role.id)}>
-                      <CheckIcon className={cn('mr-2 h-4 w-4', value === role.id ? 'opacity-100' : 'opacity-0')} />
+                    <CommandItem
+                      key={role.id}
+                      value={role.id}
+                      onSelect={() => handleSelect(role.id)}
+                    >
+                      <CheckIcon
+                        className={cn(
+                          'mr-2 h-4 w-4',
+                          value === role.id ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
                       <div className='flex flex-col'>
                         <span className='font-medium'>{role.name}</span>
                         {role.description && (
-                          <span className='text-muted-foreground text-xs'>{role.description}</span>
+                          <span className='text-muted-foreground text-xs'>
+                            {role.description}
+                          </span>
                         )}
                       </div>
                     </CommandItem>
@@ -149,7 +182,12 @@ export function RolesCombobox({
                 </CommandGroup>
                 {hasMore && (
                   <div className='border-t'>
-                    <Button variant='ghost' className='w-full justify-center py-2' onClick={loadMore} disabled={isLoading}>
+                    <Button
+                      variant='ghost'
+                      className='w-full justify-center py-2'
+                      onClick={loadMore}
+                      disabled={isLoading}
+                    >
                       {isLoading ? (
                         <>
                           <Loader2 className='mr-2 h-4 w-4 animate-spin' />

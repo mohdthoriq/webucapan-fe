@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { addDays, format } from 'date-fns'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { FinanceNumberType } from '@/types'
@@ -31,7 +32,6 @@ import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/us
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
 import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
-import { useEffect } from 'react'
 
 export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext()

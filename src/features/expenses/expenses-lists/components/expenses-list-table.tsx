@@ -34,7 +34,11 @@ type DataTableProps = {
 }
 
 export function ExpensesListsTable({ search, navigate }: DataTableProps) {
-  const { expensesListsData, pagination: serverPagination, isLoading } = useExpensesLists()
+  const {
+    expensesListsData,
+    pagination: serverPagination,
+    isLoading,
+  } = useExpensesLists()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -123,9 +127,9 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   )
                 })}

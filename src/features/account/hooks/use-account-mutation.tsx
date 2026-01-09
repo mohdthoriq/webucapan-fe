@@ -2,7 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { useAccounts } from '../components/account-provider'
-import type { CreateAccountFormData, DeleteAccountFormData, UpdateAccountFormData } from '../types/account.schema'
+import type {
+  CreateAccountFormData,
+  DeleteAccountFormData,
+  UpdateAccountFormData,
+} from '../types/account.schema'
 
 export function useCreateAccountMutation() {
   const { setOpen } = useAccounts()

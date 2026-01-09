@@ -1,6 +1,5 @@
-import { AppWindow, KeyRound, LayoutDashboard, WalletCards } from 'lucide-react';
-import { type SidebarData } from '../types';
-
+import { AppWindow, KeyRound, LayoutDashboard, WalletCards } from 'lucide-react'
+import { type SidebarData } from '../types'
 
 export const sidebarDataAdmin: SidebarData = {
   navGroups: [
@@ -25,7 +24,7 @@ export const sidebarDataAdmin: SidebarData = {
         {
           title: 'Akun',
           icon: WalletCards,
-          url: '/admin/account-categories'
+          url: '/admin/account-categories',
         },
       ],
     },

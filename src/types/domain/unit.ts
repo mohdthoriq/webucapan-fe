@@ -1,5 +1,5 @@
-import type { Company } from "./company"
-import type { GlobalResponse } from "../api/global-response"
+import type { GlobalResponse } from '../api/global-response'
+import type { Company } from './company'
 
 export interface Unit extends GlobalResponse {
   company: Company

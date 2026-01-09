@@ -4,36 +4,34 @@ import apiClient from '@/lib/api-client'
 import type { TotalSales } from '../types/sales-overview'
 
 interface TotalSalesQueryParams {
-    date_from: string
-    date_to: string
-    period: 'day' | 'week' | 'month' | 'year'
+  date_from: string
+  date_to: string
+  period: 'day' | 'week' | 'month' | 'year'
 }
 
 export function useTotalSalesQuery(params?: TotalSalesQueryParams) {
+  return useQuery({
+    queryKey: [
+      'total-sales',
+      params?.date_from,
+      params?.date_to,
+      params?.period,
+    ],
+    queryFn: async () => {
+      const queryParams = new URLSearchParams({
+        ...(params?.date_from ? { date_from: params.date_from } : {}),
+        ...(params?.date_to ? { date_to: params.date_to } : {}),
+        ...(params?.period ? { period: params.period } : {}),
+      })
 
-    return useQuery({
-        queryKey: [
-            'total-sales',
-            params?.date_from,
-            params?.date_to,
-            params?.period,
-        ],
-        queryFn: async () => {
-            const queryParams = new URLSearchParams({
-                ...(params?.date_from ? { date_from: params.date_from } : {}),
-                ...(params?.date_to ? { date_to: params.date_to } : {}),
-                ...(params?.period ? { period: params.period } : {}),
-            })
+      const url = queryParams.toString()
+        ? `/sales-overview/total-sales?${queryParams.toString()}`
+        : '/sales-overview/total-sales'
+      const response = await apiClient.get<ApiResponse<TotalSales>>(url)
 
-            const url = queryParams.toString()
-                ? `/sales-overview/total-sales?${queryParams.toString()}`
-                : '/sales-overview/total-sales'
-            const response =
-                await apiClient.get<ApiResponse<TotalSales>>(url)
-
-            return response.data.data
-        },
-        staleTime: 5 * 60 * 1000,
-        retry: 1,
-    })
+      return response.data.data
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  })
 }

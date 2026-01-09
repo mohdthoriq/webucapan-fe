@@ -33,8 +33,8 @@ export function CompanySettingsForm() {
               <FormItem>
                 <FormLabel>Nama Perusahaan</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder='Masukkan nama perusahaan' 
+                  <Input
+                    placeholder='Masukkan nama perusahaan'
                     value={field.value || ''}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
@@ -84,8 +84,8 @@ export function CompanySettingsForm() {
               <FormItem>
                 <FormLabel>NPWP</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder='Masukkan NPWP perusahaan' 
+                  <Input
+                    placeholder='Masukkan NPWP perusahaan'
                     value={field.value || ''}
                     onChange={field.onChange}
                     onBlur={field.onBlur}

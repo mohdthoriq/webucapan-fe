@@ -10,14 +10,13 @@ interface PaymentTermsQueryParams {
 }
 
 export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
-
   return useQuery({
     queryKey: [
       'payment-terms',
       params?.page,
       params?.limit,
       params?.name,
-      params?.company_id
+      params?.company_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -25,7 +24,6 @@ export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
-
       })
 
       const url = queryParams.toString()

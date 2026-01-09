@@ -95,7 +95,11 @@ export function PaymentTermsActionDialog({
                         placeholder='Masukkan lama termin pembayaran...'
                         autoComplete='off'
                         onChange={(e) => {
-                          field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          field.onChange(
+                            e.target.value === ''
+                              ? undefined
+                              : Number(e.target.value)
+                          )
                         }}
                         type='number'
                         value={field.value}

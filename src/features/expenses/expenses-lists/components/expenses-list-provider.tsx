@@ -1,6 +1,6 @@
+import { createContext, type ReactNode, useContext } from 'react'
 import type { PaginationMeta, Expense } from '@/types'
 import { useExpensesListQuery } from '../hooks/use-expenses-list-query'
-import { createContext, type ReactNode, useContext } from 'react'
 
 type ExpensesListsContextType = {
   expensesListsData: Expense[]
@@ -10,7 +10,9 @@ type ExpensesListsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const ExpensesListsContext = createContext<ExpensesListsContextType | null>(null)
+const ExpensesListsContext = createContext<ExpensesListsContextType | null>(
+  null
+)
 
 export function ExpensesListsProvider({
   children,
@@ -19,7 +21,6 @@ export function ExpensesListsProvider({
   children: ReactNode
   paginationParams?: { page?: number; limit?: number; name?: string }
 }) {
-
   const {
     data: expensesListsData,
     isLoading: isLoadingExpensesLists,
@@ -39,7 +40,11 @@ export function ExpensesListsProvider({
     paginationParams,
   }
 
-  return <ExpensesListsContext value={expensesListsProviderValues}>{children}</ExpensesListsContext>
+  return (
+    <ExpensesListsContext value={expensesListsProviderValues}>
+      {children}
+    </ExpensesListsContext>
+  )
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -47,7 +52,9 @@ export const useExpensesLists = () => {
   const expensesListsContext = useContext(ExpensesListsContext)
 
   if (!expensesListsContext) {
-    throw new Error('useExpensesLists has to be used within <ExpensesListsContext>')
+    throw new Error(
+      'useExpensesLists has to be used within <ExpensesListsContext>'
+    )
   }
 
   return expensesListsContext

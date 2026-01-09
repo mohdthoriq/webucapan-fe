@@ -6,10 +6,14 @@ import type {
 } from '../types/invoice-form.schema'
 
 export const calculateTotals = (
-  form: Pick<ReturnType<
-    typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>
-  >, 'setValue' | 'getValues'>,
-  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['purchase_invoice_items'],
+  form: Pick<
+    ReturnType<typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>>,
+    'setValue' | 'getValues'
+  >,
+  items: (
+    | CreateInvoiceFormData
+    | UpdateInvoiceFormData
+  )['purchase_invoice_items'],
   taxes: Tax[]
 ) => {
   let newSubtotal = 0
@@ -45,8 +49,7 @@ export const calculateTotals = (
     form.setValue('subtotal', newSubtotal)
   if (form.getValues('tax_total') !== newTaxTotal)
     form.setValue('tax_total', newTaxTotal)
-  if (form.getValues('total') !== newTotal)
-    form.setValue('total', newTotal)
+  if (form.getValues('total') !== newTotal) form.setValue('total', newTotal)
 
   return {
     subtotal: newSubtotal,

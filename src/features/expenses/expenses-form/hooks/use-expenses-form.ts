@@ -2,11 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
-import {
-  type FinanceNumber,
-  FinanceNumberType,
-  type Expense,
-} from '@/types'
+import { type FinanceNumber, FinanceNumberType, type Expense } from '@/types'
 import {
   CreateExpenseSchema,
   UpdateExpenseSchema,

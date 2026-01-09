@@ -1,10 +1,9 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Account } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './account-row-actions';
-
+import { type ColumnDef } from '@tanstack/react-table'
+import { type Account } from '@/types'
+import { cn, formatNumber } from '@/lib/utils'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './account-row-actions'
 
 export const accountsColumns: ColumnDef<Account>[] = [
   {
@@ -16,7 +15,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       const { code } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{code}</LongText>
+          <LongText className=''>{code}</LongText>
         </div>
       )
     },
@@ -36,7 +35,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{name}</LongText>
         </div>
       )
@@ -55,6 +54,23 @@ export const accountsColumns: ColumnDef<Account>[] = [
       return (
         <div className='w-full min-w-48 overflow-hidden px-2'>
           <LongText className='truncate'>{category.name}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full min-w-[250px] px-12',
+    },
+  },
+   {
+    accessorKey: 'balance',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Saldo' />
+    ),
+    cell: ({ row }) => {
+      const { balance } = row.original
+      return (
+        <div className={cn('w-full min-w-48 overflow-hidden px-2', balance < 0 ? 'text-red-500' : 'text-blue-500')}>
+          <LongText className='truncate'>{formatNumber(balance)}</LongText>
         </div>
       )
     },

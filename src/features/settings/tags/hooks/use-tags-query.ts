@@ -10,7 +10,6 @@ interface RoleSettingsQueryParams {
 }
 
 export function useTagsQuery(params?: RoleSettingsQueryParams) {
-
   return useQuery({
     queryKey: [
       'tags',

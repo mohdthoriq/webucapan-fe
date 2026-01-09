@@ -48,10 +48,10 @@ export function MultiSelectDropdown({
     onChange(newSelected)
   }
 
-//   const handleRemove = (value: string, e: React.MouseEvent) => {
-//     e.stopPropagation()
-//     onChange(selected.filter((s) => s !== value))
-//   }
+  //   const handleRemove = (value: string, e: React.MouseEvent) => {
+  //     e.stopPropagation()
+  //     onChange(selected.filter((s) => s !== value))
+  //   }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,7 +74,7 @@ export function MultiSelectDropdown({
                   <Badge
                     key={val}
                     variant='secondary'
-                    className='flex items-center gap-1 font-normal pointer-events-auto'
+                    className='pointer-events-auto flex items-center gap-1 font-normal'
                   >
                     {option?.label || val}
                     {/* <X

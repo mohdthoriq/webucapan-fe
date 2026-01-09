@@ -10,17 +10,12 @@ interface AccountCategoryQueryParams {
 
 export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
   return useQuery({
-    queryKey: [
-      'account-categories',
-      params?.page,
-      params?.limit,
-      params?.name,
-    ],
+    queryKey: ['account-categories', params?.page, params?.limit, params?.name],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {})
+        ...(params?.name ? { name: params.name } : {}),
       })
 
       const url = queryParams.toString()

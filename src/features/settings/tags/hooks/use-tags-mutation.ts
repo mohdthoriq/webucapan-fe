@@ -2,7 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { useTags } from '../components/tags-provider'
-import type { CreateTagFormData, DeleteTagFormData, UpdateTagFormData } from '../types/tags.schema'
+import type {
+  CreateTagFormData,
+  DeleteTagFormData,
+  UpdateTagFormData,
+} from '../types/tags.schema'
 
 export function useCreateTagMutation() {
   const { setOpen } = useTags()
@@ -30,7 +34,7 @@ export function useCreateTagMutation() {
 }
 
 export function useUpdateTagMutation() {
-  const { setOpen } =   useTags()
+  const { setOpen } = useTags()
 
   const queryClient = useQueryClient()
   return useMutation({

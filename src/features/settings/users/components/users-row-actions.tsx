@@ -42,7 +42,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           >
             Detail
           </DropdownMenuItem>
-          
         </DropdownMenuContent>
       </DropdownMenu>
     </>

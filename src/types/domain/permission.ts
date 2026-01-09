@@ -1,4 +1,4 @@
-import type { GlobalResponse } from "../api/global-response"
+import type { GlobalResponse } from '../api/global-response'
 
 export interface Permission extends GlobalResponse {
   name: string

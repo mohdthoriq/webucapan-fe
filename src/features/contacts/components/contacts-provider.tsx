@@ -52,7 +52,9 @@ export function ContactsProvider({
     paginationParams,
   }
 
-  return <ContactsContext value={contactsProviderValues}>{children}</ContactsContext>
+  return (
+    <ContactsContext value={contactsProviderValues}>{children}</ContactsContext>
+  )
 }
 
 // eslint-disable-next-line react-refresh/only-export-components

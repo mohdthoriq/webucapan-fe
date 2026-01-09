@@ -1,11 +1,12 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { User } from '@/types'
-import {
-  useCreateUserMutation,
-} from './use-users-mutation'
-import { type CreateUserFormData, createUserSchema } from '../types/users.schema'
 import { useAuthStore } from '@/stores/auth-store'
+import {
+  type CreateUserFormData,
+  createUserSchema,
+} from '../types/users.schema'
+import { useCreateUserMutation } from './use-users-mutation'
 
 type useUsersFormProps = {
   currentRow?: User
@@ -13,23 +14,23 @@ type useUsersFormProps = {
 
 export function useUsersForm({ currentRow }: useUsersFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
-  
+
   const isEdit = !!currentRow
   const form = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserSchema),
     defaultValues: isEdit
       ? {
-        email: currentRow?.email ?? '',
-        full_name: currentRow?.full_name ?? '',
-        role_id: currentRow?.role?.id ?? '',
-        company_id: currentRow?.company?.id ?? company?.id ?? '',
-      }
+          email: currentRow?.email ?? '',
+          full_name: currentRow?.full_name ?? '',
+          role_id: currentRow?.role?.id ?? '',
+          company_id: currentRow?.company?.id ?? company?.id ?? '',
+        }
       : {
-        email: '',
-        full_name: '',
-        role_id: '',
-        company_id: '',
-      },
+          email: '',
+          full_name: '',
+          role_id: '',
+          company_id: '',
+        },
   })
 
   const createMutation = useCreateUserMutation()

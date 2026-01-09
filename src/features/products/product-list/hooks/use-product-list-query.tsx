@@ -9,14 +9,8 @@ interface ProductsQueryParams {
 }
 
 export function useProductsQuery(params?: ProductsQueryParams) {
-
   return useQuery({
-    queryKey: [
-      'products',
-      params?.page,
-      params?.limit,
-      params?.name,
-    ],
+    queryKey: ['products', params?.page, params?.limit, params?.name],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
@@ -27,8 +21,7 @@ export function useProductsQuery(params?: ProductsQueryParams) {
       const url = queryParams.toString()
         ? `/products?${queryParams.toString()}`
         : '/products'
-      const response =
-        await apiClient.get<PaginationApiResponse<Product>>(url)
+      const response = await apiClient.get<PaginationApiResponse<Product>>(url)
 
       return response.data ?? []
     },

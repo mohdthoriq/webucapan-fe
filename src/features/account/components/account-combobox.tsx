@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import type { Account } from '@/types'
 import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -19,7 +20,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useAccountsQuery } from '../hooks/use-account-query'
-import type { Account } from '@/types'
 
 interface AccountsComboboxProps {
   value?: string | null
@@ -39,9 +39,7 @@ export function AccountsCombobox({
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [allAccounts, setAllAccounts] = React.useState<Account[]>(
-    []
-  )
+  const [allAccounts, setAllAccounts] = React.useState<Account[]>([])
   const [selectedContactType, setSelectedContactType] =
     React.useState<Account | null>(null)
   const [hasMore, setHasMore] = React.useState(true)
@@ -70,8 +68,7 @@ export function AccountsCombobox({
           const newAccounts = data.data.filter(
             (newAccount) =>
               !prev.some(
-                (existingAccount) =>
-                  existingAccount.id === newAccount.id
+                (existingAccount) => existingAccount.id === newAccount.id
               )
           )
           return [...prev, ...newAccounts]

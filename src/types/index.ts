@@ -22,4 +22,3 @@ export * from './domain/sales-invoices'
 export * from './domain/auto-numbering'
 export * from './domain/purchases-invoices'
 export * from './domain/expenses'
-

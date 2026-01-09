@@ -29,8 +29,7 @@ export function useContactsQuery(params?: ContactQueryParams) {
       const url = queryParams.toString()
         ? `/contacts?${queryParams.toString()}`
         : '/contacts'
-      const response =
-        await apiClient.get<PaginationApiResponse<Contact>>(url)
+      const response = await apiClient.get<PaginationApiResponse<Contact>>(url)
 
       return response.data ?? []
     },
@@ -59,7 +58,8 @@ export function useContactTypesQuery(params?: ContactQueryParams) {
       const url = queryParams.toString()
         ? `/contact-types?${queryParams.toString()}`
         : '/contact-types'
-      const response = await apiClient.get<PaginationApiResponse<ContactType>>(url)
+      const response =
+        await apiClient.get<PaginationApiResponse<ContactType>>(url)
 
       return response.data ?? []
     },

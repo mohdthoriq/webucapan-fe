@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type FinanceNumber,
   FinanceNumberType,
@@ -18,7 +19,6 @@ import {
   useGenerateNextNumber,
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
-import { useNavigate } from '@tanstack/react-router'
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice

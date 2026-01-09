@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useProducts } from "../components/products-provider"
-import apiClient from "@/lib/api-client"
-import type { DeleteProductFormData } from "../types/products-list.schema"
-import { toast } from "sonner"
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
+import { useProducts } from '../components/products-provider'
+import type { DeleteProductFormData } from '../types/products-list.schema'
 
 export function useDeleteProductMutation() {
   const { setOpen } = useProducts()

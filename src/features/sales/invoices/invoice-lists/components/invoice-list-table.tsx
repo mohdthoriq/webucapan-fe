@@ -110,7 +110,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         searchPlaceholder='Cari satuan...'
         searchKey='name'
       />
-      <div className='flex flex-col md:flex-row md:items-center gap-2'>
+      <div className='flex flex-col gap-2 md:flex-row md:items-center'>
         <InvoiceListFilter search={search} navigate={navigate} />
         <Tabs
           defaultValue=''

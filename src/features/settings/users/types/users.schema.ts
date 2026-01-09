@@ -4,7 +4,7 @@ export const createUserSchema = z.object({
   email: z.email('Email tidak valid').min(1, 'Email harus diisi'),
   full_name: z.string().min(1, 'Nama lengkap harus diisi'),
   role_id: z.string().min(1, 'Role harus diisi'),
-  company_id: z.string().min(1, 'Perusahaan harus diisi')
+  company_id: z.string().min(1, 'Perusahaan harus diisi'),
 })
 
 export type CreateUserFormData = z.infer<typeof createUserSchema>

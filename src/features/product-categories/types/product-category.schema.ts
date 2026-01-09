@@ -5,7 +5,9 @@ export const createProductCategorySchema = z.object({
   description: z.string().optional(),
 })
 
-export type CreateProductCategoryFormData = z.infer<typeof createProductCategorySchema>
+export type CreateProductCategoryFormData = z.infer<
+  typeof createProductCategorySchema
+>
 
 export const updateProductCategorySchema = z.object({
   id: z.uuid(),
@@ -13,10 +15,14 @@ export const updateProductCategorySchema = z.object({
   description: z.string().optional(),
 })
 
-export type UpdateProductCategoryFormData = z.infer<typeof updateProductCategorySchema>
+export type UpdateProductCategoryFormData = z.infer<
+  typeof updateProductCategorySchema
+>
 
 export const deleteProductCategorySchema = z.object({
   id: z.uuid(),
 })
 
-export type DeleteProductCategoryFormData = z.infer<typeof deleteProductCategorySchema>
+export type DeleteProductCategoryFormData = z.infer<
+  typeof deleteProductCategorySchema
+>
