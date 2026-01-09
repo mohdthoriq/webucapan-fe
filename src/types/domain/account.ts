@@ -11,4 +11,5 @@ export interface Account extends GlobalResponse {
   category: AccountCategory
   parent: Account | null
   company: Company
+  balance: number
 }
