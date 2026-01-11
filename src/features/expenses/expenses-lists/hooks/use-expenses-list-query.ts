@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Expense, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface InvoiceListQueryParams {
+export interface ExpenseListQueryParams {
   page?: number
   limit?: number
   order?: string
@@ -12,9 +12,10 @@ interface InvoiceListQueryParams {
   expense_number?: string
   date_from?: Date
   date_to?: Date
+  tags?: string[]
 }
 
-export function useExpensesListQuery(params?: InvoiceListQueryParams) {
+export function useExpensesListQuery(params?: ExpenseListQueryParams) {
   return useQuery({
     queryKey: [
       'expenses-list',
@@ -27,6 +28,7 @@ export function useExpensesListQuery(params?: InvoiceListQueryParams) {
       params?.status,
       params?.contact_id,
       params?.company_id,
+      params?.tags,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -36,13 +38,14 @@ export function useExpensesListQuery(params?: InvoiceListQueryParams) {
           ? { expense_number: params.expense_number }
           : {}),
         ...(params?.date_from
-          ? { date_from: params.date_from.toString() }
+          ? { date_from: params.date_from.toISOString() }
           : {}),
-        ...(params?.date_to ? { date_to: params.date_to.toString() } : {}),
+        ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
         ...(params?.status ? { status: params.status } : {}),
         ...(params?.contact_id ? { contact_id: params.contact_id } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
         ...(params?.order ? { order: params.order } : {}),
+        ...(params?.tags ? { tags: params.tags.join(',') } : {}),
       })
 
       const url = queryParams.toString()

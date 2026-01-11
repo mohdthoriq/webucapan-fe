@@ -61,7 +61,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       className: 'w-full min-w-[250px] px-12',
     },
   },
-   {
+  {
     accessorKey: 'balance',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Saldo' />
@@ -69,7 +69,12 @@ export const accountsColumns: ColumnDef<Account>[] = [
     cell: ({ row }) => {
       const { balance } = row.original
       return (
-        <div className={cn('w-full min-w-48 overflow-hidden px-2', balance < 0 ? 'text-red-500' : 'text-blue-500')}>
+        <div
+          className={cn(
+            'w-full min-w-48 overflow-hidden px-2',
+            balance < 0 ? 'text-red-500' : 'text-blue-500'
+          )}
+        >
           <LongText className='truncate'>{formatNumber(balance)}</LongText>
         </div>
       )

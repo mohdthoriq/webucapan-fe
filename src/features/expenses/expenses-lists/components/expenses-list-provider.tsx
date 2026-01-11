@@ -1,13 +1,13 @@
 import { createContext, type ReactNode, useContext } from 'react'
 import type { PaginationMeta, Expense } from '@/types'
-import { useExpensesListQuery } from '../hooks/use-expenses-list-query'
+import { useExpensesListQuery, type ExpenseListQueryParams } from '../hooks/use-expenses-list-query'
 
 type ExpensesListsContextType = {
   expensesListsData: Expense[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: ExpenseListQueryParams & { name?: string }
 }
 
 const ExpensesListsContext = createContext<ExpensesListsContextType | null>(
@@ -19,13 +19,16 @@ export function ExpensesListsProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: ExpenseListQueryParams & { name?: string }
 }) {
   const {
     data: expensesListsData,
     isLoading: isLoadingExpensesLists,
     isError: isErrorExpensesLists,
-  } = useExpensesListQuery(paginationParams)
+  } = useExpensesListQuery({
+    ...paginationParams,
+    expense_number: paginationParams?.name || paginationParams?.expense_number,
+  })
 
   const expensesListsProviderValues = {
     expensesListsData: expensesListsData?.data ?? [],

@@ -7,6 +7,8 @@ import { ExpensesListsTable } from './components/expenses-list-table'
 
 const route = getRouteApi('/_authenticated/expenses/')
 
+import { type ExpenseListQueryParams } from './hooks/use-expenses-list-query'
+
 function ExpensesListsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
@@ -41,15 +43,25 @@ function ExpensesListsContent() {
 }
 
 function ExpensesLists() {
-  const search = route.useSearch() as Record<string, string>
+  const search = route.useSearch() as Record<string, unknown>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: ExpenseListQueryParams & { name?: string } = {
+    page: search.page ? parseInt(search.page as string) : undefined,
+    limit: search.limit ? parseInt(search.limit as string) : undefined,
+    name: (search.name as string) || undefined,
+    status: (search.status as ExpenseListQueryParams['status']) || undefined,
+    contact_id: (search.contact_id as string) || undefined,
+    company_id: (search.company_id as string) || undefined,
+    order: (search.order as string) || undefined,
+    date_from: search.date_from
+      ? new Date(search.date_from as string)
+      : undefined,
+    date_to: search.date_to ? new Date(search.date_to as string) : undefined,
+    tags: search.tags ? (search.tags as string).split(',') : undefined,
+  }
 
   return (
-    <ExpensesListsProvider paginationParams={{ page, limit, name }}>
+    <ExpensesListsProvider paginationParams={queryParams}>
       <ExpensesListsContent />
     </ExpensesListsProvider>
   )
