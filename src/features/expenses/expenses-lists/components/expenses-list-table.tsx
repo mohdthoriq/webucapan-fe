@@ -24,8 +24,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { expensesListsColumns } from './expenses-list-columns'
+import { ExpensesListFilter } from './expenses-list-filter'
 import { useExpensesLists } from './expenses-list-provider'
 
 type DataTableProps = {
@@ -105,9 +107,26 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
+        searchPlaceholder='Cari nomor pengeluaran...'
         searchKey='name'
       />
+      <div className='flex flex-col gap-2 md:flex-row md:items-center'>
+        <ExpensesListFilter search={search} navigate={navigate} />
+        <Tabs
+          defaultValue=''
+          value={(search.payment_status as string) || ''}
+          onValueChange={(value) =>
+            navigate({ search: { ...search, payment_status: value || undefined } })
+          }
+        >
+          <TabsList className='h-10'>
+            <TabsTrigger value=''>Semua</TabsTrigger>
+            <TabsTrigger value='paid'>Dibayar</TabsTrigger>
+            <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
+            <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

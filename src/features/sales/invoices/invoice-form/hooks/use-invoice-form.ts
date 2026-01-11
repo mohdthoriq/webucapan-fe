@@ -6,7 +6,8 @@ import {
   type FinanceNumber,
   FinanceNumberType,
   type SalesInvoice,
-  Status,
+  PaymentStatus,
+  DocumentStatus,
 } from '@/types'
 import {
   CreateInvoiceSchema,
@@ -41,6 +42,7 @@ export function useInvoiceForm({
             customer_id: currentRow.customer?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? undefined,
             payment_status: currentRow.payment_status,
+            document_status: currentRow.document_status,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
@@ -75,7 +77,8 @@ export function useInvoiceForm({
             subtotal: 0,
             tax_total: 0,
             total: 0,
-            status: Status.unpaid,
+            payment_status: PaymentStatus.unpaid,
+            document_status: DocumentStatus.draft,
             invoice_date: new Date(),
             due_date: new Date(),
             sales_invoice_items: [

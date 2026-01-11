@@ -61,7 +61,7 @@ function InvoiceLists() {
       : undefined,
     vendor_id: search?.vendor_id,
     tags: search.tags ? (search.tags as string).split(',') : undefined,
-    status: (search.status as InvoiceListQueryParams['status']) || undefined,
+    payment_status: (search.payment_status as InvoiceListQueryParams['payment_status']) || undefined,
   }
 
   return (
