@@ -114,9 +114,9 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
         <ExpensesListFilter search={search} navigate={navigate} />
         <Tabs
           defaultValue=''
-          value={(search.status as string) || ''}
+          value={(search.payment_status as string) || ''}
           onValueChange={(value) =>
-            navigate({ search: { ...search, status: value || undefined } })
+            navigate({ search: { ...search, payment_status: value || undefined } })
           }
         >
           <TabsList className='h-10'>

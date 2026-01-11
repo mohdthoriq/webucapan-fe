@@ -49,7 +49,7 @@ function ExpensesLists() {
     page: search.page ? parseInt(search.page as string) : undefined,
     limit: search.limit ? parseInt(search.limit as string) : undefined,
     name: (search.name as string) || undefined,
-    status: (search.status as ExpenseListQueryParams['status']) || undefined,
+    payment_status: (search.payment_status as ExpenseListQueryParams['payment_status']) || undefined,
     contact_id: (search.contact_id as string) || undefined,
     company_id: (search.company_id as string) || undefined,
     order: (search.order as string) || undefined,

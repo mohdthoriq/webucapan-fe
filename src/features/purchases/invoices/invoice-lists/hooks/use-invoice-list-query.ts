@@ -7,7 +7,7 @@ export interface InvoiceListQueryParams {
   limit?: number
   order?: string
   vendor_id?: string
-  status?: 'unpaid' | 'partially_paid' | 'paid'
+  payment_status?: 'unpaid' | 'partially_paid' | 'paid'
   invoice_number?: string
   date_from?: Date
   date_to?: Date
@@ -32,7 +32,7 @@ export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
       params?.due_date_to,
       params?.payment_date_from,
       params?.payment_date_to,
-      params?.status,
+      params?.payment_status,
       params?.vendor_id,
       params?.tags,
     ],
@@ -59,7 +59,7 @@ export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
         ...(params?.payment_date_to
           ? { payment_date_to: params.payment_date_to.toISOString() }
           : {}),
-        ...(params?.status ? { status: params.status } : {}),
+        ...(params?.payment_status ? { payment_status: params.payment_status } : {}),
         ...(params?.vendor_id ? { vendor_id: params.vendor_id } : {}),
         ...(params?.order ? { order: params.order } : {}),
       })

@@ -114,9 +114,9 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         <InvoiceListFilter search={search} navigate={navigate} />
         <Tabs
           defaultValue=''
-          value={search.status as string}
+          value={search.payment_status as string}
           onValueChange={(value) =>
-            navigate({ search: { ...search, status: value } })
+            navigate({ search: { ...search, payment_status: value } })
           }
         >
           <TabsList className='h-10'>

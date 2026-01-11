@@ -7,7 +7,7 @@ import type { Product } from './product'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
 
-export enum Status {
+export enum PaymentStatus {
   unpaid = 'unpaid',
   partially_paid = 'partially_paid',
   paid = 'paid',
@@ -29,7 +29,7 @@ export interface InvoicePayment extends GlobalResponse {
   method: string
   reference_no: string
   note: string
-  payment_status: Status
+  payment_status: PaymentStatus
   account: Account
 }
 
@@ -46,7 +46,7 @@ export interface SalesInvoice extends GlobalResponse {
   total: number
   paid_amount: number
   outstanding: number
-  payment_status: Status
+  payment_status: PaymentStatus
   sales_invoice_items: InvoiceItem[]
   sales_invoice_payments: InvoicePayment[]
   tags: (string | Tag)[]

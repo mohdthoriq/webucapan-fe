@@ -8,7 +8,7 @@ export interface ExpenseListQueryParams {
   order?: string
   company_id?: string
   contact_id?: string
-  status?: 'unpaid' | 'partially_paid' | 'paid'
+  payment_status?: 'unpaid' | 'partially_paid' | 'paid'
   expense_number?: string
   date_from?: Date
   date_to?: Date
@@ -25,7 +25,7 @@ export function useExpensesListQuery(params?: ExpenseListQueryParams) {
       params?.expense_number,
       params?.date_from,
       params?.date_to,
-      params?.status,
+      params?.payment_status,
       params?.contact_id,
       params?.company_id,
       params?.tags,
@@ -41,7 +41,7 @@ export function useExpensesListQuery(params?: ExpenseListQueryParams) {
           ? { date_from: params.date_from.toISOString() }
           : {}),
         ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
-        ...(params?.status ? { status: params.status } : {}),
+        ...(params?.payment_status ? { payment_status: params.payment_status } : {}),
         ...(params?.contact_id ? { contact_id: params.contact_id } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
         ...(params?.order ? { order: params.order } : {}),

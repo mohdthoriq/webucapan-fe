@@ -6,7 +6,7 @@ import {
   type FinanceNumber,
   FinanceNumberType,
   type SalesInvoice,
-  Status,
+  PaymentStatus,
 } from '@/types'
 import {
   CreateInvoiceSchema,
@@ -75,7 +75,7 @@ export function useInvoiceForm({
             subtotal: 0,
             tax_total: 0,
             total: 0,
-            status: Status.unpaid,
+            payment_status: PaymentStatus.unpaid,
             invoice_date: new Date(),
             due_date: new Date(),
             sales_invoice_items: [

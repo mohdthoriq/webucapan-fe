@@ -1,4 +1,4 @@
-import type { Status } from '@/types'
+import type { PaymentStatus } from '@/types'
 
 export type Period = 'day' | 'week' | 'month' | 'year' | 'custom'
 
@@ -73,5 +73,5 @@ export interface RecentUnpaid {
   vendor_name: string
   total: number
   outstanding: number
-  status: Status
+  status: PaymentStatus
 }

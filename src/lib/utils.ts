@@ -83,8 +83,8 @@ export const invoiceLabel: Record<string, string> = {
   overdue: 'Terlambat',
 }
 
-export const getStatusStyles = (status: string) => {
-  switch (status) {
+export const getStatusStyles = (payment_status: string) => {
+  switch (payment_status) {
     case 'paid':
       return 'bg-emerald-50 text-emerald-700 border-emerald-200'
     case 'partially_paid':
