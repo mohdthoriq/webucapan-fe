@@ -13,6 +13,12 @@ export enum PaymentStatus {
   paid = 'paid',
 }
 
+export enum DocumentStatus {
+  draft = 'draft',
+  posted = 'posted',
+  void = 'void',
+}
+
 export interface InvoiceItem extends GlobalResponse {
   product: Product
   description: string
@@ -47,6 +53,7 @@ export interface SalesInvoice extends GlobalResponse {
   paid_amount: number
   outstanding: number
   payment_status: PaymentStatus
+  document_status: DocumentStatus
   sales_invoice_items: InvoiceItem[]
   sales_invoice_payments: InvoicePayment[]
   tags: (string | Tag)[]

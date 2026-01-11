@@ -4,7 +4,7 @@ import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
 import type { Product } from './product'
-import type { PaymentStatus } from './sales-invoices'
+import type { DocumentStatus, PaymentStatus } from './sales-invoices'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
 
@@ -42,6 +42,7 @@ export interface PurchaseInvoice extends GlobalResponse {
   paid_amount: number
   outstanding: number
   payment_status: PaymentStatus
+  document_status: DocumentStatus
   purchase_invoice_items: PurchaseItems[]
   purchase_invoice_payments: PurchasePayment[]
   tags: (string | Tag)[]
