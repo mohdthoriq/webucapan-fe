@@ -1,4 +1,5 @@
-import { format } from 'date-fns'
+import { useEffect } from 'react'
+import { addDays, format } from 'date-fns'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { FinanceNumberType } from '@/types'
 import { CalendarIcon } from 'lucide-react'
@@ -38,8 +39,27 @@ export function ExpensesFormHeader() {
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
+  const date = useWatch({ control, name: 'date' })
   const invoiceNumber = useWatch({ control, name: 'expense_number' })
   const isPaylater = useWatch({ control, name: 'is_paylater' })
+  const paymentTermId = useWatch({ control, name: 'payment_term_id' })
+
+  useEffect(() => {
+    if (!isPaylater) {
+      setValue('due_date', date)
+      return
+    }
+
+    if (date && paymentTermId && paymentTerms?.data) {
+      const selectedTerm = paymentTerms.data.find(
+        (term) => term.id === paymentTermId
+      )
+      if (selectedTerm) {
+        const newDueDate = addDays(new Date(date), selectedTerm.days)
+        setValue('due_date', newDueDate)
+      }
+    }
+  }, [date, paymentTermId, paymentTerms?.data, setValue, isPaylater])
 
   const debouncedInvoiceNumber = useDebounce(invoiceNumber, 500)
 
@@ -97,6 +117,9 @@ export function ExpensesFormHeader() {
                       field.onChange(checked)
                       if (checked) {
                         setValue('account_id', null)
+                      } else {
+                        setValue('payment_term_id', undefined)
+                        setValue('due_date', date)
                       }
                     }}
                   />

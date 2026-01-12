@@ -49,7 +49,9 @@ export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
           ? { date_from: params.date_from.toISOString() }
           : {}),
         ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
-        ...(params?.payment_status ? { payment_status: params.payment_status } : {}),
+        ...(params?.payment_status
+          ? { payment_status: params.payment_status }
+          : {}),
         ...(params?.customer_id ? { customer_id: params.customer_id } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
         ...(params?.order ? { order: params.order } : {}),

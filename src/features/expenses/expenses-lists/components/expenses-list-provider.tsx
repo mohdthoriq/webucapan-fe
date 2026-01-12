@@ -1,6 +1,9 @@
 import { createContext, type ReactNode, useContext } from 'react'
 import type { PaginationMeta, Expense } from '@/types'
-import { useExpensesListQuery, type ExpenseListQueryParams } from '../hooks/use-expenses-list-query'
+import {
+  useExpensesListQuery,
+  type ExpenseListQueryParams,
+} from '../hooks/use-expenses-list-query'
 
 type ExpensesListsContextType = {
   expensesListsData: Expense[]

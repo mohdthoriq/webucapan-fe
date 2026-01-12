@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ExpensesListsProvider } from './components/expenses-list-provider'
 import { ExpensesListsTable } from './components/expenses-list-table'
+import { type ExpenseListQueryParams } from './hooks/use-expenses-list-query'
 
 const route = getRouteApi('/_authenticated/expenses/')
-
-import { type ExpenseListQueryParams } from './hooks/use-expenses-list-query'
 
 function ExpensesListsContent() {
   const search = route.useSearch() as Record<string, string>
@@ -49,7 +48,9 @@ function ExpensesLists() {
     page: search.page ? parseInt(search.page as string) : undefined,
     limit: search.limit ? parseInt(search.limit as string) : undefined,
     name: (search.name as string) || undefined,
-    payment_status: (search.payment_status as ExpenseListQueryParams['payment_status']) || undefined,
+    payment_status:
+      (search.payment_status as ExpenseListQueryParams['payment_status']) ||
+      undefined,
     contact_id: (search.contact_id as string) || undefined,
     company_id: (search.company_id as string) || undefined,
     order: (search.order as string) || undefined,
