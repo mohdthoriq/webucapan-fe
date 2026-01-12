@@ -179,12 +179,14 @@ export function ExpensesListFilter({
           </div>
           <div className='grid max-h-[40vh] grid-cols-1 divide-y overflow-y-auto md:h-[300px] md:max-h-none md:grid-cols-2 md:divide-x md:divide-y-0'>
             <div className='scrollbar-thin space-y-4 overflow-y-auto p-4'>
-              <h5 className='mb-4 text-sm font-medium text-muted-foreground'>
+              <h5 className='text-muted-foreground mb-4 text-sm font-medium'>
                 Tanggal
               </h5>
 
               <div className='min-w-[200px] space-y-2'>
-                <label className='text-xs font-medium'>Tanggal Pengeluaran</label>
+                <label className='text-xs font-medium'>
+                  Tanggal Pengeluaran
+                </label>
                 <DatePickerWithRange
                   date={expenseDate}
                   setDate={setExpenseDate}
@@ -193,7 +195,7 @@ export function ExpensesListFilter({
             </div>
 
             <div className='scrollbar-thin space-y-4 overflow-y-auto p-4'>
-              <h5 className='mb-4 text-sm font-medium text-muted-foreground'>
+              <h5 className='text-muted-foreground mb-4 text-sm font-medium'>
                 Detail Kontak
               </h5>
               <div className='space-y-2'>
@@ -215,7 +217,7 @@ export function ExpensesListFilter({
               </div>
             </div>
           </div>
-          <div className='flex justify-end border-t bg-muted/10 p-4'>
+          <div className='bg-muted/10 flex justify-end border-t p-4'>
             <Button onClick={handleApply}>Terapkan Filter</Button>
           </div>
         </div>

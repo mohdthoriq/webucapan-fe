@@ -29,7 +29,7 @@ export function DatePickerWithRange({
           )}
         >
           <CalendarIcon className='h-4 w-4 shrink-0' />
-          <span className='truncate ml-2'>
+          <span className='ml-2 truncate'>
             {date?.from ? (
               date.to ? (
                 <>

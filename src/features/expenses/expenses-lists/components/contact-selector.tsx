@@ -60,7 +60,7 @@ export function ContactSelector({
           />
           <CommandList>
             {isLoading && (
-              <div className='py-2 text-center text-xs text-muted-foreground'>
+              <div className='text-muted-foreground py-2 text-center text-xs'>
                 Loading...
               </div>
             )}

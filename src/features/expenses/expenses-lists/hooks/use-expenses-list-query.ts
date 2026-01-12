@@ -41,7 +41,9 @@ export function useExpensesListQuery(params?: ExpenseListQueryParams) {
           ? { date_from: params.date_from.toISOString() }
           : {}),
         ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
-        ...(params?.payment_status ? { payment_status: params.payment_status } : {}),
+        ...(params?.payment_status
+          ? { payment_status: params.payment_status }
+          : {}),
         ...(params?.contact_id ? { contact_id: params.contact_id } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
         ...(params?.order ? { order: params.order } : {}),
