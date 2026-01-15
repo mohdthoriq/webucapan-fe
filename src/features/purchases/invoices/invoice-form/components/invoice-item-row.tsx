@@ -79,7 +79,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                     if (product) {
                       form.setValue(
                         `purchase_invoice_items.${index}.unit_price`,
-                        product.sale_price
+                        product.purchase_price
                       )
                     }
                   }

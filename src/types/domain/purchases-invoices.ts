@@ -44,7 +44,7 @@ export interface PurchaseInvoice extends GlobalResponse {
   payment_status: PaymentStatus
   document_status: DocumentStatus
   purchase_invoice_items: PurchaseItems[]
-  purchase_invoice_payments: PurchasePayment[]
+  purchase_payments: PurchasePayment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }
