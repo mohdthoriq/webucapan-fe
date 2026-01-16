@@ -69,6 +69,7 @@ export function InvoiceFormPage() {
             <InvoiceFormActions
               isEdit={invoiceForm.isEdit}
               isSubmitting={invoiceForm.isSubmitting}
+              errorMessage={invoiceForm.errorMessage}
             />
           </form>
         </Form>
