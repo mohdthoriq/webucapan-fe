@@ -102,6 +102,13 @@ export function useInvoiceForm({
     defaultValues: defaultValues,
   })
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const errorMessage =
+    firstError && 'message' in firstError
+      ? (firstError.message as string)
+      : undefined
+
   useEffect(() => {
     if (isEdit && currentRow) {
       form.reset(defaultValues)
@@ -151,5 +158,6 @@ export function useInvoiceForm({
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     isEdit,
+    errorMessage,
   }
 }

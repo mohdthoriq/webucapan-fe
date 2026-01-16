@@ -30,7 +30,7 @@ export const calculateTotals = (
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
-        const itemTax = (quantity * unitPrice * tax.rate) / 100
+        const itemTax = (lineTotal * tax.rate) / 100
         newTaxTotal += itemTax
 
         if (tax.name) {
