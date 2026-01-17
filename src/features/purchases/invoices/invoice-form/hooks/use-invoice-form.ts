@@ -126,9 +126,12 @@ export function useInvoiceForm({
   const mutationError = createMutation.error || updateMutation.error
   const errorMessage =
     (mutationError
-      ? (mutationError as AxiosError<ApiResponse>).response?.data.message
-      : 'Terjadi kesalahan saat menyimpan data') ||
-    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+      ? (mutationError as AxiosError<ApiResponse>).response?.data.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : undefined) ||
+    (firstError
+      ? firstError.message || 'Terjadi kesalahan pada input'
+      : undefined)
 
   const onSubmit = async (data: CreateInvoiceFormData) => {
     if (isEdit && currentRow) {
