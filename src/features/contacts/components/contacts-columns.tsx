@@ -15,7 +15,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{name}</LongText>
+          <LongText className=''>{name}</LongText>
         </div>
       )
     },
@@ -35,13 +35,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { type } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{type.name}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
@@ -52,13 +52,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { company } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{company.name}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {
@@ -69,13 +69,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { email } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden'>
+        <div className='w-full overflow-hidden'>
           <LongText className='truncate'>{email}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {
@@ -86,13 +86,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { phone } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden'>
+        <div className='w-full overflow-hidden'>
           <LongText className='truncate'>{phone}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {
@@ -103,13 +103,13 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { address } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden'>
+        <div className='w-full overflow-hidden'>
           <LongText className='truncate'>{address}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {

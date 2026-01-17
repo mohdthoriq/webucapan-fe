@@ -72,7 +72,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     ),
     cell: ({ row }) => {
       const { due_date } = row.original
-      const formattedDate = format(due_date, 'dd/MM/yyyy')
+      const formattedDate = due_date ? format(due_date, 'dd/MM/yyyy') : '-'
       return (
         <div className='px-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
