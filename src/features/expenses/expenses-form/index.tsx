@@ -12,6 +12,8 @@ import { ExpensesFormActions } from './sections/form-actions'
 import { ExpensesFormHeader } from './sections/form-header'
 import { ExpensesFormItems } from './sections/form-items-table'
 import { ExpensesFormSummary } from './sections/form-summary'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 export function ExpensesFormPage() {
   const location = useLocation()
@@ -66,6 +68,13 @@ export function ExpensesFormPage() {
             <div className='bg-border h-px' />
             <ExpensesFormItems />
             <ExpensesFormSummary />
+            {expensesForm.errorMessage && (
+              <Alert variant='destructive' className='w-full'>
+                <CheckCircle2Icon />
+                <AlertTitle>Perhatian!</AlertTitle>
+                <AlertDescription>{expensesForm.errorMessage}</AlertDescription>
+              </Alert>
+            )}
             <ExpensesFormActions
               isEdit={expensesForm.isEdit}
               isSubmitting={expensesForm.isSubmitting}

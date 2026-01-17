@@ -32,6 +32,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 import { useAccountsForm } from '../hooks/use-account-form'
 import { AccountsCombobox } from './account-combobox'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type AccountsActionDialogProps = {
   currentRow?: Account
@@ -46,7 +48,7 @@ export function AccountsActionDialog({
 }: AccountsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useAccountsForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useAccountsForm({
     currentRow,
   })
 
@@ -81,7 +83,7 @@ export function AccountsActionDialog({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[50vh] w-full'>
-          <div className='px-4 py-4'>
+          <div className='pr-4 pl-2 py-4'>
             <Form {...form}>
               <form
                 id='account-form'
@@ -244,6 +246,13 @@ export function AccountsActionDialog({
             </Form>
           </div>
         </ScrollArea>
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
         <DialogFooter>
           <Button type='submit' form='account-form' disabled={isSubmitting}>
             {isEdit ? 'Update Akun' : 'Tambah Akun'}

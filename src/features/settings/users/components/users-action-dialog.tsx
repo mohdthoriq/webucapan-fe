@@ -23,6 +23,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { useUsersForm } from '../hooks/use-users-form'
 import { RolesCombobox } from './users-role-combobox'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type UsersActionDialogProps = {
   currentRow?: User
@@ -37,7 +39,7 @@ export function UsersActionDialog({
 }: UsersActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useUsersForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useUsersForm({
     currentRow,
   })
   const company = useAuthStore((state) => state.auth.user?.company)
@@ -128,6 +130,15 @@ export function UsersActionDialog({
             </form>
           </Form>
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <DialogFooter>
           <Button type='submit' form='user-form' disabled={isSubmitting}>
             {isEdit ? 'Simpan' : 'Undang'}

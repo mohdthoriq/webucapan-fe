@@ -1,4 +1,4 @@
-import { Loader2, Save } from 'lucide-react'
+import { CheckCircle2Icon, Loader2, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -13,9 +13,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useCompanySettingsForm } from '../hooks/use-company-settings-form'
 import { CompanySettingsSkeleton } from './company-settings-skeleton'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export function CompanySettingsForm() {
-  const { form, onSubmit, isLoading, isLoadingData } = useCompanySettingsForm()
+  const { form, onSubmit, isLoading, isLoadingData, errorMessage } = useCompanySettingsForm()
 
   // Show loading skeleton while fetching data
   if (isLoadingData) {
@@ -99,6 +100,14 @@ export function CompanySettingsForm() {
             )}
           />
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <div className='flex justify-end pt-4'>
           <Button type='submit' disabled={isLoading}>

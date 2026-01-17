@@ -1,8 +1,14 @@
 import { useEffect, useMemo } from 'react'
+import type { AxiosError } from 'axios'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
-import { type FinanceNumber, FinanceNumberType, type Expense } from '@/types'
+import {
+  type FinanceNumber,
+  FinanceNumberType,
+  type Expense,
+  type ApiResponse,
+} from '@/types'
 import {
   CreateExpenseSchema,
   UpdateExpenseSchema,
@@ -101,6 +107,16 @@ export function useExpensesForm({
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateExpenseMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateExpenseFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateExpenseFormData = {
@@ -133,5 +149,6 @@ export function useExpensesForm({
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     isEdit,
+    errorMessage,
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { type AxiosError } from 'axios'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
@@ -8,6 +9,7 @@ import {
   type SalesInvoice,
   PaymentStatus,
   DocumentStatus,
+  type ApiResponse,
 } from '@/types'
 import {
   CreateInvoiceSchema,
@@ -102,13 +104,6 @@ export function useInvoiceForm({
     defaultValues: defaultValues,
   })
 
-  const errors = form.formState.errors
-  const firstError = Object.values(errors)[0]
-  const errorMessage =
-    firstError && 'message' in firstError
-      ? (firstError.message as string)
-      : undefined
-
   useEffect(() => {
     if (isEdit && currentRow) {
       form.reset(defaultValues)
@@ -125,6 +120,17 @@ export function useInvoiceForm({
   const createMutation = useCreateInvoiceMutation()
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateInvoiceMutation()
+
+  const errors = form.formState.errors
+  const mutationError = createMutation.error || updateMutation.error
+  const firstError = Object.values(errors)[0]
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>).response?.data.message
+      : 'Terjadi kesalahan saat menyimpan data') ||
+    (firstError && 'message' in firstError
+      ? (firstError.message as string)
+      : undefined)
 
   const onSubmit = async (data: CreateInvoiceFormData) => {
     if (isEdit && currentRow) {
@@ -158,6 +164,6 @@ export function useInvoiceForm({
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     isEdit,
-    errorMessage
+    errorMessage,
   }
 }

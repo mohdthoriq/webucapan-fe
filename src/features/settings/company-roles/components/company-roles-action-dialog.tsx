@@ -21,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useCompanySettingsForm } from '../hooks/use-company-roles-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type CompanyRolesActionDialogProps = {
   currentRow?: CompanyRole
@@ -35,7 +37,7 @@ export function CompanyRolesActionDialog({
 }: CompanyRolesActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useCompanySettingsForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useCompanySettingsForm({
     currentRow,
   })
 
@@ -100,6 +102,13 @@ export function CompanyRolesActionDialog({
             </form>
           </Form>
         </div>
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
         <DialogFooter>
           <Button type='submit' form='role-form' disabled={isSubmitting}>
             {isEdit ? 'Update Peran' : 'Tambah Peran'}

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Contact } from '@/types'
+import type { ApiResponse, Contact } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   type CreateContactFormData,
@@ -11,6 +11,7 @@ import {
   useCreateContactMutation,
   useUpdateContactMutation,
 } from './use-contacts-mutation'
+import type { AxiosError } from 'axios'
 
 type useContactsFormProps = {
   currentRow?: Contact
@@ -44,6 +45,16 @@ export function useContactsForm({ currentRow }: useContactsFormProps) {
   const createMutation = useCreateContactMutation()
   const updateMutation = useUpdateContactMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateContactFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateContactFormData = {
@@ -67,5 +78,6 @@ export function useContactsForm({ currentRow }: useContactsFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

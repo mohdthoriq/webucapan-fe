@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Unit } from '@/types'
+import type { ApiResponse, Unit } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   createUnitSchema,
@@ -11,6 +11,7 @@ import {
   useCreateUnitMutation,
   useUpdateUnitMutation,
 } from './use-units-mutation'
+import type { AxiosError } from 'axios'
 
 type useUnitsFormProps = {
   currentRow?: Unit
@@ -38,6 +39,16 @@ export function useUnitsForm({ currentRow }: useUnitsFormProps) {
   const createMutation = useCreateUnitMutation()
   const updateMutation = useUpdateUnitMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateUnitFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateUnitFormData = {
@@ -57,5 +68,6 @@ export function useUnitsForm({ currentRow }: useUnitsFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

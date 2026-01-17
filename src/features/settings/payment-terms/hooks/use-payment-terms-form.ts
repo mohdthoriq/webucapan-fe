@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { PaymentTerm } from '@/types'
+import type { ApiResponse, PaymentTerm } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   createPaymentTermsSchema,
@@ -11,6 +11,7 @@ import {
   useCreatePaymentTermMutation,
   useUpdatePaymentTermMutation,
 } from './use-payment-terms-mutation'
+import type { AxiosError } from 'axios'
 
 type usePaymentTermsFormProps = {
   currentRow?: PaymentTerm
@@ -39,6 +40,16 @@ export function usePaymentTermsForm({ currentRow }: usePaymentTermsFormProps) {
   const createMutation = useCreatePaymentTermMutation()
   const updateMutation = useUpdatePaymentTermMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreatePaymentTermsFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdatePaymentTermsFormData = {
@@ -59,5 +70,6 @@ export function usePaymentTermsForm({ currentRow }: usePaymentTermsFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

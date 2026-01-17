@@ -1,17 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FinanceNumberType, type FinanceNumber, type Product } from '@/types'
-import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
-import {
-  type CreateProductFormData,
-  createProductSchema,
-} from '../types/product-form.schema'
-import {
-  useCreateProductMutation,
-  useUpdateProductMutation,
-  useUploadImageProduct,
-} from './use-products-form-mutation'
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { AxiosError } from 'axios';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type ApiResponse, FinanceNumberType, type FinanceNumber, type Product } from '@/types';
+import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation';
+import { type CreateProductFormData, createProductSchema } from '../types/product-form.schema';
+import { useCreateProductMutation, useUpdateProductMutation, useUploadImageProduct } from './use-products-form-mutation';
+
 
 type useProductsFormProps = {
   currentRow?: Product | null
@@ -136,6 +131,18 @@ export function useProductsForm({
   const uploadImageMutation = useUploadImageProduct()
   const generateNextNumber = useGenerateNextNumber()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>).response?.data?.message ||
+        mutationError.message
+      : undefined) ||
+    (firstError && 'message' in firstError
+      ? (firstError.message as string)
+      : undefined)
+
   const onSubmit = async (data: CreateProductFormData) => {
     try {
       let newImageUrls: string[] = []
@@ -197,5 +204,6 @@ export function useProductsForm({
     handleDrop,
     fileInputRef,
     handleFileSelect,
+    errorMessage,
   }
 }

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Tax } from '@/types'
+import type { ApiResponse, Tax } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   createTaxesSchema,
@@ -11,6 +11,7 @@ import {
   useCreateTaxMutation,
   useUpdateTaxMutation,
 } from './use-taxes-mutation'
+import type { AxiosError } from 'axios'
 
 type useTaxesFormProps = {
   currentRow?: Tax
@@ -39,6 +40,16 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
   const createMutation = useCreateTaxMutation()
   const updateMutation = useUpdateTaxMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateTaxesFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateTaxesFormData = {
@@ -59,5 +70,6 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

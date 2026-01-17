@@ -2,7 +2,7 @@
 
 import { useWatch } from 'react-hook-form'
 import { FinanceNumberType, type Product } from '@/types'
-import { Trash2, Upload } from 'lucide-react'
+import { CheckCircle2Icon, Trash2, Upload } from 'lucide-react'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,6 +31,7 @@ import {
 } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type ProductsFormContentProps = {
   currentRow?: Product | null
@@ -55,6 +56,7 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
     handleFileSelect,
     isSubmitting,
     existingImages,
+    errorMessage,
   } = useProductsForm({ currentRow, autoNumbering: productsAutoNumbering })
 
   const { control, formState } = form
@@ -335,6 +337,14 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
             </div>
           )}
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <div className='flex justify-end space-x-2'>
           <Button

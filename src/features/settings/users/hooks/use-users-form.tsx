@@ -1,6 +1,7 @@
+import type { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { User } from '@/types'
+import type { ApiResponse, User } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   type CreateUserFormData,
@@ -35,6 +36,16 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
 
   const createMutation = useCreateUserMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateUserFormData) => {
     if (isEdit && currentRow) {
       // const updateData: UpdateUserFormData = {
@@ -60,5 +71,6 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending,
+    errorMessage,
   }
 }
