@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Account } from '@/types'
+import type { Account, ApiResponse } from '@/types'
 import {
   type CreateAccountFormData,
   createAccountSchema,
@@ -10,6 +10,7 @@ import {
   useCreateAccountMutation,
   useUpdateAccountMutation,
 } from './use-account-mutation'
+import type { AxiosError } from 'axios'
 
 type useAccountsFormProps = {
   currentRow?: Account
@@ -43,6 +44,16 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
   const createMutation = useCreateAccountMutation()
   const updateMutation = useUpdateAccountMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateAccountFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateAccountFormData = {
@@ -67,5 +78,6 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

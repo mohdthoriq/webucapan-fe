@@ -21,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useTagsForm } from '../hooks/use-tags-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type TagsActionDialogProps = {
   currentRow?: Tag
@@ -35,7 +37,7 @@ export function TagsActionDialog({
 }: TagsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useTagsForm({ currentRow })
+  const { form, onSubmit, isSubmitting, errorMessage } = useTagsForm({ currentRow })
 
   return (
     <Dialog
@@ -101,6 +103,15 @@ export function TagsActionDialog({
             </form>
           </Form>
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <DialogFooter>
           <Button type='submit' form='tag-form' disabled={isSubmitting}>
             {isEdit ? 'Update Tag' : 'Tambah Tag'}

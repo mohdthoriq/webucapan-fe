@@ -7,6 +7,8 @@ import {
   type UserSettingsFormData,
 } from '../types/user-settings.schema'
 import { useUserSettingsMutation } from './use-user-settings-mutation'
+import type { AxiosError } from 'axios'
+import type { ApiResponse } from '@/types'
 
 export function useUserSettingsForm() {
   const user = useAuthStore((state) => state.auth.user)
@@ -23,6 +25,16 @@ export function useUserSettingsForm() {
       confirm_password: undefined,
     },
   })
+
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = userSettingsMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
   const onSubmit = async (data: UserSettingsFormData) => {
     try {
@@ -45,5 +57,6 @@ export function useUserSettingsForm() {
     form,
     onSubmit,
     isLoading: userSettingsMutation.isPending,
+    errorMessage,
   }
 }

@@ -1,6 +1,8 @@
 'use client'
 
 import type { ProductCategory } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -35,9 +37,11 @@ export function ProductCategoryActionDialog({
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useProductCategoryForm({
-    currentRow,
-  })
+  const { form, onSubmit, isSubmitting, errorMessage } = useProductCategoryForm(
+    {
+      currentRow,
+    }
+  )
 
   return (
     <Dialog
@@ -103,9 +107,16 @@ export function ProductCategoryActionDialog({
             </form>
           </Form>
         </div>
+        {errorMessage && (
+            <Alert variant='destructive' className='w-full'>
+              <CheckCircle2Icon />
+              <AlertTitle>Perhatian!</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
         <DialogFooter>
           <Button type='submit' form='account-form' disabled={isSubmitting}>
-            {isEdit ? 'Update Akun' : 'Tambah Akun'}
+            {isEdit ? 'Update Kategori' : 'Tambah Kategori'}
           </Button>
         </DialogFooter>
       </DialogContent>

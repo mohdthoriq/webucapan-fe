@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useUnitsForm } from '../hooks/use-units-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type UnitsActionDialogProps = {
   currentRow?: Unit
@@ -34,7 +36,7 @@ export function UnitsActionDialog({
 }: UnitsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useUnitsForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useUnitsForm({
     currentRow,
   })
 
@@ -101,6 +103,15 @@ export function UnitsActionDialog({
             </form>
           </Form>
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <DialogFooter>
           <Button type='submit' form='unit-form' disabled={isSubmitting}>
             {isEdit ? 'Update Satuan' : 'Tambah Satuan'}

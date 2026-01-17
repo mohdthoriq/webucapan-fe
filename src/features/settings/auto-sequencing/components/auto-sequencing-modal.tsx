@@ -2,6 +2,7 @@ import type {
   FinanceNumber,
   FinanceNumberCodes,
 } from '@/types/domain/auto-numbering'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useAutoNumberingForm } from '../hooks/use-auto-numbering-form'
+import { CheckCircle2Icon } from 'lucide-react'
 
 interface AutoSequencingModalProps {
   item: FinanceNumber | null
@@ -42,8 +44,14 @@ export function AutoSequencingModal({
   isOpen,
   onClose,
 }: AutoSequencingModalProps) {
-  const { form, exampleOutput, handleAddCode, onSubmit, isPreviewLoading } =
-    useAutoNumberingForm({ item, onSuccess: onClose })
+  const {
+    form,
+    exampleOutput,
+    handleAddCode,
+    onSubmit,
+    isPreviewLoading,
+    errorMessage,
+  } = useAutoNumberingForm({ item, onSuccess: onClose })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -157,6 +165,13 @@ export function AutoSequencingModal({
               )}
             />
 
+            {errorMessage && (
+              <Alert variant='destructive' className='w-full'>
+                <CheckCircle2Icon />
+                <AlertTitle>Perhatian!</AlertTitle>
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            )}
             <DialogFooter>
               <Button type='button' variant='outline' onClick={onClose}>
                 Cancel

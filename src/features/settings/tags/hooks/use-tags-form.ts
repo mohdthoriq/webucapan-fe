@@ -1,12 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Tag } from '@/types'
+import type { ApiResponse, Tag } from '@/types'
 import {
   createTagSchema,
   type CreateTagFormData,
   type UpdateTagFormData,
 } from '@/features/settings/tags/types/tags.schema'
 import { useCreateTagMutation, useUpdateTagMutation } from './use-tags-mutation'
+import type { AxiosError } from 'axios'
 
 type useTagsFormProps = {
   currentRow?: Tag
@@ -30,6 +31,16 @@ export function useTagsForm({ currentRow }: useTagsFormProps) {
   const createMutation = useCreateTagMutation()
   const updateMutation = useUpdateTagMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateTagFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateTagFormData = {
@@ -49,5 +60,6 @@ export function useTagsForm({ currentRow }: useTagsFormProps) {
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

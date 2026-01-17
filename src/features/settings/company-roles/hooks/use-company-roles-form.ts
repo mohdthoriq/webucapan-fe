@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { CompanyRole } from '@/types'
+import type { ApiResponse, CompanyRole } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   createCompanyRoleSettingsSchema,
@@ -11,6 +11,7 @@ import {
   useCreateCompanyRoleMutation,
   useUpdateCompanyRoleMutation,
 } from './use-company-roles-mutation'
+import type { AxiosError } from 'axios'
 
 type useCompanySettingsFormProps = {
   currentRow?: CompanyRole
@@ -40,6 +41,16 @@ export function useCompanySettingsForm({
   const createMutation = useCreateCompanyRoleMutation()
   const updateMutation = useUpdateCompanyRoleMutation()
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = createMutation.error || updateMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CreateCompanyRoleSettingsFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateCompanyRoleSettingsFormData = {
@@ -59,5 +70,6 @@ export function useCompanySettingsForm({
     form,
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
+    errorMessage,
   }
 }

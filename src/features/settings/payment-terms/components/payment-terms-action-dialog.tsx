@@ -21,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { usePaymentTermsForm } from '../hooks/use-payment-terms-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type PaymentTermsActionDialogProps = {
   currentRow?: PaymentTerm
@@ -35,7 +37,7 @@ export function PaymentTermsActionDialog({
 }: PaymentTermsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = usePaymentTermsForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = usePaymentTermsForm({
     currentRow,
   })
 
@@ -134,6 +136,13 @@ export function PaymentTermsActionDialog({
             </form>
           </Form>
         </div>
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
         <DialogFooter>
           <Button type='submit' form='tax-form' disabled={isSubmitting}>
             {isEdit ? 'Update Termin' : 'Tambah Termin'}

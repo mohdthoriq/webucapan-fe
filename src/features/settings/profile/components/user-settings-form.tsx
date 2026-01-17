@@ -1,4 +1,4 @@
-import { Loader2, Save, User, Lock } from 'lucide-react'
+import { Loader2, Save, User, Lock, CheckCircle2Icon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -13,9 +13,10 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { PasswordInput } from '@/components/forms/password-input'
 import { useUserSettingsForm } from '../hooks/use-user-settings-form'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export function UserSettingsForm() {
-  const { form, onSubmit, isLoading } = useUserSettingsForm()
+  const { form, onSubmit, isLoading, errorMessage } = useUserSettingsForm()
 
   return (
     <Form {...form}>
@@ -140,6 +141,14 @@ export function UserSettingsForm() {
             )}
           />
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <div className='flex justify-end pt-4'>
           <Button type='submit' disabled={isLoading}>

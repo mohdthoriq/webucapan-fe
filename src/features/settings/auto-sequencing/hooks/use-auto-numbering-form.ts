@@ -12,6 +12,8 @@ import {
   useUpdateAutoNumberingMutation,
   useAutoNumberingPreview,
 } from './use-auto-numbering-mutation'
+import type { AxiosError } from 'axios'
+import type { ApiResponse } from '@/types'
 
 interface UseAutoNumberingFormProps {
   item: FinanceNumber | null
@@ -45,6 +47,16 @@ export function useAutoNumberingForm({
       })
     }
   }, [item, form])
+
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = mutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
   const onSubmit = (values: AutoSequencingFormValues) => {
     if (!item) return
@@ -99,5 +111,6 @@ export function useAutoNumberingForm({
     handleAddCode,
     isPending: mutation.isPending,
     isPreviewLoading: previewMutation.isPending,
+    errorMessage,
   }
 }

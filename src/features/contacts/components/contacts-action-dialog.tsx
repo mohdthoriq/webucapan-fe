@@ -21,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { useContactsForm } from '../hooks/use-contacts-form'
 import { ContactsCombobox } from './contacts-combobox'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CheckCircle2Icon } from 'lucide-react'
 
 type ContactsActionDialogProps = {
   currentRow?: Contact
@@ -35,7 +37,7 @@ export function ContactsActionDialog({
 }: ContactsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useContactsForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useContactsForm({
     currentRow,
   })
 
@@ -154,6 +156,13 @@ export function ContactsActionDialog({
             </form>
           </Form>
         </div>
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
         <DialogFooter>
           <Button type='submit' form='contact-form' disabled={isSubmitting}>
             {isEdit ? 'Update Kontak' : 'Tambah Kontak'}

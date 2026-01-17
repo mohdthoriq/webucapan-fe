@@ -1,6 +1,8 @@
 'use client'
 
 import type { Tax } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -35,7 +37,7 @@ export function TaxesActionDialog({
 }: TaxesActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = useTaxesForm({
+  const { form, onSubmit, isSubmitting, errorMessage } = useTaxesForm({
     currentRow,
   })
 
@@ -131,6 +133,15 @@ export function TaxesActionDialog({
             </form>
           </Form>
         </div>
+
+        {errorMessage && (
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <DialogFooter>
           <Button type='submit' form='tax-form' disabled={isSubmitting}>
             {isEdit ? 'Update Pajak' : 'Tambah Pajak'}

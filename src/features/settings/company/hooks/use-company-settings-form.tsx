@@ -9,6 +9,8 @@ import {
 } from '../types/company-settings.schema'
 import { useCompanySettingsMutation } from './use-company-setting-mutation'
 import { useCompanySettingsQuery } from './use-company-settings-query'
+import type { AxiosError } from 'axios'
+import type { ApiResponse } from '@/types'
 
 export function useCompanySettingsForm() {
   const company = useAuthStore((state) => state.auth.user?.company)
@@ -51,6 +53,16 @@ export function useCompanySettingsForm() {
 
   const companySettingsMutation = useCompanySettingsMutation(company?.id || '')
 
+  const errors = form.formState.errors
+  const firstError = Object.values(errors)[0]
+  const mutationError = companySettingsMutation.error
+  const errorMessage =
+    (mutationError
+      ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : null) ||
+    (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
   const onSubmit = async (data: CompanySettingsFormData) => {
     try {
       await companySettingsMutation.mutateAsync(data)
@@ -66,5 +78,6 @@ export function useCompanySettingsForm() {
     onSubmit,
     isLoading: companySettingsMutation.isPending,
     isLoadingData: isLoadingCompany,
+    errorMessage,
   }
 }
