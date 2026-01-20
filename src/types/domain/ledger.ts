@@ -4,7 +4,7 @@ export interface LedgerEntry {
   source: string
   description: string
   reference: string
-  number: string
+  ref_number: string
   debit: number
   credit: number
   running_balance: number

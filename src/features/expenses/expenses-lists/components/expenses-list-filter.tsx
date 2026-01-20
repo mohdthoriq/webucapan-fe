@@ -185,7 +185,7 @@ export function ExpensesListFilter({
 
               <div className='min-w-[200px] space-y-2'>
                 <label className='text-xs font-medium'>
-                  Tanggal Pengeluaran
+                  Tanggal Biaya
                 </label>
                 <DatePickerWithRange
                   date={expenseDate}

@@ -18,9 +18,9 @@ function ExpensesListsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Tagihan Pengeluaran
+              Tagihan Biaya
             </h2>
-            <p className='text-muted-foreground'>Kelola Tagihan Pengeluaran.</p>
+            <p className='text-muted-foreground'>Kelola Tagihan Biaya.</p>
           </div>
           <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
             <Button variant={'link'} onClick={() => history.go(-1)}>

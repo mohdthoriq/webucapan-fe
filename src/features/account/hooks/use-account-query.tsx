@@ -43,13 +43,17 @@ export function useAccountsQuery(params?: AccountQueryParams) {
   })
 }
 
-export function useAccountLedgerQuery(accountId: string) {
+export function useAccountLedgerQuery(accountId: string, from?: string, to?: string, search?: string) {
   return useQuery({
-    queryKey: ['account-ledger', accountId],
+    queryKey: ['account-ledger', accountId, from, to, search],
     queryFn: async () => {
-      const response = await apiClient.get<ApiResponse<LedgerData>>(
-        `/accounts/${accountId}/ledger`
-      )
+      const queryParams = new URLSearchParams({
+        ...(from ? { date_from: from } : {}),
+        ...(to ? { date_to: to } : {}),
+        ...(search ? { search } : {}),
+      })
+      const url = `/accounts/${accountId}/ledger${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+      const response = await apiClient.get<ApiResponse<LedgerData>>(url)
       return response.data.data
     },
     enabled: !!accountId,

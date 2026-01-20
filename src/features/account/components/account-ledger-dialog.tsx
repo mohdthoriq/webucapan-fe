@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { type Account } from '@/types';
-import { X, Search, Filter, Calendar } from 'lucide-react';
+import { X, Search } from 'lucide-react';
 import { formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +13,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useAccountLedgerQuery } from '../hooks/use-account-query';
+import { DatePickerWithRange } from '../../sales/invoices/invoice-lists/components/date-picker-with-range';
+import type { DateRange } from 'react-day-picker';
+import { useState } from 'react';
+import { useDebounce } from '@/hooks/use-debounce';
+
 
 
 type AccountLedgerDialogProps = {
@@ -26,12 +31,27 @@ export function AccountsLedgerDialog({
   open,
   onOpenChange,
 }: AccountLedgerDialogProps) {
-  const { data: ledger, isLoading } = useAccountLedgerQuery(currentRow?.id)
+  const [date, setDate] = useState<DateRange | undefined>(() => {
+    return {
+      from: subDays(new Date(), 30),
+      to: new Date()
+    }
+  })
+
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 500)
+
+  const { data: ledger, isLoading } = useAccountLedgerQuery(
+    currentRow?.id,
+    date?.from ? format(date.from, 'yyyy-MM-dd') : undefined,
+    date?.to ? format(date.to, 'yyyy-MM-dd') : undefined,
+    debouncedSearch
+  )
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-7xl max-h-[95vh] overflow-y-auto p-0 flex flex-col'>
-        <div className='p-6 space-y-6 flex-1'>
+    <DialogContent className='max-w-[calc(100%-4rem)] sm:max-w-7xl max-h-[90vh] p-0 flex flex-col'>
+        <div className='p-6 space-y-6 flex-1 flex flex-col overflow-hidden'>
           {/* Header */}
           <div className='flex justify-between items-start'>
             <DialogHeader className='text-left'>
@@ -53,34 +73,29 @@ export function AccountsLedgerDialog({
               <Input
                 placeholder='Cari...'
                 className='pl-10'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
 
-            <Button variant='outline' className='gap-2 shrink-0'>
-              <Filter className='h-4 w-4' /> Filter
-            </Button>
-
-            <div className='flex items-center gap-3 px-3 py-2 border rounded-md text-sm cursor-pointer hover:bg-accent transition-colors ml-auto shrink-0'>
-              <span className='text-muted-foreground'>13/12/2025</span>
-              <span className='text-muted-foreground'>→</span>
-              <span className='text-muted-foreground'>13/01/2026</span>
-              <Calendar className='h-4 w-4 text-muted-foreground' />
+            <div className='ml-auto shrink-0'>
+              <DatePickerWithRange date={date} setDate={setDate} />
             </div>
           </div>
 
           {/* Table Container */}
-          <div className='rounded-md border overflow-x-auto'>
+          <div className='rounded-md border flex-1 overflow-hidden [&_[data-slot=table-container]]:flex-1 [&_[data-slot=table-container]]:overflow-auto flex flex-col'>
             <Table>
-              <TableHeader>
+              <TableHeader className='sticky top-0 z-10 bg-secondary shadow-sm [&_th]:bg-secondary'>
                 <TableRow className='bg-secondary hover:bg-secondary'>
-                  <TableHead className='font-semibold whitespace-nowrap'>Tanggal</TableHead>
-                  <TableHead className='font-semibold whitespace-nowrap'>Sumber</TableHead>
-                  <TableHead className='font-semibold whitespace-nowrap min-w-[200px]'>Deskripsi</TableHead>
-                  <TableHead className='font-semibold whitespace-nowrap'>Referensi</TableHead>
-                  <TableHead className='font-semibold whitespace-nowrap'>Nomor</TableHead>
-                  <TableHead className='text-right font-semibold whitespace-nowrap'>Debit</TableHead>
-                  <TableHead className='text-right font-semibold whitespace-nowrap'>Kredit</TableHead>
-                  <TableHead className='text-right font-semibold whitespace-nowrap'>Saldo Berjalan</TableHead>
+                  <TableHead className='font-semibold whitespace-wrap'>Tanggal</TableHead>
+                  <TableHead className='font-semibold whitespace-wrap'>Sumber</TableHead>
+                  <TableHead className='font-semibold whitespace-wrap'>Deskripsi</TableHead>
+                  <TableHead className='font-semibold whitespace-wrap'>Referensi</TableHead>
+                  <TableHead className='font-semibold whitespace-wrap'>Nomor</TableHead>
+                  <TableHead className='text-right font-semibold whitespace-wrap'>Debit</TableHead>
+                  <TableHead className='text-right font-semibold whitespace-wrap'>Kredit</TableHead>
+                  <TableHead className='text-right font-semibold whitespace-wrap'>Saldo Berjalan</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -111,11 +126,11 @@ export function AccountsLedgerDialog({
                         {format(new Date(entry.date), 'dd/MM/yyyy')}
                       </TableCell>
                       <TableCell className='text-muted-foreground whitespace-nowrap'>{entry.source}</TableCell>
-                      <TableCell className='text-blue-600 font-medium min-w-[200px]'>
+                      <TableCell className='text-blue-600 font-medium max-w-[50px] py-3 whitespace-normal break-words'>
                         {entry.description}
                       </TableCell>
-                      <TableCell className='text-muted-foreground whitespace-nowrap text-xs'>{entry.reference}</TableCell>
-                      <TableCell className='text-muted-foreground whitespace-nowrap text-xs'>{entry.number}</TableCell>
+                    <TableCell className='text-blue-600 font-medium max-w-[50px] py-3 whitespace-normal break-words'>{entry.reference}</TableCell>
+                      <TableCell className='text-blue-600 font-medium max-w-[50px] py-3 whitespace-normal break-words'>{entry.ref_number}</TableCell>
                       <TableCell className='text-right whitespace-nowrap'>
                         {entry.debit > 0 ? formatNumber(entry.debit) : '0'}
                       </TableCell>

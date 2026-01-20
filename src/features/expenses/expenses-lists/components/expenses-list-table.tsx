@@ -107,7 +107,7 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari nomor pengeluaran...'
+        searchPlaceholder='Cari...'
         searchKey='name'
       />
       <div className='flex flex-col gap-2 md:flex-row md:items-center'>
