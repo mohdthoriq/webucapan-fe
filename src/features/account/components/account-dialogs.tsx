@@ -2,6 +2,7 @@ import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
 import { useDeleteAccountMutation } from '../hooks/use-account-mutation'
 import { AccountsActionDialog } from './account-action-dialog'
 import { AccountsDetailDialog } from './account-detail-dialog'
+import { AccountsLedgerDialog } from './account-ledger-dialog'
 import { useAccounts } from './account-provider'
 
 export function AccountsDialogs() {
@@ -39,6 +40,20 @@ export function AccountsDialogs() {
               setTimeout(() => {
                 setCurrentRow(null)
               }, 500)
+            }}
+            currentRow={currentRow}
+          />
+
+          <AccountsLedgerDialog
+            key={`account-ledger-${currentRow.id}`}
+            open={open === 'ledger'}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) {
+                setOpen(null)
+                setTimeout(() => {
+                  setCurrentRow(null)
+                }, 500)
+              }
             }}
             currentRow={currentRow}
           />

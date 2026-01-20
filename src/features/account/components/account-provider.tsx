@@ -3,7 +3,7 @@ import type { PaginationMeta, Account } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useAccountsQuery } from '../hooks/use-account-query'
 
-type AccountsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type AccountsDialogType = 'view' | 'edit' | 'add' | 'delete' | 'ledger'
 
 type AccountsContextType = {
   open: AccountsDialogType | null

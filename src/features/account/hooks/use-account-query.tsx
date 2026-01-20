@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Account, PaginationApiResponse } from '@/types'
+import type {
+  Account,
+  ApiResponse,
+  LedgerData,
+  PaginationApiResponse,
+} from '@/types'
 import apiClient from '@/lib/api-client'
 
 interface AccountQueryParams {
@@ -35,5 +40,18 @@ export function useAccountsQuery(params?: AccountQueryParams) {
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
+  })
+}
+
+export function useAccountLedgerQuery(accountId: string) {
+  return useQuery({
+    queryKey: ['account-ledger', accountId],
+    queryFn: async () => {
+      const response = await apiClient.get<ApiResponse<LedgerData>>(
+        `/accounts/${accountId}/ledger`
+      )
+      return response.data.data
+    },
+    enabled: !!accountId,
   })
 }
