@@ -21,8 +21,8 @@ export function ExpensesFormActions({
         {isSubmitting
           ? 'Menyimpan...'
           : isEdit
-            ? 'Update Pengeluaran'
-            : 'Buat Pengeluaran'}
+            ? 'Update Biaya'
+            : 'Buat Biaya'}
       </Button>
     </div>
   )

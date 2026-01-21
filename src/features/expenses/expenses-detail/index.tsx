@@ -50,7 +50,7 @@ export function ExpensesDetail() {
           <div className='mb-2 flex items-center justify-between'>
             <div>
               <h1 className='text-4xl font-semibold tracking-tight'>
-                Detail Pengeluaran {expense.expense_number}
+                Detail Biaya {expense.expense_number}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>

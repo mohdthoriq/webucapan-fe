@@ -72,7 +72,7 @@ export const sidebarData: SidebarData = {
           ],
         },
         {
-          title: 'Pengeluaran',
+          title: 'Biaya',
           url: '/expenses',
           icon: CreditCardIcon,
         },

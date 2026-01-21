@@ -45,6 +45,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(account)
+              setOpen('ledger')
+            }}
+          >
+            Buku Besar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(account)
               setOpen('edit')
             }}
           >
