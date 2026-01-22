@@ -28,7 +28,7 @@ type PaymentTermsActionDialogProps = {
   currentRow?: PaymentTerm
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSuccess: (data: unknown) => void
+  onSuccess: (data: PaymentTerm) => void
 }
 
 export function PaymentTermsActionDialog({
