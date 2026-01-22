@@ -17,7 +17,8 @@ type ContactsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const ContactsContext = createContext<ContactsContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const ContactsContext = createContext<ContactsContextType | null>(null)
 
 export function ContactsProvider({
   children,

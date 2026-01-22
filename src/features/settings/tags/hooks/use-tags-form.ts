@@ -11,9 +11,10 @@ import type { AxiosError } from 'axios'
 
 type useTagsFormProps = {
   currentRow?: Tag
+  onSuccess?: (result: Tag) => void
 }
 
-export function useTagsForm({ currentRow }: useTagsFormProps) {
+export function useTagsForm({ currentRow, onSuccess }: useTagsFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreateTagFormData>({
     resolver: zodResolver(createTagSchema),
@@ -28,8 +29,8 @@ export function useTagsForm({ currentRow }: useTagsFormProps) {
         },
   })
 
-  const createMutation = useCreateTagMutation()
-  const updateMutation = useUpdateTagMutation()
+  const createMutation = useCreateTagMutation(onSuccess)
+  const updateMutation = useUpdateTagMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]

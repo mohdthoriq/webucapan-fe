@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { type ReactNode, useState } from 'react'
 import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -35,6 +35,8 @@ interface ComboboxBaseProps<T extends { id: string }> {
   renderItem: (item: T) => React.ReactNode
   getLabel: (item: T) => string
   noItemsMessage?: string
+  disabled?: boolean
+  action?: ReactNode
 }
 
 export function ComboboxBase<T extends { id: string }>({
@@ -54,8 +56,10 @@ export function ComboboxBase<T extends { id: string }>({
   renderItem,
   getLabel,
   noItemsMessage = 'No items found.',
+  disabled,
+  action,
 }: ComboboxBaseProps<T>) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen)
@@ -69,7 +73,7 @@ export function ComboboxBase<T extends { id: string }>({
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={disabled}>
         <Button
           variant='outline'
           role='combobox'
@@ -151,6 +155,7 @@ export function ComboboxBase<T extends { id: string }>({
               </>
             )}
           </CommandList>
+          {action && <div className='border-t'>{action}</div>}
         </Command>
       </PopoverContent>
     </Popover>

@@ -28,18 +28,21 @@ type ProductCategoryActionDialogProps = {
   currentRow?: ProductCategory
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: ProductCategory) => void
 }
 
 export function ProductCategoryActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess,  
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useProductCategoryForm(
     {
       currentRow,
+      onSuccess,
     }
   )
 
@@ -108,12 +111,12 @@ export function ProductCategoryActionDialog({
           </Form>
         </div>
         {errorMessage && (
-            <Alert variant='destructive' className='w-full'>
-              <CheckCircle2Icon />
-              <AlertTitle>Perhatian!</AlertTitle>
-              <AlertDescription>{errorMessage}</AlertDescription>
-            </Alert>
-          )}
+          <Alert variant='destructive' className='w-full'>
+            <CheckCircle2Icon />
+            <AlertTitle>Perhatian!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
         <DialogFooter>
           <Button type='submit' form='account-form' disabled={isSubmitting}>
             {isEdit ? 'Update Kategori' : 'Tambah Kategori'}

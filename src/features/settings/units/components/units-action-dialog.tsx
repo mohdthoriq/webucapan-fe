@@ -27,17 +27,20 @@ type UnitsActionDialogProps = {
   currentRow?: Unit
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: Unit) => void
 }
 
 export function UnitsActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess,
 }: UnitsActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useUnitsForm({
     currentRow,
+    onSuccess
   })
 
   return (

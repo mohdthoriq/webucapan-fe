@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
@@ -6,10 +7,11 @@ import {
   type UpdateContactFormData,
   type DeleteContactFormData,
 } from '@/features/contacts/types/contacts.schema'
-import { useContacts } from '../components/contacts-provider'
+import { ContactsContext } from '../components/contacts-provider'
+import type { Contact } from '@/types'
 
-export function useCreateContactMutation() {
-  const { setOpen } = useContacts()
+export function useCreateContactMutation(onSuccess?: (data: Contact) => void) {
+  const context = useContext(ContactsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,11 +22,12 @@ export function useCreateContactMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'contacts-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('contacts-toast')
       await queryClient.invalidateQueries({ queryKey: ['contacts'] })
       toast.success('Kontak berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('contacts-toast')
@@ -33,8 +36,8 @@ export function useCreateContactMutation() {
   })
 }
 
-export function useUpdateContactMutation() {
-  const { setOpen } = useContacts()
+export function useUpdateContactMutation(onSuccess?: (data: Contact) => void) {
+  const context = useContext(ContactsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +51,12 @@ export function useUpdateContactMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'contacts-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('contacts-toast')
       await queryClient.invalidateQueries({ queryKey: ['contacts'] })
       toast.success('Kontak berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('contacts-toast')
@@ -62,7 +66,7 @@ export function useUpdateContactMutation() {
 }
 
 export function useDeleteContactMutation() {
-  const { setOpen } = useContacts()
+  const context = useContext(ContactsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -78,7 +82,7 @@ export function useDeleteContactMutation() {
       toast.dismiss('contacts-toast')
       await queryClient.invalidateQueries({ queryKey: ['contacts'] })
       toast.success('Kontak berhasil dihapus.')
-      setOpen(null)
+      context?.setOpen(null)
     },
     onError: () => {
       toast.dismiss('contacts-toast')

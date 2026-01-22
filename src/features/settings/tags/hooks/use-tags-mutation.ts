@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useTags } from '../components/tags-provider'
+import { TagsContext, useTags } from '../components/tags-provider'
 import type {
   CreateTagFormData,
   DeleteTagFormData,
   UpdateTagFormData,
 } from '../types/tags.schema'
+import type { Tag } from '@/types'
+import { useContext } from 'react'
 
-export function useCreateTagMutation() {
-  const { setOpen } = useTags()
-
+export function useCreateTagMutation(onSuccess?: (data: Tag) => void ) {
+  const context = useContext(TagsContext)
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: CreateTagFormData) => {
@@ -20,11 +21,12 @@ export function useCreateTagMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'tags-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('tags-toast')
       await queryClient.invalidateQueries({ queryKey: ['tags'] })
       toast.success('Tag berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('tags-toast')
@@ -33,8 +35,8 @@ export function useCreateTagMutation() {
   })
 }
 
-export function useUpdateTagMutation() {
-  const { setOpen } = useTags()
+export function useUpdateTagMutation(onSuccess?: (data: Tag) => void ) {
+  const context = useContext(TagsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +50,12 @@ export function useUpdateTagMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'tags-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('tags-toast')
       await queryClient.invalidateQueries({ queryKey: ['tags'] })
       toast.success('Tag berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('tags-toast')

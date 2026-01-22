@@ -15,9 +15,10 @@ import type { AxiosError } from 'axios'
 
 type usePaymentTermsFormProps = {
   currentRow?: PaymentTerm
+  onSuccess?: (data: PaymentTerm) => void
 }
 
-export function usePaymentTermsForm({ currentRow }: usePaymentTermsFormProps) {
+export function usePaymentTermsForm({ currentRow, onSuccess }: usePaymentTermsFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
@@ -37,8 +38,8 @@ export function usePaymentTermsForm({ currentRow }: usePaymentTermsFormProps) {
         },
   })
 
-  const createMutation = useCreatePaymentTermMutation()
-  const updateMutation = useUpdatePaymentTermMutation()
+  const createMutation = useCreatePaymentTermMutation(onSuccess)
+  const updateMutation = useUpdatePaymentTermMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]

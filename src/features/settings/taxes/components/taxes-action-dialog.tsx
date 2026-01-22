@@ -28,17 +28,20 @@ type TaxesActionDialogProps = {
   currentRow?: Tax
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: Tax) => void
 }
 
 export function TaxesActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess
 }: TaxesActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useTaxesForm({
     currentRow,
+    onSuccess
   })
 
   return (

@@ -1,15 +1,17 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Account } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useAccounts } from '../components/account-provider'
+import { AccountsContext, useAccounts } from '../components/account-provider'
 import type {
   CreateAccountFormData,
   DeleteAccountFormData,
   UpdateAccountFormData,
 } from '../types/account.schema'
 
-export function useCreateAccountMutation() {
-  const { setOpen } = useAccounts()
+export function useCreateAccountMutation(onSuccess?: (data: Account) => void) {
+  const context = useContext(AccountsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,11 +22,12 @@ export function useCreateAccountMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'accounts-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({ queryKey: ['accounts'] })
       toast.success('Akun berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('accounts-toast')
@@ -33,8 +36,8 @@ export function useCreateAccountMutation() {
   })
 }
 
-export function useUpdateAccountMutation() {
-  const { setOpen } = useAccounts()
+export function useUpdateAccountMutation(onSuccess?: (data: Account) => void) {
+  const context = useContext(AccountsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +51,12 @@ export function useUpdateAccountMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'accounts-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({ queryKey: ['accounts'] })
       toast.success('Akun berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('accounts-toast')

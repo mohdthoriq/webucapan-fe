@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { FilterIcon } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,9 +11,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import { CustomerSelector } from './customer-selector'
+import { InvoiceFormCombobox } from '../../invoice-form/components/invoice-form-combobox'
 import { DatePickerWithRange } from './date-picker-with-range'
 
 interface InvoiceListFilterProps {
@@ -43,6 +45,7 @@ export function InvoiceListFilter({
     string | undefined
   >()
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
+  const { openDialog } = useGlobalDialogStore()
 
   const { data: tagsData } = useTagsQuery({ limit: 1000 })
   const tagOptions =
@@ -240,9 +243,15 @@ export function InvoiceListFilter({
               </h5>
               <div className='space-y-2'>
                 <label className='text-xs font-medium'>Pelanggan</label>
-                <CustomerSelector
+                <InvoiceFormCombobox
                   value={selectedCustomerId}
-                  onChange={setSelectedCustomerId}
+                  onValueChange={setSelectedCustomerId}
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Pelanggan Baru'
+                      onClick={() => openDialog('contact')}
+                    />
+                  }
                 />
               </div>
               <div className='space-y-2'>
@@ -252,6 +261,12 @@ export function InvoiceListFilter({
                   selected={selectedTagIds}
                   onChange={setSelectedTagIds}
                   placeholder='Pilih tag...'
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Kategori Baru'
+                      onClick={() => openDialog('product-category')}
+                    />
+                  }
                 />
               </div>
             </div>

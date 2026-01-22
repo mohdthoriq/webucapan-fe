@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type ReactNode, useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -29,6 +29,7 @@ interface MultiSelectDropdownProps {
   placeholder?: string
   disabled?: boolean
   className?: string
+  action?: ReactNode
 }
 
 export function MultiSelectDropdown({
@@ -38,8 +39,9 @@ export function MultiSelectDropdown({
   placeholder = 'Select items...',
   disabled = false,
   className,
+  action,
 }: MultiSelectDropdownProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleSelect = (value: string) => {
     const newSelected = selected.includes(value)
@@ -118,6 +120,7 @@ export function MultiSelectDropdown({
               ))}
             </CommandGroup>
           </CommandList>
+          {action && <div className='border-t'>{action}</div>}
         </Command>
       </PopoverContent>
     </Popover>

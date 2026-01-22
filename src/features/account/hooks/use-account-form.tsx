@@ -14,9 +14,10 @@ import type { AxiosError } from 'axios'
 
 type useAccountsFormProps = {
   currentRow?: Account
+  onSuccess?: (data: Account) => void
 }
 
-export function useAccountsForm({ currentRow }: useAccountsFormProps) {
+export function useAccountsForm({ currentRow, onSuccess }: useAccountsFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountSchema),
@@ -41,8 +42,8 @@ export function useAccountsForm({ currentRow }: useAccountsFormProps) {
         },
   })
 
-  const createMutation = useCreateAccountMutation()
-  const updateMutation = useUpdateAccountMutation()
+  const createMutation = useCreateAccountMutation(onSuccess)
+  const updateMutation = useUpdateAccountMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]

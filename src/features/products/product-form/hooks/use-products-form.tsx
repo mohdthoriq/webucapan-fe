@@ -1,21 +1,34 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { AxiosError } from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { type ApiResponse, FinanceNumberType, type FinanceNumber, type Product } from '@/types';
-import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation';
-import { type CreateProductFormData, createProductSchema } from '../types/product-form.schema';
-import { useCreateProductMutation, useUpdateProductMutation, useUploadImageProduct } from './use-products-form-mutation';
-
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { AxiosError } from 'axios'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  type ApiResponse,
+  FinanceNumberType,
+  type FinanceNumber,
+  type Product,
+} from '@/types'
+import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
+import {
+  type CreateProductFormData,
+  createProductSchema,
+} from '../types/product-form.schema'
+import {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useUploadImageProduct,
+} from './use-products-form-mutation'
 
 type useProductsFormProps = {
   currentRow?: Product | null
   autoNumbering?: FinanceNumber | null
+  onSuccess?: (data: Product) => void
 }
 
 export function useProductsForm({
   currentRow,
   autoNumbering,
+  onSuccess,
 }: useProductsFormProps = {}) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<string[]>([])
@@ -175,14 +188,25 @@ export function useProductsForm({
 
       // 4. Create or Update Product
       if (isEdit && currentRow) {
-        await updateMutation.mutateAsync({ id: currentRow.id, data: payload })
+        const response = await updateMutation.mutateAsync({
+          id: currentRow.id,
+          data: payload,
+        })
         form.reset()
-        history.back()
+        if (onSuccess) {
+          onSuccess(response)
+        } else {
+          history.back()
+        }
       } else {
-        await createMutation.mutateAsync(payload)
+        const response = await createMutation.mutateAsync(payload)
         form.reset()
         await generateNextNumber.mutateAsync(FinanceNumberType.product_sku)
-        history.back()
+        if (onSuccess) {
+          onSuccess(response)
+        } else {
+          history.back()
+        }
       }
     } catch (_error) {
       // Error handling is managed by mutation hooks (toast)

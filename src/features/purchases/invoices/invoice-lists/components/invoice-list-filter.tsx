@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { FilterIcon } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,9 +11,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import { CustomerSelector } from './customer-selector'
+import { InvoiceFormCombobox } from '../../invoice-form/components/invoice-form-combobox'
 import { DatePickerWithRange } from './date-picker-with-range'
 
 interface InvoiceListFilterProps {
@@ -38,6 +40,7 @@ export function InvoiceListFilter({
   const [invoiceDate, setInvoiceDate] = useState<DateRange | undefined>()
   const [dueDate, setDueDate] = useState<DateRange | undefined>()
   const [paymentDate, setPaymentDate] = useState<DateRange | undefined>()
+  const { openDialog } = useGlobalDialogStore()
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<
     string | undefined
@@ -240,9 +243,17 @@ export function InvoiceListFilter({
               </h5>
               <div className='space-y-2'>
                 <label className='text-xs font-medium'>Vendor</label>
-                <CustomerSelector
-                  value={selectedCustomerId}
-                  onChange={setSelectedCustomerId}
+                <InvoiceFormCombobox
+                  type='contact'
+                  onValueChange={setSelectedCustomerId}
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Vendor Baru'
+                      onClick={() =>
+                        openDialog('contact')
+                      }
+                    />
+                  }
                 />
               </div>
               <div className='space-y-2'>
@@ -252,6 +263,12 @@ export function InvoiceListFilter({
                   selected={selectedTagIds}
                   onChange={setSelectedTagIds}
                   placeholder='Pilih tag...'
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Tag Baru'
+                      onClick={() => openDialog('tag')}
+                    />
+                  }
                 />
               </div>
             </div>

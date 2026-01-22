@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
 import type { PaginationMeta, ProductCategory } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useProductCategoryQuery } from '../hooks/use-product-category-query'
@@ -9,7 +9,7 @@ type ProductCategoryContextType = {
   open: ProductCategoryDialogType | null
   setOpen: (str: ProductCategoryDialogType | null) => void
   currentRow: ProductCategory | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<ProductCategory | null>>
+  setCurrentRow: Dispatch<SetStateAction<ProductCategory | null>>
   productCategoriesData: ProductCategory[]
   pagination: PaginationMeta
   isLoading: boolean
@@ -17,7 +17,8 @@ type ProductCategoryContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const ProductCategoryContext = createContext<ProductCategoryContextType | null>(
+// eslint-disable-next-line react-refresh/only-export-components
+export const ProductCategoryContext = createContext<ProductCategoryContextType | null>(
   null
 )
 
@@ -25,7 +26,7 @@ export function ProductCategoryProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   paginationParams?: { page?: number; limit?: number; name?: string }
 }) {
   const [open, setOpen] = useDialogState<ProductCategoryDialogType>(null)

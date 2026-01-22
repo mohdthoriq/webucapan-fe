@@ -17,7 +17,8 @@ type TaxesContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const TaxesContext = React.createContext<TaxesContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const TaxesContext = React.createContext<TaxesContextType | null>(null)
 
 export function TaxesProvider({
   children,

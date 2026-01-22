@@ -17,7 +17,8 @@ type AccountsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const AccountsContext = createContext<AccountsContextType | null>(null)
+// eslint-disable-next-line
+export const AccountsContext = createContext<AccountsContextType | null>(null)
 
 export function AccountsProvider({
   children,

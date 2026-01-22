@@ -1,15 +1,22 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { ProductCategory } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useProductCategories } from '../components/product-category-provider'
+import {
+  ProductCategoryContext,
+  useProductCategories,
+} from '../components/product-category-provider'
 import type {
   CreateProductCategoryFormData,
   DeleteProductCategoryFormData,
   UpdateProductCategoryFormData,
 } from '../types/product-category.schema'
 
-export function useCreateProductCategoryMutation() {
-  const { setOpen } = useProductCategories()
+export function useCreateProductCategoryMutation(
+  onSuccess?: (data: ProductCategory) => void
+) {
+  const context = useContext(ProductCategoryContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,11 +27,12 @@ export function useCreateProductCategoryMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'product-categories-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('product-categories-toast')
       await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
       toast.success('Kategori produk berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('product-categories-toast')
@@ -33,8 +41,10 @@ export function useCreateProductCategoryMutation() {
   })
 }
 
-export function useUpdateProductCategoryMutation() {
-  const { setOpen } = useProductCategories()
+export function useUpdateProductCategoryMutation(
+  onSuccess?: (data: ProductCategory) => void
+) {
+  const context = useContext(ProductCategoryContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +58,12 @@ export function useUpdateProductCategoryMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'product-categories-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('product-categories-toast')
       await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
       toast.success('Kategori produk berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('product-categories-toast')

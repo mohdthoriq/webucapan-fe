@@ -28,17 +28,20 @@ type PaymentTermsActionDialogProps = {
   currentRow?: PaymentTerm
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: PaymentTerm) => void
 }
 
 export function PaymentTermsActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess
 }: PaymentTermsActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = usePaymentTermsForm({
     currentRow,
+    onSuccess
   })
 
   return (

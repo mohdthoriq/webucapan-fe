@@ -39,17 +39,20 @@ type AccountsActionDialogProps = {
   currentRow?: Account
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: Account) => void
 }
 
 export function AccountsActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess
 }: AccountsActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useAccountsForm({
     currentRow,
+    onSuccess
   })
 
   const { data: accountCategories } = useAccountCategoriesQuery({ limit: 50 })

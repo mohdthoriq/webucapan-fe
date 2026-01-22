@@ -15,9 +15,10 @@ import type { AxiosError } from 'axios'
 
 type useUnitsFormProps = {
   currentRow?: Unit
+  onSuccess?: (data: Unit) => void
 }
 
-export function useUnitsForm({ currentRow }: useUnitsFormProps) {
+export function useUnitsForm({ currentRow, onSuccess }: useUnitsFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
@@ -36,8 +37,8 @@ export function useUnitsForm({ currentRow }: useUnitsFormProps) {
         },
   })
 
-  const createMutation = useCreateUnitMutation()
-  const updateMutation = useUpdateUnitMutation()
+  const createMutation = useCreateUnitMutation(onSuccess)
+  const updateMutation = useUpdateUnitMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
