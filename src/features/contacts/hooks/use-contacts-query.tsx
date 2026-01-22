@@ -7,6 +7,7 @@ interface ContactQueryParams {
   limit?: number
   company_id?: string
   name?: string
+  type_id?: string
 }
 
 export function useContactsQuery(params?: ContactQueryParams) {
@@ -17,6 +18,7 @@ export function useContactsQuery(params?: ContactQueryParams) {
       params?.limit,
       params?.company_id,
       params?.name,
+      params?.type_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -24,6 +26,7 @@ export function useContactsQuery(params?: ContactQueryParams) {
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
         ...(params?.name ? { name: params.name } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
+        ...(params?.type_id ? { type_id: params.type_id } : {}),
       })
 
       const url = queryParams.toString()

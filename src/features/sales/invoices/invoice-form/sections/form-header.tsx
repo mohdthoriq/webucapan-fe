@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/select'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
@@ -45,7 +46,12 @@ export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
+  const { data: contactTypes } = useContactTypesQuery({ page: 1, limit: 100 })
   const { openDialog } = useGlobalDialogStore()
+
+  const customerTypeId = contactTypes?.data?.find(
+    (type) => type.name.toLowerCase() === 'pelanggan'
+  )?.id
 
   const invoiceNumber = useWatch({ control, name: 'invoice_number' })
   const paymentTermsValue = useWatch({ control, name: 'payment_term_id' })
@@ -98,6 +104,7 @@ export function InvoiceFormHeader() {
                     field.onChange(value)
                   }}
                   placeholder='Pilih Pelanggan'
+                  contactTypeId={customerTypeId}
                   action={
                     <FormShortcutButton
                       title='Tambah Pelanggan Baru'
