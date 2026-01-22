@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { FilterIcon } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,9 +11,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import { ContactSelector } from './contact-selector'
+import { ExpensesFormCombobox } from '../../expenses-form/components/expenses-form-combobox'
 import { DatePickerWithRange } from './date-picker-with-range'
 
 interface ExpensesListFilterProps {
@@ -43,6 +45,7 @@ export function ExpensesListFilter({
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
 
   const { data: tagsData } = useTagsQuery({ limit: 1000 })
+  const { openDialog } = useGlobalDialogStore()
   const tagOptions =
     tagsData?.data.map((tag) => ({
       label: tag.name,
@@ -184,9 +187,7 @@ export function ExpensesListFilter({
               </h5>
 
               <div className='min-w-[200px] space-y-2'>
-                <label className='text-xs font-medium'>
-                  Tanggal Biaya
-                </label>
+                <label className='text-xs font-medium'>Tanggal Biaya</label>
                 <DatePickerWithRange
                   date={expenseDate}
                   setDate={setExpenseDate}
@@ -200,10 +201,15 @@ export function ExpensesListFilter({
               </h5>
               <div className='space-y-2'>
                 <label className='text-xs font-medium'>Pemasok/Kontak</label>
-                <ContactSelector
-                  value={selectedContactId}
-                  onChange={setSelectedContactId}
-                  placeholder='Pilih pemasok...'
+                <ExpensesFormCombobox
+                  type='contact'
+                  onValueChange={setSelectedContactId}
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Pemasok Baru'
+                      onClick={() => openDialog('contact')}
+                    />
+                  }
                 />
               </div>
               <div className='space-y-2'>
@@ -213,6 +219,12 @@ export function ExpensesListFilter({
                   selected={selectedTagIds}
                   onChange={setSelectedTagIds}
                   placeholder='Pilih tag...'
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Tag Baru'
+                      onClick={() => openDialog('tag')}
+                    />
+                  }
                 />
               </div>
             </div>

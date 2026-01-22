@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { PaymentTerm, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { usePaymentTermsQuery } from '../hooks/use-payment-terms-query'
@@ -17,7 +17,8 @@ type PaymentTermsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const PaymentTermsContext = React.createContext<PaymentTermsContextType | null>(
+// eslint-disable-next-line react-refresh/only-export-components
+export const PaymentTermsContext = createContext<PaymentTermsContextType | null>(
   null
 )
 
@@ -63,7 +64,7 @@ export function PaymentTermsProvider({
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const usePaymentTerms = () => {
-  const paymentTermsContext = React.useContext(PaymentTermsContext)
+  const paymentTermsContext = useContext(PaymentTermsContext)
 
   if (!paymentTermsContext) {
     throw new Error(

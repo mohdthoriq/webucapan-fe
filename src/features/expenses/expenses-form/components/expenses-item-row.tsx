@@ -1,7 +1,8 @@
 import { memo } from 'react'
 import { type useForm } from 'react-hook-form'
-import type { Tax } from '@/types'
+import type { Account, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
@@ -14,10 +15,12 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import type {
   CreateExpenseFormData,
@@ -38,6 +41,8 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
   remove: (index: number) => void
   taxes: { data: Tax[] }
 }) {
+  const { openDialog } = useGlobalDialogStore()
+
   return (
     <TableRow>
       <TableCell>
@@ -52,6 +57,20 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
                 onValueChange={(value) => {
                   field.onChange(value)
                 }}
+                action={
+                  <FormShortcutButton
+                    title='Tambah Akun Baru'
+                    onClick={() =>
+                      openDialog('account', {
+                        onSuccess: (data: Account) => {
+                          if (data?.id) {
+                            field.onChange(data.id)
+                          }
+                        },
+                      })
+                    }
+                  />
+                }
               />
             </FormItem>
           )}
@@ -86,11 +105,30 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {taxes?.data.map((t) => (
-                    <SelectItem key={t.id} value={t.id}>
-                      {t.name} ({t.rate}%)
-                    </SelectItem>
-                  ))}
+                  {taxes?.data.length === 0 ? (
+                    <div className='text-muted-foreground p-2 text-center text-sm'>
+                      Tidak ada data pajak
+                    </div>
+                  ) : (
+                    taxes?.data.map((t) => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name} ({t.rate}%)
+                      </SelectItem>
+                    ))
+                  )}
+                  <SelectSeparator />
+                  <FormShortcutButton
+                    title='Tambah Pajak Baru'
+                    onClick={() =>
+                      openDialog('tax', {
+                        onSuccess: (data: Tax) => {
+                          if (data?.id) {
+                            field.onChange(data.id)
+                          }
+                        },
+                      })
+                    }
+                  />
                 </SelectContent>
               </Select>
             </FormItem>

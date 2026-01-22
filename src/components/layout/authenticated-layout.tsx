@@ -7,6 +7,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
 import { ProfileDropdown } from '../profile-dropdown'
+import { GlobalDialogProvider } from '../providers/global-dialog-provider'
 import { Search } from '../search'
 import { ThemeSwitch } from '../theme-switch'
 import { Header } from './header'
@@ -21,6 +22,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
 
   return (
     <SearchProvider>
+      <GlobalDialogProvider />
       <LayoutProvider>
         <SidebarProvider defaultOpen={defaultOpen}>
           <SkipToMain />

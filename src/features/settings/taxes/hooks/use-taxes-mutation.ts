@@ -1,15 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useTaxes } from '../components/taxes-provider'
+import { TaxesContext, useTaxes } from '../components/taxes-provider'
 import {
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
   type DeleteTaxesFormData,
 } from '../types/taxes.schema'
+import type { Tax } from '@/types'
+import { useContext } from 'react'
 
-export function useCreateTaxMutation() {
-  const { setOpen } = useTaxes()
+export function useCreateTaxMutation(onSuccess?: (data: Tax) => void) {
+  const context = useContext(TaxesContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,11 +22,12 @@ export function useCreateTaxMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'taxes-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('taxes-toast')
       await queryClient.invalidateQueries({ queryKey: ['taxes'] })
       toast.success('Pajak berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('taxes-toast')
@@ -33,8 +36,8 @@ export function useCreateTaxMutation() {
   })
 }
 
-export function useUpdateTaxMutation() {
-  const { setOpen } = useTaxes()
+export function useUpdateTaxMutation(onSuccess?: (data: Tax) => void) {
+  const context = useContext(TaxesContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +51,12 @@ export function useUpdateTaxMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'taxes-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('taxes-toast')
       await queryClient.invalidateQueries({ queryKey: ['taxes'] })
       toast.success('Pajak berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('taxes-toast')

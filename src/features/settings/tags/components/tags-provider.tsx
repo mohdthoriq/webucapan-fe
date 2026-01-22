@@ -17,7 +17,8 @@ type TagsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const TagsContext = React.createContext<TagsContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const TagsContext = React.createContext<TagsContextType | null>(null)
 
 export function TagsProvider({
   children,

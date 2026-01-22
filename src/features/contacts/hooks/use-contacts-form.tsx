@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ApiResponse, Contact } from '@/types'
@@ -11,13 +12,16 @@ import {
   useCreateContactMutation,
   useUpdateContactMutation,
 } from './use-contacts-mutation'
-import type { AxiosError } from 'axios'
 
 type useContactsFormProps = {
   currentRow?: Contact
+  onSuccess?: (data: unknown) => void
 }
 
-export function useContactsForm({ currentRow }: useContactsFormProps) {
+export function useContactsForm({
+  currentRow,
+  onSuccess,
+}: useContactsFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
@@ -42,8 +46,9 @@ export function useContactsForm({ currentRow }: useContactsFormProps) {
         },
   })
 
-  const createMutation = useCreateContactMutation()
-  const updateMutation = useUpdateContactMutation()
+  // Pass onSuccess to mutations if they support it, or handle it here
+  const createMutation = useCreateContactMutation(onSuccess)
+  const updateMutation = useUpdateContactMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]

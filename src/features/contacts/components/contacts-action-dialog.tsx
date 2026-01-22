@@ -1,6 +1,8 @@
 'use client'
 
 import { type Contact } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,24 +23,25 @@ import {
 import { Input } from '@/components/ui/input'
 import { useContactsForm } from '../hooks/use-contacts-form'
 import { ContactsCombobox } from './contacts-combobox'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type ContactsActionDialogProps = {
   currentRow?: Contact
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (data: unknown) => void
 }
 
 export function ContactsActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess,
 }: ContactsActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useContactsForm({
     currentRow,
+    onSuccess,
   })
 
   return (

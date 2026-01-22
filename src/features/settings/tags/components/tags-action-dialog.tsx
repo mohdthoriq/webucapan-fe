@@ -28,16 +28,18 @@ type TagsActionDialogProps = {
   currentRow?: Tag
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSuccess?: (result: Tag) => void
 }
 
 export function TagsActionDialog({
   currentRow,
   open,
   onOpenChange,
+  onSuccess
 }: TagsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting, errorMessage } = useTagsForm({ currentRow })
+  const { form, onSubmit, isSubmitting, errorMessage } = useTagsForm({ currentRow, onSuccess })
 
   return (
     <Dialog

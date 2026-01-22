@@ -126,8 +126,9 @@ export function useInvoiceForm({
   const firstError = Object.values(errors)[0]
   const errorMessage =
     (mutationError
-      ? (mutationError as AxiosError<ApiResponse>).response?.data.message
-      : 'Terjadi kesalahan saat menyimpan data') ||
+      ? (mutationError as AxiosError<ApiResponse>).response?.data.message ||
+        'Terjadi kesalahan saat menyimpan data'
+      : undefined) ||
     (firstError && 'message' in firstError
       ? (firstError.message as string)
       : undefined)

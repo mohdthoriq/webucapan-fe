@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { PaginationMeta, Unit } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useUnitsQuery } from '../hooks/use-units-query'
@@ -17,7 +17,8 @@ type UnitsContextType = {
   paginationParams?: { page?: number; limit?: number; name?: string }
 }
 
-const UnitsContext = React.createContext<UnitsContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const UnitsContext = createContext<UnitsContextType | null>(null)
 
 export function UnitsProvider({
   children,
@@ -57,7 +58,7 @@ export function UnitsProvider({
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUnits = () => {
-  const unitsContext = React.useContext(UnitsContext)
+  const unitsContext = useContext(UnitsContext)
 
   if (!unitsContext) {
     throw new Error('useUnits has to be used within <UnitsContext>')

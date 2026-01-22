@@ -15,9 +15,10 @@ import type { AxiosError } from 'axios'
 
 type useTaxesFormProps = {
   currentRow?: Tax
+  onSuccess?: (data: Tax) => void
 }
 
-export function useTaxesForm({ currentRow }: useTaxesFormProps) {
+export function useTaxesForm({ currentRow, onSuccess }: useTaxesFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
@@ -37,8 +38,8 @@ export function useTaxesForm({ currentRow }: useTaxesFormProps) {
         },
   })
 
-  const createMutation = useCreateTaxMutation()
-  const updateMutation = useUpdateTaxMutation()
+  const createMutation = useCreateTaxMutation(onSuccess)
+  const updateMutation = useUpdateTaxMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]

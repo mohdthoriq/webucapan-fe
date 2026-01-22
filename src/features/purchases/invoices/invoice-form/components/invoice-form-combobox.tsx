@@ -1,10 +1,10 @@
-import * as React from 'react'
+import { useMemo, type ReactNode } from 'react'
 import type { Contact } from '@/types/domain/contact'
 import type { Product } from '@/types/domain/product'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
 import { useComboboxQuery } from '../hooks/use-combobox-query'
-import { ComboboxBase } from './combobox-base'
+import { ComboboxBase } from '@/components/combobox-base'
 
 interface InvoiceFormComboboxProps {
   value?: string
@@ -13,6 +13,7 @@ interface InvoiceFormComboboxProps {
   limit?: number
   type?: 'contact' | 'product'
   excludeIds?: string[]
+  action?: ReactNode
 }
 
 export function InvoiceFormCombobox({
@@ -30,6 +31,7 @@ function ContactCombobox({
   onValueChange,
   placeholder = 'Pilih Pelanggan',
   limit = 20,
+  action,
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -47,7 +49,7 @@ function ContactCombobox({
     limit,
   })
 
-  const selectedItem = React.useMemo(
+  const selectedItem = useMemo(
     () => allItems.find((item) => item.id === value) || null,
     [allItems, value]
   )
@@ -77,6 +79,7 @@ function ContactCombobox({
           )}
         </div>
       )}
+      action={action}
     />
   )
 }
@@ -86,6 +89,7 @@ function ProductCombobox({
   onValueChange,
   placeholder = 'Pilih Produk',
   limit = 20,
+  action,
 }: Omit<InvoiceFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -103,7 +107,7 @@ function ProductCombobox({
     limit,
   })
 
-  const selectedItem = React.useMemo(
+  const selectedItem = useMemo(
     () => allItems.find((item) => item.id === value) || null,
     [allItems, value]
   )
@@ -132,6 +136,7 @@ function ProductCombobox({
           </span>
         </div>
       )}
+      action={action}
     />
   )
 }

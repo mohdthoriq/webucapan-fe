@@ -1,9 +1,10 @@
 'use client'
 
 import { useWatch } from 'react-hook-form'
-import { FinanceNumberType, type Product } from '@/types'
+import { FinanceNumberType, type Unit, type Product, type ProductCategory } from '@/types'
 import { CheckCircle2Icon, Trash2, Upload } from 'lucide-react'
 import { useDebounce } from '@/hooks/use-debounce'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -18,6 +19,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
@@ -31,18 +33,24 @@ import {
 } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 
 type ProductsFormContentProps = {
   currentRow?: Product | null
+  onSuccess?: (data: Product) => void
 }
 
-export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
+export function ProductsFormContent({
+  currentRow,
+  onSuccess,
+}: ProductsFormContentProps) {
   const { data: units } = useUnitsQuery()
   const { data: categories } = useProductCategoryQuery()
   const { data: productsAutoNumbering } = useDefaultNumberingQuery({
     type: FinanceNumberType.product_sku,
   })
+  const {openDialog} = useGlobalDialogStore()
 
   const {
     form,
@@ -57,7 +65,11 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
     isSubmitting,
     existingImages,
     errorMessage,
-  } = useProductsForm({ currentRow, autoNumbering: productsAutoNumbering })
+  } = useProductsForm({
+    currentRow,
+    autoNumbering: productsAutoNumbering,
+    onSuccess,
+  })
 
   const { control, formState } = form
 
@@ -148,6 +160,19 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
                         {unit.name}
                       </SelectItem>
                     ))}
+                    <SelectSeparator />
+                    <FormShortcutButton
+                      title='Tambah Satuan Baru'
+                      onClick={() =>
+                        openDialog('unit', {
+                          onSuccess: (data: Unit) => {
+                            if (data?.id) {
+                              field.onChange(data.id)
+                            }
+                          },
+                        })
+                      }
+                    />
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -175,6 +200,19 @@ export function ProductsFormContent({ currentRow }: ProductsFormContentProps) {
                         {category.name}
                       </SelectItem>
                     ))}
+                    <SelectSeparator />
+                    <FormShortcutButton
+                      title='Tambah Kategori Baru'
+                      onClick={() =>
+                        openDialog('product-category', {
+                          onSuccess: (data: ProductCategory) => {
+                            if (data?.id) {
+                              field.onChange(data.id)
+                            }
+                          },
+                        })
+                      }
+                    />
                   </SelectContent>
                 </Select>
                 <FormMessage />

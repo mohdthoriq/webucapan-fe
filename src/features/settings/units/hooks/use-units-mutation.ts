@@ -6,11 +6,12 @@ import {
   type UpdateUnitFormData,
   type DeleteUnitFormData,
 } from '@/features/settings/units/types/units.schema'
-import { useUnits } from '../components/units-provider'
+import { UnitsContext, useUnits } from '../components/units-provider'
+import type { Unit } from '@/types'
+import { useContext } from 'react'
 
-export function useCreateUnitMutation() {
-  const { setOpen } = useUnits()
-
+export function useCreateUnitMutation(onSuccess?: (data: Unit) => void) {
+  const context = useContext(UnitsContext)
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: CreateUnitFormData) => {
@@ -20,11 +21,12 @@ export function useCreateUnitMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'units-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('units-toast')
       await queryClient.invalidateQueries({ queryKey: ['units'] })
       toast.success('Satuan berhasil ditambahkan.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('units-toast')
@@ -33,8 +35,8 @@ export function useCreateUnitMutation() {
   })
 }
 
-export function useUpdateUnitMutation() {
-  const { setOpen } = useUnits()
+export function useUpdateUnitMutation(onSuccess?: (data: Unit) => void) {
+  const context = useContext(UnitsContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -48,11 +50,12 @@ export function useUpdateUnitMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'units-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('units-toast')
       await queryClient.invalidateQueries({ queryKey: ['units'] })
       toast.success('Satuan berhasil diubah.')
-      setOpen(null)
+      context?.setOpen(null)
+      onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('units-toast')

@@ -1,8 +1,14 @@
 import { useEffect } from 'react'
 import { addDays, format } from 'date-fns'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { FinanceNumberType } from '@/types'
+import {
+  type Contact,
+  FinanceNumberType,
+  type PaymentTerm,
+  type Tag,
+} from '@/types'
 import { CalendarIcon } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
@@ -24,9 +30,11 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
@@ -37,6 +45,7 @@ export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
+  const { openDialog } = useGlobalDialogStore()
 
   const invoiceNumber = useWatch({ control, name: 'invoice_number' })
   const paymentTermsValue = useWatch({ control, name: 'payment_term_id' })
@@ -80,7 +89,7 @@ export function InvoiceFormHeader() {
           control={control}
           name='customer_id'
           render={({ field }) => (
-            <FormItem className='flex flex-col'>
+            <FormItem>
               <FormLabel>Pelanggan</FormLabel>
               <FormControl>
                 <InvoiceFormCombobox
@@ -89,6 +98,20 @@ export function InvoiceFormHeader() {
                     field.onChange(value)
                   }}
                   placeholder='Pilih Pelanggan'
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Pelanggan Baru'
+                      onClick={() =>
+                        openDialog('contact', {
+                          onSuccess: (data: Contact) => {
+                            if (data?.id) {
+                              field.onChange(data.id)
+                            }
+                          },
+                        })
+                      }
+                    />
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -234,19 +257,35 @@ export function InvoiceFormHeader() {
             <FormLabel>Termin Pembayaran</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger
-                  className='w-full'
-                  disabled={paymentTerms?.data.length === 0}
-                >
+                <SelectTrigger className='w-full'>
                   <SelectValue placeholder='Pilih termin pembayaran' />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {paymentTerms?.data.map((term) => (
-                  <SelectItem key={term.id} value={term.id}>
-                    {term.name}
-                  </SelectItem>
-                ))}
+                {paymentTerms?.data.length === 0 ? (
+                  <div className='text-muted-foreground p-2 text-center text-sm'>
+                    Tidak ada termin pembayaran
+                  </div>
+                ) : (
+                  paymentTerms?.data.map((term) => (
+                    <SelectItem key={term.id} value={term.id}>
+                      {term.name}
+                    </SelectItem>
+                  ))
+                )}
+                <SelectSeparator />
+                <FormShortcutButton
+                  title='Tambah Termin Pembayaran Baru'
+                  onClick={() =>
+                    openDialog('payment-term', {
+                      onSuccess: (data: PaymentTerm) => {
+                        if (data?.id) {
+                          field.onChange(data.id)
+                        }
+                      },
+                    })
+                  }
+                />
               </SelectContent>
             </Select>
             <FormMessage />
@@ -274,6 +313,20 @@ export function InvoiceFormHeader() {
                   onChange={field.onChange}
                   placeholder='Pilih tag'
                   disabled={tags?.data.length === 0}
+                  action={
+                    <FormShortcutButton
+                      title='Tambah Tag Baru'
+                      onClick={() =>
+                        openDialog('tag', {
+                          onSuccess: (data: Tag) => {
+                            if (data?.id) {
+                              field.onChange(data.id)
+                            }
+                          },
+                        })
+                      }
+                    />
+                  }
                 />
               </FormControl>
               <FormMessage />

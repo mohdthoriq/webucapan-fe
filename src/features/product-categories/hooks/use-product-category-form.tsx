@@ -15,10 +15,12 @@ import {
 
 type useProductCategoryFormProps = {
   currentRow?: ProductCategory
+  onSuccess?: (data: ProductCategory) => void
 }
 
 export function useProductCategoryForm({
   currentRow,
+  onSuccess,
 }: useProductCategoryFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreateProductCategoryFormData>({
@@ -34,8 +36,8 @@ export function useProductCategoryForm({
         },
   })
 
-  const createMutation = useCreateProductCategoryMutation()
-  const updateMutation = useUpdateProductCategoryMutation()
+  const createMutation = useCreateProductCategoryMutation(onSuccess)
+  const updateMutation = useUpdateProductCategoryMutation(onSuccess)
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
