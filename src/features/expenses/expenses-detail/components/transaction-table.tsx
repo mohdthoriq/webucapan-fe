@@ -67,7 +67,7 @@ export function TransactionTable({
                   </TableCell>
                   <TableCell className='p-4'>
                     <Badge variant='outline' className='font-normal capitalize'>
-                      {payment.payment_status}
+                      {payment.status}
                     </Badge>
                   </TableCell>
                   <TableCell className='p-4 text-right font-semibold'>

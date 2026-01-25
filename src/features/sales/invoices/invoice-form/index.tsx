@@ -48,7 +48,7 @@ export function InvoiceFormPage() {
       <CardHeader>
         <CardTitle>
           <div className='flex items-center justify-between'>
-            {invoiceForm.isEdit ? 'Edit Invoice' : 'Buat Invoice Baru'}
+            {invoiceForm.isEdit ? 'Edit Tagihan Penjualan' : 'Tambah Tagihan Penjualan'}
             <Button variant='link' onClick={() => history.back()}>
               Kembali
             </Button>

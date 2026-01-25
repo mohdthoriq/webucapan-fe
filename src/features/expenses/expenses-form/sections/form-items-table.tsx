@@ -30,7 +30,7 @@ export function ExpensesFormItems() {
 
   return (
     <div className='flex flex-col space-y-4'>
-      <h3 className='text-lg font-medium'>Item Expenses</h3>
+      <h3 className='text-lg font-medium'>Item Biaya</h3>
 
       <ExpensesItemsTable fields={fields} remove={remove} form={form} />
 

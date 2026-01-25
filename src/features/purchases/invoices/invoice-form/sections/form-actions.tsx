@@ -32,8 +32,8 @@ export function InvoiceFormActions({
           {isSubmitting
             ? 'Menyimpan...'
             : isEdit
-              ? 'Update Invoice'
-              : 'Buat Invoice'}
+              ? 'Ubah Tagihan'
+              : 'Buat Tagihan'}
         </Button>
       </div>
     </div>

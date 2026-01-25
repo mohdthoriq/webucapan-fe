@@ -9,7 +9,7 @@ export function ExpensesFormSummary() {
     <div className='flex justify-end'>
       <div className='w-full space-y-2 md:w-1/3'>
         <div className='flex justify-between'>
-          <span className='text-muted-foreground'>Subtotal</span>
+          <span className='text-muted-foreground'>Sub Total</span>
           <span>{totals.subtotal.toLocaleString()}</span>
         </div>
         <div className='flex flex-col gap-2 border-b pb-2'>
@@ -27,7 +27,7 @@ export function ExpensesFormSummary() {
           )}
         </div>
         <div className='flex justify-between text-lg font-bold'>
-          <span>Total Invoice</span>
+          <span>Total</span>
           <span>{totals.total.toLocaleString()}</span>
         </div>
       </div>
