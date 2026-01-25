@@ -123,7 +123,7 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
         >
           <TabsList className='h-10'>
             <TabsTrigger value=''>Semua</TabsTrigger>
-            <TabsTrigger value='paid'>Dibayar</TabsTrigger>
+            <TabsTrigger value='paid'>Lunas</TabsTrigger>
             <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
             <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
           </TabsList>

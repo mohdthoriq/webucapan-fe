@@ -18,9 +18,11 @@ function ExpensesListsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 grid'>
             <h2 className='text-2xl font-bold tracking-tight'>
-              Tagihan Biaya
+              Biaya
             </h2>
-            <p className='text-muted-foreground'>Kelola Tagihan Biaya.</p>
+            <p className='text-muted-foreground'>
+              Kelola dan pantau seluruh pengeluaran operasional Anda.
+            </p>
           </div>
           <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
             <Button variant={'link'} onClick={() => history.go(-1)}>
@@ -28,7 +30,7 @@ function ExpensesListsContent() {
             </Button>
             <Button onClick={() => navigate({ to: '/expenses/add' })}>
               <Plus className='mr-2 h-4 w-4' />
-              Tambah Tagihan
+              Tambah Biaya
             </Button>
           </div>
         </div>

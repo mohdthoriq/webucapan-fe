@@ -35,7 +35,7 @@ export interface InvoicePayment extends GlobalResponse {
   method: string
   reference_no: string
   note: string
-  payment_status: PaymentStatus
+  status: PaymentStatus
   account: Account
 }
 

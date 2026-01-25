@@ -50,7 +50,7 @@ export function ExpensesFormPage() {
       <CardHeader>
         <CardTitle>
           <div className='flex items-center justify-between'>
-            {expensesForm.isEdit ? 'Edit Expenses' : 'Buat Expenses Baru'}
+            {expensesForm.isEdit ? 'Edit Biaya' : 'Tambah Biaya'}
             <Button variant='link' onClick={() => history.back()}>
               Kembali
             </Button>

@@ -32,7 +32,7 @@ export function InvoiceFormItems() {
 
   return (
     <div className='flex flex-col space-y-4'>
-      <h3 className='text-lg font-medium'>Item Invoice</h3>
+      <h3 className='text-lg font-medium'>Item Tagihan</h3>
 
       <InvoiceItemsTable fields={fields} remove={remove} form={form} />
 
