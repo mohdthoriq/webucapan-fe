@@ -2,11 +2,11 @@ import type { CashBankOverview } from '@/types'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { AccountChartCard } from './components/account-chart-card'
-import { useCashBankQuery } from './hooks/use-cash-bank-query'
+import { useCashBankOverviewQuery } from './hooks/use-cash-bank-query'
+import { AccountChartCard } from './pages/account-chart-card'
 
 export default function CashBankOverviewPage() {
-  const { data, isLoading } = useCashBankQuery()
+  const { data, isLoading } = useCashBankOverviewQuery()
 
   return (
     <Card className='flex flex-col gap-6 p-6'>

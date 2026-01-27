@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import type { CashBankOverview } from '@/types'
 import { Settings2 } from 'lucide-react'
 import {
@@ -17,6 +18,8 @@ interface AccountChartCardProps {
 }
 
 export function AccountChartCard({ data }: AccountChartCardProps) {
+  const navigate = useNavigate()
+
   const formatYAxis = (value: number) => {
     return formatNumber(value)
   }
@@ -25,23 +28,44 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
     return formatNumber(value)
   }
 
+  const handleNavigate = () => {
+    navigate({
+      to: '/cash-bank/$accountName',
+      params: { accountName: data.name },
+      state: {
+        accountId: data.id,
+        accountName: data.name,
+        accountCode: data.code,
+        statementBalance: data.statement_balance,
+        closingBalance: data.closing_balance,
+      } as unknown as Record<string, unknown>,
+    })
+  }
+
   return (
-    <Card className='hover:border-none hover:shadow-lg'>
+    <Card
+      className='cursor-pointer hover:border-none hover:shadow-lg hover:shadow-black/5'
+      onClick={() => handleNavigate()}
+    >
       <div className='flex items-start justify-between border-b px-5'>
-        <div className='mb-4'>
+        <div className='mb-4 py-2 text-left'>
           <h3 className='text-lg font-bold'>{data.name}</h3>
           <p className='text-muted-foreground font-mono text-sm'>{data.code}</p>
         </div>
         <Button
           variant='ghost'
           size='sm'
-          className='flex h-auto gap-2 border-none px-4 py-2'
+          className='flex h-auto gap-2 border-none px-4 py-8'
+          onClick={(e) => {
+            e.stopPropagation()
+            // Action for Atur Akun can be added here
+          }}
         >
           <Settings2 className='h-4 w-4' />
           Atur Akun
         </Button>
       </div>
-      <CardContent>
+      <CardContent className='pt-6'>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
           <div className='flex flex-col justify-center gap-6 md:col-span-1'>
             <div className='flex flex-col'>

@@ -29,6 +29,7 @@ import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedCashBankIndexRouteImport } from './routes/_authenticated/cash-bank/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
+import { Route as AuthenticatedCashBankAccountNameRouteImport } from './routes/_authenticated/cash-bank/$accountName'
 import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
@@ -161,6 +162,12 @@ const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: '/account/',
     path: '/account/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankAccountNameRoute =
+  AuthenticatedCashBankAccountNameRouteImport.update({
+    id: '/cash-bank/$accountName',
+    path: '/cash-bank/$accountName',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsUsersIndexRoute =
@@ -339,6 +346,7 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
@@ -387,6 +395,7 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
   '/account': typeof AuthenticatedAccountIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
@@ -437,6 +446,7 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
   '/_authenticated/cash-bank/': typeof AuthenticatedCashBankIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
@@ -487,6 +497,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
+    | '/cash-bank/$accountName'
     | '/account'
     | '/cash-bank'
     | '/contacts'
@@ -535,6 +546,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
+    | '/cash-bank/$accountName'
     | '/account'
     | '/cash-bank'
     | '/contacts'
@@ -584,6 +596,7 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/cash-bank/$accountName'
     | '/_authenticated/account/'
     | '/_authenticated/cash-bank/'
     | '/_authenticated/contacts/'
@@ -774,6 +787,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/$accountName': {
+      id: '/_authenticated/cash-bank/$accountName'
+      path: '/cash-bank/$accountName'
+      fullPath: '/cash-bank/$accountName'
+      preLoaderRoute: typeof AuthenticatedCashBankAccountNameRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/users/': {
@@ -991,6 +1011,7 @@ const AuthenticatedAdminRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedCashBankAccountNameRoute: typeof AuthenticatedCashBankAccountNameRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
   AuthenticatedCashBankIndexRoute: typeof AuthenticatedCashBankIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
@@ -1027,6 +1048,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedCashBankAccountNameRoute: AuthenticatedCashBankAccountNameRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
   AuthenticatedCashBankIndexRoute: AuthenticatedCashBankIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
