@@ -27,6 +27,7 @@ import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './routes/_authenticated/product-categories/index'
 import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
+import { Route as AuthenticatedCashBankIndexRouteImport } from './routes/_authenticated/cash-bank/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
@@ -148,6 +149,12 @@ const AuthenticatedContactsIndexRoute =
   AuthenticatedContactsIndexRouteImport.update({
     id: '/contacts/',
     path: '/contacts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankIndexRoute =
+  AuthenticatedCashBankIndexRouteImport.update({
+    id: '/cash-bank/',
+    path: '/cash-bank/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAccountIndexRoute =
@@ -333,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
@@ -380,6 +388,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
@@ -429,6 +438,7 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
+  '/_authenticated/cash-bank/': typeof AuthenticatedCashBankIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
   '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
   '/_authenticated/product-categories/': typeof AuthenticatedProductCategoriesIndexRoute
@@ -478,6 +488,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/account'
+    | '/cash-bank'
     | '/contacts'
     | '/expenses'
     | '/product-categories'
@@ -525,6 +536,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/account'
+    | '/cash-bank'
     | '/contacts'
     | '/expenses'
     | '/product-categories'
@@ -573,6 +585,7 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/'
     | '/_authenticated/account/'
+    | '/_authenticated/cash-bank/'
     | '/_authenticated/contacts/'
     | '/_authenticated/expenses/'
     | '/_authenticated/product-categories/'
@@ -747,6 +760,13 @@ declare module '@tanstack/react-router' {
       path: '/contacts'
       fullPath: '/contacts'
       preLoaderRoute: typeof AuthenticatedContactsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/': {
+      id: '/_authenticated/cash-bank/'
+      path: '/cash-bank'
+      fullPath: '/cash-bank'
+      preLoaderRoute: typeof AuthenticatedCashBankIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/account/': {
@@ -972,6 +992,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
+  AuthenticatedCashBankIndexRoute: typeof AuthenticatedCashBankIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
   AuthenticatedExpensesIndexRoute: typeof AuthenticatedExpensesIndexRoute
   AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
@@ -1007,6 +1028,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
+  AuthenticatedCashBankIndexRoute: AuthenticatedCashBankIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
   AuthenticatedExpensesIndexRoute: AuthenticatedExpensesIndexRoute,
   AuthenticatedProductCategoriesIndexRoute:
