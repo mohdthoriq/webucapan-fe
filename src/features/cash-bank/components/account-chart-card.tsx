@@ -26,7 +26,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
   }
 
   return (
-    <Card>
+    <Card className='hover:border-none hover:shadow-lg'>
       <div className='flex items-start justify-between border-b px-5'>
         <div className='mb-4'>
           <h3 className='text-lg font-bold'>{data.name}</h3>
