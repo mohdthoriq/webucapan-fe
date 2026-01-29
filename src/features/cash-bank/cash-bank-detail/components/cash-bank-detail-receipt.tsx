@@ -29,10 +29,13 @@ export function CashBankDetailReceipt({
     <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
       <CardHeader>
         <div className='flex items-center justify-between'>
-          <div className='flex flex-col gap-1'>
-            <span className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
+          <div className='flex flex-col gap-3'>
+            <Badge
+              variant={'outline'}
+              className='bg-primary/10 text-primary py-1.5 text-xs font-medium tracking-wider uppercase'
+            >
               {transaction?.transaction_type}
-            </span>
+            </Badge>
             <CardTitle className='text-primary flex items-center gap-4 text-2xl font-bold tracking-tight'>
               {transaction?.transaction_title}
             </CardTitle>
@@ -42,7 +45,7 @@ export function CashBankDetailReceipt({
               <Badge
                 variant='outline'
                 className={cn(
-                  'px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase',
+                  'px-2 py-1 text-[10px] font-bold tracking-widest uppercase',
                   getStatusStyles(transaction?.status as string)
                 )}
               >
@@ -67,48 +70,48 @@ export function CashBankDetailReceipt({
       <CardContent className='space-y-8 pt-6'>
         {/* Header Info */}
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
-          <div className='space-y-1'>
-            <p className='text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase'>
-              Akun Kas/Bank
+          <div className='space-y-2'>
+            <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
+              Akun Kas&Bank
             </p>
-            <p className='text-sm font-semibold'>{transaction?.account_name}</p>
-            <p className='text-muted-foreground text-xs'>
-              {transaction?.account_code}
-            </p>
+            <div className='flex items-center gap-2'>
+              <span className='text-md font-semibold'>
+                {transaction?.account_name}
+              </span>
+              {'-'}
+              <span className='text-muted-foreground text-md'>
+                {transaction?.account_code}
+              </span>
+            </div>
           </div>
 
-          <div className='space-y-1'>
-            <p className='text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase'>
+          <div className='space-y-2'>
+            <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
               Tanggal & Referensi
             </p>
-            <p className='text-sm font-semibold'>
+            <p className='text-md font-semibold'>
               {transaction?.date
                 ? format(new Date(transaction.date), 'dd MMMM yyyy', {
                     locale: id,
                   })
                 : '-'}
             </p>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-muted-foreground text-md'>
               Ref: {transaction?.reference || '-'}
             </p>
           </div>
 
-          <div className='space-y-1'>
-            <p className='text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase'>
+          <div className='space-y-2'>
+            <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
               Kontak
             </p>
-            <p className='text-sm font-semibold'>
+            <p className='text-md font-semibold'>
               {transaction?.contact_name || '-'}
             </p>
-            {transaction?.reference_type && (
-              <p className='text-muted-foreground text-xs'>
-                {transaction?.reference_type}: {transaction?.reference_id}
-              </p>
-            )}
           </div>
 
-          <div className='space-y-1'>
-            <p className='text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase'>
+          <div className='space-y-2'>
+            <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
               Status Rekonsiliasi
             </p>
             <div className='flex items-center gap-1.5'>
@@ -119,7 +122,7 @@ export function CashBankDetailReceipt({
               )}
               <span
                 className={cn(
-                  'text-sm font-medium capitalize',
+                  'text-md font-medium capitalize',
                   isReconciled ? 'text-green-600' : 'text-amber-600'
                 )}
               >
@@ -133,40 +136,55 @@ export function CashBankDetailReceipt({
 
         {/* Journal Lines Table */}
         <div className='space-y-4'>
-          <h4 className='text-muted-foreground text-sm font-bold tracking-wider uppercase'>
+          <h4 className='text-muted-foreground text-md font-bold tracking-wider uppercase'>
             Rincian Jurnal
           </h4>
           <div className='rounded-md border'>
             <Table>
               <TableHeader>
                 <TableRow className='bg-muted/50'>
-                  <TableHead className='w-[150px]'>Kode Akun</TableHead>
-                  <TableHead>Nama Akun / Deskripsi</TableHead>
-                  <TableHead className='w-[120px] text-right'>Debit</TableHead>
-                  <TableHead className='w-[120px] text-right'>Kredit</TableHead>
+                  <TableHead className='w-[150px] p-4'>Kode</TableHead>
+                  <TableHead className='w-[150px] p-4'>Akun</TableHead>
+                  <TableHead className='p-4'>Deskripsi</TableHead>
+                  <TableHead className='w-[120px] p-4 text-right'>
+                    Debit
+                  </TableHead>
+                  <TableHead className='w-[120px] p-4 text-right'>
+                    Kredit
+                  </TableHead>
+                  <TableHead className='w-[120px] p-4 text-right'>
+                    Total
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {transaction?.lines?.map((line) => (
                   <TableRow key={line.id}>
-                    <TableCell className='font-medium'>
+                    <TableCell className='p-4 font-medium'>
                       {line.account_code}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='p-4'>
                       <div className='flex flex-col'>
                         <span className='font-medium'>{line.account_name}</span>
-                        {line.description && (
-                          <span className='text-muted-foreground text-xs'>
-                            {line.description}
-                          </span>
-                        )}
                       </div>
                     </TableCell>
-                    <TableCell className='text-right'>
+                    <TableCell className='p-4'>
+                      {line.description ? (
+                        <span className='text-muted-foreground text-xs'>
+                          {line.description}
+                        </span>
+                      ) : (
+                        '-'
+                      )}
+                    </TableCell>
+                    <TableCell className='p-4 text-right'>
                       {line.debit > 0 ? formatCurrency(line.debit) : '-'}
                     </TableCell>
-                    <TableCell className='text-right'>
+                    <TableCell className='p-4 text-right'>
                       {line.credit > 0 ? formatCurrency(line.credit) : '-'}
+                    </TableCell>
+                    <TableCell className='p-4 text-right'>
+                      {line.amount > 0 ? formatCurrency(line.amount) : '-'}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -177,26 +195,24 @@ export function CashBankDetailReceipt({
 
         {/* Footer: Description & Totals */}
         <div className='flex flex-col gap-8 md:flex-row'>
-          <div className='flex-1 space-y-4'>
+          <div className='flex-1 space-y-8'>
             {transaction?.description && (
-              <div className='bg-muted/30 rounded-lg p-4'>
-                <p className='text-muted-foreground mb-1 text-[10px] font-bold tracking-wider uppercase'>
+              <Card className='bg-muted/30 rounded-lg border-none p-4'>
+                <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
                   Catatan / Deskripsi
                 </p>
-                <p className='text-sm leading-relaxed italic'>
-                  {transaction.description}
-                </p>
-              </div>
+                <p className='text-md italic'>{transaction.description}</p>
+              </Card>
             )}
 
             {/* Audit Trail */}
-            <div className='text-muted-foreground grid grid-cols-2 gap-4 text-[10px] tracking-wider uppercase'>
-              <div className='flex flex-col gap-1'>
-                <div className='flex items-center gap-1'>
+            <div className='text-muted-foreground grid grid-cols-2 gap-4 text-[10px] tracking-widest uppercase'>
+              <div className='flex flex-col gap-3'>
+                <div className='flex items-center gap-2'>
                   <User className='h-3 w-3' />
                   <span>Dibuat: {transaction?.audit?.created_by}</span>
                 </div>
-                <div className='flex items-center gap-1'>
+                <div className='flex items-center gap-2'>
                   <Clock className='h-3 w-3' />
                   <span>
                     {transaction?.audit?.created_at
@@ -208,12 +224,12 @@ export function CashBankDetailReceipt({
                   </span>
                 </div>
               </div>
-              <div className='flex flex-col gap-1 border-l pl-4'>
-                <div className='flex items-center gap-1'>
+              <div className='flex flex-col gap-3 border-l pl-4'>
+                <div className='flex items-center gap-2'>
                   <User className='h-3 w-3' />
                   <span>Diubah: {transaction?.audit?.updated_by}</span>
                 </div>
-                <div className='flex items-center gap-1'>
+                <div className='flex items-center gap-2'>
                   <Clock className='h-3 w-3' />
                   <span>
                     {transaction?.audit?.updated_at
@@ -229,18 +245,15 @@ export function CashBankDetailReceipt({
           </div>
 
           <div className='w-full md:w-80'>
-            <div className='bg-primary/5 border-primary/10 space-y-4 rounded-xl border p-6 shadow-sm'>
-              <div className='flex items-center justify-between'>
-                <span className='text-muted-foreground text-sm font-medium'>
-                  Total Transaksi
+            <div className='bg-muted/30 space-y-3 rounded-lg p-6'>
+              <div className='flex justify-between text-sm'>
+                <span className='text-muted-foreground text-lg font-medium'>
+                  Total :
                 </span>
-                <span className='text-primary text-2xl font-black'>
+                <span className='text-lg font-medium'>
                   {formatCurrency(transaction?.total as number)}
                 </span>
               </div>
-              <p className='text-muted-foreground border-t pt-4 text-center text-[10px] capitalize italic'>
-                Terbilang: {transaction?.total?.toLocaleString('id-ID')} Rupiah
-              </p>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useLocation } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CashBankDetailReceipt } from './components/cash-bank-detail-receipt'
 import { useCashBankDetailQuery } from './hooks/use-cash-bank-detail-query'
 
@@ -22,22 +23,46 @@ export function CashBankDetail() {
     )
   }
 
+  if (!transaction) {
+    return (
+      <Card className='flex h-[60vh] flex-col items-center justify-center gap-4'>
+        <CardContent>
+          <p className='text-muted-foreground'>
+            Data transaksi tidak ditemukan.
+          </p>
+          <Button onClick={() => history.back()} variant='outline'>
+            <ArrowLeft className='mr-2 h-4 w-4' /> Kembali
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <div className='space-y-6'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-3xl font-bold tracking-tight'>
-          Detail Transaksi Cash & Bank
-        </h1>
-        <Button
-          variant='ghost'
-          onClick={() => history.back()}
-          className='gap-2'
-        >
-          <ArrowLeft className='h-4 w-4' /> Kembali
-        </Button>
-      </div>
-
-      <CashBankDetailReceipt transaction={transaction} />
+      <Card>
+        <CardHeader>
+          <div className='mb-2 flex items-center justify-between'>
+            <div>
+              <h1 className='text-4xl font-semibold tracking-tight'>
+                Detail Transaksi {transaction.entry_number}
+              </h1>
+            </div>
+            <div className='mr-4 flex gap-2'>
+              <Button
+                variant='ghost'
+                onClick={() => history.back()}
+                className='gap-2'
+              >
+                <ArrowLeft className='h-4 w-4' /> Kembali
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className='space-y-6'>
+          <CashBankDetailReceipt transaction={transaction} />
+        </CardContent>
+      </Card>
     </div>
   )
 }

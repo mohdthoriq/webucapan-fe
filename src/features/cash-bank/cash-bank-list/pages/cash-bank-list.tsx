@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { getRouteApi, useLocation } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -16,6 +17,7 @@ function CashBankListsContent() {
   const location = useLocation()
 
   const accountData = location.state as unknown as Record<string, string>
+  const { accountName } = route.useParams()
 
   return (
     <Card>
@@ -23,10 +25,10 @@ function CashBankListsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 flex items-center gap-4'>
             <h2 className='text-4xl font-bold tracking-tight'>
-              {accountData?.accountName}
+              {decodeURIComponent(accountName)}
             </h2>
             <p className='text-muted-foreground text-2xl'>
-              {accountData?.accountCode}
+              {accountData?.accountCode || (search.code as string)}
             </p>
           </div>
           <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
@@ -48,6 +50,7 @@ function CashBankListsContent() {
 
 function CashBankLists() {
   const search = route.useSearch() as Record<string, unknown>
+  const navigate = route.useNavigate()
   const location = useLocation()
   const accountData = location.state as unknown as Record<string, string>
 
@@ -63,6 +66,29 @@ function CashBankLists() {
     date_to: search.date_to ? new Date(search.date_to as string) : undefined,
     search: (search.search as string) || undefined,
   }
+
+  // Effect to persist accountId and accountCode in search params if they exist in state but not in search
+  useEffect(() => {
+    if (
+      (accountData?.accountId && !search.id) ||
+      (accountData?.accountCode && !search.code)
+    ) {
+      navigate({
+        search: (prev: Record<string, unknown>) => ({
+          ...prev,
+          id: search.id || accountData?.accountId,
+          code: search.code || accountData?.accountCode,
+        }),
+        replace: true,
+      })
+    }
+  }, [
+    accountData?.accountId,
+    accountData?.accountCode,
+    search.id,
+    search.code,
+    navigate,
+  ])
 
   return (
     <CashBankListsProvider paginationParams={queryParams}>
