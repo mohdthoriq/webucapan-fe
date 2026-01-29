@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate, useLocation } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { useSearch } from '@tanstack/react-router'
 import {
   cashBankFormSchema,
   type CashBankFormFormData,
@@ -17,13 +16,11 @@ type UseCashBankFormProps = {
 }
 
 export function useCashBankForm({ type }: UseCashBankFormProps) {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const state = location.state as { bank_account_id?: string }
+  const search = useSearch({ strict: false }) as { bank_account_id?: string }
 
   const defaultValues = useMemo<CashBankFormFormData>(
     () => ({
-      bank_account_id: state?.bank_account_id || '',
+      bank_account_id: search?.bank_account_id || '',
       date: new Date(),
       description: '',
       contact_id: null,
@@ -40,7 +37,7 @@ export function useCashBankForm({ type }: UseCashBankFormProps) {
       ],
       withholdings: [],
     }),
-    [state?.bank_account_id]
+    [search?.bank_account_id]
   )
 
   const form = useForm<CashBankFormFormData>({
@@ -72,15 +69,10 @@ export function useCashBankForm({ type }: UseCashBankFormProps) {
   const isSubmitting = spendMutation.isPending || receiveMutation.isPending
 
   const onSubmit = async (data: CashBankFormFormData) => {
-    try {
-      if (type === 'spend') {
-        await spendMutation.mutateAsync(data)
-      } else {
-        await receiveMutation.mutateAsync(data)
-      }
-      navigate({ to: '/cash-bank' })
-    } catch (error) {
-      toast.error('Gagal menyimpan data' + error)
+    if (type === 'spend') {
+      await spendMutation.mutateAsync(data)
+    } else {
+      await receiveMutation.mutateAsync(data)
     }
   }
 

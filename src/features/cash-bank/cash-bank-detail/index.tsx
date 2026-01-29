@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router'
+import { useSearch } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -6,14 +6,34 @@ import { CashBankDetailReceipt } from './components/cash-bank-detail-receipt'
 import { useCashBankDetailQuery } from './hooks/use-cash-bank-detail-query'
 
 export function CashBankDetail() {
-  const location = useLocation()
-  const { currentRowId, accountId } =
-    (location.state as { currentRowId?: string; accountId?: string }) || {}
+  const search = useSearch({ strict: false }) as Record<string, string>
+
+  const transactionId = search.transactionId || search.currentRowId
+  const accountId = search.accountId
 
   const { data: transaction, isLoading } = useCashBankDetailQuery({
-    transactionId: currentRowId,
+    transactionId,
     accountId,
   })
+
+  if (!transactionId || !accountId) {
+    return (
+      <Card className='flex h-[60vh] flex-col items-center justify-center gap-4'>
+        <CardContent className='text-center'>
+          <p className='text-muted-foreground'>
+            ID Transaksi atau ID Akun tidak ditemukan.
+          </p>
+          <Button
+            onClick={() => window.history.back()}
+            variant='outline'
+            className='mt-4'
+          >
+            <ArrowLeft className='mr-2 h-4 w-4' /> Kembali
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
 
   if (isLoading) {
     return (

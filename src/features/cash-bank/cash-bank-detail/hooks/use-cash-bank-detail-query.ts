@@ -22,7 +22,7 @@ export function useCashBankDetailQuery(params?: CashBankDetailQueryParams) {
 
       return response.data.data
     },
-    // enabled: !!params?.accountId && !!params?.transactionId,
+    enabled: !!params?.accountId && !!params?.transactionId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1, // optional: retry once only
   })

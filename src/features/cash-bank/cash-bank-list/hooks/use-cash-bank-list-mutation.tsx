@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { useCashBankLists } from '../components/cash-bank-list-provider'
 import { type CreateCashBankListFormData } from '../types/cash-bank-list.schema'
 
 export function useCreateCashBankListMutation() {
-  const { setOpen } = useCashBankLists()
+  const { setOpen, paginationParams } = useCashBankLists()
+  const navigate = useNavigate()
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -16,11 +18,22 @@ export function useCreateCashBankListMutation() {
     onMutate: () => {
       toast.loading('Loading...', { id: 'cash-bank-lists-toast' })
     },
-    onSuccess: async (_) => {
+    onSuccess: async (data) => {
       toast.dismiss('cash-bank-lists-toast')
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-list', 'cash-bank-overview'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['cash-bank-list', 'cash-bank-overview'],
+      })
       toast.success('Transfer dana berhasil ditambahkan')
       setOpen(null)
+
+      // Navigate to detail page with transaction ID and account ID
+      navigate({
+        to: '/cash-bank/detail',
+        search: {
+          currentRowId: data.data.id,
+          accountId: paginationParams?.id,
+        },
+      })
     },
     onError: () => {
       toast.dismiss('cash-bank-lists-toast')
@@ -28,31 +41,3 @@ export function useCreateCashBankListMutation() {
     },
   })
 }
-
-// export function useUpdateAccountCategoryMutation() {
-//   const { setOpen } = useCashBankLists()
-
-//   const queryClient = useQueryClient()
-//   return useMutation({
-//     mutationFn: async (credentials: UpdateAccountCategoryFormData) => {
-//       const response = await apiClient.patch(
-//         `account-categories/${credentials.id}`,
-//         credentials
-//       )
-//       return response.data
-//     },
-//     onMutate: () => {
-//       toast.loading('Loading...', { id: 'account-categories-toast' })
-//     },
-//     onSuccess: async (_) => {
-//       toast.dismiss('account-categories-toast')
-//       await queryClient.invalidateQueries({ queryKey: ['account-categories'] })
-//       toast.success('Kategori akun berhasil diubah.')
-//       setOpen(null)
-//     },
-//     onError: () => {
-//       toast.dismiss('account-categories-toast')
-//       toast.error('Kategori akun gagal diubah.')
-//     },
-//   })
-// }

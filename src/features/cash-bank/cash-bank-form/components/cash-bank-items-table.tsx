@@ -38,12 +38,11 @@ export function CashBankItemsTable({
         </TableHeader>
         <TableBody>
           {fields.map((field, index) => (
-            <Fragment key={index}>
+            <Fragment key={`item-${field.account_id}-${index}`}>
               <CashBankItemRow
                 index={index}
                 remove={remove}
                 taxes={taxesData}
-                
               />
             </Fragment>
           ))}

@@ -14,12 +14,10 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
 import { CashBankListCombobox } from '../../cash-bank-list/components/cash-bank-list-combobox'
 

@@ -43,8 +43,7 @@ export function CashBankFormSummary() {
         <div className='flex justify-between text-xl font-bold'>
           <span>Total</span>
           <span className='text-primary'>
-            Rp{' '}
-            {totals.total.toLocaleString('id-ID', { minimumFractionDigits: 2 })}
+            Rp {totals.total.toLocaleString()}
           </span>
         </div>
       </div>

@@ -42,10 +42,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             onClick={() => {
               navigate({
                 to: `/cash-bank/detail`,
-                state: {
-                  currentRowId: cashBank.id,
+                search: {
                   accountId,
-                } as Record<string, unknown>,
+                  transactionId: cashBank.id,
+                },
               })
             }}
           >

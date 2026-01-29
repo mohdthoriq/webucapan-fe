@@ -41,11 +41,7 @@ export function CashBankPrimaryButton() {
           onClick={() =>
             navigate({
               to: '/cash-bank/spend',
-              search: paginationParams,
-              state: { bank_account_id: paginationParams?.id } as Record<
-                string,
-                unknown
-              >,
+              search: { bank_account_id: paginationParams?.id },
             })
           }
         >
@@ -57,11 +53,7 @@ export function CashBankPrimaryButton() {
           onClick={() =>
             navigate({
               to: '/cash-bank/receive',
-              search: paginationParams,
-              state: { bank_account_id: paginationParams?.id } as Record<
-                string,
-                unknown
-              >,
+              search: { bank_account_id: paginationParams?.id },
             })
           }
         >
