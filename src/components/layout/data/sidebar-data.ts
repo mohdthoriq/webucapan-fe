@@ -2,6 +2,7 @@ import {
   ChartPie,
   ContactRound,
   CreditCardIcon,
+  DollarSign,
   FileText,
   GalleryHorizontalEnd,
   LayoutDashboard,
@@ -22,22 +23,6 @@ export const sidebarData: SidebarData = {
           title: 'Dashboard',
           url: '/',
           icon: LayoutDashboard,
-        },
-        {
-          title: 'Produk',
-          icon: Store,
-          items: [
-            {
-              title: 'Kategori',
-              url: '/product-categories',
-              icon: GalleryHorizontalEnd,
-            },
-            {
-              title: 'Produk',
-              url: '/products',
-              icon: Store,
-            },
-          ],
         },
         {
           title: 'Penjualan',
@@ -77,14 +62,35 @@ export const sidebarData: SidebarData = {
           icon: CreditCardIcon,
         },
         {
-          title: 'Kontak',
-          url: '/contacts',
-          icon: ContactRound,
+          title: 'Produk',
+          icon: Store,
+          items: [
+            {
+              title: 'Kategori',
+              url: '/product-categories',
+              icon: GalleryHorizontalEnd,
+            },
+            {
+              title: 'Produk',
+              url: '/products',
+              icon: Store,
+            },
+          ],
+        },
+        {
+          title: 'Kas & Bank',
+          icon: DollarSign,
+          url: '/cash-bank',
         },
         {
           title: 'Akun',
           icon: WalletCards,
           url: '/account',
+        },
+        {
+          title: 'Kontak',
+          url: '/contacts',
+          icon: ContactRound,
         },
         {
           title: 'Settings',

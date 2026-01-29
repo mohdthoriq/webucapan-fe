@@ -18,8 +18,6 @@ import type { DateRange } from 'react-day-picker';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 
-
-
 type AccountLedgerDialogProps = {
   currentRow: Account
   open: boolean

@@ -27,7 +27,12 @@ import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './routes/_authenticated/product-categories/index'
 import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
+import { Route as AuthenticatedCashBankIndexRouteImport } from './routes/_authenticated/cash-bank/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
+import { Route as AuthenticatedCashBankSpendRouteImport } from './routes/_authenticated/cash-bank/spend'
+import { Route as AuthenticatedCashBankReceiveRouteImport } from './routes/_authenticated/cash-bank/receive'
+import { Route as AuthenticatedCashBankDetailRouteImport } from './routes/_authenticated/cash-bank/detail'
+import { Route as AuthenticatedCashBankAccountNameRouteImport } from './routes/_authenticated/cash-bank/$accountName'
 import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
@@ -150,10 +155,40 @@ const AuthenticatedContactsIndexRoute =
     path: '/contacts/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCashBankIndexRoute =
+  AuthenticatedCashBankIndexRouteImport.update({
+    id: '/cash-bank/',
+    path: '/cash-bank/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: '/account/',
     path: '/account/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankSpendRoute =
+  AuthenticatedCashBankSpendRouteImport.update({
+    id: '/cash-bank/spend',
+    path: '/cash-bank/spend',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankReceiveRoute =
+  AuthenticatedCashBankReceiveRouteImport.update({
+    id: '/cash-bank/receive',
+    path: '/cash-bank/receive',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankDetailRoute =
+  AuthenticatedCashBankDetailRouteImport.update({
+    id: '/cash-bank/detail',
+    path: '/cash-bank/detail',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashBankAccountNameRoute =
+  AuthenticatedCashBankAccountNameRouteImport.update({
+    id: '/cash-bank/$accountName',
+    path: '/cash-bank/$accountName',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsUsersIndexRoute =
@@ -332,7 +367,12 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
+  '/cash-bank/detail': typeof AuthenticatedCashBankDetailRoute
+  '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
+  '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
@@ -379,7 +419,12 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
+  '/cash-bank/detail': typeof AuthenticatedCashBankDetailRoute
+  '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
+  '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
   '/product-categories': typeof AuthenticatedProductCategoriesIndexRoute
@@ -428,7 +473,12 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/cash-bank/$accountName': typeof AuthenticatedCashBankAccountNameRoute
+  '/_authenticated/cash-bank/detail': typeof AuthenticatedCashBankDetailRoute
+  '/_authenticated/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
+  '/_authenticated/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
+  '/_authenticated/cash-bank/': typeof AuthenticatedCashBankIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
   '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
   '/_authenticated/product-categories/': typeof AuthenticatedProductCategoriesIndexRoute
@@ -477,7 +527,12 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
+    | '/cash-bank/$accountName'
+    | '/cash-bank/detail'
+    | '/cash-bank/receive'
+    | '/cash-bank/spend'
     | '/account'
+    | '/cash-bank'
     | '/contacts'
     | '/expenses'
     | '/product-categories'
@@ -524,7 +579,12 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
+    | '/cash-bank/$accountName'
+    | '/cash-bank/detail'
+    | '/cash-bank/receive'
+    | '/cash-bank/spend'
     | '/account'
+    | '/cash-bank'
     | '/contacts'
     | '/expenses'
     | '/product-categories'
@@ -572,7 +632,12 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/cash-bank/$accountName'
+    | '/_authenticated/cash-bank/detail'
+    | '/_authenticated/cash-bank/receive'
+    | '/_authenticated/cash-bank/spend'
     | '/_authenticated/account/'
+    | '/_authenticated/cash-bank/'
     | '/_authenticated/contacts/'
     | '/_authenticated/expenses/'
     | '/_authenticated/product-categories/'
@@ -749,11 +814,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContactsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cash-bank/': {
+      id: '/_authenticated/cash-bank/'
+      path: '/cash-bank'
+      fullPath: '/cash-bank'
+      preLoaderRoute: typeof AuthenticatedCashBankIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/account/': {
       id: '/_authenticated/account/'
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/spend': {
+      id: '/_authenticated/cash-bank/spend'
+      path: '/cash-bank/spend'
+      fullPath: '/cash-bank/spend'
+      preLoaderRoute: typeof AuthenticatedCashBankSpendRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/receive': {
+      id: '/_authenticated/cash-bank/receive'
+      path: '/cash-bank/receive'
+      fullPath: '/cash-bank/receive'
+      preLoaderRoute: typeof AuthenticatedCashBankReceiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/detail': {
+      id: '/_authenticated/cash-bank/detail'
+      path: '/cash-bank/detail'
+      fullPath: '/cash-bank/detail'
+      preLoaderRoute: typeof AuthenticatedCashBankDetailRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-bank/$accountName': {
+      id: '/_authenticated/cash-bank/$accountName'
+      path: '/cash-bank/$accountName'
+      fullPath: '/cash-bank/$accountName'
+      preLoaderRoute: typeof AuthenticatedCashBankAccountNameRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/users/': {
@@ -971,7 +1071,12 @@ const AuthenticatedAdminRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedCashBankAccountNameRoute: typeof AuthenticatedCashBankAccountNameRoute
+  AuthenticatedCashBankDetailRoute: typeof AuthenticatedCashBankDetailRoute
+  AuthenticatedCashBankReceiveRoute: typeof AuthenticatedCashBankReceiveRoute
+  AuthenticatedCashBankSpendRoute: typeof AuthenticatedCashBankSpendRoute
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
+  AuthenticatedCashBankIndexRoute: typeof AuthenticatedCashBankIndexRoute
   AuthenticatedContactsIndexRoute: typeof AuthenticatedContactsIndexRoute
   AuthenticatedExpensesIndexRoute: typeof AuthenticatedExpensesIndexRoute
   AuthenticatedProductCategoriesIndexRoute: typeof AuthenticatedProductCategoriesIndexRoute
@@ -1006,7 +1111,12 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedCashBankAccountNameRoute: AuthenticatedCashBankAccountNameRoute,
+  AuthenticatedCashBankDetailRoute: AuthenticatedCashBankDetailRoute,
+  AuthenticatedCashBankReceiveRoute: AuthenticatedCashBankReceiveRoute,
+  AuthenticatedCashBankSpendRoute: AuthenticatedCashBankSpendRoute,
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
+  AuthenticatedCashBankIndexRoute: AuthenticatedCashBankIndexRoute,
   AuthenticatedContactsIndexRoute: AuthenticatedContactsIndexRoute,
   AuthenticatedExpensesIndexRoute: AuthenticatedExpensesIndexRoute,
   AuthenticatedProductCategoriesIndexRoute:

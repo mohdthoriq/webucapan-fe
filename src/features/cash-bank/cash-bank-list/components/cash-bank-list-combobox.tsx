@@ -1,28 +1,27 @@
 import { useMemo, type ReactNode } from 'react'
-import type { Contact } from '@/types/domain/contact'
-import type { Product } from '@/types/domain/product'
-import { ComboboxBase } from '@/components/combobox-base'
-import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
+import type { Account, Contact } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
+import { ComboboxBase } from '@/components/combobox-base'
+import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
+import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 
-interface InvoiceFormComboboxProps {
+interface CashBankListComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
   limit?: number
-  type?: 'contact' | 'product'
+  type?: 'contact' | 'account'
   excludeIds?: string[]
   action?: ReactNode
   contactTypeId?: string
 }
 
-export function InvoiceFormCombobox({
+export function CashBankListCombobox({
   type = 'contact',
   ...props
-}: InvoiceFormComboboxProps) {
-  if (type === 'product') {
-    return <ProductCombobox {...props} />
+}: CashBankListComboboxProps) {
+  if (type === 'account') {
+    return <AccountCombobox {...props} />
   }
   return <ContactCombobox {...props} />
 }
@@ -34,7 +33,7 @@ function ContactCombobox({
   limit = 20,
   action,
   contactTypeId,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<CashBankListComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -64,7 +63,7 @@ function ContactCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari vendor...'
+      searchPlaceholder='Cari kontak...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -89,13 +88,13 @@ function ContactCombobox({
   )
 }
 
-function ProductCombobox({
+function AccountCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Produk',
+  placeholder = 'Pilih Akun',
   limit = 20,
   action,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<CashBankListComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -105,10 +104,10 @@ function ProductCombobox({
     loadMore,
     setSearchTerm,
   } = useComboboxQuery<
-    Product,
+    Account,
     { page?: number; limit?: number; name?: string }
   >({
-    queryHook: useProductsQuery,
+    queryHook: useAccountsQuery,
     limit,
   })
 
@@ -122,7 +121,7 @@ function ProductCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari produk...'
+      searchPlaceholder='Cari akun...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -137,8 +136,7 @@ function ProductCombobox({
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
           <span className='text-muted-foreground text-xs'>
-            SKU: {item.sku} • Rp{' '}
-            {Number(item.sale_price).toLocaleString('id-ID')}
+            {item.category.name}
           </span>
         </div>
       )}

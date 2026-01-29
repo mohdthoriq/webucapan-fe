@@ -4,7 +4,7 @@ import type { Contact } from '@/types/domain/contact'
 import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { ComboboxBase } from '../../../../components/combobox-base'
-import { useComboboxQuery } from '../hooks/use-combobox-query'
+import { useComboboxQuery } from '@/hooks/use-combobox-query'
 
 interface InvoiceFormComboboxProps {
   value?: string
