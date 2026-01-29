@@ -53,12 +53,12 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
           <p className='text-muted-foreground font-mono text-sm'>{data.code}</p>
         </div>
         <Button
-          variant='ghost'
+          variant='outline'
           size='sm'
           className='flex gap-2 border-none px-4 py-5'
           onClick={(e) => {
             e.stopPropagation()
-            // Action for Atur Akun can be added here
+            handleNavigate()
           }}
         >
           <Settings2 className='h-4 w-4' />
