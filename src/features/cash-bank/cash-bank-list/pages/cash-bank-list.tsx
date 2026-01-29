@@ -23,10 +23,10 @@ function CashBankListsContent() {
         <div className='flex justify-between'>
           <div className='mb-2 flex items-center gap-4'>
             <h2 className='text-4xl font-bold tracking-tight'>
-              {accountData?.accountName || 'Kas & Bank'}
+              {accountData?.accountName}
             </h2>
             <p className='text-muted-foreground text-2xl'>
-              {accountData?.accountCode || 'Kelola Kas & Bank'}
+              {accountData?.accountCode}
             </p>
           </div>
           <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>

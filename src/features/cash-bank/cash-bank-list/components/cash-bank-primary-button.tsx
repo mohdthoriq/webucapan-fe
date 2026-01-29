@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import {
   ChevronDown,
   CreditCard,
@@ -15,7 +16,8 @@ import {
 import { useCashBankLists } from './cash-bank-list-provider'
 
 export function CashBankPrimaryButton() {
-  const { setOpen } = useCashBankLists()
+  const { setOpen, paginationParams } = useCashBankLists()
+  const navigate = useNavigate()
 
   return (
     <DropdownMenu>
@@ -34,11 +36,35 @@ export function CashBankPrimaryButton() {
           <CreditCard className='h-4 w-4' />
           <span>Transfer Dana</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className='flex w-full items-center gap-4'>
+        <DropdownMenuItem
+          className='flex w-full items-center gap-4'
+          onClick={() =>
+            navigate({
+              to: '/cash-bank/spend',
+              search: paginationParams,
+              state: { bank_account_id: paginationParams?.id } as Record<
+                string,
+                unknown
+              >,
+            })
+          }
+        >
           <TrendingDown className='text-destructive h-4 w-4' />
           <span>Kirim Dana</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className='flex w-full items-center gap-4'>
+        <DropdownMenuItem
+          className='flex w-full items-center gap-4'
+          onClick={() =>
+            navigate({
+              to: '/cash-bank/receive',
+              search: paginationParams,
+              state: { bank_account_id: paginationParams?.id } as Record<
+                string,
+                unknown
+              >,
+            })
+          }
+        >
           <TrendingUp className='text-primary h-4 w-4' />
           <span>Terima Dana</span>
         </DropdownMenuItem>

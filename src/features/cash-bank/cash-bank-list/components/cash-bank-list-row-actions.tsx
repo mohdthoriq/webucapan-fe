@@ -1,4 +1,5 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import type { TransactionData } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -9,13 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useCashBankLists } from './cash-bank-list-provider'
 
 type DataTableRowActionsProps = {
   row: Row<TransactionData>
 }
-
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const cashBank = row.original
+  const navigate = useNavigate()
+  const { paginationParams } = useCashBankLists()
+  const search = useSearch({ strict: false }) as Record<string, unknown>
+
+  const accountId = paginationParams?.id || (search?.id as string)
 
   return (
     <>
@@ -34,25 +40,16 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              // navigate({
-              //   to: `/cash-bank/detail`,
-              //   search: {},
-              //   state: { currentRowId: cashBank.id } as Record<string, unknown>,
-              // })
+              navigate({
+                to: `/cash-bank/detail`,
+                state: {
+                  currentRowId: cashBank.id,
+                  accountId,
+                } as Record<string, unknown>,
+              })
             }}
           >
             Detail
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              // navigate({
-              //   to: `/cash-bank/edit`,
-              //   search: {},
-              //   state: { currentRowId: cashBank.id } as Record<string, unknown>,
-              // })
-            }}
-          >
-            Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator className='mb-2' />
         </DropdownMenuContent>

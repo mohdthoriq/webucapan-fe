@@ -59,7 +59,7 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
   return rangeWithDots
 }
 
-export const formatCurrency = (amount: number, currency: string) => {
+export const formatCurrency = (amount: number, currency?: string) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: currency || 'IDR',

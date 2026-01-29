@@ -1,54 +1,29 @@
-import { useLocation } from '@tanstack/react-router'
-import { FinanceNumberType } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
-import { useInvoiceForm } from './hooks/use-invoice-form'
-import {
-  useDefaultNumberingQuery,
-  useInvoiceFormQuery,
-} from './hooks/use-invoice-form-query'
-import { InvoiceFormActions } from './sections/form-actions'
-import { InvoiceFormHeader } from './sections/form-header'
-import { InvoiceFormItems } from './sections/form-items-table'
-import { InvoiceFormSummary } from './sections/form-summary'
+import { useCashBankForm } from './hooks/use-cash-bank-form'
+import { CashBankFormActions } from './sections/cash-bank-form-actions'
+import { CashBankFormHeader } from './sections/cash-bank-form-header'
+import { CashBankFormItems } from './sections/cash-bank-form-items'
+import { CashBankFormSummary } from './sections/cash-bank-form-summary'
 
-export function InvoiceFormPage() {
-  const location = useLocation()
+type CashBankFormPageProps = {
+  type: 'spend' | 'receive'
+}
 
-  const currentRowId = (location.state as { currentRowId?: string })
-    ?.currentRowId
-
-  const currentRow = useInvoiceFormQuery({ id: currentRowId })
-
-  const { data: invoiceAutoNumbering } = useDefaultNumberingQuery({
-    type: FinanceNumberType.sales_invoice,
+export function CashBankFormPage({ type }: CashBankFormPageProps) {
+  const cashBankForm = useCashBankForm({
+    type,
   })
 
-  const invoiceForm = useInvoiceForm({
-    currentRow: currentRow.data ?? undefined,
-    autoNumbering: invoiceAutoNumbering,
-  })
-
-  if (currentRowId && currentRow.isLoading) {
-    return (
-      <Card className='mb-8'>
-        <CardHeader>
-          <CardTitle>Memuat data invoice...</CardTitle>
-        </CardHeader>
-        <CardContent className='flex h-40 items-center justify-center font-medium'>
-          Mohon tunggu sebentar...
-        </CardContent>
-      </Card>
-    )
-  }
+  const title = type === 'spend' ? 'Kirim Dana' : 'Terima Dana'
 
   return (
     <Card className='mb-8'>
       <CardHeader>
         <CardTitle>
           <div className='flex items-center justify-between'>
-            {invoiceForm.isEdit ? 'Edit Tagihan Penjualan' : 'Tambah Tagihan Penjualan'}
+            {title}
             <Button variant='link' onClick={() => history.back()}>
               Kembali
             </Button>
@@ -56,21 +31,21 @@ export function InvoiceFormPage() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...invoiceForm.form}>
+        <Form {...cashBankForm.form}>
           <form
-            onSubmit={invoiceForm.form.handleSubmit(invoiceForm.onSubmit)}
+            onSubmit={cashBankForm.form.handleSubmit((data) =>
+              cashBankForm.onSubmit(data)
+            )}
             className='space-y-8'
-            id='invoice-form'
+            id='cash-bank-form'
           >
-            <InvoiceFormHeader />
+            <CashBankFormHeader type={type} />
             <div className='bg-border h-px' />
-            <InvoiceFormItems />
-            <InvoiceFormSummary />
-            <InvoiceFormActions
-              isEdit={invoiceForm.isEdit}
-              isSubmitting={invoiceForm.isSubmitting}
-              errorMessage={invoiceForm.errorMessage}
-            />
+            <CashBankFormItems />
+            <div className='bg-border h-px' />
+            <CashBankFormSummary />
+            <div className='bg-border h-px' />
+            <CashBankFormActions isSubmitting={cashBankForm.isSubmitting} />
           </form>
         </Form>
       </CardContent>

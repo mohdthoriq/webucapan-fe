@@ -32,7 +32,15 @@ export function InvoiceFormItems() {
 
   return (
     <div className='flex flex-col space-y-4'>
-      <h3 className='text-lg font-medium'>Item Tagihan</h3>
+      <div className='flex items-center justify-between'>
+        <h3 className='text-lg font-medium'>Item Tagihan</h3>
+        <Badge
+          variant={'outline'}
+          className='text-muted-foreground bg-secondary text-sm'
+        >
+          Total: {fields.length}
+        </Badge>
+      </div>
 
       <InvoiceItemsTable fields={fields} remove={remove} form={form} />
 
@@ -54,12 +62,6 @@ export function InvoiceFormItems() {
           onChange={(e) => setItemsAmount(e.target.valueAsNumber)}
           className='w-16 text-sm'
         />
-        <Badge
-          variant={'outline'}
-          className='text-muted-foreground bg-secondary text-sm'
-        >
-          Total: {fields.length}
-        </Badge>
       </div>
     </div>
   )

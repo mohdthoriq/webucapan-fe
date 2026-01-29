@@ -18,7 +18,7 @@ export function useCreateCashBankListMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('cash-bank-lists-toast')
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-lists', 'cash-bank-list', 'cash-bank-overview'] })
+      await queryClient.invalidateQueries({ queryKey: ['cash-bank-list', 'cash-bank-overview'] })
       toast.success('Transfer dana berhasil ditambahkan')
       setOpen(null)
     },
