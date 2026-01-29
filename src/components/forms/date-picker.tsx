@@ -7,17 +7,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 
 type DatePickerProps = {
   selected: Date | undefined
   onSelect: (date: Date | undefined) => void
   placeholder?: string
+  className?: string
 }
 
 export function DatePicker({
   selected,
   onSelect,
   placeholder = 'Pick a date',
+  className,
 }: DatePickerProps) {
   return (
     <Popover>
@@ -25,7 +28,7 @@ export function DatePicker({
         <Button
           variant='outline'
           data-empty={!selected}
-          className='data-[empty=true]:text-muted-foreground w-[240px] justify-start text-start font-normal'
+          className={cn('data-[empty=true]:text-muted-foreground w-[240px] justify-start text-start font-normal', className)}
         >
           {selected ? (
             format(selected, 'MMM d, yyyy')

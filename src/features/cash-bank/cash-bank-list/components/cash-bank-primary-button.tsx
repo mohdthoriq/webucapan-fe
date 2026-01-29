@@ -12,8 +12,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useCashBankLists } from './cash-bank-list-provider'
 
 export function CashBankPrimaryButton() {
+  const { setOpen } = useCashBankLists()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,7 +27,10 @@ export function CashBankPrimaryButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
-        <DropdownMenuItem className='flex w-full items-center gap-4'>
+        <DropdownMenuItem
+          className='flex w-full items-center gap-4'
+          onClick={() => setOpen('transfer')}
+        >
           <CreditCard className='h-4 w-4' />
           <span>Transfer Dana</span>
         </DropdownMenuItem>

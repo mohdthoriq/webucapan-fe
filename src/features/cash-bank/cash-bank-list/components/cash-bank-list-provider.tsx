@@ -1,11 +1,29 @@
-import { createContext, type ReactNode, useContext } from 'react'
-import type { CashBankTransaction, PaginationMeta, TransactionData } from '@/types'
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react'
+import type {
+  CashBankTransaction,
+  PaginationMeta,
+  TransactionData,
+} from '@/types'
+import useDialogState from '@/hooks/use-dialog-state'
 import {
   useCashBankListQuery,
   type CashBankListQueryParams,
-} from '../hooks/use-cash-bank-query'
+} from '../hooks/use-cash-bank-list-query'
+
+type CashBankListDialogType = 'edit' | 'transfer'
 
 type CashBankListsContextType = {
+  open: CashBankListDialogType | null
+  setOpen: (str: CashBankListDialogType | null) => void
+  currentRow: TransactionData | null
+  setCurrentRow: Dispatch<SetStateAction<TransactionData | null>>
   cashBankListsData: CashBankTransaction | null | undefined
   cashBankTransactionListsData: TransactionData[]
   pagination: PaginationMeta
@@ -25,6 +43,9 @@ export function CashBankListsProvider({
   children: ReactNode
   paginationParams?: CashBankListQueryParams
 }) {
+  const [open, setOpen] = useDialogState<CashBankListDialogType>(null)
+  const [currentRow, setCurrentRow] = useState<TransactionData | null>(null)
+
   const {
     data: cashBankListsData,
     isLoading: isLoadingCashBankLists,
@@ -32,6 +53,10 @@ export function CashBankListsProvider({
   } = useCashBankListQuery(paginationParams)
 
   const cashBankListsProviderValues = {
+    open,
+    setOpen,
+    currentRow,
+    setCurrentRow,
     cashBankListsData: cashBankListsData,
     cashBankTransactionListsData: cashBankListsData?.transactions ?? [],
     pagination: cashBankListsData?.pagination ?? {

@@ -2,7 +2,7 @@ import type { CashBankOverview } from '@/types'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { useCashBankOverviewQuery } from './hooks/use-cash-bank-query'
+import { useCashBankOverviewQuery } from './hooks/use-cash-bank-list-query'
 import { AccountChartCard } from './pages/account-chart-card'
 
 export default function CashBankOverviewPage() {

@@ -1,4 +1,11 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react'
 import type { PaginationMeta, AccountCategory } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useAccountCategoriesQuery } from '../hooks/use-account-categories-query'
@@ -9,7 +16,7 @@ type AccountCategoriesContextType = {
   open: AccountCategoriesDialogType | null
   setOpen: (str: AccountCategoriesDialogType | null) => void
   currentRow: AccountCategory | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<AccountCategory | null>>
+  setCurrentRow: Dispatch<SetStateAction<AccountCategory | null>>
   accountCategoriesData: AccountCategory[]
   pagination: PaginationMeta
   isLoading: boolean
@@ -24,7 +31,7 @@ export function AccountCategoriesProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   paginationParams?: { page?: number; limit?: number; name?: string }
 }) {
   const [open, setOpen] = useDialogState<AccountCategoriesDialogType>(null)

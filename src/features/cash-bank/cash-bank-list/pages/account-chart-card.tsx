@@ -55,7 +55,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
         <Button
           variant='ghost'
           size='sm'
-          className='flex h-auto gap-2 border-none px-4 py-8'
+          className='flex gap-2 border-none px-4 py-5'
           onClick={(e) => {
             e.stopPropagation()
             // Action for Atur Akun can be added here
@@ -65,7 +65,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
           Atur Akun
         </Button>
       </div>
-      <CardContent className='pt-6'>
+      <CardContent>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
           <div className='flex flex-col justify-center gap-6 md:col-span-1'>
             <div className='flex flex-col'>

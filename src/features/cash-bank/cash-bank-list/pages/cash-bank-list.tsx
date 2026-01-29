@@ -1,10 +1,11 @@
 import { getRouteApi, useLocation } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { CashBankListDialogs } from '../components/cash-bank-list-dialogs'
 import { CashBankListsProvider } from '../components/cash-bank-list-provider'
 import { CashBankListsTable } from '../components/cash-bank-list-table'
 import { CashBankPrimaryButton } from '../components/cash-bank-primary-button'
-import type { CashBankListQueryParams } from '../hooks/use-cash-bank-query'
+import type { CashBankListQueryParams } from '../hooks/use-cash-bank-list-query'
 
 const route = getRouteApi('/_authenticated/cash-bank/$accountName')
 
@@ -39,6 +40,7 @@ function CashBankListsContent() {
       </CardHeader>
       <CardContent>
         <CashBankListsTable search={search} navigate={navigate} />
+        <CashBankListDialogs />
       </CardContent>
     </Card>
   )
