@@ -76,10 +76,7 @@ export function useLoginMutation({
         }
       }
 
-      toast.error(
-        'Login gagal. Silakan periksa email dan kata sandi Anda.' +
-          error.message
-      )
+      toast.error('Login gagal. Silakan periksa email dan kata sandi Anda.')
     },
   })
 }
