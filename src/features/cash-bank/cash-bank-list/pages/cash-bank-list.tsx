@@ -65,6 +65,12 @@ function CashBankLists() {
       : undefined,
     date_to: search.date_to ? new Date(search.date_to as string) : undefined,
     search: (search.search as string) || undefined,
+    tag: (search.tag as string) || undefined,
+    reference_type: (search.reference_type as string) || undefined,
+    total_from: search.total_from
+      ? parseInt(search.total_from as string)
+      : undefined,
+    total_to: search.total_to ? parseInt(search.total_to as string) : undefined,
   }
 
   // Effect to persist accountId and accountCode in search params if they exist in state but not in search

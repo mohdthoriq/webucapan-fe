@@ -25,6 +25,7 @@ export function useCashBankForm({ type }: UseCashBankFormProps) {
       description: '',
       contact_id: null,
       reference: '',
+      tags: null,
       include_tax: false,
       tax_total: 0,
       items: [

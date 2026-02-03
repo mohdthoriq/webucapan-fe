@@ -20,8 +20,10 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { DatePicker } from '@/components/forms/date-picker'
 import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 
 type CashBankListActionDialogProps = {
   open: boolean
@@ -33,6 +35,7 @@ export function CashBankListActionDialog({
   onOpenChange,
 }: CashBankListActionDialogProps) {
   const { form, onSubmit, isSubmitting } = useCashBankListForm()
+  const { data: tags } = useTagsQuery()
 
   return (
     <Dialog
@@ -89,6 +92,31 @@ export function CashBankListActionDialog({
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder='Pilih akun tujuan'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+               <FormField
+                control={form.control}
+                name='tags'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tag</FormLabel>
+                    <FormControl>
+                      <MultiSelectDropdown
+                        options={
+                          tags?.data.map((tag) => ({
+                            label: tag.name,
+                            value: tag.id,
+                          })) || []
+                        }
+                        selected={field.value || []}
+                        onChange={field.onChange}
+                        placeholder='Pilih tag'
+                        disabled={tags?.data.length === 0}
                       />
                     </FormControl>
                     <FormMessage />

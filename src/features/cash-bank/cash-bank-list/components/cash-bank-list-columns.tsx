@@ -56,7 +56,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       const { description } = row.original
       return (
         <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{description}</LongText>
+          <LongText className='truncate'>{description || '-'}</LongText>
         </div>
       )
     },

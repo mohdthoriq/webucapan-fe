@@ -107,11 +107,11 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
+        searchPlaceholder='Cari penjualan...'
         searchKey='name'
-      />
-      <div className='flex flex-col gap-2 md:flex-row md:items-center'>
+      >
         <InvoiceListFilter search={search} navigate={navigate} />
+      </DataTableToolbar>
         <Tabs
           defaultValue=''
           value={search.payment_status as string}
@@ -126,7 +126,6 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
             <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
           </TabsList>
         </Tabs>
-      </div>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

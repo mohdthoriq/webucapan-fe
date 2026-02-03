@@ -11,11 +11,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { DatePicker } from '@/components/forms/date-picker'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { CashBankListCombobox } from '../../cash-bank-list/components/cash-bank-list-combobox'
 
 export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
   const { control } = useFormContext()
   const { openDialog } = useGlobalDialogStore()
+  const { data: tags } = useTagsQuery()
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -81,6 +84,31 @@ export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
             <FormLabel>No. Referensi</FormLabel>
             <FormControl>
               <Input placeholder='Contoh: REF001' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name='tags'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Tag</FormLabel>
+            <FormControl>
+              <MultiSelectDropdown
+                options={
+                  tags?.data.map((tag) => ({
+                    label: tag.name,
+                    value: tag.id,
+                  })) || []
+                }
+                selected={field.value || []}
+                onChange={field.onChange}
+                placeholder='Pilih tag'
+                disabled={tags?.data.length === 0}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

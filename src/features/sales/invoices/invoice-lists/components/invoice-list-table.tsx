@@ -109,24 +109,23 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         table={table}
         searchPlaceholder='Cari satuan...'
         searchKey='name'
-      />
-      <div className='flex flex-col gap-2 md:flex-row md:items-center'>
+      >
         <InvoiceListFilter search={search} navigate={navigate} />
-        <Tabs
-          defaultValue=''
-          value={search.payment_status as string}
-          onValueChange={(value) =>
-            navigate({ search: { ...search, payment_status: value } })
-          }
-        >
-          <TabsList className='h-10'>
-            <TabsTrigger value=''>Semua</TabsTrigger>
-            <TabsTrigger value='paid'>Lunas</TabsTrigger>
-            <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
-            <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
+      </DataTableToolbar>
+      <Tabs
+        defaultValue=''
+        value={search.payment_status as string}
+        onValueChange={(value) =>
+          navigate({ search: { ...search, payment_status: value } })
+        }
+      >
+        <TabsList className='h-10'>
+          <TabsTrigger value=''>Semua</TabsTrigger>
+          <TabsTrigger value='paid'>Lunas</TabsTrigger>
+          <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
+          <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
+        </TabsList>
+      </Tabs>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

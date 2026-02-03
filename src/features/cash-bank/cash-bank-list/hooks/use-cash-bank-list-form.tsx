@@ -12,6 +12,7 @@ export function useCashBankListForm() {
     defaultValues: {
       from_account_id: '',
       to_account_id: '',
+      tags: null,
       amount: 0,
       date: new Date(),
       description: '',
