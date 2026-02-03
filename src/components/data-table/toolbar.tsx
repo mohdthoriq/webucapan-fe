@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTableFacetedFilter } from './faceted-filter'
 import { DataTableViewOptions } from './view-options'
+import { type ReactNode } from 'react'
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -18,6 +19,7 @@ type DataTableToolbarProps<TData> = {
       icon?: React.ComponentType<{ className?: string }>
     }[]
   }[]
+  children?: ReactNode
 }
 
 export function DataTableToolbar<TData>({
@@ -25,6 +27,7 @@ export function DataTableToolbar<TData>({
   searchPlaceholder = 'Filter...',
   searchKey,
   filters = [],
+  children,
 }: DataTableToolbarProps<TData>) {
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter
@@ -65,6 +68,7 @@ export function DataTableToolbar<TData>({
             )
           })}
         </div>
+        {children}
         {isFiltered && (
           <Button
             variant='ghost'

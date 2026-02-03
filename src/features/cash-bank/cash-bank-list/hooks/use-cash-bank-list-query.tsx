@@ -28,6 +28,10 @@ export interface CashBankListQueryParams {
   date_to?: Date
   search?: string
   id?: string
+  tag?: string
+  reference_type?: string
+  total_from?: number
+  total_to?: number
 }
 
 export function useCashBankListQuery(params?: CashBankListQueryParams) {
@@ -41,6 +45,10 @@ export function useCashBankListQuery(params?: CashBankListQueryParams) {
       params?.date_from,
       params?.date_to,
       params?.id,
+      params?.tag,
+      params?.reference_type,
+      params?.total_from,
+      params?.total_to,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -54,6 +62,15 @@ export function useCashBankListQuery(params?: CashBankListQueryParams) {
 
         ...(params?.order ? { order: params.order } : {}),
         ...(params?.id ? { id: params.id } : {}),
+
+        ...(params?.tag ? { tag: params.tag } : {}),
+        ...(params?.reference_type
+          ? { reference_type: params.reference_type }
+          : {}),
+        ...(params?.total_from
+          ? { total_from: params.total_from.toString() }
+          : {}),
+        ...(params?.total_to ? { total_to: params.total_to.toString() } : {}),
       })
 
       const url = queryParams.toString()

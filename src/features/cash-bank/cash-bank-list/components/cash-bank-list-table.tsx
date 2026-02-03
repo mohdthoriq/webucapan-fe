@@ -27,6 +27,7 @@ import {
 // import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { cashBankListsColumns } from './cash-bank-list-columns'
+import { CashBankListFilter } from './cash-bank-list-filter'
 import { useCashBankLists } from './cash-bank-list-provider'
 
 type DataTableProps = {
@@ -108,7 +109,9 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
         table={table}
         searchPlaceholder='Cari satuan...'
         searchKey='name'
-      />
+      >
+        <CashBankListFilter search={search} navigate={navigate} />
+      </DataTableToolbar>
       {/* <div className='flex flex-col gap-2 md:flex-row md:items-center'>
         <Tabs
           defaultValue=''

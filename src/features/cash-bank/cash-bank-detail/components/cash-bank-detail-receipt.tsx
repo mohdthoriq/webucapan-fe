@@ -69,7 +69,7 @@ export function CashBankDetailReceipt({
 
       <CardContent className='space-y-8 pt-6'>
         {/* Header Info */}
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5'>
           <div className='space-y-2'>
             <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
               Akun Kas&Bank
@@ -108,6 +108,30 @@ export function CashBankDetailReceipt({
             <p className='text-md font-semibold'>
               {transaction?.contact_name || '-'}
             </p>
+          </div>
+
+          <div className='space-y-2'>
+            <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
+              Tag
+            </p>
+            <div className='flex flex-wrap gap-2'>
+              {transaction?.tags && transaction.tags.length > 0 ? (
+                transaction.tags.map((tag, index) => {
+                  const tagName = typeof tag === 'object' ? tag.name : tag
+                  return (
+                    <Badge
+                      key={index}
+                      variant='outline'
+                      className='px-2 py-1 text-[10px]'
+                    >
+                      {tagName}
+                    </Badge>
+                  )
+                })
+              ) : (
+                <span className='text-md font-semibold'>-</span>
+              )}
+            </div>
           </div>
 
           <div className='space-y-2'>

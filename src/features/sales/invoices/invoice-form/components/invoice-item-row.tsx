@@ -90,7 +90,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                 }}
                 action={
                   <FormShortcutButton
-                    title='Tambah Produk Baru'
+                    title='Tambah Produk'
                     onClick={() =>
                       openDialog('product', {
                         onSuccess: (data: Product) => {

@@ -1,3 +1,5 @@
+import type { Tag } from '@/types'
+
 export interface CashBankTransactionLine {
   id: string
   account_id: string
@@ -38,6 +40,7 @@ export interface CashBankTransactionDetail {
   contact_name: string
   contact_id: string
   description: string
+  tags: (Tag | string)[]
   lines: CashBankTransactionLine[]
   total: number
   audit: CashBankTransactionAudit

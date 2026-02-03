@@ -100,7 +100,7 @@ export function MultiSelectDropdown({
         <Command>
           <CommandInput placeholder={`Cari...`} />
           <CommandList>
-            <CommandEmpty>Tidak ada hasil.</CommandEmpty>
+            <CommandEmpty>Tidak ada data.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
