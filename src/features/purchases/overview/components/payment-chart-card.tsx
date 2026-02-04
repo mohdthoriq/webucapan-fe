@@ -13,7 +13,7 @@ import {
 } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
+import { useTotalPaymentsQuery } from '../hooks/use-purchases-total-payments-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
@@ -120,7 +120,7 @@ export function PaymentChartCard({
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
-                tickCount={8}
+                tickCount={7}
                 axisLine={false}
                 tickFormatter={formatYAxis}
                 dx={1}

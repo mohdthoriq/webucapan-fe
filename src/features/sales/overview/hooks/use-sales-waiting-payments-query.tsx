@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { PaymentSent, Period } from '../types/purchases-overview'
+import type { WaitingPayments } from '../types/sales-overview'
 
-interface TotalPaymentsQueryParams {
+interface WaitingPaymentsQueryParams {
   date_from: string
   date_to: string
-  period: Period
+  period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
+export function useWaitingPaymentsQuery(params?: WaitingPaymentsQueryParams) {
   return useQuery({
     queryKey: [
-      'total-payments',
+      'sales-waiting-payments',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/purchase-overview/payment-sent?${queryParams.toString()}`
-        : '/purchase-overview/payment-sent'
-      const response = await apiClient.get<ApiResponse<PaymentSent>>(url)
+        ? `/sales-overview/waiting-payment?${queryParams.toString()}`
+        : '/sales-overview/waiting-payment'
+      const response = await apiClient.get<ApiResponse<WaitingPayments>>(url)
 
       return response.data.data
     },

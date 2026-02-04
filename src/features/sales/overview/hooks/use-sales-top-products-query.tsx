@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { RecentUnpaid } from '../types/sales-overview'
+import type { TopSellingProducts } from '../types/sales-overview'
 
-interface RecentUnpaidQueryParams {
+interface TopProductsQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
+export function useTopProductsQuery(params?: TopProductsQueryParams) {
   return useQuery({
     queryKey: [
-      'recent-unpaid',
+      'sales-top-products',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/recent-unpaid?${queryParams.toString()}`
-        : '/sales-overview/recent-unpaid'
-      const response = await apiClient.get<ApiResponse<RecentUnpaid>>(url)
+        ? `/sales-overview/top-products?${queryParams.toString()}`
+        : '/sales-overview/top-products'
+      const response = await apiClient.get<ApiResponse<TopSellingProducts>>(url)
 
       return response.data.data
     },

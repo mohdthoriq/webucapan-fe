@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
-import { useUnpaidPurchaseOverviewQuery } from '../hooks/use-unpaid-purchase-overview-query'
+import { useExpenseOverviewQuery } from '../hooks/use-expense-overview-query'
 
-export function BillsOverview() {
+export function ExpenseOverview() {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
@@ -17,7 +17,7 @@ export function BillsOverview() {
     : undefined
   const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
 
-  const { data } = useUnpaidPurchaseOverviewQuery({
+  const { data } = useExpenseOverviewQuery({
     period,
     date_from: date_from as string,
     date_to: date_to as string,
@@ -32,9 +32,7 @@ export function BillsOverview() {
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-        <CardTitle className='text-base font-semibold'>
-          TAGIHAN YANG PERLU KAMU BAYAR
-        </CardTitle>
+        <CardTitle className='text-base font-semibold'>PENGELUARAN</CardTitle>
         <CardAction
           period={period}
           dateRange={dateRange}
@@ -47,7 +45,7 @@ export function BillsOverview() {
         <div className='mb-4 flex-1'>
           <div className='flex items-center justify-end gap-2'>
             <span className='text-muted-foreground text-sm'>
-              {data?.count ?? 0} Menunggu pembayaran
+              Total Pengeluaran
             </span>
             <span className='text-sm font-semibold'>
               {formatCurrency(data?.value ?? 0)}
@@ -56,37 +54,43 @@ export function BillsOverview() {
         </div>
 
         <ResponsiveContainer width='100%' height={280}>
-          <BarChart data={chartData}>
-            <CartesianGrid stroke='#e5e5e5' className='stroke-[0.2px]' />
+          <AreaChart data={chartData}>
+            <defs>
+              <linearGradient id='cashGradient' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='5%' stopColor='#ef4444' stopOpacity={0.8} />
+                <stop offset='95%' stopColor='#ef4444' stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
             <XAxis
               dataKey='label'
-              stroke='#71717a'
+              stroke='#888888'
               fontSize={12}
               tickLine={false}
               axisLine={false}
               height={chartData.length > 10 ? 60 : 40}
               dy={15}
-              tickMargin={10}
+              tickMargin={12}
               interval={chartData.length > 10 ? 0 : 'preserveStartEnd'}
               angle={chartData.length > 10 ? -45 : 0}
               textAnchor={chartData.length > 10 ? 'end' : 'middle'}
             />
             <YAxis
-              stroke='#71717a'
+              stroke='#888888'
               fontSize={12}
               tickLine={false}
-              axisLine={false}
               tickCount={7}
+              axisLine={false}
               tickFormatter={formatYAxis}
               dx={-12}
             />
-            <Bar
+            <Area
+              type='monotone'
               dataKey='value'
-              fill='#ec4899'
-              radius={[4, 4, 0, 0]}
-              className='fill-red-400'
+              stroke='#ffcd56'
+              strokeWidth={2}
+              fill='#ffcd56'
             />
-          </BarChart>
+          </AreaChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

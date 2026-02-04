@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
+import { useTotalPaymentsQuery } from '../hooks/use-sales-total-payments-query'
 import type { Period } from '../types/sales-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'

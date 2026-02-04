@@ -1,18 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
+import type { DashboardData } from '@/types/domain/dashboard'
 import apiClient from '@/lib/api-client'
-import type { RecentUnpaid } from '../types/purchases-overview'
+import type { Period } from '@/features/sales/overview/types/sales-overview'
 
-interface RecentUnpaidQueryParams {
+interface CashBankOverviewQueryParams {
   date_from: string
   date_to: string
-  period: 'day' | 'week' | 'month' | 'year'
+  period: Period
 }
 
-export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
+export function useCashBankOverviewQuery(params?: CashBankOverviewQueryParams) {
   return useQuery({
     queryKey: [
-      'recent-unpaid',
+      'cash-bank-overview',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +26,9 @@ export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/recent-unpaid?${queryParams.toString()}`
-        : '/sales-overview/recent-unpaid'
-      const response = await apiClient.get<ApiResponse<RecentUnpaid>>(url)
+        ? `/dashboard/cash-bank?${queryParams.toString()}`
+        : '/dashboard/cash-bank'
+      const response = await apiClient.get<ApiResponse<DashboardData>>(url)
 
       return response.data.data
     },

@@ -6,9 +6,9 @@ import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
-import { useUnpaidPurchaseOverviewQuery } from '../hooks/use-unpaid-purchase-overview-query'
+import { useSalesOverviewQuery } from '../hooks/use-sales-overview-query'
 
-export function BillsOverview() {
+export function SalesDashboardOverview() {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
@@ -17,7 +17,7 @@ export function BillsOverview() {
     : undefined
   const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
 
-  const { data } = useUnpaidPurchaseOverviewQuery({
+  const { data } = useSalesOverviewQuery({
     period,
     date_from: date_from as string,
     date_to: date_to as string,
@@ -33,7 +33,7 @@ export function BillsOverview() {
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <CardTitle className='text-base font-semibold'>
-          TAGIHAN YANG PERLU KAMU BAYAR
+          PENJUALAN
         </CardTitle>
         <CardAction
           period={period}
@@ -47,8 +47,8 @@ export function BillsOverview() {
         <div className='mb-4 flex-1'>
           <div className='flex items-center justify-end gap-2'>
             <span className='text-muted-foreground text-sm'>
-              {data?.count ?? 0} Menunggu pembayaran
-            </span>
+              Penjualan 
+            </span> 
             <span className='text-sm font-semibold'>
               {formatCurrency(data?.value ?? 0)}
             </span>
@@ -84,7 +84,7 @@ export function BillsOverview() {
               dataKey='value'
               fill='#ec4899'
               radius={[4, 4, 0, 0]}
-              className='fill-red-400'
+              className='fill-green-400'
             />
           </BarChart>
         </ResponsiveContainer>

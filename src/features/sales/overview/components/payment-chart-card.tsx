@@ -13,7 +13,7 @@ import {
 } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTotalPaymentsQuery } from '../hooks/use-total-payments-query'
+import { useTotalPaymentsQuery } from '../hooks/use-sales-total-payments-query'
 import type { Period } from '../types/sales-overview'
 import { CardAction } from './card-action'
 
@@ -120,24 +120,20 @@ export function PaymentChartCard({
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
-                tickCount={8}
+                tickCount={7}
                 axisLine={false}
                 tickFormatter={formatYAxis}
                 dx={1}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#18181b',
-                  border: '1px solid #27272a',
-                  borderRadius: 'var(--radius)',
-                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                  backgroundColor: '#18181b', // zinc-950
+                  border: '1px solid #27272a', // zinc-800
+                  borderRadius: '8px',
+                  color: '#fafafa',
                 }}
                 itemStyle={{ color: '#fafafa' }}
-                cursor={{
-                  stroke: '#71717a',
-                  strokeWidth: 1,
-                  strokeDasharray: '4 4',
-                }}
+                cursor={{ fill: '#27272a', opacity: 0.4 }}
                 formatter={(value: number | undefined) => [
                   formatTooltipValue(value || 0),
                   'Pembayaran',

@@ -4,7 +4,7 @@ import type { DateRange } from 'react-day-picker'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTopCustomerQuery } from '../hooks/use-top-vendor-query'
+import { useTopCustomerQuery } from '../hooks/use-purchases-top-vendor-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 
