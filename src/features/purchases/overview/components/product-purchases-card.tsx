@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useTopProductsQuery } from '../hooks/use-top-products-query'
+import { useTopProductsQuery } from '../hooks/use-purchases-top-products-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 

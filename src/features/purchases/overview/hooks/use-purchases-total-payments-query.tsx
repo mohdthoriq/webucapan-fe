@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { RecentUnpaid } from '../types/sales-overview'
+import type { PaymentSent, Period } from '../types/purchases-overview'
 
-interface RecentUnpaidQueryParams {
+interface TotalPaymentsQueryParams {
   date_from: string
   date_to: string
-  period: 'day' | 'week' | 'month' | 'year'
+  period: Period
 }
 
-export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
+export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
   return useQuery({
     queryKey: [
-      'recent-unpaid',
+      'purchases-total-payments',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/recent-unpaid?${queryParams.toString()}`
-        : '/sales-overview/recent-unpaid'
-      const response = await apiClient.get<ApiResponse<RecentUnpaid>>(url)
+        ? `/purchase-overview/payment-sent?${queryParams.toString()}`
+        : '/purchase-overview/payment-sent'
+      const response = await apiClient.get<ApiResponse<PaymentSent>>(url)
 
       return response.data.data
     },

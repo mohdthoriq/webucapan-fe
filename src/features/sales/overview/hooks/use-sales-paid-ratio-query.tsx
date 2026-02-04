@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { RecentUnpaid } from '../types/purchases-overview'
+import type { PaidRatio } from '../types/sales-overview'
 
-interface RecentUnpaidQueryParams {
+interface PaidRatioQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
+export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
   return useQuery({
     queryKey: [
-      'recent-unpaid',
+      'sales-paid-ratio',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/recent-unpaid?${queryParams.toString()}`
-        : '/sales-overview/recent-unpaid'
-      const response = await apiClient.get<ApiResponse<RecentUnpaid>>(url)
+        ? `/sales-overview/paid-ratio?${queryParams.toString()}`
+        : '/sales-overview/paid-ratio'
+      const response = await apiClient.get<ApiResponse<PaidRatio>>(url)
 
       return response.data.data
     },

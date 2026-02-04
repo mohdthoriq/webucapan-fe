@@ -1,17 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { Overdue } from '../types/purchases-overview'
+import type { RecentUnpaid } from '../types/sales-overview'
 
-interface OverdueQueryParams {
+interface RecentUnpaidQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useOverdueQuery(params?: OverdueQueryParams) {
+export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
   return useQuery({
-    queryKey: ['overdue', params?.date_from, params?.date_to, params?.period],
+    queryKey: [
+      'sales-recent-unpaid',
+      params?.date_from,
+      params?.date_to,
+      params?.period,
+    ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
@@ -20,9 +25,9 @@ export function useOverdueQuery(params?: OverdueQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/purchase-overview/overdue?${queryParams.toString()}`
-        : '/purchase-overview/overdue'
-      const response = await apiClient.get<ApiResponse<Overdue>>(url)
+        ? `/sales-overview/recent-unpaid?${queryParams.toString()}`
+        : '/sales-overview/recent-unpaid'
+      const response = await apiClient.get<ApiResponse<RecentUnpaid>>(url)
 
       return response.data.data
     },

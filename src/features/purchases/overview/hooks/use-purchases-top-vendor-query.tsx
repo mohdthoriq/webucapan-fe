@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { WaitingPayments } from '../types/purchases-overview'
+import type { TopVendor } from '../types/purchases-overview'
 
-interface WaitingPaymentsQueryParams {
+interface TopCustomerQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useWaitingPaymentsQuery(params?: WaitingPaymentsQueryParams) {
+export function useTopCustomerQuery(params?: TopCustomerQueryParams) {
   return useQuery({
     queryKey: [
-      'waiting-payments',
+      'purchases-top-customer',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useWaitingPaymentsQuery(params?: WaitingPaymentsQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/purchase-overview/waiting-payment?${queryParams.toString()}`
-        : '/purchase-overview/waiting-payment'
-      const response = await apiClient.get<ApiResponse<WaitingPayments>>(url)
+        ? `/purchase-overview/top-vendors?${queryParams.toString()}`
+        : '/purchase-overview/top-vendors'
+      const response = await apiClient.get<ApiResponse<TopVendor>>(url)
 
       return response.data.data
     },

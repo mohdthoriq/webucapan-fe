@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { useWaitingPaymentsQuery } from '../hooks/use-waiting-payments-query'
+import { useWaitingPaymentsQuery } from '../hooks/use-sales-waiting-payments-query'
 import type { Period } from '../types/sales-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'

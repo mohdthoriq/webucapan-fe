@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { Overdue } from '../types/sales-overview'
+import type { Overdue } from '../types/purchases-overview'
 
 interface OverdueQueryParams {
   date_from: string
@@ -11,7 +11,7 @@ interface OverdueQueryParams {
 
 export function useOverdueQuery(params?: OverdueQueryParams) {
   return useQuery({
-    queryKey: ['overdue', params?.date_from, params?.date_to, params?.period],
+    queryKey: ['purchases-overdue', params?.date_from, params?.date_to, params?.period],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
@@ -20,8 +20,8 @@ export function useOverdueQuery(params?: OverdueQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/overdue?${queryParams.toString()}`
-        : '/sales-overview/overdue'
+        ? `/purchase-overview/overdue?${queryParams.toString()}`
+        : '/purchase-overview/overdue'
       const response = await apiClient.get<ApiResponse<Overdue>>(url)
 
       return response.data.data

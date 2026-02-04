@@ -12,7 +12,7 @@ interface TotalPurchasesQueryParams {
 export function useTotalPurchasesQuery(params?: TotalPurchasesQueryParams) {
   return useQuery({
     queryKey: [
-      'total-purchases',
+      'purchases-total-purchases',
       params?.date_from,
       params?.date_to,
       params?.period,

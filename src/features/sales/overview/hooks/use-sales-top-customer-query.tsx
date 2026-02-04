@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
-import type { TopSellingProducts } from '../types/sales-overview'
+import type { TopCustomer } from '../types/sales-overview'
 
-interface TopProductsQueryParams {
+interface TopCustomerQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useTopProductsQuery(params?: TopProductsQueryParams) {
+export function useTopCustomerQuery(params?: TopCustomerQueryParams) {
   return useQuery({
     queryKey: [
-      'top-products',
+      'sales-top-customer',
       params?.date_from,
       params?.date_to,
       params?.period,
@@ -25,9 +25,9 @@ export function useTopProductsQuery(params?: TopProductsQueryParams) {
       })
 
       const url = queryParams.toString()
-        ? `/sales-overview/top-products?${queryParams.toString()}`
-        : '/sales-overview/top-products'
-      const response = await apiClient.get<ApiResponse<TopSellingProducts>>(url)
+        ? `/sales-overview/top-customers?${queryParams.toString()}`
+        : '/sales-overview/top-customers'
+      const response = await apiClient.get<ApiResponse<TopCustomer>>(url)
 
       return response.data.data
     },
