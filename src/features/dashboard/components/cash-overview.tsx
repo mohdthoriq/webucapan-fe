@@ -1,60 +1,60 @@
+import { useState } from 'react'
+import { format } from 'date-fns'
+import type { DateRange } from 'react-day-picker'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-// Dummy data for cash flow chart
-const cashFlowData = [
-  { date: 'Jun', amount: 27000000 },
-  { date: 'Jul', amount: 35000000 },
-  { date: 'Aug', amount: 32000000 },
-  { date: 'Sep', amount: 30000000 },
-  { date: 'Oct', amount: 33000000 },
-  { date: 'Nov', amount: 27000000 },
-]
+import { CardAction } from '@/features/purchases/overview/components/card-action'
+import type { Period } from '@/features/purchases/overview/types/purchases-overview'
+import { useCashBankOverviewQuery } from '../hooks/use-cash-bank-overview-query'
 
 export function CashOverview() {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('id-ID').format(value)
+  const [period, setPeriod] = useState<Period>('month')
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+
+  const date_from = dateRange?.from
+    ? format(dateRange.from, 'yyyy-MM-dd')
+    : undefined
+  const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
+
+  const { data } = useCashBankOverviewQuery({
+    period,
+    date_from: date_from as string,
+    date_to: date_to as string,
+  })
+
+  const chartData = data?.chart_data ?? []
+
+  const formatYAxis = (value: number) => {
+    return formatNumber(value)
   }
 
   return (
     <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0'>
         <CardTitle className='text-base font-semibold'>CASH</CardTitle>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          strokeWidth='2'
-          className='text-muted-foreground h-4 w-4'
-        >
-          <circle cx='12' cy='12' r='1' />
-          <circle cx='12' cy='5' r='1' />
-          <circle cx='12' cy='19' r='1' />
-        </svg>
+        <CardAction
+          period={period}
+          dateRange={dateRange}
+          setPeriod={setPeriod}
+          setDateRange={setDateRange}
+          onChange={(value) => setPeriod(value)}
+        />
       </CardHeader>
       <CardContent>
-        <div className='mb-4 space-y-2'>
-          <div className='flex items-center justify-between'>
+        <div className='mb-4 flex-1'>
+          <div className='flex items-center justify-end gap-2'>
             <span className='text-muted-foreground text-sm'>
               Saldo di Manajerku
             </span>
             <span className='text-sm font-semibold'>
-              {formatCurrency(27064663)}
-            </span>
-          </div>
-          <div className='flex items-center justify-between'>
-            <span className='text-muted-foreground text-sm'>Saldo di bank</span>
-            <span className='text-sm font-semibold'>
-              {formatCurrency(5918038)}
+              {formatCurrency(data?.value ?? 0)}
             </span>
           </div>
         </div>
 
-        <ResponsiveContainer width='100%' height={200}>
-          <AreaChart data={cashFlowData}>
+        <ResponsiveContainer width='100%' height={280}>
+          <AreaChart data={chartData}>
             <defs>
               <linearGradient id='cashGradient' x1='0' y1='0' x2='0' y2='1'>
                 <stop offset='5%' stopColor='#3b82f6' stopOpacity={0.8} />
@@ -62,22 +62,30 @@ export function CashOverview() {
               </linearGradient>
             </defs>
             <XAxis
-              dataKey='date'
+              dataKey='label'
               stroke='#888888'
               fontSize={12}
               tickLine={false}
               axisLine={false}
+              height={chartData.length > 10 ? 60 : 40}
+              dy={15}
+              tickMargin={12}
+              interval={chartData.length > 10 ? 0 : 'preserveStartEnd'}
+              angle={chartData.length > 10 ? -45 : 0}
+              textAnchor={chartData.length > 10 ? 'end' : 'middle'}
             />
             <YAxis
               stroke='#888888'
               fontSize={12}
               tickLine={false}
+              tickCount={7}
               axisLine={false}
-              tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+              tickFormatter={formatYAxis}
+              dx={-12}
             />
             <Area
               type='monotone'
-              dataKey='amount'
+              dataKey='value'
               stroke='#3b82f6'
               strokeWidth={2}
               fill='url(#cashGradient)'

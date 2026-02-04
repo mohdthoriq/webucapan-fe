@@ -128,7 +128,7 @@ export function SalesChartCard({
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
-                tickCount={6}
+                tickCount={7}
                 axisLine={false}
                 tickFormatter={formatYAxis}
               />

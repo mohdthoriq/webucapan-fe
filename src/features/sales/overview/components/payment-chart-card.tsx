@@ -120,7 +120,7 @@ export function PaymentChartCard({
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
-                tickCount={8}
+                tickCount={7}
                 axisLine={false}
                 tickFormatter={formatYAxis}
                 dx={1}

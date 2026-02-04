@@ -55,10 +55,6 @@ export function SalesChartCard({
   const { data, isLoading } = useTotalPurchasesQuery(queryParams)
   const chartData = data?.chart_data || []
 
-  // Mocking value2 if it doesn't exist to at least show the legend structure or if we want to show 0
-  // If the backend returns value2, it will be used.
-  // We can assume value is Invoices and value2 could be Orders if available.
-
   const handlePeriodChange = (newPeriod: Period) => {
     setPeriod(newPeriod)
     if (newPeriod !== 'custom') {
@@ -128,7 +124,7 @@ export function SalesChartCard({
                 stroke='#71717a'
                 fontSize={12}
                 tickLine={false}
-                tickCount={6}
+                tickCount={7}
                 axisLine={false}
                 tickFormatter={formatYAxis}
               />

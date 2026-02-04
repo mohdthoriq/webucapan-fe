@@ -117,7 +117,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
                   tickMargin={20}
                   width={80}
                   tickFormatter={formatYAxis}
-                  tickCount={8}
+                  tickCount={7}
                   stroke='#71717a'
                   tickLine={false}
                   axisLine={false}
