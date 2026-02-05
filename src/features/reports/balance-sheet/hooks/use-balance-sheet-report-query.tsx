@@ -18,7 +18,7 @@ export function useBalanceSheetReportQuery(params?: BalanceSheetReportQuery) {
         : `/reports/neraca`
       const response = await apiClient.get<ApiResponse<BalanceSheetData>>(url)
 
-      return response.data.data?.data
+      return response?.data?.data?.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

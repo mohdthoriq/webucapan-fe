@@ -29,7 +29,11 @@ function BalanceSheetPageContent() {
   const data = rawData?.[reportDate]
 
   const handlePrint = () => {
-    window.print()
+    if (rawData?.print_url) {
+      window.open(rawData.print_url, '_blank')
+    } else {
+      window.print()
+    }
   }
 
   return (
@@ -143,7 +147,7 @@ function BalanceSheetPageContent() {
                 </p>
               </div>
             </div>
-          ) : data ? (
+          ) : data && typeof data !== 'string' ? (
             <div className='flex flex-col gap-6'>
               {/* Assets Section */}
               <div>
