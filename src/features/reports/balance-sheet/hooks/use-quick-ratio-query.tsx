@@ -4,11 +4,11 @@ import apiClient from '@/lib/api-client'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 export interface QuickRatioQuery {
-  date: Date
-  date_from: Date
-  date_to: Date
-  period: Period
-  tag_id: string
+  date?: Date
+  date_from?: Date
+  date_to?: Date
+  period?: Period
+  tag_id?: string
 }
 
 export function useQuickRatioQuery(params?: QuickRatioQuery) {
@@ -33,11 +33,12 @@ export function useQuickRatioQuery(params?: QuickRatioQuery) {
       })
 
       const url = queryParams.toString()
-        ? `/reports/neraca/widget/quick-ratio?${queryParams.toString()}`
-        : `/reports/neraca/widget/quick-ratio`
-      const response = await apiClient.get<ApiResponse<QuickRatioData>>(url)
+        ? `/reports/neraca/widgets/quick-ratio?${queryParams.toString()}`
+        : `/reports/neraca/widgets/quick-ratio`
+      const response =
+        await apiClient.get<ApiResponse<{ data: QuickRatioData }>>(url)
 
-      return response.data.data
+      return response.data.data?.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

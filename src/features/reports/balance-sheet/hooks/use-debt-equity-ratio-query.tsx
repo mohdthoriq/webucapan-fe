@@ -4,11 +4,11 @@ import apiClient from '@/lib/api-client'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 export interface DebtEquityRatioQuery {
-  date: Date
-  date_from: Date
-  date_to: Date
-  period: Period
-  tag_id: string
+  date?: Date
+  date_from?: Date
+  date_to?: Date
+  period?: Period
+  tag_id?: string
 }
 
 export function useDebtEquityRatioQuery(params?: DebtEquityRatioQuery) {
@@ -33,12 +33,12 @@ export function useDebtEquityRatioQuery(params?: DebtEquityRatioQuery) {
       })
 
       const url = queryParams.toString()
-        ? `/reports/neraca/widget/debt-equity-ratio?${queryParams.toString()}`
-        : `/reports/neraca/widget/debt-equity-ratio`
+        ? `/reports/neraca/widgets/debt-equity-ratio?${queryParams.toString()}`
+        : `/reports/neraca/widgets/debt-equity-ratio`
       const response =
-        await apiClient.get<ApiResponse<DebtEquityRatioData>>(url)
+        await apiClient.get<ApiResponse<{ data: DebtEquityRatioData }>>(url)
 
-      return response.data.data
+      return response.data.data?.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

@@ -4,11 +4,11 @@ import apiClient from '@/lib/api-client'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 export interface EquityRatioQuery {
-  date: Date
-  date_from: Date
-  date_to: Date
-  period: Period
-  tag_id: string
+  date?: Date
+  date_from?: Date
+  date_to?: Date
+  period?: Period
+  tag_id?: string
 }
 
 export function useEquityRatioQuery(params?: EquityRatioQuery) {
@@ -33,11 +33,12 @@ export function useEquityRatioQuery(params?: EquityRatioQuery) {
       })
 
       const url = queryParams.toString()
-        ? `/reports/neraca/widget/equity-ratio?${queryParams.toString()}`
-        : `/reports/neraca/widget/equity-ratio`
-      const response = await apiClient.get<ApiResponse<EquityRatioData>>(url)
+        ? `/reports/neraca/widgets/equity-ratio?${queryParams.toString()}`
+        : `/reports/neraca/widgets/equity-ratio`
+      const response =
+        await apiClient.get<ApiResponse<{ data: EquityRatioData }>>(url)
 
-      return response.data.data
+      return response.data.data?.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

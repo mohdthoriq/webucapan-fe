@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import type { BalanceSheetSection } from '@/types'
 import { formatCurrency } from '@/lib/utils'
+import { useBalanceSheetContext } from './balance-sheet-provider'
 
 export function ReportSectionView({
   title,
@@ -13,6 +14,7 @@ export function ReportSectionView({
   section: BalanceSheetSection
   totalLabel: string
 }) {
+  const { openDetail } = useBalanceSheetContext()
   const categories = Object.values(section.data)
 
   if (categories.length === 0) {
@@ -50,7 +52,8 @@ export function ReportSectionView({
               {category.data.map((item) => (
                 <div
                   key={item.account_id}
-                  className='flex items-center justify-between border-b border-slate-200 p-5 hover:bg-slate-100/20'
+                  className='flex cursor-pointer items-center justify-between border-b border-slate-200 p-5 transition-colors hover:bg-slate-100/50'
+                  onClick={() => openDetail(item.account_id.toString())}
                 >
                   <div className='ml-6 flex gap-4'>
                     {item.account.ref_code && (

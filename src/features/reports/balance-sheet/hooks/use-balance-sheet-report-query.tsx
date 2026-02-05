@@ -16,8 +16,7 @@ export function useBalanceSheetReportQuery(params?: BalanceSheetReportQuery) {
       const url = queryParams.toString()
         ? `/reports/neraca?${queryParams.toString()}`
         : `/reports/neraca`
-      const response =
-        await apiClient.get<ApiResponse<BalanceSheetData>>(url)
+      const response = await apiClient.get<ApiResponse<BalanceSheetData>>(url)
 
       return response.data.data?.data
     },

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import type { BalanceSheetReport } from '@/types/domain/balance-sheet'
 import { id } from 'date-fns/locale'
-import { CalendarIcon, Loader2, Printer } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -13,68 +12,107 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { BalanceSheetAccountDetailDialog } from './components/balance-sheet-account-detail-dialog'
+import { BalanceSheetOverview } from './components/balance-sheet-overview'
+import { BalanceSheetProvider } from './components/balance-sheet-provider'
 import { ReportSectionView } from './components/report-section-view'
 import { useBalanceSheetReportQuery } from './hooks/use-balance-sheet-report-query'
 
-export default function BalanceSheetPage() {
+function BalanceSheetPageContent() {
   const [date, setDate] = useState<Date>(new Date())
   const { auth } = useAuthStore()
   const company = auth.user?.company
 
   const { data: rawData, isLoading } = useBalanceSheetReportQuery({ date })
   const reportDate = format(date, 'yyyy-MM-dd')
-  const data = rawData?.[reportDate] as BalanceSheetReport | undefined
+  const data = rawData?.[reportDate]
 
   const handlePrint = () => {
-    if (rawData?.print_url) {
-      window.open(rawData.print_url as string, '_blank')
-    } else {
-      window.print()
-    }
+    window.print()
   }
 
   return (
-    <div className='flex flex-col space-y-6 pb-10'>
+    <div className='flex flex-col space-y-10 pb-10'>
       {/* Header - Screen Only */}
       <div className='flex items-center justify-between print:hidden'>
         <div>
           <h1 className='text-4xl font-semibold tracking-tight'>Neraca</h1>
         </div>
         <div className='flex items-center gap-3'>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={'outline'}
-                className={cn(
-                  'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
-                  !date && 'text-muted-foreground'
-                )}
-              >
-                <CalendarIcon className='h-4 w-4' />
-                {date ? (
-                  format(date, 'd MMMM yyyy', { locale: id })
-                ) : (
-                  <span>Pilih tanggal</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-auto p-0' align='end'>
-              <Calendar
-                mode='single'
-                selected={date}
-                onSelect={(d) => d && setDate(d)}
-                autoFocus
-              />
-            </PopoverContent>
-          </Popover>
           <Button variant='outline' onClick={handlePrint}>
             <Printer className='h-4 w-4' />
             Cetak
           </Button>
+          <Button variant={'outline'} onClick={() => history.back()}>
+            <ArrowLeft className='h-4 w-4' />
+            Kembali
+          </Button>
         </div>
       </div>
 
+      <div className='flex items-center justify-end gap-3'>
+        <Tabs defaultValue='monthly'>
+          <TabsList className='h-10'>
+            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
+            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                !date && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className='h-4 w-4' />
+              {date ? (
+                format(date, 'd MMMM yyyy', { locale: id })
+              ) : (
+                <span>Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-0' align='end'>
+            <Calendar mode='single' />
+          </PopoverContent>
+        </Popover>
+      </div>
+
       {/* Report Content */}
+      <BalanceSheetOverview date={date} />
+
+      <div className='flex items-center justify-end gap-3'>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                !date && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className='h-4 w-4' />
+              {date ? (
+                format(date, 'd MMMM yyyy', { locale: id })
+              ) : (
+                <span>Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-0' align='end'>
+            <Calendar
+              mode='single'
+              selected={date}
+              onSelect={(d) => d && setDate(d)}
+              autoFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
       <Card className='rounded-md border-none p-0'>
         <CardContent className='p-0'>
           <div className='mb-6 hidden flex-col items-center justify-center space-y-2 border-b p-8 print:flex'>
@@ -148,6 +186,15 @@ export default function BalanceSheetPage() {
           Dicetak pada {format(new Date(), 'dd/MM/yyyy HH:mm:ss')}
         </div>
       )}
+      <BalanceSheetAccountDetailDialog />
     </div>
+  )
+}
+
+export default function BalanceSheetPage() {
+  return (
+    <BalanceSheetProvider defaultDate={new Date()}>
+      <BalanceSheetPageContent />
+    </BalanceSheetProvider>
   )
 }
