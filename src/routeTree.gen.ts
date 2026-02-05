@@ -45,6 +45,8 @@ import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './ro
 import { Route as AuthenticatedSettingsAutoSequencingIndexRouteImport } from './routes/_authenticated/settings/auto-sequencing/index'
 import { Route as AuthenticatedSalesOverviewIndexRouteImport } from './routes/_authenticated/sales/overview/index'
 import { Route as AuthenticatedSalesInvoicesIndexRouteImport } from './routes/_authenticated/sales/invoices/index'
+import { Route as AuthenticatedReportsProfitLossIndexRouteImport } from './routes/_authenticated/reports/profit-loss/index'
+import { Route as AuthenticatedReportsBalanceSheetIndexRouteImport } from './routes/_authenticated/reports/balance-sheet/index'
 import { Route as AuthenticatedPurchasesOverviewIndexRouteImport } from './routes/_authenticated/purchases/overview/index'
 import { Route as AuthenticatedPurchasesInvoicesIndexRouteImport } from './routes/_authenticated/purchases/invoices/index'
 import { Route as AuthenticatedProductsEditIndexRouteImport } from './routes/_authenticated/products/edit/index'
@@ -264,6 +266,18 @@ const AuthenticatedSalesInvoicesIndexRoute =
     path: '/sales/invoices/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedReportsProfitLossIndexRoute =
+  AuthenticatedReportsProfitLossIndexRouteImport.update({
+    id: '/reports/profit-loss/',
+    path: '/reports/profit-loss/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedReportsBalanceSheetIndexRoute =
+  AuthenticatedReportsBalanceSheetIndexRouteImport.update({
+    id: '/reports/balance-sheet/',
+    path: '/reports/balance-sheet/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPurchasesOverviewIndexRoute =
   AuthenticatedPurchasesOverviewIndexRouteImport.update({
     id: '/purchases/overview/',
@@ -396,6 +410,8 @@ export interface FileRoutesByFullPath {
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
   '/purchases/overview': typeof AuthenticatedPurchasesOverviewIndexRoute
+  '/reports/balance-sheet': typeof AuthenticatedReportsBalanceSheetIndexRoute
+  '/reports/profit-loss': typeof AuthenticatedReportsProfitLossIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
   '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
@@ -449,6 +465,8 @@ export interface FileRoutesByTo {
   '/products/edit': typeof AuthenticatedProductsEditIndexRoute
   '/purchases/invoices': typeof AuthenticatedPurchasesInvoicesIndexRoute
   '/purchases/overview': typeof AuthenticatedPurchasesOverviewIndexRoute
+  '/reports/balance-sheet': typeof AuthenticatedReportsBalanceSheetIndexRoute
+  '/reports/profit-loss': typeof AuthenticatedReportsProfitLossIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
   '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
@@ -504,6 +522,8 @@ export interface FileRoutesById {
   '/_authenticated/products/edit/': typeof AuthenticatedProductsEditIndexRoute
   '/_authenticated/purchases/invoices/': typeof AuthenticatedPurchasesInvoicesIndexRoute
   '/_authenticated/purchases/overview/': typeof AuthenticatedPurchasesOverviewIndexRoute
+  '/_authenticated/reports/balance-sheet/': typeof AuthenticatedReportsBalanceSheetIndexRoute
+  '/_authenticated/reports/profit-loss/': typeof AuthenticatedReportsProfitLossIndexRoute
   '/_authenticated/sales/invoices/': typeof AuthenticatedSalesInvoicesIndexRoute
   '/_authenticated/sales/overview/': typeof AuthenticatedSalesOverviewIndexRoute
   '/_authenticated/settings/auto-sequencing/': typeof AuthenticatedSettingsAutoSequencingIndexRoute
@@ -559,6 +579,8 @@ export interface FileRouteTypes {
     | '/products/edit'
     | '/purchases/invoices'
     | '/purchases/overview'
+    | '/reports/balance-sheet'
+    | '/reports/profit-loss'
     | '/sales/invoices'
     | '/sales/overview'
     | '/settings/auto-sequencing'
@@ -612,6 +634,8 @@ export interface FileRouteTypes {
     | '/products/edit'
     | '/purchases/invoices'
     | '/purchases/overview'
+    | '/reports/balance-sheet'
+    | '/reports/profit-loss'
     | '/sales/invoices'
     | '/sales/overview'
     | '/settings/auto-sequencing'
@@ -666,6 +690,8 @@ export interface FileRouteTypes {
     | '/_authenticated/products/edit/'
     | '/_authenticated/purchases/invoices/'
     | '/_authenticated/purchases/overview/'
+    | '/_authenticated/reports/balance-sheet/'
+    | '/_authenticated/reports/profit-loss/'
     | '/_authenticated/sales/invoices/'
     | '/_authenticated/sales/overview/'
     | '/_authenticated/settings/auto-sequencing/'
@@ -953,6 +979,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesInvoicesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/reports/profit-loss/': {
+      id: '/_authenticated/reports/profit-loss/'
+      path: '/reports/profit-loss'
+      fullPath: '/reports/profit-loss'
+      preLoaderRoute: typeof AuthenticatedReportsProfitLossIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports/balance-sheet/': {
+      id: '/_authenticated/reports/balance-sheet/'
+      path: '/reports/balance-sheet'
+      fullPath: '/reports/balance-sheet'
+      preLoaderRoute: typeof AuthenticatedReportsBalanceSheetIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/purchases/overview/': {
       id: '/_authenticated/purchases/overview/'
       path: '/purchases/overview'
@@ -1110,6 +1150,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProductsEditIndexRoute: typeof AuthenticatedProductsEditIndexRoute
   AuthenticatedPurchasesInvoicesIndexRoute: typeof AuthenticatedPurchasesInvoicesIndexRoute
   AuthenticatedPurchasesOverviewIndexRoute: typeof AuthenticatedPurchasesOverviewIndexRoute
+  AuthenticatedReportsBalanceSheetIndexRoute: typeof AuthenticatedReportsBalanceSheetIndexRoute
+  AuthenticatedReportsProfitLossIndexRoute: typeof AuthenticatedReportsProfitLossIndexRoute
   AuthenticatedSalesInvoicesIndexRoute: typeof AuthenticatedSalesInvoicesIndexRoute
   AuthenticatedSalesOverviewIndexRoute: typeof AuthenticatedSalesOverviewIndexRoute
   AuthenticatedSettingsAutoSequencingIndexRoute: typeof AuthenticatedSettingsAutoSequencingIndexRoute
@@ -1154,6 +1196,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedPurchasesInvoicesIndexRoute,
   AuthenticatedPurchasesOverviewIndexRoute:
     AuthenticatedPurchasesOverviewIndexRoute,
+  AuthenticatedReportsBalanceSheetIndexRoute:
+    AuthenticatedReportsBalanceSheetIndexRoute,
+  AuthenticatedReportsProfitLossIndexRoute:
+    AuthenticatedReportsProfitLossIndexRoute,
   AuthenticatedSalesInvoicesIndexRoute: AuthenticatedSalesInvoicesIndexRoute,
   AuthenticatedSalesOverviewIndexRoute: AuthenticatedSalesOverviewIndexRoute,
   AuthenticatedSettingsAutoSequencingIndexRoute:
