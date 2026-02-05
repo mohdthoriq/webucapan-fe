@@ -10,7 +10,7 @@ export const reportData: ReportData[] = [
       },
       {
         name: 'Arus Kas',
-        url: '/reports/cash-flow',
+        // url: '/reports/cash-flow',
       },
       {
         name: 'Laba Rugi',
@@ -18,7 +18,7 @@ export const reportData: ReportData[] = [
       },
       {
         name: 'Perubahan Modal',
-        url: '/reports/capital-changes',
+        // url: '/reports/capital-changes',
       },
     ],
   },
@@ -27,15 +27,15 @@ export const reportData: ReportData[] = [
     reports: [
       {
         name: 'Buku Besar',
-        url: '/reports/ledger',
+        // url: '/reports/ledger',
       },
       {
         name: 'Jurnal',
-        url: '/reports/journal',
+        // url: '/reports/journal',
       },
       {
         name: 'Trial Balance',
-        url: '/reports/trial-balance',
+        // url: '/reports/trial-balance',
       },
     ],
   },
