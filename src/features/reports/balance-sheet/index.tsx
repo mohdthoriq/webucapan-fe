@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import type {
-  BalanceSheetReport,
-} from '@/types/domain/balance-sheet'
+import type { BalanceSheetReport } from '@/types/domain/balance-sheet'
 import { id } from 'date-fns/locale'
 import { CalendarIcon, Loader2, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'

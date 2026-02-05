@@ -44,3 +44,62 @@ export interface BalanceSheetData {
   print_url: string
 }
 
+export interface QuickRatioData {
+  balance_sheet_quick_ratio: {
+    quick_ratio: {
+      name: string
+      total: number
+      target: number
+    }
+    config: {
+      movement_compare: string
+      date: Date
+    }
+  }
+}
+
+export interface DebtEquityRatioData {
+  balance_sheet_debt_equity_ratio: {
+    debt_to_equity_ratio: {
+      name: string
+      total: number
+      percent: number
+    }
+    config: {
+      movement_compare: string
+      date: Date
+    }
+  }
+}
+
+export interface CurrentRatioData {
+  balance_sheet_current_ratio: {
+    current_ratio: {
+      name: string
+      total: number
+      percent: number
+    }
+    config: {
+      movement_compare: string
+      date: Date
+      date_from: Date
+      type: string
+    }
+  }
+}
+
+export interface EquityRatioData {
+  balance_sheet_equity_ratio: {
+    equity_ratio: {
+      name: string
+      total: number
+      percent: number
+    }
+    config: {
+      movement_compare: string
+      date: Date
+      date_from: Date
+      type: string
+    }
+  }
+}
