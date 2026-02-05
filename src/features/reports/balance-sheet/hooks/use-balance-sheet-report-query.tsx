@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, BalanceSheetData } from '@/types'
 import apiClient from '@/lib/api-client'
@@ -10,7 +11,7 @@ export function useBalanceSheetReportQuery(params?: BalanceSheetReportQuery) {
     queryKey: ['balance-sheet-report', params?.date],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
-        ...(params?.date ? { date: params.date.toISOString() } : {}),
+        ...(params?.date ? { date: format(params.date, 'yyyy-MM-dd') } : {}),
       })
 
       const url = queryParams.toString()
@@ -18,7 +19,7 @@ export function useBalanceSheetReportQuery(params?: BalanceSheetReportQuery) {
         : `/reports/neraca`
       const response = await apiClient.get<ApiResponse<BalanceSheetData>>(url)
 
-      return response?.data?.data?.data
+      return response?.data?.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

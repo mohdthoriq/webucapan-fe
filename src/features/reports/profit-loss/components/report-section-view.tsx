@@ -1,0 +1,103 @@
+import { format } from 'date-fns'
+import type { BalanceSheetSection } from '@/types'
+import { formatCurrency } from '@/lib/utils'
+import { useBalanceSheetContext } from './profit-loss-provider'
+
+export function ReportSectionView({
+  title,
+  date,
+  section,
+  totalLabel,
+}: {
+  title: string
+  date: Date
+  section: BalanceSheetSection
+  totalLabel: string
+}) {
+  const { openDetail } = useBalanceSheetContext()
+  const categories = Object.values(section.data)
+
+  if (categories.length === 0) {
+    return (
+      <div className='space-y-4 p-8'>
+        <div className='flex items-center justify-between border-b-2 p-6 font-bold'>
+          <span>{title}</span>
+          <span>{format(date, 'dd/MM/yyyy')}</span>
+        </div>
+        <p className='text-muted-foreground py-4 text-sm italic'>
+          Tidak ada data
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {/* Section Header */}
+      <div className='flex items-center justify-between rounded-md bg-slate-100/20 p-5 text-sm font-bold'>
+        <span className='text-2xl font-semibold'>{title}</span>
+        <span className='text-lg'>{format(date, 'dd/MM/yyyy')}</span>
+      </div>
+
+      <div>
+        {categories.map((category) => (
+          <div key={category.name}>
+            {/* Category Header */}
+            <h4 className='border-b border-slate-200 p-5 text-lg font-medium hover:bg-slate-100/20'>
+              {category.name}
+            </h4>
+
+            {/* Account Rows */}
+            <div>
+              {category.data.map((item) => (
+                <div
+                  key={item.account_id}
+                  className='flex cursor-pointer items-center justify-between border-b border-slate-200 p-5 transition-colors hover:bg-slate-100/50'
+                  onClick={() => openDetail(item.account_id.toString())}
+                >
+                  <div className='ml-6 flex gap-4'>
+                    {item.account.ref_code && (
+                      <span className='text-md w-20 font-medium'>
+                        {item.account.ref_code}
+                      </span>
+                    )}
+                    <span className='text-md font-medium'>
+                      {item.name || item.account.name}
+                    </span>
+                  </div>
+                  <span className='text-md text-primary font-medium'>
+                    {item.net < 0
+                      ? `(${formatCurrency(Math.abs(item.net))})`
+                      : formatCurrency(item.net)}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Category Total */}
+            <div className='flex items-center justify-between border-b border-slate-200 p-5 text-lg font-medium hover:bg-slate-100/20'>
+              <span>Total {category.name}</span>
+              <span>
+                {category.total < 0
+                  ? `(${formatCurrency(Math.abs(category.total))})`
+                  : formatCurrency(category.total)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Main Section Total */}
+      <div className='border-b border-slate-200 p-5 hover:bg-slate-100/20'>
+        <div className='flex items-center justify-between text-lg font-semibold tracking-tight uppercase'>
+          <span>{totalLabel}</span>
+          <span>
+            {section.total < 0
+              ? `(${formatCurrency(Math.abs(section.total))})`
+              : formatCurrency(section.total)}
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}

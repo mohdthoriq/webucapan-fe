@@ -36,9 +36,9 @@ export function useEquityRatioQuery(params?: EquityRatioQuery) {
         ? `/reports/neraca/widgets/equity-ratio?${queryParams.toString()}`
         : `/reports/neraca/widgets/equity-ratio`
       const response =
-        await apiClient.get<ApiResponse<{ data: EquityRatioData }>>(url)
+        await apiClient.get<ApiResponse<EquityRatioData>>(url)
 
-      return response.data.data?.data
+      return response.data.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

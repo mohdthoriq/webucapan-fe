@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ApiResponse, BalanceSheetAccountDetailData } from '@/types'
+import type { ApiResponse, ProfitLossAccountDetailData } from '@/types'
 import apiClient from '@/lib/api-client'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
-export interface BalanceSheetAccountDetailQuery {
+export interface ProfitLossAccountDetailQuery {
   accountId: string
   date: Date
   period: Period
   page: number
   per_page: number
 }
-export function useBalanceSheetAccountDetailQuery(
-  params?: BalanceSheetAccountDetailQuery
+export function useProfitLossAccountDetailQuery(
+  params?: ProfitLossAccountDetailQuery
 ) {
   return useQuery({
     queryKey: [
-      'balance-sheet-account-detail',
+      'profit-loss-account-detail',
       params?.accountId,
       params?.date,
       params?.period,
@@ -34,10 +34,10 @@ export function useBalanceSheetAccountDetailQuery(
       })
 
       const url = queryParams.toString()
-        ? `/reports/neraca/detail/${params?.accountId}?${queryParams.toString()}`
-        : `/reports/neraca/detail/${params?.accountId}`
+        ? `/reports/laba-rugi/detail/${params?.accountId}?${queryParams.toString()}`
+        : `/reports/laba-rugi/detail/${params?.accountId}`
       const response =
-        await apiClient.get<ApiResponse<BalanceSheetAccountDetailData>>(url)
+        await apiClient.get<ApiResponse<ProfitLossAccountDetailData>>(url)
 
       return response.data.data
     },

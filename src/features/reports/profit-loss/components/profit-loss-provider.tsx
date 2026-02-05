@@ -1,18 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from 'react'
-import type { BalanceSheetData } from '@/types'
+import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
-import { useBalanceSheetReportQuery } from '../hooks/use-balance-sheet-report-query'
 
 interface BalanceSheetContextType {
   selectedAccountId: string | null
-  data: BalanceSheetData | null | undefined
-  isLoading: boolean
   isOpen: boolean
   date: Date
   period: Period
@@ -39,14 +29,6 @@ export function BalanceSheetProvider({
   )
   const [date, setDate] = useState<Date>(defaultDate)
   const [period, setPeriod] = useState<Period>('month') // Default period
-  const { data, isLoading } = useBalanceSheetReportQuery({ date })
-
-  useEffect(() => {
-    if (defaultDate) {
-      // eslint-disable-next-line
-      setDate(defaultDate)
-    }
-  }, [defaultDate])
 
   const openDetail = (accountId: string) => {
     setSelectedAccountId(accountId)
@@ -65,8 +47,6 @@ export function BalanceSheetProvider({
         isOpen,
         date,
         period,
-        data,
-        isLoading,
         openDetail,
         closeDetail,
         setDate,

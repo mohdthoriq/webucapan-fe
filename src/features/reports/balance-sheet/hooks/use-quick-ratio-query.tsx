@@ -35,10 +35,9 @@ export function useQuickRatioQuery(params?: QuickRatioQuery) {
       const url = queryParams.toString()
         ? `/reports/neraca/widgets/quick-ratio?${queryParams.toString()}`
         : `/reports/neraca/widgets/quick-ratio`
-      const response =
-        await apiClient.get<ApiResponse<{ data: QuickRatioData }>>(url)
+      const response = await apiClient.get<ApiResponse<QuickRatioData>>(url)
 
-      return response.data.data?.data
+      return response.data.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

@@ -1,5 +1,5 @@
-import { format, parse } from 'date-fns'
-import { getRouteApi } from '@tanstack/react-router'
+import { useState } from 'react'
+import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
@@ -13,38 +13,80 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { BalanceSheetAccountDetailDialog } from './components/balance-sheet-account-detail-dialog'
-import { BalanceSheetOverview } from './components/balance-sheet-overview'
-import {
-  BalanceSheetProvider,
-  useBalanceSheetContext,
-} from './components/balance-sheet-provider'
+import { ProfitLossOverview } from './components/profit-loss-overview'
+import { ProfitLossProvider } from './components/profit-loss-provider'
 import { ReportSectionView } from './components/report-section-view'
+import { useProfitLossReportQuery } from './hooks/use-profit-loss-report-query'
 
-const route = getRouteApi('/_authenticated/reports/balance-sheet/')
-
-function BalanceSheetPageContent() {
+function ProfitLossPageContent() {
+  const [date, setDate] = useState<Date>(new Date())
   const { auth } = useAuthStore()
-  const { date, setDate, data: rawData, isLoading } = useBalanceSheetContext()
   const company = auth.user?.company
-  const navigate = route.useNavigate()
 
+  const { data: rawData, isLoading } = useProfitLossReportQuery()
   const reportDate = format(date, 'yyyy-MM-dd')
   const data = rawData?.[reportDate]
 
-  const handleSelectDate = (d: Date) => {
-    setDate(d)
-    navigate({
-      search: (prev: Record<string, unknown>) => ({
-        ...prev,
-        date: format(d, 'yyyy-MM-dd'),
-      }),
-      replace: true,
-    })
+  const handlePrint = () => {
+    if (rawData?.print_url) {
+      window.open(rawData.print_url, '_blank')
+    } else {
+      window.print()
+    }
   }
 
   return (
-    <div className='flex flex-col gap-10'>
+    <div className='flex flex-col space-y-10 pb-10'>
+      {/* Header - Screen Only */}
+      <div className='flex items-center justify-between print:hidden'>
+        <div>
+          <h1 className='text-4xl font-semibold tracking-tight'>Laba Rugi</h1>
+        </div>
+        <div className='flex items-center gap-3'>
+          <Button variant='outline' onClick={handlePrint}>
+            <Printer className='h-4 w-4' />
+            Cetak
+          </Button>
+          <Button variant={'ghost'} onClick={() => history.back()}>
+            <ArrowLeft className='h-4 w-4' />
+            Kembali
+          </Button>
+        </div>
+      </div>
+
+      <div className='flex items-center justify-end gap-3'>
+        <Tabs defaultValue='monthly'>
+          <TabsList className='h-10'>
+            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
+            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                !date && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className='h-4 w-4' />
+              {date ? (
+                format(date, 'd MMMM yyyy', { locale: id })
+              ) : (
+                <span>Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-0' align='end'>
+            <Calendar mode='single' />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      {/* Report Content */}
+      <ProfitLossOverview date={date} />
+
       <div className='flex items-center justify-end gap-3'>
         <Popover>
           <PopoverTrigger asChild>
@@ -67,8 +109,7 @@ function BalanceSheetPageContent() {
             <Calendar
               mode='single'
               selected={date}
-              onSelect={handleSelectDate}
-              required
+              onSelect={(d) => d && setDate(d)}
               autoFocus
             />
           </PopoverContent>
@@ -148,71 +189,15 @@ function BalanceSheetPageContent() {
           Dicetak pada {format(new Date(), 'dd/MM/yyyy HH:mm:ss')}
         </div>
       )}
-      <BalanceSheetAccountDetailDialog />
+      <ProfitLossAccountDetailDialog />
     </div>
   )
 }
 
-export default function BalanceSheetPage() {
-  const search = route.useSearch() as { date?: string }
-  const defaultDate = search.date
-    ? parse(search.date, 'yyyy-MM-dd', new Date())
-    : new Date()
-
+export default function ProfitLossPage() {
   return (
-    <div className='flex flex-col gap-10'>
-      <div className='flex items-center justify-between print:hidden'>
-        <div>
-          <h1 className='text-4xl font-semibold tracking-tight'>Neraca</h1>
-        </div>
-        <div className='flex items-center gap-3'>
-          <Button variant='outline' onClick={() => window.print()}>
-            <Printer className='h-4 w-4' />
-            Cetak
-          </Button>
-          <Button variant={'ghost'} onClick={() => history.back()}>
-            <ArrowLeft className='h-4 w-4' />
-            Kembali
-          </Button>
-        </div>
-      </div>
-
-      <div className='flex items-center justify-end gap-3'>
-        <Tabs defaultValue='monthly'>
-          <TabsList className='h-10'>
-            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
-            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={'outline'}
-              className={cn(
-                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
-                !defaultDate && 'text-muted-foreground'
-              )}
-            >
-              <CalendarIcon className='h-4 w-4' />
-              {defaultDate ? (
-                format(defaultDate, 'd MMMM yyyy', { locale: id })
-              ) : (
-                <span>Pilih tanggal</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className='w-auto p-0' align='end'>
-            <Calendar mode='single' />
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      {/* Report Content */}
-      <BalanceSheetOverview date={defaultDate} />
-
-      <BalanceSheetProvider defaultDate={defaultDate}>
-        <BalanceSheetPageContent />
-      </BalanceSheetProvider>
-    </div>
+    <ProfitLossProvider defaultDate={new Date()}>
+      <ProfitLossPageContent />
+    </ProfitLossProvider>
   )
 }

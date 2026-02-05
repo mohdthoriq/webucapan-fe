@@ -36,9 +36,9 @@ export function useDebtEquityRatioQuery(params?: DebtEquityRatioQuery) {
         ? `/reports/neraca/widgets/debt-equity-ratio?${queryParams.toString()}`
         : `/reports/neraca/widgets/debt-equity-ratio`
       const response =
-        await apiClient.get<ApiResponse<{ data: DebtEquityRatioData }>>(url)
+        await apiClient.get<ApiResponse<DebtEquityRatioData>>(url)
 
-      return response.data.data?.data
+      return response.data.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,

@@ -41,10 +41,8 @@ export interface BalanceSheetReport {
 }
 
 export interface BalanceSheetData {
-  data: {
-    [date: string]: BalanceSheetReport | string
-    print_url: string
-  }
+  [date: string]: BalanceSheetReport | string
+  print_url: string
 }
 
 export interface QuickRatioData {

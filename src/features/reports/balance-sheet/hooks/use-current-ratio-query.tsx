@@ -36,9 +36,9 @@ export function useCurrentRatioQuery(params?: CurrentRatioQuery) {
         ? `/reports/neraca/widgets/current-ratio?${queryParams.toString()}`
         : `/reports/neraca/widgets/current-ratio`
       const response =
-        await apiClient.get<ApiResponse<{ data: CurrentRatioData }>>(url)
+        await apiClient.get<ApiResponse<CurrentRatioData>>(url)
 
-      return response.data.data?.data
+      return response.data.data
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
