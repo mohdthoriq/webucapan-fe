@@ -1,4 +1,5 @@
 import {
+  ChartLine,
   ChartPie,
   ContactRound,
   CreditCardIcon,
@@ -76,6 +77,11 @@ export const sidebarData: SidebarData = {
               icon: Store,
             },
           ],
+        },
+        {
+          title: 'Laporan',
+          icon: ChartLine,
+          url: '/reports',
         },
         {
           title: 'Kas & Bank',
