@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import { Search, X } from 'lucide-react'
@@ -41,7 +41,7 @@ export function BalanceSheetAccountDetailDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeDetail()}>
-      <DialogContent className='flex max-h-[90vh] max-w-[calc(100%-4rem)] flex-col p-0 sm:max-w-7xl'>
+      <DialogContent className='flex max-h-[90vh] max-w-[calc(100%-2rem)] flex-col p-0 sm:max-w-7xl'>
         <div className='flex flex-1 flex-col space-y-6 overflow-hidden p-6'>
           {/* Header */}
           <div className='flex items-start justify-between'>
@@ -74,27 +74,33 @@ export function BalanceSheetAccountDetailDialog() {
           {/* Table Container */}
           <div className='flex flex-1 flex-col overflow-hidden rounded-md border [&_[data-slot=table-container]]:flex-1 [&_[data-slot=table-container]]:overflow-auto'>
             <Table>
-              <TableHeader className='bg-secondary [&_th]:bg-secondary sticky top-0 z-10 shadow-sm'>
-                <TableRow className='bg-secondary hover:bg-secondary'>
-                  <TableHead className='whitespace-wrap font-semibold'>
-                    Kode Referensi
+              <TableHeader className='border-b'>
+                <TableRow>
+                  <TableHead className='h-10 p-4 font-bold'>Tanggal</TableHead>
+                  <TableHead className='h-10 p-4 font-bold'>Sumber</TableHead>
+                  <TableHead className='h-10 p-4 font-bold'>
+                    Deskripsi
                   </TableHead>
-                  <TableHead className='whitespace-wrap font-semibold'>
-                    Nama Akun
+                  <TableHead className='h-10 p-4 font-bold'>
+                    Referensi
                   </TableHead>
-                  <TableHead className='whitespace-wrap text-right font-semibold'>
-                    Saldo Awal
+                  <TableHead className='h-10 p-4 font-bold'>Nomor</TableHead>
+                  <TableHead className='h-10 p-4 text-right font-bold'>
+                    Debit
                   </TableHead>
-                  <TableHead className='whitespace-wrap text-right font-semibold'>
-                    Saldo Akhir
+                  <TableHead className='h-10 p-4 text-right font-bold'>
+                    Kredit
+                  </TableHead>
+                  <TableHead className='h-10 p-4 text-right font-bold'>
+                    Saldo Berjalan
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* Loading State or Entries */}
+                {/* Loading State */}
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={4} className='py-20 text-center'>
+                    <TableCell colSpan={8} className='py-20 text-center'>
                       <div className='text-muted-foreground flex flex-col items-center gap-2'>
                         <div className='border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent' />
                         <span>Memuat data detail...</span>
@@ -102,43 +108,120 @@ export function BalanceSheetAccountDetailDialog() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  detailData?.data.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className='text-muted-foreground whitespace-nowrap'>
-                        {item.ref_code}
-                      </TableCell>
-                      <TableCell className='max-w-[200px] font-medium break-words whitespace-normal text-blue-600'>
-                        {item.name}
-                      </TableCell>
-                      <TableCell className='text-right whitespace-nowrap'>
-                        {formatNumber(item.opening_balance)}
-                      </TableCell>
-                      <TableCell className='text-right font-medium whitespace-nowrap'>
-                        {formatNumber(item.closing_balance)}
+                  <>
+                    {detailData?.data.map((item) => (
+                      <Fragment key={item.id}>
+                        {/* Saldo Awal Row */}
+                        <TableRow className='font-bold'>
+                          <TableCell colSpan={5} className='p-4'>
+                            Saldo Awal
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.opening_debit)}
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.opening_credit)}
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.opening_balance)}
+                          </TableCell>
+                        </TableRow>
+
+                        {/* Transaction Rows */}
+                        {item.data
+                          .filter(
+                            (t) =>
+                              t.desc
+                                .toLowerCase()
+                                .includes(search.toLowerCase()) ||
+                              t.source
+                                .toLowerCase()
+                                .includes(search.toLowerCase()) ||
+                              t.ref_number
+                                .toLowerCase()
+                                .includes(search.toLowerCase())
+                          )
+                          .map((trans) => (
+                            <TableRow key={trans.id} className='border-b'>
+                              <TableCell className='p-4 whitespace-nowrap'>
+                                {trans.trans_date
+                                  ? format(
+                                      new Date(trans.trans_date),
+                                      'dd/MM/yyyy'
+                                    )
+                                  : '-'}
+                              </TableCell>
+                              <TableCell className='p-4'>
+                                {trans.source}
+                              </TableCell>
+                              <TableCell className='max-w-[300px] p-4 break-words text-blue-400'>
+                                {trans.desc}
+                              </TableCell>
+                              <TableCell className='p-4'>
+                                {trans.reference}
+                              </TableCell>
+                              <TableCell className='p-4'>
+                                {trans.ref_number}
+                              </TableCell>
+                              <TableCell className='p-4 text-right'>
+                                {formatNumber(trans.debit)}
+                              </TableCell>
+                              <TableCell className='p-4 text-right'>
+                                {formatNumber(trans.credit)}
+                              </TableCell>
+                              <TableCell className='p-4 text-right'>
+                                {formatNumber(trans.balance)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+
+                        {/* Saldo Akhir Row */}
+                        <TableRow className='font-bold'>
+                          <TableCell colSpan={5} className='p-4'>
+                            Saldo Akhir
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.closing_debit)}
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.closing_credit)}
+                          </TableCell>
+                          <TableCell className='p-4 text-right'>
+                            {formatNumber(item.closing_balance)}
+                          </TableCell>
+                        </TableRow>
+                      </Fragment>
+                    ))}
+
+                    {/* Grand Total Row */}
+                    {detailData?.journal_total && (
+                      <TableRow className='border-t font-bold'>
+                        <TableCell colSpan={5} className='p-4'>
+                          Total
+                        </TableCell>
+                        <TableCell className='p-4 text-right'>
+                          {formatNumber(detailData.journal_total.total_debit)}
+                        </TableCell>
+                        <TableCell className='p-4 text-right'>
+                          {formatNumber(detailData.journal_total.total_credit)}
+                        </TableCell>
+                        <TableCell className='p-4' />
+                      </TableRow>
+                    )}
+                  </>
+                )}
+
+                {!isLoading &&
+                  (!detailData || detailData.data.length === 0) && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={8}
+                        className='text-muted-foreground py-10 text-center italic'
+                      >
+                        Tidak ada detail untuk akun ini.
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-
-                {!isLoading && detailData?.data.length === 0 && (
-                  <TableRow>
-                    <TableCell
-                      colSpan={4}
-                      className='text-muted-foreground py-10 text-center italic'
-                    >
-                      Tidak ada detail untuk akun ini.
-                    </TableCell>
-                  </TableRow>
-                )}
-
-                {/* Footer / Total Row if applicable */}
-                {/* Assuming journal_total gives some totals, but strictly we are listing sub-items. 
-                     We can add a total row if needed, but the provided JSON only has journal_total for debit/credit, 
-                     which matches transactions, but the table items are balances. 
-                     I'll verify if I should show total debit/credit or just opening/closing totals.
-                     Based on JSON: `journal_total: { total_credit: 0, total_debit: 500000 }`
-                     But the table shows opening/closing balance. I'll omit totals effectively unless I sum them up or use meaningful api data.
-                  */}
+                  )}
               </TableBody>
             </Table>
           </div>

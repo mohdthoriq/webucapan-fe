@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BalanceSheetAccountDetailDialog } from './components/balance-sheet-account-detail-dialog'
 import { BalanceSheetOverview } from './components/balance-sheet-overview'
 import {
@@ -176,7 +176,7 @@ export default function BalanceSheetPage() {
           </Button>
         </div>
       </div>
-
+      {/* 
       <div className='flex items-center justify-end gap-3'>
         <Tabs defaultValue='monthly'>
           <TabsList className='h-10'>
@@ -205,7 +205,7 @@ export default function BalanceSheetPage() {
             <Calendar mode='single' />
           </PopoverContent>
         </Popover>
-      </div>
+      </div> */}
 
       {/* Report Content */}
       <BalanceSheetOverview date={defaultDate} />
