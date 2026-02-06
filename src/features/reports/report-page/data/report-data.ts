@@ -14,7 +14,7 @@ export const reportData: ReportData[] = [
       },
       {
         name: 'Laba Rugi',
-        url: '/reports/profit-loss',
+        // url: '/reports/profit-loss',
       },
       {
         name: 'Perubahan Modal',
