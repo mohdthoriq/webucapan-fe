@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ApiResponse } from '@/types'
-import type { DashboardData } from '@/types/domain/dashboard'
+import type { ApiResponse, DashboardData } from '@/types'
 import apiClient from '@/lib/api-client'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
