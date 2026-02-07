@@ -19,7 +19,8 @@ export function useResetPasswordForm({
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
-      token: search.token || '',
+      email: search.email || '',
+      otp_code: search.otp_code || '',
       password: '',
       confirmPassword: '',
     },
@@ -28,7 +29,12 @@ export function useResetPasswordForm({
   const resetPasswordMutation = useResetPasswordMutation({ redirectTo })
 
   function onSubmit(data: ResetPasswordFormData) {
-    resetPasswordMutation.mutate(data)
+    const payload = {
+      email: data.email,
+      otp_code: data.otp_code,
+      password: data.password,
+    }
+    resetPasswordMutation.mutate(payload)
   }
 
   return {

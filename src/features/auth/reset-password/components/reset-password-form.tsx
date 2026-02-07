@@ -22,7 +22,7 @@ export function ResetPasswordForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn('grid gap-2', className)}
+        className={cn('grid gap-2 space-y-2', className)}
         {...props}
       >
         <FormField

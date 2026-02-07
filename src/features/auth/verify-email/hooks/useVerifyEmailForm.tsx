@@ -17,11 +17,13 @@ export function useVerifyEmailForm() {
     defaultValues: {
       otp_code: '',
       email: search.email || '',
-      purpose: 'registration',
+      purpose: search.purpose,
     },
   })
 
-  const verifyEmailMutation = useVerifyEmailMutation()
+  const verifyEmailMutation = useVerifyEmailMutation({
+    purpose: search.purpose,
+  })
 
   function onSubmit(data: VerifyEmailFormData) {
     verifyEmailMutation.mutate(data)
@@ -32,7 +34,7 @@ export function useVerifyEmailForm() {
     if (email) {
       resendOtpMutation.mutate({
         email,
-        purpose: 'registration',
+        purpose: search.purpose,
         redirectTo: '/verify-email',
       })
     }

@@ -2,7 +2,8 @@ import z from 'zod'
 
 export const ResetPasswordSchema = z
   .object({
-    token: z.string().min(1, 'Token tidak boleh kosong'),
+    email: z.email(),
+    otp_code: z.string().min(1, 'Token tidak boleh kosong'),
     password: z
       .string()
       .min(1, 'Tolong masukkan kata sandi Anda')
@@ -15,3 +16,8 @@ export const ResetPasswordSchema = z
   })
 
 export type ResetPasswordFormData = z.infer<typeof ResetPasswordSchema>
+
+export type ResetPasswordPayload = Omit<
+  ResetPasswordFormData,
+  'confirmPassword'
+>

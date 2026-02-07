@@ -1,3 +1,5 @@
+import type { HTMLAttributes } from 'react'
+import { AuthPurpose } from '@/types'
 import { ArrowRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -15,8 +17,11 @@ import { useForgotPasswordForm } from '../hooks/useForgotPasswordForm'
 export function ForgotPasswordForm({
   className,
   ...props
-}: React.HTMLAttributes<HTMLFormElement>) {
-  const { form, isLoading, onSubmit } = useForgotPasswordForm()
+}: HTMLAttributes<HTMLFormElement>) {
+  const { form, isLoading, onSubmit } = useForgotPasswordForm({
+    redirectTo: '/verify-email',
+    purpose: AuthPurpose.PasswordReset,
+  })
 
   return (
     <Form {...form}>

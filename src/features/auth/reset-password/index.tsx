@@ -2,7 +2,6 @@ import { Link } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -16,12 +15,8 @@ export function ResetPassword() {
       <Card className='gap-4'>
         <CardHeader>
           <CardTitle className='text-lg tracking-tight'>
-            Lupa Kata Sandi
+            Buat Kata Sandi Baru
           </CardTitle>
-          <CardDescription>
-            Masukkan email terdaftar Anda dan <br /> kami akan mengirimkan
-            tautan untuk mereset kata sandi Anda.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <ResetPasswordForm />
