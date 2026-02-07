@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { AuthPurpose } from '@/types'
 import { Loader2, LogIn } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -82,6 +83,7 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
         onOpenChange={unverifiedEmailDialog.setOpen}
         email={unverifiedEmailDialog.email}
         onResendOtp={unverifiedEmailDialog.onResendOtp}
+        purpose={AuthPurpose.Registration}
       />
     </Form>
   )

@@ -1,13 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate, useSearch } from '@tanstack/react-router'
-import { AuthPurpose } from '@/types'
+import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { type VerifyEmailFormData } from '../types/verify-email.types'
 
-export function useVerifyEmailMutation({ purpose }: { purpose: AuthPurpose }) {
+export function useVerifyEmailMutation() {
   const navigate = useNavigate()
-  const search = useSearch({ from: '/(auth)/verify-email' })
 
   return useMutation({
     mutationFn: async (credentials: VerifyEmailFormData) => {
@@ -17,27 +15,21 @@ export function useVerifyEmailMutation({ purpose }: { purpose: AuthPurpose }) {
     onMutate: () => {
       toast.loading('Loading...', { id: 'VerifyEmail-toast' })
     },
-    onSuccess: async (_, credentials) => {
+    onSuccess: async () => {
       toast.dismiss('VerifyEmail-toast')
 
       toast.success('Email berhasil di verifikasi! Silakan Login.')
 
       try {
-        if (purpose === AuthPurpose.Registration)
-          await navigate({ to: '/login', replace: true })
-        else
-          await navigate({
-            to: '/reset-password',
-            replace: true,
-            search: { email: search.email, otp_code: credentials.otp_code },
-          })
+        // Redirect to OTP verification page
+        await navigate({ to: '/login', replace: true })
       } catch {
         // Continue without navigation - user can manually navigate
       }
     },
     onError: () => {
       toast.dismiss('VerifyEmail-toast')
-      toast.error('Verifikasi gagal. Silakan lakukan ulang verifikasi.')
+      toast.error('Pendaftaran gagal. Silakan lakukan ulang pendaftaran.')
     },
   })
 }

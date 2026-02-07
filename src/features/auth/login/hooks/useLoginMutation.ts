@@ -67,16 +67,19 @@ export function useLoginMutation({
       toast.dismiss('login-toast')
 
       if (error instanceof AxiosError) {
-        const errorCode = error.response?.data?.code
+        const errorCode = error.response?.data.code
+        const errorMessage = error.response?.data.message
 
         if (errorCode === 401) {
           // Email not verified
           onUnverifiedEmail?.(variables.email)
           return
         }
-      }
 
-      toast.error('Login gagal. Silakan periksa email dan kata sandi Anda.')
+        toast.error('Login gagal: ' + errorMessage)
+      } else {
+        toast.error('Login gagal: ' + error.message)
+      }
     },
   })
 }
