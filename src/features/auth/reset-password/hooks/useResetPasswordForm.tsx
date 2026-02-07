@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearch } from '@tanstack/react-router'
+import { useAuthFlowStore } from '@/stores/auth-flow-store'
 import {
   ResetPasswordSchema,
   type ResetPasswordFormData,
@@ -14,13 +14,13 @@ interface UseResetPasswordFormProps {
 export function useResetPasswordForm({
   redirectTo,
 }: UseResetPasswordFormProps = {}) {
-  const search = useSearch({ from: '/(auth)/reset-password' })
+  const { email, otp_code } = useAuthFlowStore()
 
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
-      email: search.email || '',
-      otp_code: search.otp_code || '',
+      email: email || '',
+      otp_code: otp_code || '',
       password: '',
       confirmPassword: '',
     },

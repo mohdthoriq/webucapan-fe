@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { type ApiResponse, AuthPurpose } from '@/types'
 import { toast } from 'sonner'
+import { useAuthFlowStore } from '@/stores/auth-flow-store'
 import apiClient from '@/lib/api-client'
 import type { ForgotPasswordFormData } from '../types/forgot-password.types'
 
@@ -12,9 +13,10 @@ interface UseForgotPasswordMutationProps {
 
 export function useForgotPasswordMutation({
   redirectTo = '/login',
-  purpose = AuthPurpose.Login,
+  purpose = AuthPurpose.PasswordReset,
 }: UseForgotPasswordMutationProps = {}) {
   const navigate = useNavigate()
+  const setAuthFlow = useAuthFlowStore((state) => state.setAuthFlow)
 
   return useMutation({
     mutationFn: async (
@@ -33,10 +35,14 @@ export function useForgotPasswordMutation({
       toast.dismiss('forgot-password-toast')
       toast.success(`Email telah dikirim ke ${variables.email}`)
 
+      setAuthFlow({
+        email: variables.email,
+        purpose,
+      })
+
       try {
         await navigate({
           to: redirectTo,
-          search: { purpose, email: variables.email },
           replace: true,
         })
       } catch {

@@ -1,7 +1,9 @@
 import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,9 +16,17 @@ export function ResetPassword() {
     <AuthLayout>
       <Card className='gap-4'>
         <CardHeader>
-          <CardTitle className='text-lg tracking-tight'>
-            Buat Kata Sandi Baru
-          </CardTitle>
+          <div className='flex items-center justify-between'>
+            <CardTitle className='text-lg tracking-tight'>
+              Buat Kata Sandi Baru
+            </CardTitle>
+            <Button variant='link'>
+              <Link to='/login'>Kembali</Link>
+            </Button>
+          </div>
+          <CardDescription>
+            Masukkan kata sandi baru untuk akun Anda.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ResetPasswordForm />
