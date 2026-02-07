@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearch } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import { AuthPurpose } from '@/types'
 import { useResendOtpMutation } from '../../login/hooks/useResendOtpMutation'
 import {
   type VerifyEmailFormData,
@@ -9,6 +10,7 @@ import {
 import { useVerifyEmailMutation } from './useVerifyEmailMutation'
 
 export function useVerifyEmailForm() {
+  const navigate = useNavigate()
   const search = useSearch({ from: '/(auth)/verify-email' })
   const resendOtpMutation = useResendOtpMutation()
 
@@ -17,14 +19,22 @@ export function useVerifyEmailForm() {
     defaultValues: {
       otp_code: '',
       email: search.email || '',
-      purpose: 'registration',
+      purpose: search.purpose,
     },
   })
 
   const verifyEmailMutation = useVerifyEmailMutation()
 
   function onSubmit(data: VerifyEmailFormData) {
-    verifyEmailMutation.mutate(data)
+    if (data.purpose === AuthPurpose.Registration) {
+      verifyEmailMutation.mutate(data)
+    } else {
+      navigate({
+        to: '/reset-password',
+        replace: true,
+        search: { email: data.email, otp_code: data.otp_code },
+      })
+    }
   }
 
   function handleResendOtp() {
@@ -32,7 +42,7 @@ export function useVerifyEmailForm() {
     if (email) {
       resendOtpMutation.mutate({
         email,
-        purpose: 'registration',
+        purpose: search.purpose,
         redirectTo: '/verify-email',
       })
     }

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import type { ApiResponse } from '@/types'
+import { AuthPurpose, type ApiResponse } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import type {
@@ -33,7 +33,7 @@ export function useRegisterMutation() {
         // Redirect to OTP verification page with email parameter
         await navigate({
           to: '/verify-email',
-          search: { email: variables.email },
+          search: { email: variables.email, purpose: AuthPurpose.Registration },
           replace: true,
         })
       } catch {

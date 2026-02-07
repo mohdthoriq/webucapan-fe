@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AuthPurpose } from '@/types'
 import { LoginSchema, type LoginFormData } from '../types/login.types'
 import { useLoginMutation } from './useLoginMutation'
 import { useResendOtpMutation } from './useResendOtpMutation'
@@ -31,7 +32,7 @@ export function useLoginForm() {
     if (unverifiedEmailDialog.email) {
       resendOtpMutation.mutate({
         email: unverifiedEmailDialog.email,
-        purpose: 'registration',
+        purpose: AuthPurpose.Registration,
         redirectTo: '/verify-email',
       })
     }
