@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -15,12 +16,17 @@ export function ForgotPassword() {
     <AuthLayout>
       <Card className='gap-4'>
         <CardHeader>
-          <CardTitle className='text-lg tracking-tight'>
-            Lupa Kata Sandi
-          </CardTitle>
+          <div className='flex items-center justify-between'>
+            <CardTitle className='text-lg tracking-tight'>
+              Lupa Kata Sandi
+            </CardTitle>
+            <Button variant='link' onClick={() => history.back()}>
+              Kembali
+            </Button>
+          </div>
           <CardDescription>
-            Masukkan email terdaftar Anda dan <br /> kami akan mengirimkan
-            tautan untuk mereset kata sandi Anda.
+            Masukkan email terdaftar Anda, kami akan mengirim otp untuk
+            verifikasi.
           </CardDescription>
         </CardHeader>
         <CardContent>

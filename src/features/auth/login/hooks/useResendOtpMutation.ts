@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse } from '@/types'
@@ -34,9 +35,13 @@ export function useResendOtpMutation() {
 
       await navigate({ to: variables.redirectTo, replace: true })
     },
-    onError: () => {
+    onError: (error) => {
       toast.dismiss('resend-otp-toast')
-      toast.error('Gagal mengirim ulang kode OTP. Silakan coba lagi.')
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message)
+      } else {
+        toast.error('Gagal mengirim ulang kode OTP. Silakan coba lagi.')
+      }
     },
   })
 }
