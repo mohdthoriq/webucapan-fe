@@ -1,7 +1,7 @@
 import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
-import { CalendarIcon, Loader2, Printer } from 'lucide-react'
+import { CalendarIcon, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,7 @@ import {
   BalanceSheetProvider,
   useBalanceSheetContext,
 } from './components/balance-sheet-provider'
+import { ReportSectionSkeleton } from './components/report-section-skeleton'
 import { ReportSectionView } from './components/report-section-view'
 
 const route = getRouteApi('/_authenticated/reports/balance-sheet/')
@@ -101,13 +102,9 @@ function BalanceSheetPageContent() {
           </div>
 
           {isLoading ? (
-            <div className='flex h-96 items-center justify-center'>
-              <div className='flex flex-col items-center gap-4'>
-                <Loader2 className='h-10 w-10 animate-spin text-blue-500' />
-                <p className='text-muted-foreground animate-pulse'>
-                  Memuat data laporan...
-                </p>
-              </div>
+            <div className='flex flex-col gap-10'>
+              <ReportSectionSkeleton />
+              <ReportSectionSkeleton />
             </div>
           ) : data && typeof data !== 'string' ? (
             <div className='flex flex-col gap-6'>
