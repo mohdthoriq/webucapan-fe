@@ -1,7 +1,7 @@
 import { HelpCircle, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { Cell, Pie, PieChart } from 'recharts'
 import { cn } from '@/lib/utils'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Tooltip,
   TooltipContent,
@@ -12,24 +12,51 @@ import { useCurrentRatioQuery } from '../hooks/use-current-ratio-query'
 import { useDebtEquityRatioQuery } from '../hooks/use-debt-equity-ratio-query'
 import { useEquityRatioQuery } from '../hooks/use-equity-ratio-query'
 import { useQuickRatioQuery } from '../hooks/use-quick-ratio-query'
+import { useBalanceSheetOverviewContext } from './balance-sheet-overview-provider'
 
-interface BalanceSheetOverviewProps {
-  date: Date
+function BalanceSheetOverviewSkeleton() {
+  return (
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 print:hidden'>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border p-6 shadow-sm'
+        >
+          <Skeleton className='h-4 w-[90%]' />
+          <Skeleton className='h-4 w-[90%]' />
+          <Skeleton className='h-4 w-[90%]' />
+          <Skeleton className='h-4 w-[60%]' />
+        </div>
+      ))}
+    </div>
+  )
 }
 
-export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
+export function BalanceSheetOverview() {
+  const { date, period } = useBalanceSheetOverviewContext()
   const commonParams = {
     date,
     date_from: date,
     date_to: date,
-    period: 'month' as const,
+    period,
     tag_id: '',
   }
 
-  const { data: quickData } = useQuickRatioQuery(commonParams)
-  const { data: currentData } = useCurrentRatioQuery(commonParams)
-  const { data: debtData } = useDebtEquityRatioQuery(commonParams)
-  const { data: equityData } = useEquityRatioQuery(commonParams)
+  const { data: quickData, isLoading: isLoadingQuick } =
+    useQuickRatioQuery(commonParams)
+  const { data: currentData, isLoading: isLoadingCurrent } =
+    useCurrentRatioQuery(commonParams)
+  const { data: debtData, isLoading: isLoadingDebt } =
+    useDebtEquityRatioQuery(commonParams)
+  const { data: equityData, isLoading: isLoadingEquity } =
+    useEquityRatioQuery(commonParams)
+
+  const isLoading =
+    isLoadingQuick || isLoadingCurrent || isLoadingDebt || isLoadingEquity
+
+  if (isLoading) {
+    return <BalanceSheetOverviewSkeleton />
+  }
 
   // Quick Ratio Gauge Data
   const quickRatioValue =
@@ -108,11 +135,11 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
   return (
     <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 print:hidden'>
       {/* QUICK RATIO */}
-      <Card className='bg-card text-card-foreground'>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-          <CardTitle className='text-sm font-medium tracking-wider uppercase'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-8 rounded-xl border py-4 shadow-sm'>
+        <div className='flex flex-row items-center justify-between px-6'>
+          <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
             Quick Ratio
-          </CardTitle>
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -123,8 +150,8 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className='px-6'>
           <div className='flex items-center justify-between'>
             <div className='flex flex-col'>
               <span className='text-2xl font-bold'>{quickRatioValue}</span>
@@ -132,7 +159,7 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
                 Target {quickRatioTarget}
               </span>
             </div>
-            <div className='relative -mt-6 h-[80px] w-[140px]'>
+            <div className='relative -mt-4 h-[80px] w-[140px]'>
               <PieChart width={140} height={140}>
                 <Pie
                   dataKey='value'
@@ -165,15 +192,15 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               </PieChart>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* CURRENT RATIO */}
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium tracking-wider uppercase'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
+        <div className='flex flex-row items-center justify-between px-6 pb-2'>
+          <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
             Current Ratio
-          </CardTitle>
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -184,8 +211,8 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className='px-6'>
           <div className='flex items-end justify-between'>
             <div className='flex flex-col'>
               <span className='text-3xl font-bold'>
@@ -202,15 +229,15 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               currentData?.balance_sheet_current_ratio?.current_ratio?.percent
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* DEBT EQUITY RATIO */}
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium tracking-wider uppercase'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
+        <div className='flex flex-row items-center justify-between px-6 pb-2'>
+          <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
             Debt Equity Ratio
-          </CardTitle>
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -221,8 +248,8 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className='px-6'>
           <div className='flex items-end justify-between'>
             <div className='flex flex-col'>
               <span className='text-3xl font-bold'>
@@ -240,15 +267,15 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
                 ?.percent
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* EQUITY RATIO */}
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium tracking-wider uppercase'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
+        <div className='flex flex-row items-center justify-between px-6 pb-2'>
+          <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
             Equity Ratio
-          </CardTitle>
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -259,8 +286,8 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className='px-6'>
           <div className='flex items-end justify-between'>
             <div className='flex flex-col'>
               <span className='text-3xl font-bold'>
@@ -277,8 +304,8 @@ export function BalanceSheetOverview({ date }: BalanceSheetOverviewProps) {
               equityData?.balance_sheet_equity_ratio?.equity_ratio.percent
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
