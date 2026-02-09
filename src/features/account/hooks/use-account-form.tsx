@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Account, ApiResponse } from '@/types'
@@ -10,15 +11,17 @@ import {
   useCreateAccountMutation,
   useUpdateAccountMutation,
 } from './use-account-mutation'
-import type { AxiosError } from 'axios'
 
-type useAccountsFormProps = {
-  currentRow?: Account
+export type UseAccountsFormProps = {
+  currentRow?: (Partial<Account> & { category_id?: string }) | null
   onSuccess?: (data: Account) => void
 }
 
-export function useAccountsForm({ currentRow, onSuccess }: useAccountsFormProps) {
-  const isEdit = !!currentRow
+export function useAccountsForm({
+  currentRow,
+  onSuccess,
+}: UseAccountsFormProps) {
+  const isEdit = !!currentRow?.id
   const form = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: isEdit
@@ -34,7 +37,7 @@ export function useAccountsForm({ currentRow, onSuccess }: useAccountsFormProps)
       : {
           name: '',
           code: '',
-          category_id: '',
+          category_id: currentRow?.category_id ?? '',
           parent_id: null,
           allow_transaction: false,
           is_active: true,
@@ -58,10 +61,10 @@ export function useAccountsForm({ currentRow, onSuccess }: useAccountsFormProps)
   const onSubmit = async (data: CreateAccountFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateAccountFormData = {
-        id: currentRow.id,
+        id: currentRow.id as string,
         name: data.name,
         code: data.code,
-        category_id: data.category_id,
+        category_id: data.category_id || '',
         parent_id: data.parent_id,
         allow_transaction: data.allow_transaction,
         is_active: data.is_active,
