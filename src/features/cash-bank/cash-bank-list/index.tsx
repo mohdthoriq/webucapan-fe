@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import type { CashBankOverview } from '@/types'
 import { Plus, Search, X } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -8,6 +9,7 @@ import { useCashBankOverviewQuery } from './hooks/use-cash-bank-list-query'
 import { AccountChartCard } from './pages/account-chart-card'
 
 export default function CashBankOverviewPage() {
+  const { openDialog } = useGlobalDialogStore()
   const { data, isLoading } = useCashBankOverviewQuery()
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -33,7 +35,14 @@ export default function CashBankOverviewPage() {
             Kelola saldo dan transaksi kas serta rekening bank Anda.
           </p>
         </div>
-        <Button className='flex items-center gap-2'>
+        <Button
+          className='flex items-center gap-2'
+          onClick={() =>
+            openDialog('account', {
+              data: { category_id: 'cfb43d3d-60cd-4c4e-ae97-060bfa005a03' },
+            })
+          }
+        >
           <Plus className='h-4 w-4' />
           Tambah Akun
         </Button>
@@ -92,6 +101,13 @@ export default function CashBankOverviewPage() {
                 <Button
                   size='lg'
                   className='shadow-primary/20 gap-2 px-8 shadow-lg transition-all hover:scale-105 active:scale-95'
+                  onClick={() =>
+                    openDialog('account', {
+                      data: {
+                        category_id: 'cfb43d3d-60cd-4c4e-ae97-060bfa005a03',
+                      },
+                    })
+                  }
                 >
                   <Plus className='h-5 w-5' />
                   Tambah Akun Baru

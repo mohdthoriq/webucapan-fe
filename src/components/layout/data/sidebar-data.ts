@@ -18,13 +18,18 @@ import { type SidebarData } from '../types'
 export const sidebarData: SidebarData = {
   navGroups: [
     {
-      title: 'General',
+      title: 'Overview',
       items: [
         {
           title: 'Dashboard',
           url: '/',
           icon: LayoutDashboard,
         },
+      ],
+    },
+    {
+      title: 'Transaksi',
+      items: [
         {
           title: 'Penjualan',
           icon: ShoppingBasket,
@@ -62,6 +67,11 @@ export const sidebarData: SidebarData = {
           url: '/expenses',
           icon: CreditCardIcon,
         },
+      ],
+    },
+    {
+      title: 'Inventori',
+      items: [
         {
           title: 'Produk',
           icon: Store,
@@ -78,6 +88,11 @@ export const sidebarData: SidebarData = {
             },
           ],
         },
+      ],
+    },
+    {
+      title: 'Keuangan',
+      items: [
         {
           title: 'Laporan',
           icon: ChartLine,
@@ -93,13 +108,23 @@ export const sidebarData: SidebarData = {
           icon: WalletCards,
           url: '/account',
         },
+      ],
+    },
+    {
+      title: 'Relasi',
+      items: [
         {
           title: 'Kontak',
           url: '/contacts',
           icon: ContactRound,
         },
+      ],
+    },
+    {
+      title: 'Sistem',
+      items: [
         {
-          title: 'Settings',
+          title: 'Pengaturan',
           url: '/settings',
           icon: Settings,
         },

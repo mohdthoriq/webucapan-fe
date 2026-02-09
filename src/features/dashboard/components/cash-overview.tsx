@@ -32,7 +32,7 @@ export function CashOverview() {
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-        <CardTitle className='text-base font-semibold'>CASH</CardTitle>
+        <CardTitle className='text-base font-semibold'>CASH & BANK</CardTitle>
         <CardAction
           period={period}
           dateRange={dateRange}
@@ -81,7 +81,7 @@ export function CashOverview() {
               tickCount={7}
               axisLine={false}
               tickFormatter={formatYAxis}
-              dx={-12}
+              dx={12}
             />
             <Area
               type='monotone'

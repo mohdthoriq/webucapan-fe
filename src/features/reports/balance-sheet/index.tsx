@@ -1,7 +1,7 @@
 import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
-import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -12,13 +12,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-// import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BalanceSheetAccountDetailDialog } from './components/balance-sheet-account-detail-dialog'
 import { BalanceSheetOverview } from './components/balance-sheet-overview'
+import {
+  BalanceSheetOverviewProvider,
+  useBalanceSheetOverviewContext,
+} from './components/balance-sheet-overview-provider'
 import {
   BalanceSheetProvider,
   useBalanceSheetContext,
 } from './components/balance-sheet-provider'
+import { ReportSectionSkeleton } from './components/report-section-skeleton'
 import { ReportSectionView } from './components/report-section-view'
 
 const route = getRouteApi('/_authenticated/reports/balance-sheet/')
@@ -97,13 +102,9 @@ function BalanceSheetPageContent() {
           </div>
 
           {isLoading ? (
-            <div className='flex h-96 items-center justify-center'>
-              <div className='flex flex-col items-center gap-4'>
-                <Loader2 className='h-10 w-10 animate-spin text-blue-500' />
-                <p className='text-muted-foreground animate-pulse'>
-                  Memuat data laporan...
-                </p>
-              </div>
+            <div className='flex flex-col gap-10'>
+              <ReportSectionSkeleton />
+              <ReportSectionSkeleton />
             </div>
           ) : data && typeof data !== 'string' ? (
             <div className='flex flex-col gap-6'>
@@ -113,17 +114,17 @@ function BalanceSheetPageContent() {
                   title='Aset'
                   date={date}
                   section={data.assets}
-                  totalLabel='Total Assets'
+                  totalLabel='Total Aset'
                 />
               </div>
 
               {/* Liabilities and Equity Section */}
               <div>
                 <ReportSectionView
-                  title='Liabilitas and Modal'
+                  title='Liabilitas dan Modal'
                   date={date}
                   section={data.liabilities_equity}
-                  totalLabel='Total Liabilitas and Modal'
+                  totalLabel='Total Liabilitas & Modal'
                 />
               </div>
             </div>
@@ -141,14 +142,55 @@ function BalanceSheetPageContent() {
           )}
         </CardContent>
       </Card>
-
-      {/* Footer - Screen Only */}
-      {!isLoading && data && (
-        <div className='text-muted-foreground text-center text-xs print:hidden'>
-          Dicetak pada {format(new Date(), 'dd/MM/yyyy HH:mm:ss')}
-        </div>
-      )}
       <BalanceSheetAccountDetailDialog />
+    </div>
+  )
+}
+
+function BalanceSheetOverviewWithFilters() {
+  const { date, setDate, period, setPeriod } = useBalanceSheetOverviewContext()
+  return (
+    <div className='flex flex-col gap-10'>
+      <div className='flex items-center justify-end gap-3'>
+        <Tabs
+          value={period === 'year' ? 'yearly' : 'monthly'}
+          onValueChange={(v) => setPeriod(v === 'yearly' ? 'year' : 'month')}
+        >
+          <TabsList className='h-10'>
+            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
+            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                !date && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className='h-4 w-4' />
+              {date ? (
+                format(date, 'd MMMM yyyy', { locale: id })
+              ) : (
+                <span>Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-0' align='end'>
+            <Calendar
+              mode='single'
+              selected={date}
+              onSelect={(d) => d && setDate(d)}
+              required
+              autoFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <BalanceSheetOverview />
     </div>
   )
 }
@@ -163,52 +205,23 @@ export default function BalanceSheetPage() {
     <div className='flex flex-col gap-10'>
       <div className='flex items-center justify-between print:hidden'>
         <div>
-          <h1 className='text-4xl font-semibold tracking-tight'>Neraca</h1>
+          <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
         </div>
         <div className='flex items-center gap-3'>
           <Button variant='outline' onClick={() => window.print()}>
             <Printer className='h-4 w-4' />
             Cetak
           </Button>
-          <Button variant={'ghost'} onClick={() => history.back()}>
+          <Button variant={'link'} onClick={() => history.back()}>
             <ArrowLeft className='h-4 w-4' />
             Kembali
           </Button>
         </div>
       </div>
-      {/* 
-      <div className='flex items-center justify-end gap-3'>
-        <Tabs defaultValue='monthly'>
-          <TabsList className='h-10'>
-            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
-            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={'outline'}
-              className={cn(
-                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
-                !defaultDate && 'text-muted-foreground'
-              )}
-            >
-              <CalendarIcon className='h-4 w-4' />
-              {defaultDate ? (
-                format(defaultDate, 'd MMMM yyyy', { locale: id })
-              ) : (
-                <span>Pilih tanggal</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className='w-auto p-0' align='end'>
-            <Calendar mode='single' />
-          </PopoverContent>
-        </Popover>
-      </div> */}
-
       {/* Report Content */}
-      <BalanceSheetOverview date={defaultDate} />
+      <BalanceSheetOverviewProvider defaultDate={defaultDate}>
+        <BalanceSheetOverviewWithFilters />
+      </BalanceSheetOverviewProvider>
 
       <BalanceSheetProvider defaultDate={defaultDate}>
         <BalanceSheetPageContent />

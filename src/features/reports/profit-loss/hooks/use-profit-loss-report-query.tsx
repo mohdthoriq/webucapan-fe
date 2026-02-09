@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, ProfitLossReportData } from '@/types'
 import apiClient from '@/lib/api-client'
 
-enum Option {
+export enum Option {
   Periode = 'periode',
   Tag = 'tag',
   Quarter = 'quarter',
 }
 
-enum AccountDisplayOption {
+export enum AccountDisplayOption {
   CodeName = 'code_name',
   BracketCodeName = 'bracket_code_name',
   NameCode = 'name_code',
@@ -20,8 +20,8 @@ export interface ProfitLossReportQuery {
   date_to: Date
   tag_id: string
   currency_id: string
-  comparison_date_from: Date
-  comparison_date_to: Date
+  comparison_date_from?: Date
+  comparison_date_to?: Date
   view_by: Option
   comparison_periods: number
   sort_by: 'name' | 'code'

@@ -78,7 +78,7 @@ export function SalesDashboardOverview() {
               axisLine={false}
               tickCount={7}
               tickFormatter={formatYAxis}
-              dx={-12}
+              dx={12}
             />
             <Bar
               dataKey='value'

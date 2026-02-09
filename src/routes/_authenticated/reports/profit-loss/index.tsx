@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import ProfitLossPage from '@/features/reports/profit-loss'
 
 export const Route = createFileRoute('/_authenticated/reports/profit-loss/')({
-  component: RouteComponent,
+  component: ProfitLossPage,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/reports/profit-loss/"!</div>
-}

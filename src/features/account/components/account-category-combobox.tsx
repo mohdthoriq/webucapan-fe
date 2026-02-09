@@ -1,28 +1,24 @@
 import { type ReactNode, useMemo } from 'react'
-import type { Account } from '@/types'
+import type { AccountCategory } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
-import { useAccountsQuery } from '../hooks/use-account-query'
+import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 
-interface AccountsComboboxProps {
-  value?: string | null
-  onValueChange?: (value: string | null) => void
+interface AccountCategoryComboboxProps {
+  value?: string
+  onValueChange?: (value: string) => void
   placeholder?: string
   limit?: number
   action?: ReactNode
-  categoryId?: string
-  disabled?: boolean
 }
 
-export function AccountsCombobox({
+export function AccountCategoryCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Akun',
+  placeholder = 'Pilih Kategori',
   limit = 20,
   action,
-  categoryId,
-  disabled,
-}: AccountsComboboxProps) {
+}: AccountCategoryComboboxProps) {
   const {
     allItems,
     isLoading,
@@ -32,12 +28,11 @@ export function AccountsCombobox({
     loadMore,
     setSearchTerm,
   } = useComboboxQuery<
-    Account,
-    { page?: number; limit?: number; name?: string; category_id?: string }
+    AccountCategory,
+    { page?: number; limit?: number; name?: string }
   >({
-    queryHook: useAccountsQuery,
+    queryHook: useAccountCategoriesQuery,
     limit,
-    extraParams: { category_id: categoryId },
   })
 
   const selectedItem = useMemo(
@@ -47,10 +42,10 @@ export function AccountsCombobox({
 
   return (
     <ComboboxBase
-      value={value || undefined}
+      value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari parent akun...'
+      searchPlaceholder='Cari kategori...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -69,7 +64,6 @@ export function AccountsCombobox({
         </div>
       )}
       action={action}
-      disabled={disabled}
     />
   )
 }

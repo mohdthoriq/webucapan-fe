@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { type Account } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -29,14 +31,15 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
-import { useAccountsForm } from '../hooks/use-account-form'
+import {
+  useAccountsForm,
+  type UseAccountsFormProps,
+} from '../hooks/use-account-form'
+import { AccountCategoryCombobox } from './account-category-combobox'
 import { AccountsCombobox } from './account-combobox'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type AccountsActionDialogProps = {
-  currentRow?: Account
+  currentRow?: UseAccountsFormProps['currentRow']
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess?: (data: Account) => void
@@ -46,16 +49,14 @@ export function AccountsActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess
+  onSuccess,
 }: AccountsActionDialogProps) {
-  const isEdit = !!currentRow
+  const isEdit = !!currentRow?.id
 
   const { form, onSubmit, isSubmitting, errorMessage } = useAccountsForm({
     currentRow,
-    onSuccess
+    onSuccess,
   })
-
-  const { data: accountCategories } = useAccountCategoriesQuery({ limit: 50 })
 
   const categoryId = form.watch('category_id')
 
@@ -86,7 +87,7 @@ export function AccountsActionDialog({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[50vh] w-full'>
-          <div className='pr-4 pl-2 py-4'>
+          <div className='py-4 pr-4 pl-2'>
             <Form {...form}>
               <form
                 id='account-form'
@@ -134,25 +135,12 @@ export function AccountsActionDialog({
                     <FormItem>
                       <FormLabel>Kategori Akun</FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                        <AccountCategoryCombobox
                           value={field.value}
-                        >
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Pilih kategori akun...' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {accountCategories?.data?.map((accountCategory) => (
-                              <SelectItem
-                                key={accountCategory.id}
-                                value={accountCategory.id}
-                              >
-                                {accountCategory.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          onValueChange={(value) => {
+                            field.onChange(value)
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -170,6 +158,7 @@ export function AccountsActionDialog({
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                           categoryId={categoryId}
+                          disabled={!categoryId}
                         />
                       </FormControl>
                       <FormMessage />

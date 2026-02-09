@@ -5,7 +5,8 @@ import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 export interface ProfitLossAccountDetailQuery {
   accountId: string
-  date: Date
+  date_from: Date
+  date_to: Date
   period: Period
   page: number
   per_page: number
@@ -17,7 +18,8 @@ export function useProfitLossAccountDetailQuery(
     queryKey: [
       'profit-loss-account-detail',
       params?.accountId,
-      params?.date,
+      params?.date_from,
+      params?.date_to,
       params?.period,
       params?.page,
       params?.per_page,
@@ -27,7 +29,10 @@ export function useProfitLossAccountDetailQuery(
       if (!params?.accountId) return null
 
       const queryParams = new URLSearchParams({
-        ...(params?.date ? { date: params.date.toISOString() } : {}),
+        ...(params?.date_from
+          ? { date_from: params.date_from.toISOString() }
+          : {}),
+        ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
         ...(params?.period ? { period: params.period } : {}),
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.per_page ? { per_page: params.per_page.toString() } : {}),
