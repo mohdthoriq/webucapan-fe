@@ -1,14 +1,16 @@
-import { AxiosError } from 'axios'
-import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import type { ApiResponse } from '@/types'
-import { toast } from 'sonner'
-import apiClient from '@/lib/api-client'
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
+import type { ApiResponse, AuthPurpose } from '@/types';
+import { toast } from 'sonner';
+import apiClient from '@/lib/api-client';
+
 
 interface ResendOtpPayload {
   email: string
   purpose: string
   redirectTo?: string
+  searchParams?: Record<string, string | string[] | undefined>
 }
 
 export function useResendOtpMutation() {
@@ -33,7 +35,20 @@ export function useResendOtpMutation() {
         'Kode OTP berhasil dikirim ulang. Silakan periksa email Anda.'
       )
 
-      await navigate({ to: variables.redirectTo, replace: true })
+      if (variables.redirectTo) {
+        await navigate({
+          to: variables.redirectTo,
+          search: variables.searchParams as {
+            email?: string
+            purpose?: AuthPurpose
+            tab?: string
+            page?: unknown
+            limit?: unknown
+            name?: string
+          },
+          replace: true,
+        })
+      }
     },
     onError: (error) => {
       toast.dismiss('resend-otp-toast')
