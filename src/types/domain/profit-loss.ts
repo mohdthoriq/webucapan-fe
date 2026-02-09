@@ -9,8 +9,8 @@ export interface ProfitLossReportData {
 }
 
 export interface DatePeriod {
-  from: Date
-  to: Date
+  from: string
+  to: string
 }
 
 export interface BaseProfitLossSection {
@@ -76,11 +76,33 @@ export interface ProfitLossAccount {
   formatted: string
 }
 
+export interface ProfitLossTransactionData {
+  trans_date: string
+  id: string
+  tran_id: string
+  desc: string
+  account_id: string
+  reference: string
+  credit: number
+  debit: number
+  amount: string
+  trans_type_id: number
+  balance: string
+  ref_number: string
+  source: string
+  valid: boolean
+}
+
 export interface ProfitLossAccountDetailItem {
   id: string
   name: string
   ref_code: string
   opening_balance: number
+  opening_debit: number
+  opening_credit: number
+  data: ProfitLossTransactionData[]
+  closing_debit: number
+  closing_credit: number
   closing_balance: number
 }
 

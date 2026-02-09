@@ -2,8 +2,9 @@ import { format, parse, startOfMonth, endOfMonth } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
 import { CalendarIcon, Printer, ArrowLeft } from 'lucide-react'
+import type { DateRange } from 'react-day-picker'
 import { useAuthStore } from '@/stores/auth-store'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent } from '@/components/ui/card'
@@ -12,7 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProfitLossAccountDetailDialog } from './components/profit-loss-account-detail-dialog'
 // import { ProfitLossOverview } from './components/profit-loss-overview' // Placeholder if not implemented yet
 import {
@@ -30,26 +30,18 @@ function ProfitLossPageContent() {
   const company = auth.user?.company
   const navigate = route.useNavigate()
 
-  const handleSelectDateFrom = (d: Date) => {
-    setDateRange(d, dateTo)
-    navigate({
-      search: (prev: Record<string, unknown>) => ({
-        ...prev,
-        date_from: format(d, 'yyyy-MM-dd'),
-      }),
-      replace: true,
-    })
-  }
-
-  const handleSelectDateTo = (d: Date) => {
-    setDateRange(dateFrom, d)
-    navigate({
-      search: (prev: Record<string, unknown>) => ({
-        ...prev,
-        date_to: format(d, 'yyyy-MM-dd'),
-      }),
-      replace: true,
-    })
+  const handleSelectRange = (range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      setDateRange(range.from, range.to)
+      navigate({
+        search: (prev: Record<string, unknown>) => ({
+          ...prev,
+          date_from: format(range.from!, 'yyyy-MM-dd'),
+          date_to: format(range.to!, 'yyyy-MM-dd'),
+        }),
+        replace: true,
+      })
+    }
   }
 
   const handlePrint = () => {
@@ -79,61 +71,34 @@ function ProfitLossPageContent() {
         </div>
       </div>
 
-      <div className='flex items-center justify-end gap-3 print:hidden'>
-        <Tabs defaultValue='monthly'>
-          <TabsList className='h-10'>
-            <TabsTrigger value='monthly'>Bulanan</TabsTrigger>
-            <TabsTrigger value='yearly'>Tahunan</TabsTrigger>
-          </TabsList>
-        </Tabs>
-
-        <div className='flex items-center gap-2'>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={'outline'}
-                className={cn(
-                  'w-[200px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50'
-                )}
-              >
-                <CalendarIcon className='h-4 w-4 text-blue-500' />
-                {format(dateFrom, 'd MMMM yyyy', { locale: id })}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-auto p-0' align='end'>
-              <Calendar
-                mode='single'
-                selected={dateFrom}
-                onSelect={(d) => d && handleSelectDateFrom(d)}
-                required
-                autoFocus
-              />
-            </PopoverContent>
-          </Popover>
-          <span className='text-muted-foreground'>s/d</span>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={'outline'}
-                className={cn(
-                  'w-[200px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50'
-                )}
-              >
-                <CalendarIcon className='h-4 w-4 text-blue-500' />
-                {format(dateTo, 'd MMMM yyyy', { locale: id })}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-auto p-0' align='end'>
-              <Calendar
-                mode='single'
-                selected={dateTo}
-                onSelect={(d) => d && handleSelectDateTo(d)}
-                required
-                autoFocus
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+      <div className='flex items-center justify-end gap-2'>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-[280px] justify-between border-slate-200 p-3 text-left font-normal transition-colors hover:border-slate-400 hover:bg-slate-50/50'
+              )}
+            >
+              <div className='flex items-center gap-2'>
+                <span>{format(dateFrom, 'dd/MM/yyyy')}</span>
+                <span className='text-muted-foreground'>→</span>
+                <span>{format(dateTo, 'dd/MM/yyyy')}</span>
+              </div>
+              <CalendarIcon className='h-4 w-4 text-slate-400' />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-0' align='end'>
+            <Calendar
+              mode='range'
+              selected={{ from: dateFrom, to: dateTo }}
+              onSelect={handleSelectRange}
+              required
+              autoFocus
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Report Content */}
@@ -174,52 +139,47 @@ function ProfitLossPageContent() {
                 title='Pendapatan'
                 section={data.revenue}
                 totalLabel='Total Pendapatan'
+                date={dateTo}
               />
               <ReportSectionView
-                title='Harga Pokok Penjualan'
+                title='Beban Pokok Penjualan'
                 section={data.cogs}
-                totalLabel='Total Harga Pokok Penjualan'
+                totalLabel='Total Beban Pokok Penjualan'
+                date={dateTo}
               />
 
-              <div className='border-y border-blue-100 bg-blue-50/50 p-5'>
+              <div className='border-y border-slate-200 bg-slate-100/20 p-5'>
                 <div className='flex items-center justify-between text-xl font-bold uppercase'>
                   <span>Laba Kotor</span>
                   <span>
-                    {data.gross_profit.total.toLocaleString('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                    })}
+                    {data.gross_profit.total < 0
+                      ? `(${formatCurrency(Math.abs(data.gross_profit.total))})`
+                      : formatCurrency(data.gross_profit.total)}
                   </span>
                 </div>
               </div>
 
               <ReportSectionView
-                title='Beban Operasional'
+                title='Biaya Operasional'
                 section={data.operating_expenses}
-                totalLabel='Total Beban Operasional'
+                totalLabel='Total Biaya Operasional'
+                date={dateTo}
               />
 
-              <div className='bg-primary/10 border-primary/20 border-y p-5 shadow-sm'>
+              <div className='border-y p-5 shadow-sm'>
                 <div className='flex items-center justify-between text-2xl font-bold uppercase'>
                   <span>Laba Bersih</span>
-                  <span
-                    className={
-                      data.net_income.total >= 0
-                        ? 'text-green-600'
-                        : 'text-red-600'
-                    }
-                  >
-                    {data.net_income.total.toLocaleString('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                    })}
+                  <span>
+                    {data.net_income.total < 0
+                      ? `(${formatCurrency(Math.abs(data.net_income.total))})`
+                      : formatCurrency(data.net_income.total)}
                   </span>
                 </div>
               </div>
             </div>
           ) : (
             <div className='text-muted-foreground flex h-96 flex-col items-center justify-center space-y-4'>
-              <div className='rounded-full bg-slate-100 p-4'>
+              <div className='rounded-full bg-slate-200 p-4'>
                 <CalendarIcon className='h-10 w-10 text-slate-400' />
               </div>
               <p className='text-lg font-medium'>Tidak ada data ditemukan</p>
@@ -227,13 +187,6 @@ function ProfitLossPageContent() {
           )}
         </CardContent>
       </Card>
-
-      {/* Footer - Screen Only */}
-      {!isLoading && data && (
-        <div className='text-muted-foreground text-center text-xs print:hidden'>
-          Dicetak pada {format(new Date(), 'dd/MM/yyyy HH:mm:ss')}
-        </div>
-      )}
       <ProfitLossAccountDetailDialog />
     </div>
   )

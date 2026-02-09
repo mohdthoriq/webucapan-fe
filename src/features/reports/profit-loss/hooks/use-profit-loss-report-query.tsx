@@ -20,8 +20,8 @@ export interface ProfitLossReportQuery {
   date_to: Date
   tag_id: string
   currency_id: string
-  comparison_date_from: Date
-  comparison_date_to: Date
+  comparison_date_from?: Date
+  comparison_date_to?: Date
   view_by: Option
   comparison_periods: number
   sort_by: 'name' | 'code'

@@ -1,7 +1,7 @@
 import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
-import { CalendarIcon, Printer } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Printer } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -213,6 +213,7 @@ export default function BalanceSheetPage() {
             Cetak
           </Button>
           <Button variant={'link'} onClick={() => history.back()}>
+            <ArrowLeft className='h-4 w-4' />
             Kembali
           </Button>
         </div>

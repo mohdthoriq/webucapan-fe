@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { ProfitLossReportData } from '@/types'
+import type { Period } from '@/features/sales/overview/types/sales-overview'
 import {
   useProfitLossReportQuery,
   Option,
@@ -7,12 +8,14 @@ import {
 } from '../hooks/use-profit-loss-report-query'
 
 interface ProfitLossContextType {
+  period: Period
   selectedAccountId: string | null
   data: ProfitLossReportData | null | undefined
   isLoading: boolean
   isOpen: boolean
   dateFrom: Date
   dateTo: Date
+  setPeriod: (period: Period) => void
   openDetail: (accountId: string) => void
   closeDetail: () => void
   setDateRange: (from: Date, to: Date) => void
@@ -37,14 +40,15 @@ export function ProfitLossProvider({
   )
   const [dateFrom, setDateFrom] = useState<Date>(defaultDateFrom)
   const [dateTo, setDateTo] = useState<Date>(defaultDateTo)
+  const [period, setPeriod] = useState<Period>('month')
 
   const { data, isLoading } = useProfitLossReportQuery({
     date_from: dateFrom,
     date_to: dateTo,
     tag_id: '',
     currency_id: '',
-    comparison_date_from: undefined as any,
-    comparison_date_to: undefined as any,
+    comparison_date_from: undefined,
+    comparison_date_to: undefined,
     view_by: Option.Periode,
     comparison_periods: 0,
     sort_by: 'code',
@@ -77,6 +81,8 @@ export function ProfitLossProvider({
         isLoading,
         dateFrom,
         dateTo,
+        period,
+        setPeriod,
         openDetail,
         closeDetail,
         setDateRange,
@@ -87,6 +93,7 @@ export function ProfitLossProvider({
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useProfitLossContext() {
   const context = useContext(ProfitLossContext)
   if (!context) {
