@@ -158,6 +158,7 @@ export function AccountsActionDialog({
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                           categoryId={categoryId}
+                          disabled={!categoryId}
                         />
                       </FormControl>
                       <FormMessage />
