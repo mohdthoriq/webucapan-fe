@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { LogoutDialog } from '@/components/dialog/logout.dialog'
 
-// Helper function to get initials from full name
-const getInitials = (fullName: string): string => {
+// eslint-disable-next-line
+export const getInitials = (fullName: string): string => {
   const names = fullName.trim().split(' ')
   if (names.length === 1) {
     return names[0].substring(0, 2).toUpperCase()
