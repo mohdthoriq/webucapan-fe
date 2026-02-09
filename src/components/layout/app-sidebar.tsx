@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { useLayout } from '@/context/layout-provider'
 import {
@@ -6,15 +7,23 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from '@/components/ui/sidebar'
+import { Button } from '../ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip'
 import { AppTitle } from './app-title'
 import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
 import { NavGroup } from './nav-group'
-import { NavUser } from './nav-user'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
+  const { state, toggleSidebar } = useSidebar()
   const {
     auth: { user },
   } = useAuthStore()
@@ -34,8 +43,27 @@ export function AppSidebar() {
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
+      <SidebarFooter className='border-t'>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant='ghost'
+                onClick={toggleSidebar}
+                className='w-full justify-center'
+              >
+                {state === 'collapsed' ? (
+                  <ArrowRight className='h-4 w-4' />
+                ) : (
+                  <ArrowLeft className='h-4 w-4' />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Toggle Sidebar</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
