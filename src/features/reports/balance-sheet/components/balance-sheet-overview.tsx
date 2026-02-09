@@ -120,7 +120,7 @@ export function BalanceSheetOverview() {
       <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-8 rounded-xl border py-4 shadow-sm'>
         <div className='flex flex-row items-center justify-between px-6'>
           <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
-            Quick Ratio
+            Rasio Cepat
           </div>
           <TooltipProvider>
             <Tooltip>
@@ -128,7 +128,7 @@ export function BalanceSheetOverview() {
                 <HelpCircle className='text-muted-foreground h-4 w-4' />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Quick Ratio measuring liquidity</p>
+                <p>Rasio Cepat Mengukur Likuiditas</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -178,10 +178,10 @@ export function BalanceSheetOverview() {
       </div>
 
       {/* CURRENT RATIO */}
-      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-3 rounded-xl border py-6 shadow-sm'>
         <div className='flex flex-row items-center justify-between px-6 pb-2'>
           <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
-            Current Ratio
+            Rasio Lancar
           </div>
           <TooltipProvider>
             <Tooltip>
@@ -189,7 +189,7 @@ export function BalanceSheetOverview() {
                 <HelpCircle className='text-muted-foreground h-4 w-4' />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Current Ratio = Current Assets / Current Liabilities</p>
+                <p>Rasio Lancar = Aset Lancar / Liabilitas Lancar</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -215,10 +215,10 @@ export function BalanceSheetOverview() {
       </div>
 
       {/* DEBT EQUITY RATIO */}
-      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
+      <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-1 rounded-xl border py-6 shadow-sm'>
         <div className='flex flex-row items-center justify-between px-6 pb-2'>
           <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
-            Debt Equity Ratio
+            Rasio Hutang terhadap Ekuitas
           </div>
           <TooltipProvider>
             <Tooltip>
@@ -226,7 +226,7 @@ export function BalanceSheetOverview() {
                 <HelpCircle className='text-muted-foreground h-4 w-4' />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Debt to Equity Ratio</p>
+                <p>Rasio Hutang terhadap Ekuitas</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -256,7 +256,7 @@ export function BalanceSheetOverview() {
       <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-4 rounded-xl border py-6 shadow-sm'>
         <div className='flex flex-row items-center justify-between px-6 pb-2'>
           <div className='text-sm leading-none font-semibold tracking-wider uppercase'>
-            Equity Ratio
+            Rasio Ekuitas
           </div>
           <TooltipProvider>
             <Tooltip>
@@ -264,7 +264,7 @@ export function BalanceSheetOverview() {
                 <HelpCircle className='text-muted-foreground h-4 w-4' />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Equity Ratio</p>
+                <p>Rasio Ekuitas</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

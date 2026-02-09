@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, ProfitLossReportData } from '@/types'
 import apiClient from '@/lib/api-client'
 
-enum Option {
+export enum Option {
   Periode = 'periode',
   Tag = 'tag',
   Quarter = 'quarter',
 }
 
-enum AccountDisplayOption {
+export enum AccountDisplayOption {
   CodeName = 'code_name',
   BracketCodeName = 'bracket_code_name',
   NameCode = 'name_code',

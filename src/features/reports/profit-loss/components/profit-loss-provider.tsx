@@ -1,70 +1,98 @@
-// import { createContext, useContext, useState, type ReactNode } from 'react'
-// import type { Period } from '@/features/sales/overview/types/sales-overview'
+import { createContext, useContext, useState, type ReactNode } from 'react'
+import type { ProfitLossReportData } from '@/types'
+import {
+  useProfitLossReportQuery,
+  Option,
+  AccountDisplayOption,
+} from '../hooks/use-profit-loss-report-query'
 
-// interface BalanceSheetContextType {
-//   selectedAccountId: string | null
-//   isOpen: boolean
-//   date: Date
-//   period: Period
-//   openDetail: (accountId: string) => void
-//   closeDetail: () => void
-//   setDate: (date: Date) => void
-//   setPeriod: (period: Period) => void
-// }
+interface ProfitLossContextType {
+  selectedAccountId: string | null
+  data: ProfitLossReportData | null | undefined
+  isLoading: boolean
+  isOpen: boolean
+  dateFrom: Date
+  dateTo: Date
+  openDetail: (accountId: string) => void
+  closeDetail: () => void
+  setDateRange: (from: Date, to: Date) => void
+}
 
-// const BalanceSheetContext = createContext<BalanceSheetContextType | undefined>(
-//   undefined
-// )
+const ProfitLossContext = createContext<ProfitLossContextType | undefined>(
+  undefined
+)
 
-// export function BalanceSheetProvider({
-//   children,
-//   defaultDate,
-// }: {
-//   children: ReactNode
-//   defaultDate: Date
-// }) {
-//   const [isOpen, setIsOpen] = useState(false)
-//   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
-//     null
-//   )
-//   const [date, setDate] = useState<Date>(defaultDate)
-//   const [period, setPeriod] = useState<Period>('month') // Default period
+export function ProfitLossProvider({
+  children,
+  defaultDateFrom,
+  defaultDateTo,
+}: {
+  children: ReactNode
+  defaultDateFrom: Date
+  defaultDateTo: Date
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
+    null
+  )
+  const [dateFrom, setDateFrom] = useState<Date>(defaultDateFrom)
+  const [dateTo, setDateTo] = useState<Date>(defaultDateTo)
 
-//   const openDetail = (accountId: string) => {
-//     setSelectedAccountId(accountId)
-//     setIsOpen(true)
-//   }
+  const { data, isLoading } = useProfitLossReportQuery({
+    date_from: dateFrom,
+    date_to: dateTo,
+    tag_id: '',
+    currency_id: '',
+    comparison_date_from: undefined as any,
+    comparison_date_to: undefined as any,
+    view_by: Option.Periode,
+    comparison_periods: 0,
+    sort_by: 'code',
+    account_display: AccountDisplayOption.NameCode,
+    hide_sub_account: false,
+    separate_other_income_expense: false,
+  })
 
-//   const closeDetail = () => {
-//     setIsOpen(false)
-//     setSelectedAccountId(null)
-//   }
+  const openDetail = (accountId: string) => {
+    setSelectedAccountId(accountId)
+    setIsOpen(true)
+  }
 
-//   return (
-//     <BalanceSheetContext.Provider
-//       value={{
-//         selectedAccountId,
-//         isOpen,
-//         date,
-//         period,
-//         openDetail,
-//         closeDetail,
-//         setDate,
-//         setPeriod,
-//       }}
-//     >
-//       {children}
-//     </BalanceSheetContext.Provider>
-//   )
-// }
+  const closeDetail = () => {
+    setIsOpen(false)
+    setSelectedAccountId(null)
+  }
 
-// // eslint-disable-next-line
-// export function useBalanceSheetContext() {
-//   const context = useContext(BalanceSheetContext)
-//   if (!context) {
-//     throw new Error(
-//       'useBalanceSheetContext must be used within a BalanceSheetProvider'
-//     )
-//   }
-//   return context
-// }
+  const setDateRange = (from: Date, to: Date) => {
+    setDateFrom(from)
+    setDateTo(to)
+  }
+
+  return (
+    <ProfitLossContext.Provider
+      value={{
+        selectedAccountId,
+        isOpen,
+        data,
+        isLoading,
+        dateFrom,
+        dateTo,
+        openDetail,
+        closeDetail,
+        setDateRange,
+      }}
+    >
+      {children}
+    </ProfitLossContext.Provider>
+  )
+}
+
+export function useProfitLossContext() {
+  const context = useContext(ProfitLossContext)
+  if (!context) {
+    throw new Error(
+      'useProfitLossContext must be used within a ProfitLossProvider'
+    )
+  }
+  return context
+}

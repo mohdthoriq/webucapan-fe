@@ -81,7 +81,7 @@ export function ExpenseOverview() {
               tickCount={7}
               axisLine={false}
               tickFormatter={formatYAxis}
-              dx={-12}
+              dx={12}
             />
             <Area
               type='monotone'

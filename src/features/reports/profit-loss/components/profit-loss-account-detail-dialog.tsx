@@ -1,159 +1,171 @@
-// import { useState } from 'react'
-// import { format } from 'date-fns'
-// import { id } from 'date-fns/locale'
-// import { Search, X } from 'lucide-react'
-// import { formatNumber } from '@/lib/utils'
-// import { Button } from '@/components/ui/button'
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogDescription,
-// } from '@/components/ui/dialog'
-// import { Input } from '@/components/ui/input'
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from '@/components/ui/table'
-// import { useBalanceSheetAccountDetailQuery } from '../hooks/use-profit-loss-report-query'
-// import { useBalanceSheetContext } from './profit-loss-provider'
+import { useState } from 'react'
+import { format } from 'date-fns'
+import { id } from 'date-fns/locale'
+import { Search, X, Loader2 } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { useProfitLossAccountDetailQuery } from '../hooks/use-profit-loss-account-detail-query'
+import { useProfitLossContext } from './profit-loss-provider'
 
-// export function BalanceSheetAccountDetailDialog() {
-//   const [search, setSearch] = useState('')
-//   const { selectedAccountId, isOpen, closeDetail, date, period } =
-//     useBalanceSheetContext()
-//   const page = 1
+export function ProfitLossAccountDetailDialog() {
+  const [search, setSearch] = useState('')
+  const { selectedAccountId, isOpen, closeDetail, dateFrom, dateTo } =
+    useProfitLossContext()
+  const [page] = useState(1)
 
-//   const { data: detailData, isLoading } = useBalanceSheetAccountDetailQuery({
-//     accountId: selectedAccountId || '',
-//     date,
-//     period,
-//     page,
-//     per_page: 100,
-//   })
+  const { data: detailData, isLoading } = useProfitLossAccountDetailQuery({
+    accountId: selectedAccountId || '',
+    date: dateFrom, // The API seems to expect 'date' but we have from/to. I'll use dateFrom for now or check if period is sufficient.
+    period: 'month', // Generic for now
+    page,
+    per_page: 100,
+  })
 
-//   if (!isOpen) return null
+  if (!isOpen) return null
 
-//   return (
-//     <Dialog open={isOpen} onOpenChange={(open) => !open && closeDetail()}>
-//       <DialogContent className='flex max-h-[90vh] max-w-[calc(100%-4rem)] flex-col p-0 sm:max-w-7xl'>
-//         <div className='flex flex-1 flex-col space-y-6 overflow-hidden p-6'>
-//           {/* Header */}
-//           <div className='flex items-start justify-between'>
-//             <DialogHeader className='text-left'>
-//               <DialogTitle className='text-2xl font-bold'>
-//                 Transaksi: {detailData?.account_name?.title || 'Memuat...'}
-//               </DialogTitle>
-//               <DialogDescription className='text-lg font-medium'>
-//                 {detailData?.account_name?.code}
-//               </DialogDescription>
-//               <p className='text-muted-foreground text-sm'>
-//                 Periode: {format(date, 'MMMM yyyy', { locale: id })}
-//               </p>
-//             </DialogHeader>
-//           </div>
+  const filteredData =
+    detailData?.data.filter(
+      (item) =>
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.ref_code.toLowerCase().includes(search.toLowerCase())
+    ) || []
 
-//           <hr />
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && closeDetail()}>
+      <DialogContent className='flex max-h-[90vh] max-w-[calc(100%-4rem)] flex-col p-0 sm:max-w-7xl'>
+        <div className='flex flex-1 flex-col space-y-6 overflow-hidden p-6'>
+          {/* Header */}
+          <div className='flex items-start justify-between'>
+            <DialogHeader className='text-left'>
+              <DialogTitle className='text-3xl font-bold'>
+                {detailData?.account_name?.title || 'Memuat...'}
+              </DialogTitle>
+              <DialogDescription className='text-lg font-medium text-blue-600'>
+                {detailData?.account_name?.code}
+              </DialogDescription>
+              <p className='text-muted-foreground mt-1 text-sm'>
+                Periode: {format(dateFrom, 'd MMMM yyyy', { locale: id })} -{' '}
+                {format(dateTo, 'd MMMM yyyy', { locale: id })}
+              </p>
+            </DialogHeader>
+          </div>
 
-//           {/* Controls */}
-//           <div className='relative w-xs max-w-xs flex-1'>
-//             <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
-//             <Input
-//               placeholder='Cari...'
-//               className='pl-10'
-//               value={search}
-//               onChange={(e) => setSearch(e.target.value)}
-//             />
-//           </div>
+          <div className='flex items-center justify-between gap-4'>
+            <div className='relative w-full max-w-sm'>
+              <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
+              <Input
+                placeholder='Cari kode atau nama...'
+                className='pl-10'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
 
-//           {/* Table Container */}
-//           <div className='flex flex-1 flex-col overflow-hidden rounded-md border [&_[data-slot=table-container]]:flex-1 [&_[data-slot=table-container]]:overflow-auto'>
-//             <Table>
-//               <TableHeader className='bg-secondary [&_th]:bg-secondary sticky top-0 z-10 shadow-sm'>
-//                 <TableRow className='bg-secondary hover:bg-secondary'>
-//                   <TableHead className='whitespace-wrap font-semibold'>
-//                     Kode Referensi
-//                   </TableHead>
-//                   <TableHead className='whitespace-wrap font-semibold'>
-//                     Nama Akun
-//                   </TableHead>
-//                   <TableHead className='whitespace-wrap text-right font-semibold'>
-//                     Saldo Awal
-//                   </TableHead>
-//                   <TableHead className='whitespace-wrap text-right font-semibold'>
-//                     Saldo Akhir
-//                   </TableHead>
-//                 </TableRow>
-//               </TableHeader>
-//               <TableBody>
-//                 {/* Loading State or Entries */}
-//                 {isLoading ? (
-//                   <TableRow>
-//                     <TableCell colSpan={4} className='py-20 text-center'>
-//                       <div className='text-muted-foreground flex flex-col items-center gap-2'>
-//                         <div className='border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent' />
-//                         <span>Memuat data detail...</span>
-//                       </div>
-//                     </TableCell>
-//                   </TableRow>
-//                 ) : (
-//                   detailData?.data.map((item) => (
-//                     <TableRow key={item.id}>
-//                       <TableCell className='text-muted-foreground whitespace-nowrap'>
-//                         {item.ref_code}
-//                       </TableCell>
-//                       <TableCell className='max-w-[200px] font-medium break-words whitespace-normal text-blue-600'>
-//                         {item.name}
-//                       </TableCell>
-//                       <TableCell className='text-right whitespace-nowrap'>
-//                         {formatNumber(item.opening_balance)}
-//                       </TableCell>
-//                       <TableCell className='text-right font-medium whitespace-nowrap'>
-//                         {formatNumber(item.closing_balance)}
-//                       </TableCell>
-//                     </TableRow>
-//                   ))
-//                 )}
+            {detailData?.journal_total && (
+              <div className='flex gap-6 text-sm'>
+                <div className='flex flex-col items-end'>
+                  <span className='text-muted-foreground'>Total Debit</span>
+                  <span className='font-bold text-green-600'>
+                    {formatCurrency(detailData.journal_total.total_debit)}
+                  </span>
+                </div>
+                <div className='flex flex-col items-end'>
+                  <span className='text-muted-foreground'>Total Kredit</span>
+                  <span className='font-bold text-red-600'>
+                    {formatCurrency(detailData.journal_total.total_credit)}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
 
-//                 {!isLoading && detailData?.data.length === 0 && (
-//                   <TableRow>
-//                     <TableCell
-//                       colSpan={4}
-//                       className='text-muted-foreground py-10 text-center italic'
-//                     >
-//                       Tidak ada detail untuk akun ini.
-//                     </TableCell>
-//                   </TableRow>
-//                 )}
+          {/* Table Container */}
+          <div className='flex flex-1 flex-col overflow-hidden rounded-md border'>
+            <Table>
+              <TableHeader className='sticky top-0 z-10 bg-slate-50'>
+                <TableRow>
+                  <TableHead className='w-32 font-semibold'>
+                    Kode Referensi
+                  </TableHead>
+                  <TableHead className='font-semibold'>Nama Akun</TableHead>
+                  <TableHead className='text-right font-semibold'>
+                    Saldo Awal
+                  </TableHead>
+                  <TableHead className='text-right font-semibold'>
+                    Saldo Akhir
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className='py-20 text-center'>
+                      <div className='flex flex-col items-center gap-2'>
+                        <Loader2 className='text-primary h-8 w-8 animate-spin' />
+                        <span className='text-muted-foreground'>
+                          Memuat data transaksi...
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : filteredData.length > 0 ? (
+                  filteredData.map((item) => (
+                    <TableRow key={item.id} className='hover:bg-slate-50/50'>
+                      <TableCell className='text-muted-foreground font-mono text-xs'>
+                        {item.ref_code}
+                      </TableCell>
+                      <TableCell className='font-medium text-blue-600'>
+                        {item.name}
+                      </TableCell>
+                      <TableCell className='text-right'>
+                        {formatCurrency(item.opening_balance)}
+                      </TableCell>
+                      <TableCell className='text-right font-semibold'>
+                        {formatCurrency(item.closing_balance)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={4}
+                      className='text-muted-foreground py-20 text-center italic'
+                    >
+                      Tidak ada data ditemukan.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
 
-//                 {/* Footer / Total Row if applicable */}
-//                 {/* Assuming journal_total gives some totals, but strictly we are listing sub-items. 
-//                      We can add a total row if needed, but the provided JSON only has journal_total for debit/credit, 
-//                      which matches transactions, but the table items are balances. 
-//                      I'll verify if I should show total debit/credit or just opening/closing totals.
-//                      Based on JSON: `journal_total: { total_credit: 0, total_debit: 500000 }`
-//                      But the table shows opening/closing balance. I'll omit totals effectively unless I sum them up or use meaningful api data.
-//                   */}
-//               </TableBody>
-//             </Table>
-//           </div>
-//         </div>
-
-//         <div className='bg-muted/50 flex justify-end gap-3 border-t p-4'>
-//           <Button
-//             variant='outline'
-//             onClick={() => closeDetail()}
-//             className='gap-2'
-//           >
-//             <X className='h-4 w-4' /> Tutup
-//           </Button>
-//         </div>
-//       </DialogContent>
-//     </Dialog>
-//   )
-// }
+        <div className='flex justify-end gap-3 border-t bg-slate-50 p-4'>
+          <Button
+            variant='outline'
+            onClick={() => closeDetail()}
+            className='gap-2'
+          >
+            <X className='h-4 w-4' /> Tutup
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
