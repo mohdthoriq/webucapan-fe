@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
@@ -14,10 +15,17 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       <DataTableColumnHeader column={column} title='No. Invoice' />
     ),
     cell: ({ row }) => {
-      const { invoice_number } = row.original
+      const { invoice_number, id } = row.original
       return (
         <div className='px-2'>
-          <LongText>{invoice_number}</LongText>
+          <Link
+            to='/sales/invoices/detail'
+            state={{ currentRowId: id } as Record<string, unknown>}
+          >
+            <LongText className='text-primary cursor-pointer hover:underline'>
+              {invoice_number}
+            </LongText>
+          </Link>
         </div>
       )
     },

@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { Expense } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
@@ -14,10 +15,17 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       <DataTableColumnHeader column={column} title='No. Invoice' />
     ),
     cell: ({ row }) => {
-      const { expense_number } = row.original
+      const { expense_number, id } = row.original
       return (
         <div className='px-2'>
-          <LongText>{expense_number}</LongText>
+          <Link
+            to='/expenses/detail'
+            state={{ currentRowId: id } as Record<string, unknown>}
+          >
+            <LongText className='text-primary cursor-pointer hover:underline'>
+              {expense_number}
+            </LongText>
+          </Link>
         </div>
       )
     },
