@@ -109,7 +109,6 @@ export function SalesChartCard({
                 stroke='#3f3f46'
                 vertical={false}
                 strokeDasharray='3 3'
-                className='stroke-muted/20'
               />
               <XAxis
                 dataKey='label'
@@ -147,7 +146,6 @@ export function SalesChartCard({
                 dataKey='value'
                 fill='#2dd4bf' // teal-400
                 radius={[2, 2, 0, 0]}
-                maxBarSize={50}
               />
             </BarChart>
           </ResponsiveContainer>
