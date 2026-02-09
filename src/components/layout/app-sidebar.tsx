@@ -6,7 +6,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-  SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { AppTitle } from './app-title'
 import { sidebarData } from './data/sidebar-data'
@@ -28,7 +27,6 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className='flex items-center justify-between px-2'>
           <AppTitle />
-          <SidebarTrigger className='-mr-2 ml-auto hidden md:flex' />
         </div>
       </SidebarHeader>
       <SidebarContent>
