@@ -29,15 +29,14 @@ export function AppTitle() {
           <Link
             to='/'
             onClick={() => setOpenMobile(false)}
-            className='flex w-full items-center justify-center'
+            className='flex w-full items-center justify-center '
           >
             <img 
               src={isExpanded ? FullLogo : IconLogo} 
               alt="Manajerku"
               className={cn(
-                "object-contain transition-all duration-200",
-                // When expanded, let it take up the available width (adjust h- as needed)
-                isExpanded ? "h-10 w-full rounded-md" : "h-8 w-8 rounded-md"
+                "object-contain transition-all duration-200 rounded-md",
+                isExpanded ? "h-10 w-full" : "h-8 w-8 rounded-md"
               )}
             />
           </Link>
