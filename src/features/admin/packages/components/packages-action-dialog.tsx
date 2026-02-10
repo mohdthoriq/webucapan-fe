@@ -169,7 +169,7 @@ export function PackagesActionDialog({
                     onClick={() => append('')}
                   >
                     <Plus className='h-4 w-4' />
-                    Tambah Fitur
+                    {fields.length === 0 ? 'Masukkan Fitur' : 'Tambah Fitur'}
                   </Button>
                 </div>
               </div>
