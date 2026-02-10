@@ -20,6 +20,7 @@ import { AppTitle } from './app-title'
 import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
 import { NavGroup } from './nav-group'
+import { cn } from '@/lib/utils'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
@@ -34,7 +35,12 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
-        <div className='flex items-center justify-between px-2'>
+        <div 
+          className={cn(
+            'flex items-center transition-all duration-200',
+            'group-data-[collapsible=icon]:pt-2'
+          )}
+        >
           <AppTitle />
         </div>
       </SidebarHeader>
