@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import type {
   CreateExpenseFormData,
   UpdateExpenseFormData,
@@ -142,7 +142,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <InputFieldRupiah
+                <InputFieldNumberFormat
                   placeholder='0'
                   value={field.value}
                   onValueChange={field.onChange}

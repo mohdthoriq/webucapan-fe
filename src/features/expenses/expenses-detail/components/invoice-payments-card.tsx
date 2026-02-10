@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { useExpensesPaymentsForm } from '../hooks/use-expenses-payments-form'
@@ -121,7 +121,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                         : 'Pembayaran Sisa'}
                     </FormLabel>
                     <FormControl>
-                      <InputFieldRupiah
+                      <InputFieldNumberFormat
                         value={field.value ?? ''}
                         onValueChange={(value) => field.onChange(value ?? '')}
                         placeholder='0'

@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import Packages from '@/features/admin/packages'
 
 export const Route = createFileRoute('/_authenticated/admin/packages/')({
-  component: RouteComponent,
+  component: Packages,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/admin/packages/"!</div>
-}

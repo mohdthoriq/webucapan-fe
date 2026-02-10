@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { DatePicker } from '@/components/forms/date-picker'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
@@ -152,7 +152,7 @@ export function CashBankListActionDialog({
                   <FormItem>
                     <FormLabel>Jumlah</FormLabel>
                     <FormControl>
-                      <InputFieldRupiah
+                      <InputFieldNumberFormat
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder='0'

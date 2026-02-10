@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { CashBankListCombobox } from '../../cash-bank-list/components/cash-bank-list-combobox'
 
 export const CashBankItemRow = memo(function CashBankItemRow({
@@ -81,7 +81,7 @@ export const CashBankItemRow = memo(function CashBankItemRow({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <InputFieldRupiah
+                <InputFieldNumberFormat
                   placeholder='0'
                   value={field.value}
                   onValueChange={field.onChange}

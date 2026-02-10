@@ -27,3 +27,5 @@ export * from './domain/cash-bank'
 export * from './domain/dashboard'
 export * from './domain/balance-sheet'
 export * from './domain/profit-loss'
+export * from './domain/packages'
+

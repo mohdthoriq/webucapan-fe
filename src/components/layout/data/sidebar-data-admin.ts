@@ -21,32 +21,32 @@ export const sidebarDataAdmin: SidebarData = {
       ],
     },
     {
-      title: 'Akuntansi',
+      title: 'Accounting',
       items: [
         {
-          title: 'Kategori Akun',
+          title: 'Account Categories',
           icon: Library,
           url: '/admin/account-categories',
         },
       ],
     },
     {
-      title: 'Penagihan & Berlangganan',
+      title: 'Billing & Subscriptions',
       items: [
         {
-          title: 'Paket',
+          title: 'Plan',
           icon: Package,
           url: '/admin/packages',
         },
         {
-          title: 'Langganan',
+          title: 'Subscriptions',
           icon: CreditCard,
           url: '/admin/subscriptions',
         },
       ],
     },
     {
-      title: 'Akses Kontrol',
+      title: 'Access Control',
       items: [
         {
           title: 'Permissions',
@@ -56,7 +56,7 @@ export const sidebarDataAdmin: SidebarData = {
       ],
     },
     {
-      title: 'Pengaturan',
+      title: 'Settings',
       items: [
         {
           title: 'Menus',
