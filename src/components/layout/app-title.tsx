@@ -6,28 +6,40 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 
+import FullLogo from '@/assets/manajerku-office.png'
+import IconLogo from '@/assets/manajerku-logo.png'
+import { cn } from '@/lib/utils'
+
 export function AppTitle() {
-  const { setOpenMobile } = useSidebar()
+  const { setOpenMobile, state } = useSidebar()
+  const isExpanded = state === 'expanded'
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton
           size='lg'
-          className='gap-0 py-0 hover:bg-transparent active:bg-transparent'
           asChild
+          className={cn(
+            "hover:bg-transparent active:bg-transparent transition-all duration-200",
+            "w-full h-auto", 
+            "group-data-[collapsible=icon]:size-auto! group-data-[collapsible=icon]:p-0!"
+          )}
         >
-          <div>
-            <Link
-              to='/'
-              onClick={() => setOpenMobile(false)}
-              className='grid flex-1 text-start text-sm leading-tight'
-            >
-              <span className='truncate font-bold'>Manajerku</span>
-              <span className='truncate text-xs'>
-                Kelola Manajerial dengan mudah.
-              </span>
-            </Link>
-          </div>
+          <Link
+            to='/'
+            onClick={() => setOpenMobile(false)}
+            className='flex w-full items-center justify-center '
+          >
+            <img 
+              src={isExpanded ? FullLogo : IconLogo} 
+              alt="Manajerku"
+              className={cn(
+                "object-contain transition-all duration-200 rounded-md",
+                isExpanded ? "h-10 w-full bg-[#f7f9fa]" : "h-8 w-8 rounded-md"
+              )}
+            />
+          </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
