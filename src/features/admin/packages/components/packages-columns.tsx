@@ -15,13 +15,13 @@ export const packagesColumns: ColumnDef<Package>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{name}</LongText>
+          <LongText>{name}</LongText>
         </div>
       )
     },
     meta: {
       className: cn(
-        'w-full min-w-[250px] drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+        'w-full drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
         'ps-0.5 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
       ),
     },
@@ -41,7 +41,7 @@ export const packagesColumns: ColumnDef<Package>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {
@@ -58,7 +58,7 @@ export const packagesColumns: ColumnDef<Package>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px]',
+      className: 'w-full',
     },
   },
   {
@@ -75,7 +75,7 @@ export const packagesColumns: ColumnDef<Package>[] = [
       )
     },
     meta: {
-      className: 'w-full px-8',
+      className: 'w-full',
     },
   },
   {
