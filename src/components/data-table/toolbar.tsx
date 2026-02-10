@@ -1,10 +1,11 @@
+import { type ComponentType, type ReactNode, useEffect, useState } from 'react'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { type Table } from '@tanstack/react-table'
+import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTableFacetedFilter } from './faceted-filter'
 import { DataTableViewOptions } from './view-options'
-import { type ReactNode } from 'react'
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -16,7 +17,7 @@ type DataTableToolbarProps<TData> = {
     options: {
       label: string
       value: string
-      icon?: React.ComponentType<{ className?: string }>
+      icon?: ComponentType<{ className?: string }>
     }[]
   }[]
   children?: ReactNode
@@ -32,28 +33,42 @@ export function DataTableToolbar<TData>({
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter
 
+  // Handle debounced search for column or global filter
+  const column = searchKey ? table.getColumn(searchKey) : null
+  const initialValue = searchKey
+    ? ((column?.getFilterValue() as string) ?? '')
+    : ((table.getState().globalFilter as string) ?? '')
+
+  const [searchValue, setSearchValue] = useState(initialValue)
+  const debouncedSearchValue = useDebounce(searchValue, 800)
+
+  // Sync internal state with external value (e.g. from reset)
+  useEffect(() => {
+    setSearchValue(initialValue)
+  }, [initialValue])
+
+  // Apply debounced search to the table
+  useEffect(() => {
+    if (searchKey && column) {
+      if (column.getFilterValue() !== debouncedSearchValue) {
+        column.setFilterValue(debouncedSearchValue)
+      }
+    } else {
+      if (table.getState().globalFilter !== debouncedSearchValue) {
+        table.setGlobalFilter(debouncedSearchValue)
+      }
+    }
+  }, [debouncedSearchValue, column, searchKey, table])
+
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
-        {searchKey ? (
-          <Input
-            placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ''
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
-            className='h-8 w-[150px] lg:w-[250px]'
-          />
-        ) : (
-          <Input
-            placeholder={searchPlaceholder}
-            value={table.getState().globalFilter ?? ''}
-            onChange={(event) => table.setGlobalFilter(event.target.value)}
-            className='h-8 w-[150px] lg:w-[250px]'
-          />
-        )}
+        <Input
+          placeholder={searchPlaceholder}
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
+          className='h-8 w-[150px] lg:w-[250px]'
+        />
         <div className='flex gap-x-2'>
           {filters.map((filter) => {
             const column = table.getColumn(filter.columnId)
