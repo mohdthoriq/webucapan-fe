@@ -1,6 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Package } from '@/types'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './packages-row-actions'
@@ -51,9 +51,10 @@ export const packagesColumns: ColumnDef<Package>[] = [
     ),
     cell: ({ row }) => {
       const { monthly_price } = row.original
+      const formattedPrice = formatNumber(monthly_price)
       return (
         <div className='overflow-hidden px-2'>
-          <LongText className='truncate'>{monthly_price}</LongText>
+          <LongText className='truncate'>{formattedPrice}</LongText>
         </div>
       )
     },
@@ -68,9 +69,10 @@ export const packagesColumns: ColumnDef<Package>[] = [
     ),
     cell: ({ row }) => {
       const { yearly_price } = row.original
+      const formattedPrice = formatNumber(yearly_price)
       return (
         <div className='overflow-hidden px-2'>
-          <LongText className='truncate'>{yearly_price}</LongText>
+          <LongText className='truncate'>{formattedPrice}</LongText>
         </div>
       )
     },
