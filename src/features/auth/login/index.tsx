@@ -8,13 +8,11 @@ import { LoginForm } from './components/login-form'
 export function Login() {
   const { redirect, error } = useSearch({ from: '/(auth)/login' })
   const router = useRouter()
-  // const { errorAuthMessage } = useAuthStore.getState()
 
   useEffect(() => {
     if (error) {
       toast.error(error)
 
-      // Clear the flag so next redirect will trigger another toast
       router.navigate({
         to: '/login',
         search: () => {

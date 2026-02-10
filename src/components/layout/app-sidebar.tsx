@@ -10,12 +10,6 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Button } from '../ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip'
 import { AppTitle } from './app-title'
 import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
@@ -44,26 +38,17 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter className='border-t'>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant='ghost'
-                onClick={toggleSidebar}
-                className='w-full justify-center'
-              >
-                {state === 'collapsed' ? (
-                  <ArrowRight className='h-4 w-4' />
-                ) : (
-                  <ArrowLeft className='h-4 w-4' />
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Toggle Sidebar</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Button
+          variant='ghost'
+          onClick={toggleSidebar}
+          className='w-full justify-center'
+        >
+          {state === 'collapsed' ? (
+            <ArrowRight className='h-4 w-4' />
+          ) : (
+            <ArrowLeft className='h-4 w-4' />
+          )}
+        </Button>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
