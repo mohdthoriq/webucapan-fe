@@ -36,7 +36,7 @@ export function AppTitle() {
               alt="Manajerku"
               className={cn(
                 "object-contain transition-all duration-200 rounded-md",
-                isExpanded ? "h-10 w-full" : "h-8 w-8 rounded-md"
+                isExpanded ? "h-10 w-full bg-[#f7f9fa]" : "h-8 w-8 rounded-md"
               )}
             />
           </Link>
