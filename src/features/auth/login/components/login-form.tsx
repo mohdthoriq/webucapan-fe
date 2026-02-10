@@ -83,6 +83,7 @@ export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
         onOpenChange={unverifiedEmailDialog.setOpen}
         email={unverifiedEmailDialog.email}
         onResendOtp={unverifiedEmailDialog.onResendOtp}
+        onGoToVerify={unverifiedEmailDialog.onGoToVerify}
         purpose={AuthPurpose.Registration}
       />
     </Form>

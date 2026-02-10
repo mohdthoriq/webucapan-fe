@@ -19,16 +19,19 @@ export const useAuthFlowStore = create<AuthFlowState>()(
       purpose: null,
       otp_code: null,
       setAuthFlow: (data) =>
-        set((state) => ({
-          ...state,
-          ...data,
-        })),
-      clearAuthFlow: () =>
+        set((state) => {
+          return {
+            ...state,
+            ...data,
+          }
+        }),
+      clearAuthFlow: () => {
         set({
           email: null,
           purpose: null,
           otp_code: null,
-        }),
+        })
+      },
     }),
     {
       name: 'auth-flow-storage',

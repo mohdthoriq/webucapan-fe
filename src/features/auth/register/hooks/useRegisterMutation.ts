@@ -1,14 +1,12 @@
-import { AxiosError } from 'axios'
-import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import { AuthPurpose, type ApiResponse } from '@/types'
-import { toast } from 'sonner'
-import { useAuthFlowStore } from '@/stores/auth-flow-store'
-import apiClient from '@/lib/api-client'
-import type {
-  RegisterResponse,
-  RegisterFormData,
-} from '../types/register.types'
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
+import { AuthPurpose, type ApiResponse } from '@/types';
+import { toast } from 'sonner';
+import { useAuthFlowStore } from '@/stores/auth-flow-store';
+import apiClient from '@/lib/api-client';
+import type { RegisterResponse, RegisterFormData } from '../types/register.types';
+
 
 export function useRegisterMutation() {
   const navigate = useNavigate()
@@ -40,6 +38,10 @@ export function useRegisterMutation() {
       try {
         await navigate({
           to: '/verify-email',
+          search: {
+            email: variables.email,
+            purpose: AuthPurpose.Registration,
+          },
           replace: true,
         })
       } catch {

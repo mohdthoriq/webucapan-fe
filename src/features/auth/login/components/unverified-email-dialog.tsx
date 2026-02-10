@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { AuthPurpose } from '@/types'
+import { type AuthPurpose } from '@/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +17,7 @@ interface UnverifiedEmailDialogProps {
   onOpenChange: (open: boolean) => void
   email: string
   onResendOtp: () => void
+  onGoToVerify: () => void
 }
 
 export function UnverifiedEmailDialog({
@@ -25,13 +26,18 @@ export function UnverifiedEmailDialog({
   onOpenChange,
   email,
   onResendOtp,
+  onGoToVerify,
 }: UnverifiedEmailDialogProps) {
   const navigate = useNavigate()
 
   const handleGoToVerify = () => {
+    onGoToVerify()
     navigate({
       to: '/verify-email',
-      search: { purpose },
+      search: {
+        email,
+        purpose,
+      },
     })
     onOpenChange(false)
   }
