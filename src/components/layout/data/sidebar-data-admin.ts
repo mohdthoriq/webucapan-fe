@@ -1,30 +1,67 @@
-import { AppWindow, KeyRound, LayoutDashboard, WalletCards } from 'lucide-react'
+import {
+  Library,
+  Package,
+  CreditCard,
+  ShieldCheck,
+  Menu,
+  LayoutDashboard,
+} from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarDataAdmin: SidebarData = {
   navGroups: [
     {
-      title: 'General',
+      title: 'Overview',
       items: [
         {
           title: 'Dashboard',
           url: '/',
           icon: LayoutDashboard,
         },
+      ],
+    },
+    {
+      title: 'Akuntansi',
+      items: [
+        {
+          title: 'Kategori Akun',
+          icon: Library,
+          url: '/admin/account-categories',
+        },
+      ],
+    },
+    {
+      title: 'Penagihan & Berlangganan',
+      items: [
+        {
+          title: 'Paket',
+          icon: Package,
+          url: '/admin/packages',
+        },
+        {
+          title: 'Langganan',
+          icon: CreditCard,
+          url: '/admin/subscriptions',
+        },
+      ],
+    },
+    {
+      title: 'Akses Kontrol',
+      items: [
         {
           title: 'Permissions',
           url: '/admin/permissions',
-          icon: KeyRound,
+          icon: ShieldCheck,
         },
+      ],
+    },
+    {
+      title: 'Pengaturan',
+      items: [
         {
           title: 'Menus',
           url: '/admin/menus',
-          icon: AppWindow,
-        },
-        {
-          title: 'Akun',
-          icon: WalletCards,
-          url: '/admin/account-categories',
+          icon: Menu,
         },
       ],
     },
