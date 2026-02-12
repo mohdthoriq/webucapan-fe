@@ -59,7 +59,7 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'company', searchKey: 'company', type: 'string' },
     ],
   })
 
@@ -106,7 +106,7 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
       <DataTableToolbar
         table={table}
         searchPlaceholder='Cari satuan...'
-        searchKey='name'
+        searchKey='company'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>
