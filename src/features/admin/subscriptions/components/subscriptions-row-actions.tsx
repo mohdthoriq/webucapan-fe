@@ -43,6 +43,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             Detail
           </DropdownMenuItem>
           <DropdownMenuItem
+            disabled
             onClick={() => {
               setCurrentRow(subscription)
               setOpen('edit')
@@ -57,6 +58,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
               setOpen('delete')
             }}
             className='text-red-500!'
+            disabled
           >
             Delete
           </DropdownMenuItem>

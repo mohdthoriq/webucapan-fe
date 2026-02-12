@@ -7,12 +7,14 @@ interface UseComboboxQueryProps<T, P> {
   queryHook: (params: P) => UseQueryResult<PaginationApiResponse<T>, Error>
   limit?: number
   extraParams?: Partial<P>
+  searchKey?: string
 }
 
 export function useComboboxQuery<T extends { id: string }, P>({
   queryHook,
   limit = 20,
   extraParams = {} as Partial<P>,
+  searchKey = 'name',
 }: UseComboboxQueryProps<T, P>) {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -24,7 +26,7 @@ export function useComboboxQuery<T extends { id: string }, P>({
   const query = queryHook({
     page: currentPage,
     limit,
-    name: debouncedSearchTerm || undefined,
+    [searchKey]: debouncedSearchTerm || undefined,
     ...extraParams,
   } as unknown as P)
 

@@ -1,5 +1,7 @@
 'use client'
 
+import type { Account, Tag } from '@/types'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,11 +21,12 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { DatePicker } from '@/components/forms/date-picker'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
-import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 
 type CashBankListActionDialogProps = {
   open: boolean
@@ -36,7 +39,7 @@ export function CashBankListActionDialog({
 }: CashBankListActionDialogProps) {
   const { form, onSubmit, isSubmitting } = useCashBankListForm()
   const { data: tags } = useTagsQuery()
-
+  const { openDialog } = useGlobalDialogStore()
   return (
     <Dialog
       open={open}
@@ -73,6 +76,20 @@ export function CashBankListActionDialog({
                           field.onChange(value)
                         }}
                         placeholder='Pilih akun asal'
+                        action={
+                          <FormShortcutButton
+                            title='Tambah Akun Baru'
+                            onClick={() =>
+                              openDialog('account', {
+                                onSuccess: (data: Account) => {
+                                  if (data?.id) {
+                                    field.onChange(data.id)
+                                  }
+                                },
+                              })
+                            }
+                          />
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -92,6 +109,20 @@ export function CashBankListActionDialog({
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder='Pilih akun tujuan'
+                        action={
+                          <FormShortcutButton
+                            title='Tambah Akun Baru'
+                            onClick={() =>
+                              openDialog('account', {
+                                onSuccess: (data: Account) => {
+                                  if (data?.id) {
+                                    field.onChange(data.id)
+                                  }
+                                },
+                              })
+                            }
+                          />
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -99,7 +130,7 @@ export function CashBankListActionDialog({
                 )}
               />
 
-               <FormField
+              <FormField
                 control={form.control}
                 name='tags'
                 render={({ field }) => (
@@ -117,6 +148,20 @@ export function CashBankListActionDialog({
                         onChange={field.onChange}
                         placeholder='Pilih tag'
                         disabled={tags?.data.length === 0}
+                        action={
+                          <FormShortcutButton
+                            title='Tambah Tag Baru'
+                            onClick={() =>
+                              openDialog('tag', {
+                                onSuccess: (data: Tag) => {
+                                  if (data?.id) {
+                                    field.onChange(data.id)
+                                  }
+                                },
+                              })
+                            }
+                          />
+                        }
                       />
                     </FormControl>
                     <FormMessage />

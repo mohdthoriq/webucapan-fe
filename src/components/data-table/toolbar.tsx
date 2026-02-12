@@ -83,7 +83,6 @@ export function DataTableToolbar<TData>({
             )
           })}
         </div>
-        {children}
         {isFiltered && (
           <Button
             variant='ghost'
@@ -92,12 +91,13 @@ export function DataTableToolbar<TData>({
               table.setGlobalFilter('')
               setSearchValue('')
             }}
-            className='h-8 px-2 lg:px-3'
+            className='h-10 px-2 lg:px-3'
           >
             Reset
             <Cross2Icon className='ms-2 h-4 w-4' />
           </Button>
         )}
+        {children}
       </div>
       <DataTableViewOptions table={table} />
     </div>
