@@ -1,25 +1,15 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import type { Menu } from '@/types'
-import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useDebounce } from '@/hooks/use-debounce'
-import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { useMenusQuery } from '../../hooks/use-menus-query'
+import * as React from 'react';
+import type { Menu } from '@/types';
+import { CheckIcon, ChevronsUpDownIcon, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useDebounce } from '@/hooks/use-debounce';
+import { Button } from '@/components/ui/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useMenusQuery } from '../../hooks/use-menus-query';
+
 
 interface MenusParentComboboxProps {
   value?: string
@@ -30,7 +20,7 @@ interface MenusParentComboboxProps {
 }
 
 export function MenusParentCombobox({
-  value = '',
+  value = undefined,
   onValueChange,
   placeholder = 'Select menu...',
   companyId,

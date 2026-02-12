@@ -28,7 +28,7 @@ export function useSubscriptionsForm({
     resolver: zodResolver(createSubscriptionSchema),
     defaultValues: isEdit
       ? {
-          company_id: currentRow?.company.id,
+          company_id: currentRow?.company?.id,
           plan_id: currentRow?.plan_id ?? undefined,
           status: currentRow?.Subscriptions_status,
           start_date: new Date(currentRow?.start_date),

@@ -15,7 +15,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{name}</LongText>
+          <LongText className=''>{name}</LongText>
         </div>
       )
     },
@@ -35,13 +35,47 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { title } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{title}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[700px]',
+      className: 'w-full',
+    },
+  },
+  {
+    accessorKey: 'position',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Posisi Menu' />
+    ),
+    cell: ({ row }) => {
+      const { position } = row.original
+      return (
+        <div className='w-full overflow-hidden px-2'>
+          <LongText className='truncate'>{position}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
+    accessorKey: 'permission',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Permission' />
+    ),
+    cell: ({ row }) => {
+      const { permission } = row.original
+      return (
+        <div className='w-full overflow-hidden px-2'>
+          <LongText className='truncate'>{permission?.name}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
     },
   },
   {

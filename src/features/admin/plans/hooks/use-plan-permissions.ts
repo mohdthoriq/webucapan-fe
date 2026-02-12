@@ -1,18 +1,24 @@
+import type { AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import type { ApiResponse } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { ApiResponse } from '@/types'
-import type { AxiosError } from 'axios'
+
+interface PlanPermissionResponse {
+  id: string
+  permission_id: string
+}
 
 export function usePlanPermissionsQuery(planId: string) {
   return useQuery({
     queryKey: ['plan-permissions', planId],
     queryFn: async () => {
-      const response = await apiClient.get<ApiResponse<string[]>>(
-        `/subscriptions/plans/${planId}/permissions`
-      )
+      const response = await apiClient.get<
+        ApiResponse<PlanPermissionResponse[]>
+      >(`subscriptions/plans/${planId}/permissions`)
       return response.data.data ?? []
     },
+    select: (data) => data.map((item) => item.permission_id),
     enabled: !!planId,
   })
 }
@@ -21,9 +27,11 @@ export function useUpdatePlanPermissionsMutation(planId: string) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (permissionIds: string[]) => {
-      const response = await apiClient.patch(
-        `/subscriptions/plans/${planId}/permissions`,
-        { permissions: permissionIds }
+      const response = await apiClient.post(
+        `subscriptions/plans/${planId}/permissions`,
+        {
+          permission_ids: permissionIds,
+        }
       )
       return response.data
     },

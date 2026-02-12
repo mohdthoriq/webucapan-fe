@@ -7,10 +7,10 @@ export const createMenusSchema = z.object({
   position: z.number(),
   icon: z.string(),
   url: z.string(),
-  permission_id: z.string(),
+  permission_id: z.string().optional().nullable(),
   is_divider: z.boolean(),
   is_active: z.boolean(),
-  category_id: z.string(),
+  category_id: z.string().optional().nullable(),
 })
 
 export type CreateMenusFormData = z.infer<typeof createMenusSchema>
@@ -23,8 +23,8 @@ export const updateMenusSchema = z.object({
   position: z.number(),
   icon: z.string(),
   url: z.string(),
-  permission_id: z.string(),
-  category_id: z.string(),
+  permission_id: z.string().optional().nullable(),
+  category_id: z.string().optional().nullable(),
   is_divider: z.boolean(),
   is_active: z.boolean(),
 })
