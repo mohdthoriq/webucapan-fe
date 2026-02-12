@@ -36,11 +36,12 @@ export const useAuthStore = create<AuthState>()((set) => {
       ? JSON.parse(refreshCookieState)
       : ''
 
-  // Get user data from cookie
-  const getUserFromCookie = (): AuthMe | null => {
+  // Get user data from localStorage (avoid cookie size limits)
+  const getUserFromStorage = (): AuthMe | null => {
     try {
-      const userData = getCookie(USER_DATA)
-      return userData && userData !== 'undefined' ? JSON.parse(userData) : null
+      if (typeof window === 'undefined') return null
+      const userData = localStorage.getItem(USER_DATA)
+      return userData ? JSON.parse(userData) : null
     } catch {
       return null
     }
@@ -48,14 +49,16 @@ export const useAuthStore = create<AuthState>()((set) => {
 
   return {
     auth: {
-      user: getUserFromCookie(),
+      user: getUserFromStorage(),
       setUser: (user) =>
         set((state) => {
-          // Persist user data to cookie
-          if (user) {
-            setCookie(USER_DATA, JSON.stringify(user))
-          } else {
-            removeCookie(USER_DATA)
+          // Persist user data to localStorage
+          if (typeof window !== 'undefined') {
+            if (user) {
+              localStorage.setItem(USER_DATA, JSON.stringify(user))
+            } else {
+              localStorage.removeItem(USER_DATA)
+            }
           }
           return { ...state, auth: { ...state.auth, user } }
         }),
@@ -105,7 +108,9 @@ export const useAuthStore = create<AuthState>()((set) => {
         set((state) => {
           removeCookie(ACCESS_TOKEN)
           removeCookie(REFRESH_TOKEN)
-          removeCookie(USER_DATA)
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem(USER_DATA)
+          }
           return {
             ...state,
             auth: {

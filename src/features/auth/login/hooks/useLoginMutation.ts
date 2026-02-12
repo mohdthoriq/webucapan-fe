@@ -35,7 +35,11 @@ export function useLoginMutation({
     onSuccess: async (data) => {
       toast.dismiss('login-toast')
 
-      auth.setTokens(data.data!.accessToken, data.data!.refreshToken)
+      const loginData = data.data!
+      auth.setTokens(loginData.accessToken, loginData.refreshToken)
+
+      // Save user data (including menus and permissions) from login response
+      auth.setUser(loginData)
 
       try {
         const response =
@@ -43,11 +47,24 @@ export function useLoginMutation({
 
         const userData = response.data!.data!
 
-        auth.setUser(userData)
+        // Merge userData with existing loginData to ensure menus and permissions are preserved
+        // if /auth/me doesn't return them
+        auth.setUser({
+          ...loginData,
+          ...userData,
+          menus:
+            userData.menus && userData.menus.length > 0
+              ? userData.menus
+              : loginData.menus,
+          permissions:
+            userData.permissions && userData.permissions.length > 0
+              ? userData.permissions
+              : loginData.permissions,
+        })
 
-        const greetingsSubject = response.data!.data!.user!.full_name
-          ? response.data!.data!.user!.full_name
-          : response.data!.data!.user!.email
+        const greetingsSubject = userData.user?.full_name
+          ? userData.user.full_name
+          : userData.user?.email
 
         toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
       } catch {

@@ -1,5 +1,7 @@
 import type { Company } from './company'
+import type { Menu } from './menu'
 import type { Role } from './role'
+import type { Subscription } from './subscriptions'
 import type { User } from './user'
 
 export enum AuthPurpose {
@@ -14,6 +16,8 @@ export interface AuthMe {
   company: Company
   role: Role
   permissions: string[]
+  menus: Menu[]
+  subscription?: Subscription
 }
 
 export interface LoginResponse extends AuthMe {
