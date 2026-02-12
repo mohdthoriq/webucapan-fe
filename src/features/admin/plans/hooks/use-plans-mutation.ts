@@ -1,44 +1,44 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { usePackages } from '../components/packages-provider'
+import { usePlans } from '../components/plans-provider'
 import {
-  type CreatePackageFormData,
-  type UpdatePackageFormData,
-  type DeletePackageFormData,
-} from '../types/packages.schema'
+  type CreatePlanFormData,
+  type UpdatePlanFormData,
+  type DeletePlanFormData,
+} from '../types/plans.schema'
 
-export function useCreatePackageMutation() {
-  const { setOpen } = usePackages()
+export function useCreatePlanMutation() {
+  const { setOpen } = usePlans()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreatePackageFormData) => {
+    mutationFn: async (credentials: CreatePlanFormData) => {
       const response = await apiClient.post(`subscriptions/plans`, credentials)
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'packages-toast' })
+      toast.loading('Loading...', { id: 'plans-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('packages-toast')
-      await queryClient.invalidateQueries({ queryKey: ['packages'] })
+      toast.dismiss('plans-toast')
+      await queryClient.invalidateQueries({ queryKey: ['plans'] })
       toast.success('Plan berhasil ditambahkan.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('packages-toast')
+      toast.dismiss('plans-toast')
       toast.error('Plan gagal ditambahkan.')
     },
   })
 }
 
-export function useUpdatePackageMutation() {
-  const { setOpen } = usePackages()
+export function useUpdatePlanMutation() {
+  const { setOpen } = usePlans()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdatePackageFormData) => {
+    mutationFn: async (credentials: UpdatePlanFormData) => {
       const response = await apiClient.patch(
         `subscriptions/plans/${credentials.id}`,
         credentials
@@ -46,27 +46,27 @@ export function useUpdatePackageMutation() {
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'packages-toast' })
+      toast.loading('Loading...', { id: 'plans-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('packages-toast')
-      await queryClient.invalidateQueries({ queryKey: ['packages'] })
+      toast.dismiss('plans-toast')
+      await queryClient.invalidateQueries({ queryKey: ['plans'] })
       toast.success('Plan berhasil diubah.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('packages-toast')
+      toast.dismiss('plans-toast')
       toast.error('Plan gagal diubah.')
     },
   })
 }
 
-export function useDeletePackageMutation() {
-  const { setOpen } = usePackages()
+export function useDeletePlanMutation() {
+  const { setOpen } = usePlans()
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: DeletePackageFormData) => {
+    mutationFn: async (credentials: DeletePlanFormData) => {
       const response = await apiClient.delete(
         `subscriptions/plans/${credentials.id}`
       )
@@ -74,16 +74,16 @@ export function useDeletePackageMutation() {
       return response.data
     },
     onMutate: () => {
-      toast.loading('Loading...', { id: 'packages-toast' })
+      toast.loading('Loading...', { id: 'plans-toast' })
     },
     onSuccess: async (_) => {
-      toast.dismiss('packages-toast')
-      await queryClient.invalidateQueries({ queryKey: ['packages'] })
+      toast.dismiss('plans-toast')
+      await queryClient.invalidateQueries({ queryKey: ['plans'] })
       toast.success('Plan berhasil dihapus.')
       setOpen(null)
     },
     onError: () => {
-      toast.dismiss('packages-toast')
+      toast.dismiss('plans-toast')
       toast.error('Plan gagal dihapus.')
     },
   })

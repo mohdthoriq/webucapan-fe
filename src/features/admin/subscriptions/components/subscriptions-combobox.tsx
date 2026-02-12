@@ -1,11 +1,11 @@
 import { useMemo, type ReactNode } from 'react'
-import type { Company, Package } from '@/types'
+import type { Company, Plan } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
 import {
-  type PackagesQueryParams,
-  usePackagesQuery,
-} from '../../packages/hooks/use-packages-query'
+  type PlansQueryParams,
+  usePlansQuery,
+} from '../../plans/hooks/use-plans-query'
 import {
   type CompaniesQueryParams,
   useCompaniesQuery,
@@ -90,7 +90,7 @@ function CompanyCombobox({
 function PlanCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Paket',
+  placeholder = 'Pilih Plan',
   limit = 20,
   action,
 }: Omit<SubscriptionsComboboxProps, 'type'>) {
@@ -102,8 +102,8 @@ function PlanCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<Package, PackagesQueryParams>({
-    queryHook: usePackagesQuery,
+  } = useComboboxQuery<Plan, PlansQueryParams>({
+    queryHook: usePlansQuery,
     limit,
   })
 

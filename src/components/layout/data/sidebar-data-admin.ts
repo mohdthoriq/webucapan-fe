@@ -1,12 +1,6 @@
-import {
-  Library,
-  Package,
-  CreditCard,
-  ShieldCheck,
-  Menu,
-  LayoutDashboard,
-} from 'lucide-react'
-import { type SidebarData } from '../types'
+import { Library, Package, CreditCard, ShieldCheck, Menu, LayoutDashboard } from 'lucide-react';
+import { type SidebarData } from '../types';
+
 
 export const sidebarDataAdmin: SidebarData = {
   navGroups: [
@@ -36,7 +30,7 @@ export const sidebarDataAdmin: SidebarData = {
         {
           title: 'Plan',
           icon: Package,
-          url: '/admin/packages',
+          url: '/admin/plans',
         },
         {
           title: 'Subscriptions',

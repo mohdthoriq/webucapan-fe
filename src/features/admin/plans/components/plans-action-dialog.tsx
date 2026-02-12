@@ -1,5 +1,5 @@
-import { useFieldArray } from 'react-hook-form'
-import { type Package } from '@/types'
+import { useFieldArray } from 'react-hook-form';
+import { type Plan } from '@/types'
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,22 +22,22 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
-import { usePackagesForm } from '../hooks/use-packages-form'
+import { usePlansForm } from '../hooks/use-plans-form'
 
-type PackagesActionDialogProps = {
-  currentRow?: Package
+type PlansActionDialogProps = {
+  currentRow?: Plan
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function PackagesActionDialog({
+export function PlansActionDialog({
   currentRow,
   open,
   onOpenChange,
-}: PackagesActionDialogProps) {
+}: PlansActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting } = usePackagesForm({
+  const { form, onSubmit, isSubmitting } = usePlansForm({
     currentRow,
   })
 
@@ -68,7 +68,7 @@ export function PackagesActionDialog({
         <div className='overflow-y-auto py-4'>
           <Form {...form}>
             <form
-              id='packages-form'
+              id='plans-form'
               onSubmit={form.handleSubmit(onSubmit)}
               className='space-y-4 px-1'
             >
@@ -219,7 +219,7 @@ export function PackagesActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='packages-form' disabled={isSubmitting}>
+          <Button type='submit' form='plans-form' disabled={isSubmitting}>
             {isEdit ? 'Update Plan' : 'Tambah Plan'}
           </Button>
         </DialogFooter>

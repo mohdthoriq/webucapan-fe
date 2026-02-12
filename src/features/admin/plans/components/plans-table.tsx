@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Package } from '@/types'
+import type { Plan } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,20 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { packagesColumns } from './packages-columns'
-import { usePackages } from './packages-provider'
+import { plansColumns } from './plans-columns'
+import { usePlans } from './plans-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function PackagesTable({ search, navigate }: DataTableProps) {
+export function PlansTable({ search, navigate }: DataTableProps) {
   const {
-    packagesData,
+    plansData,
     pagination: serverPagination,
     isLoading,
-  } = usePackages()
+  } = usePlans()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -65,8 +65,8 @@ export function PackagesTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: packagesData,
-    columns: packagesColumns,
+    data: plansData,
+    columns: plansColumns,
     state: {
       sorting,
       pagination,
@@ -144,7 +144,7 @@ export function PackagesTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={packagesColumns.length} />
+              <TableEmpty colSpan={plansColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -170,7 +170,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Package> }) {
+function TableRows({ table }: { table: TanstackTable<Plan> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

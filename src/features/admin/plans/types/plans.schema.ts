@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 
-export const createPackageSchema = z.object({
+export const createPlanSchema = z.object({
   name: z.string().min(1, 'Nama plan wajib diisi'),
   monthly_price: z.number(),
   yearly_price: z.number(),
@@ -10,9 +10,9 @@ export const createPackageSchema = z.object({
   is_active: z.boolean().optional(),
 })
 
-export type CreatePackageFormData = z.infer<typeof createPackageSchema>
+export type CreatePlanFormData = z.infer<typeof createPlanSchema>
 
-export const updatePackageSchema = z.object({
+export const updatePlanSchema = z.object({
   id: z.uuid(),
   name: z.string().min(1, 'Nama plan wajib diisi'),
   monthly_price: z.number(),
@@ -22,10 +22,10 @@ export const updatePackageSchema = z.object({
   is_active: z.boolean().optional(),
 })
 
-export type UpdatePackageFormData = z.infer<typeof updatePackageSchema>
+export type UpdatePlanFormData = z.infer<typeof updatePlanSchema>
 
-export const deletePackageSchema = z.object({
+export const deletePlanSchema = z.object({
   id: z.uuid(),
 })
 
-export type DeletePackageFormData = z.infer<typeof deletePackageSchema>
+export type DeletePlanFormData = z.infer<typeof deletePlanSchema>
