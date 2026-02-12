@@ -1,12 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import apiClient from '@/lib/api-client'
-import { useSubscriptions } from '../components/subscriptions-provider'
-import {
-  type CreateSubscriptionFormData,
-  type UpdateSubscriptionFormData,
-  type DeleteSubscriptionFormData,
-} from '../types/subscriptions.schema'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import apiClient from '@/lib/api-client';
+import { useSubscriptions } from '../components/subscriptions-provider';
+import { type CreateSubscriptionFormData, type UpdateSubscriptionFormData, type DeleteSubscriptionFormData } from '../types/subscriptions.schema';
+
 
 export function useCreateSubscriptionMutation() {
   const { setOpen } = useSubscriptions()
@@ -45,7 +42,7 @@ export function useUpdateSubscriptionMutation() {
   return useMutation({
     mutationFn: async (credentials: UpdateSubscriptionFormData) => {
       const response = await apiClient.patch(
-        `subscriptions/${credentials.id}`,
+        `subscriptions/${credentials.company_id}`,
         credentials
       )
       return response.data
