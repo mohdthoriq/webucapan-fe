@@ -32,7 +32,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${subscription?.company.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${subscription?.company?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {

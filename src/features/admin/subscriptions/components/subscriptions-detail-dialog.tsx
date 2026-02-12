@@ -33,7 +33,7 @@ export function SubscriptionsDetailDialog({
             <h4 className='text-muted-foreground text-sm font-medium'>
               Nama Perusahaan
             </h4>
-            <p className='text-sm font-medium'>{currentRow.company.name}</p>
+            <p className='text-sm font-medium'>{currentRow.company?.name}</p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>

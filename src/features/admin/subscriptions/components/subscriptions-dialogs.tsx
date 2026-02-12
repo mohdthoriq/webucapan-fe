@@ -65,13 +65,13 @@ export function SubscriptionsDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus berlangganan "${currentRow.company.name}" ?`}
+            title={`Hapus berlangganan "${currentRow.company?.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
                 permanen berlangganan{' '}
                 <span className='text-foreground font-semibold'>
-                  "{currentRow.company.name}"
+                  "{currentRow.company?.name}"
                 </span>{' '}
                 dari Aplikasi Manajerku.
               </>
