@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
@@ -56,7 +57,7 @@ export function PlansActionDialog({
         form.reset()
       }}
     >
-      <DialogContent className='sm:max-w-md'>
+      <DialogContent className='flex max-h-[90vh] flex-col sm:max-w-md'>
         <DialogHeader className='text-start'>
           <DialogTitle>{isEdit ? 'Update Plan' : 'Tambah Plan'}</DialogTitle>
           <DialogDescription>
@@ -65,7 +66,7 @@ export function PlansActionDialog({
               : 'Tambah plan baru untuk Aplikasi Manajerku. '}
           </DialogDescription>
         </DialogHeader>
-        <div className='overflow-y-auto py-4'>
+        <ScrollArea className='h-[60vh] py-4 pr-4'>
           <Form {...form}>
             <form
               id='plans-form'
@@ -146,7 +147,7 @@ export function PlansActionDialog({
                               <Input
                                 {...inputField}
                                 placeholder={`Fitur ${index + 1}`}
-                                className='w-full md:w-[340px]'
+                                className='w-full'
                               />
                             </FormControl>
                             <Button
@@ -217,7 +218,7 @@ export function PlansActionDialog({
               />
             </form>
           </Form>
-        </div>
+        </ScrollArea>
         <DialogFooter>
           <Button type='submit' form='plans-form' disabled={isSubmitting}>
             {isEdit ? 'Update Plan' : 'Tambah Plan'}

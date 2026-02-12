@@ -8,8 +8,8 @@ export enum StatusSubscriptions {
 export const createSubscriptionSchema = z.object({
   company_id: z.uuid().min(1, 'Company is required'),
   plan_id: z.uuid().min(1, 'Plan is required'),
-  start_date: z.date().min(new Date(), 'Start date is required'),
-  end_date: z.date().min(new Date(), 'End date is required'),
+  start_date: z.date(),
+  end_date: z.date(),
   status: z.enum(StatusSubscriptions),
 })
 
@@ -18,11 +18,10 @@ export type CreateSubscriptionFormData = z.infer<
 >
 
 export const updateSubscriptionSchema = z.object({
-  id: z.uuid(),
   company_id: z.uuid().min(1, 'Company is required'),
   plan_id: z.uuid().min(1, 'Plan is required'),
-  start_date: z.date().min(new Date(), 'Start date is required'),
-  end_date: z.date().min(new Date(), 'End date is required'),
+  start_date: z.date(),
+  end_date: z.date(),
   status: z.enum(StatusSubscriptions),
 })
 

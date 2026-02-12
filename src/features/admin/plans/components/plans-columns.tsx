@@ -37,7 +37,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
       const { description } = row.original
       return (
         <div className='overflow-hidden px-2'>
-          <LongText className='truncate'>{description}</LongText>
+          <LongText className='max-w-xs truncate'>{description}</LongText>
         </div>
       )
     },
