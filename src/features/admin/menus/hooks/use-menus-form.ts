@@ -1,15 +1,9 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { type Menu } from '@/types'
-import {
-  createMenusSchema,
-  type CreateMenusFormData,
-  type UpdateMenusFormData,
-} from '../types/menus.schema'
-import {
-  useCreateMenuMutation,
-  useUpdateMenuMutation,
-} from './use-menus-mutation'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type Menu } from '@/types';
+import { createMenusSchema, type CreateMenusFormData, type UpdateMenusFormData } from '../types/menus.schema';
+import { useCreateMenuMutation, useUpdateMenuMutation } from './use-menus-mutation';
+
 
 type useMenusFormProps = {
   currentRow?: Menu
@@ -25,24 +19,24 @@ export function useMenusForm({ currentRow }: useMenusFormProps) {
           title: currentRow?.title,
           icon: currentRow?.icon,
           url: currentRow?.url,
-          parent_id: currentRow?.parent?.id,
+          parent_id: currentRow?.parent?.id || undefined,
           position: currentRow?.position,
           is_divider: currentRow?.is_divider,
           is_active: currentRow?.is_active,
-          permission_id: currentRow?.permission?.id,
-          category_id: currentRow?.category?.id,
+          permission_id: currentRow?.permission?.id || undefined,
+          category_id: currentRow?.category?.id || undefined,
         }
       : {
           name: '',
           title: '',
           icon: '',
           url: '',
-          parent_id: '',
+          parent_id: undefined,
           position: 0,
           is_divider: false,
           is_active: true,
-          permission_id: '',
-          category_id: 'a713a65d-44fd-4f63-9708-4f6775e0b79e',
+          permission_id: undefined,
+          category_id: undefined,
         },
   })
 
@@ -57,12 +51,12 @@ export function useMenusForm({ currentRow }: useMenusFormProps) {
         title: data.title,
         icon: data.icon,
         url: data.url,
-        parent_id: data.parent_id,
+        parent_id: data.parent_id || null,
         position: data.position,
         is_divider: data.is_divider,
         is_active: data.is_active,
-        permission_id: data.permission_id,
-        category_id: data.category_id,
+        permission_id: data.permission_id || undefined,
+        category_id: data.category_id || undefined,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()
