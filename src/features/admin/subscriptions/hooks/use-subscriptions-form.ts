@@ -9,7 +9,7 @@ import {
 } from '../types/subscriptions.schema'
 import {
   useCreateSubscriptionMutation,
-  useUpdateSubscriptionMutation,
+  // useUpdateSubscriptionMutation,
 } from './use-subscriptions-mutation'
 
 type useSubscriptionsFormProps = {
@@ -31,8 +31,8 @@ export function useSubscriptionsForm({
           company_id: currentRow?.company.id,
           plan_id: currentRow?.plan_id ?? undefined,
           status: currentRow?.Subscriptions_status,
-          start_date: currentRow?.start_date,
-          end_date: currentRow?.end_date,
+          start_date: new Date(currentRow?.start_date),
+          end_date: new Date(currentRow?.end_date),
         }
       : {
           company_id: '',
@@ -44,15 +44,14 @@ export function useSubscriptionsForm({
   })
 
   const createMutation = useCreateSubscriptionMutation()
-  const updateMutation = useUpdateSubscriptionMutation()
+  // const updateMutation = useUpdateSubscriptionMutation()
 
   const onSubmit = async (data: CreateSubscriptionFormData) => {
     if (isEdit && currentRow) {
       const updateData: UpdateSubscriptionFormData = {
-        id: currentRow.id,
         ...data,
       }
-      await updateMutation.mutateAsync(updateData)
+      await createMutation.mutateAsync(updateData)
       form.reset()
     } else {
       await createMutation.mutateAsync(data)
@@ -63,6 +62,6 @@ export function useSubscriptionsForm({
   return {
     form,
     onSubmit,
-    isSubmitting: createMutation.isPending || updateMutation.isPending,
+    isSubmitting: createMutation.isPending,
   }
 }

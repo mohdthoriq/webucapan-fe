@@ -45,7 +45,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             Detail
           </DropdownMenuItem>
           <DropdownMenuItem
-            disabled
             onClick={() => {
               setCurrentRow(subscription)
               setOpen('edit')
