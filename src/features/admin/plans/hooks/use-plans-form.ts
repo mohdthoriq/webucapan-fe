@@ -1,24 +1,24 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Package } from '@/types'
+import { type Plan } from '@/types'
 import {
-  createPackageSchema,
-  type CreatePackageFormData,
-  type UpdatePackageFormData,
-} from '../types/packages.schema'
+  createPlanSchema,
+  type CreatePlanFormData,
+  type UpdatePlanFormData,
+} from '../types/plans.schema'
 import {
-  useCreatePackageMutation,
-  useUpdatePackageMutation,
-} from './use-packages-mutation'
+  useCreatePlanMutation,
+  useUpdatePlanMutation,
+} from './use-plans-mutation'
 
-type usePackagesFormProps = {
-  currentRow?: Package
+type usePlansFormProps = {
+  currentRow?: Plan
 }
 
-export function usePackagesForm({ currentRow }: usePackagesFormProps) {
+export function usePlansForm({ currentRow }: usePlansFormProps) {
   const isEdit = !!currentRow
-  const form = useForm<CreatePackageFormData>({
-    resolver: zodResolver(createPackageSchema),
+  const form = useForm<CreatePlanFormData>({
+    resolver: zodResolver(createPlanSchema),
     defaultValues: isEdit
       ? {
           name: currentRow?.name,
@@ -38,12 +38,12 @@ export function usePackagesForm({ currentRow }: usePackagesFormProps) {
         },
   })
 
-  const createMutation = useCreatePackageMutation()
-  const updateMutation = useUpdatePackageMutation()
+  const createMutation = useCreatePlanMutation()
+  const updateMutation = useUpdatePlanMutation()
 
-  const onSubmit = async (data: CreatePackageFormData) => {
+  const onSubmit = async (data: CreatePlanFormData) => {
     if (isEdit && currentRow) {
-      const updateData: UpdatePackageFormData = {
+      const updateData: UpdatePlanFormData = {
         id: currentRow.id,
         ...data,
       }

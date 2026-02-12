@@ -2,16 +2,17 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { PackagesDialogs } from './components/packages-dialogs'
-import { PackagesProvider, usePackages } from './components/packages-provider'
-import { PackagesTable } from './components/packages-table'
+import { PlansDialogs } from './components/plans-dialogs'
+import { PlansProvider, usePlans } from './components/plans-provider'
+import { PlansTable } from './components/plans-table'
 
-const route = getRouteApi('/_authenticated/admin/packages/')
+// We will update this to '/_authenticated/admin/plans/' after renaming the route
+const route = getRouteApi('/_authenticated/admin/plans/')
 
-function PackagesContent() {
+function PlansContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = usePackages()
+  const { setOpen } = usePlans()
 
   return (
     <Card>
@@ -38,14 +39,14 @@ function PackagesContent() {
         <hr />
       </CardHeader>
       <CardContent>
-        <PackagesTable search={search} navigate={navigate} />
-        <PackagesDialogs />
+        <PlansTable search={search} navigate={navigate} />
+        <PlansDialogs />
       </CardContent>
     </Card>
   )
 }
 
-function Packages() {
+function Plans() {
   const search = route.useSearch() as Record<string, string>
 
   // Extract pagination parameters from URL search
@@ -54,10 +55,10 @@ function Packages() {
   const name = search?.name ? search.name : undefined
 
   return (
-    <PackagesProvider paginationParams={{ page, limit, name }}>
-      <PackagesContent />
-    </PackagesProvider>
+    <PlansProvider paginationParams={{ page, limit, name }}>
+      <PlansContent />
+    </PlansProvider>
   )
 }
 
-export default Packages
+export default Plans

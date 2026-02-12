@@ -1,4 +1,4 @@
-import { type Package } from '@/types'
+import { type Plan } from '@/types'
 import {
   Dialog,
   DialogContent,
@@ -7,17 +7,17 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 
-type PackagesDetailDialogProps = {
-  currentRow: Package
+type PlansDetailDialogProps = {
+  currentRow: Plan
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function PackagesDetailDialog({
+export function PlansDetailDialog({
   currentRow,
   open,
   onOpenChange,
-}: PackagesDetailDialogProps) {
+}: PlansDetailDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-md'>

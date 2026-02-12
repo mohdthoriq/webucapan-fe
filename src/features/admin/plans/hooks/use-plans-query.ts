@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Package, PaginationApiResponse } from '@/types'
+import type { Plan, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 
-export interface PackagesQueryParams {
+export interface PlansQueryParams {
   page?: number
   limit?: number
   name?: string
@@ -10,10 +10,10 @@ export interface PackagesQueryParams {
   is_active?: boolean
 }
 
-export function usePackagesQuery(params?: PackagesQueryParams) {
+export function usePlansQuery(params?: PlansQueryParams) {
   return useQuery({
     queryKey: [
-      'packages',
+      'plans',
       params?.page,
       params?.limit,
       params?.name,
@@ -34,7 +34,7 @@ export function usePackagesQuery(params?: PackagesQueryParams) {
       const url = queryParams.toString()
         ? `/subscriptions/plans?${queryParams.toString()}`
         : '/subscriptions/plans'
-      const response = await apiClient.get<PaginationApiResponse<Package>>(url)
+      const response = await apiClient.get<PaginationApiResponse<Plan>>(url)
 
       return response.data
     },

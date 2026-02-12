@@ -1,0 +1,31 @@
+import { z } from 'zod';
+
+
+export const createPlanSchema = z.object({
+  name: z.string().min(1, 'Nama plan wajib diisi'),
+  monthly_price: z.number(),
+  yearly_price: z.number(),
+  description: z.string().optional(),
+  features: z.array(z.string()).min(1, 'Fitur minimal 1'),
+  is_active: z.boolean().optional(),
+})
+
+export type CreatePlanFormData = z.infer<typeof createPlanSchema>
+
+export const updatePlanSchema = z.object({
+  id: z.uuid(),
+  name: z.string().min(1, 'Nama plan wajib diisi'),
+  monthly_price: z.number(),
+  yearly_price: z.number(),
+  description: z.string().optional(),
+  features: z.array(z.string()).min(1, 'Fitur minimal 1'),
+  is_active: z.boolean().optional(),
+})
+
+export type UpdatePlanFormData = z.infer<typeof updatePlanSchema>
+
+export const deletePlanSchema = z.object({
+  id: z.uuid(),
+})
+
+export type DeletePlanFormData = z.infer<typeof deletePlanSchema>

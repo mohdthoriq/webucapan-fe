@@ -1,16 +1,16 @@
 import { type ColumnDef } from '@tanstack/react-table'
-import { type Package } from '@/types'
+import { type Plan } from '@/types'
 import { cn, formatNumber } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './packages-row-actions'
+import { DataTableRowActions } from './plans-row-actions'
 
-export const packagesColumns: ColumnDef<Package>[] = [
+export const plansColumns: ColumnDef<Plan>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nama Paket' />
+      <DataTableColumnHeader column={column} title='Nama Plan' />
     ),
     cell: ({ row }) => {
       const { name } = row.original

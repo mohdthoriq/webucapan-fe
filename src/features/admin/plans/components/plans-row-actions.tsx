@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Package } from '@/types'
+import { type Plan } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { usePackages } from './packages-provider'
+import { usePlans } from './plans-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Package>
+  row: Row<Plan>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const packages = row.original
-  const { setOpen, setCurrentRow } = usePackages()
+  const plans = row.original
+  const { setOpen, setCurrentRow } = usePlans()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${packages?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${plans?.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(packages)
+              setCurrentRow(plans)
               setOpen('view')
             }}
           >
@@ -44,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(packages)
+              setCurrentRow(plans)
               setOpen('edit')
             }}
           >
@@ -53,7 +53,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(packages)
+              setCurrentRow(plans)
               setOpen('delete')
             }}
             className='text-red-500!'

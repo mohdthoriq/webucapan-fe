@@ -1,26 +1,26 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeletePackageMutation } from '../hooks/use-packages-mutation'
-import { PackagesActionDialog } from './packages-action-dialog'
-import { PackagesDetailDialog } from './packages-detail-dialog'
-import { usePackages } from './packages-provider'
+import { useDeletePlanMutation } from '../hooks/use-plans-mutation'
+import { PlansActionDialog } from './plans-action-dialog'
+import { PlansDetailDialog } from './plans-detail-dialog'
+import { usePlans } from './plans-provider'
 
-export function PackagesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = usePackages()
+export function PlansDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = usePlans()
 
-  const { mutate: deletePackage, isPending } = useDeletePackageMutation()
+  const { mutate: deletePlan, isPending } = useDeletePlanMutation()
 
   return (
     <>
-      <PackagesActionDialog
-        key='packages-add'
+      <PlansActionDialog
+        key='plans-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <PackagesActionDialog
-            key={`packages-edit-${currentRow.id}`}
+          <PlansActionDialog
+            key={`plans-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +31,8 @@ export function PackagesDialogs() {
             currentRow={currentRow}
           />
 
-          <PackagesDetailDialog
-            key={`packages-view-${currentRow.id}`}
+          <PlansDetailDialog
+            key={`plans-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +44,7 @@ export function PackagesDialogs() {
           />
 
           <ConfirmDialog
-            key={`packages-delete-${currentRow.id}`}
+            key={`plans-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +54,7 @@ export function PackagesDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deletePackage({
+              deletePlan({
                 id: currentRow.id,
               })
               setOpen(null)

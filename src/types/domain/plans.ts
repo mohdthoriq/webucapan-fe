@@ -1,6 +1,6 @@
 import type { GlobalResponse } from '../api/global-response'
 
-export interface Package extends GlobalResponse {
+export interface Plan extends GlobalResponse {
   name: string
   monthly_price: number
   yearly_price: number
