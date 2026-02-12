@@ -90,6 +90,7 @@ export function DataTableToolbar<TData>({
             onClick={() => {
               table.resetColumnFilters()
               table.setGlobalFilter('')
+              setSearchValue('')
             }}
             className='h-8 px-2 lg:px-3'
           >

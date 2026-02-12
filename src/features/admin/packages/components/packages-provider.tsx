@@ -9,7 +9,7 @@ import {
 import type { Package, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import {
-  type PackagePaginationParams,
+  type PackagesQueryParams,
   usePackagesQuery,
 } from '../hooks/use-packages-query'
 
@@ -24,7 +24,7 @@ type PackagesContextType = {
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: PackagePaginationParams
+  paginationParams?: PackagesQueryParams
 }
 
 const PackagesContext = createContext<PackagesContextType | null>(null)
@@ -34,7 +34,7 @@ export function PackagesProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: PackagePaginationParams
+  paginationParams?: PackagesQueryParams
 }) {
   const [open, setOpen] = useDialogState<PackagesDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Package | null>(null)

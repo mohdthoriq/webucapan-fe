@@ -26,6 +26,7 @@ export function usePackagesForm({ currentRow }: usePackagesFormProps) {
           monthly_price: Number(currentRow?.monthly_price),
           yearly_price: Number(currentRow?.yearly_price),
           features: currentRow?.features || [],
+          is_active: currentRow?.is_active,
         }
       : {
           name: '',
@@ -33,6 +34,7 @@ export function usePackagesForm({ currentRow }: usePackagesFormProps) {
           monthly_price: 0,
           yearly_price: 0,
           features: [],
+          is_active: true,
         },
   })
 

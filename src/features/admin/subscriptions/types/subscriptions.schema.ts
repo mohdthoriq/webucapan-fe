@@ -1,0 +1,39 @@
+import { z } from 'zod'
+
+export enum StatusSubscriptions {
+  Active = 'active',
+  Expired = 'expired',
+}
+
+export const createSubscriptionSchema = z.object({
+  company_id: z.uuid().min(1, 'Company is required'),
+  plan_id: z.uuid().min(1, 'Plan is required'),
+  start_date: z.date().min(new Date(), 'Start date is required'),
+  end_date: z.date().min(new Date(), 'End date is required'),
+  status: z.enum(StatusSubscriptions),
+})
+
+export type CreateSubscriptionFormData = z.infer<
+  typeof createSubscriptionSchema
+>
+
+export const updateSubscriptionSchema = z.object({
+  id: z.uuid(),
+  company_id: z.uuid().min(1, 'Company is required'),
+  plan_id: z.uuid().min(1, 'Plan is required'),
+  start_date: z.date().min(new Date(), 'Start date is required'),
+  end_date: z.date().min(new Date(), 'End date is required'),
+  status: z.enum(StatusSubscriptions),
+})
+
+export type UpdateSubscriptionFormData = z.infer<
+  typeof updateSubscriptionSchema
+>
+
+export const deleteSubscriptionSchema = z.object({
+  id: z.uuid(),
+})
+
+export type DeleteSubscriptionFormData = z.infer<
+  typeof deleteSubscriptionSchema
+>

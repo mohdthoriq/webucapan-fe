@@ -12,7 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { Permission } from '@/types'
+import type { Subscription } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,20 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { permissionsColumns } from './permissions-columns'
-import { usePermissions } from './permissions-provider'
+import { subscriptionsColumns } from './subscriptions-columns'
+import { useSubscriptions } from './subscriptions-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function PermissionsTable({ search, navigate }: DataTableProps) {
+export function SubscriptionsTable({ search, navigate }: DataTableProps) {
   const {
-    permissionsData,
+    subscriptionsData,
     pagination: serverPagination,
     isLoading,
-  } = usePermissions()
+  } = useSubscriptions()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -65,8 +65,8 @@ export function PermissionsTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: permissionsData,
-    columns: permissionsColumns,
+    data: subscriptionsData,
+    columns: subscriptionsColumns,
     state: {
       sorting,
       pagination,
@@ -144,7 +144,7 @@ export function PermissionsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={permissionsColumns.length} />
+              <TableEmpty colSpan={subscriptionsColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -170,7 +170,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Permission> }) {
+function TableRows({ table }: { table: TanstackTable<Subscription> }) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (

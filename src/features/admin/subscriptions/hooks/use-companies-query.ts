@@ -1,36 +1,35 @@
 import { useQuery } from '@tanstack/react-query'
-import type { PaginationApiResponse, Permission } from '@/types'
+import type { Company, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface PermissionsQueryParams {
+export interface CompaniesQueryParams {
+  name?: string
   page?: number
   limit?: number
-  company_id?: string
-  name?: string
+  order?: 'asc' | 'desc'
 }
 
-export function usePermissionsQuery(params?: PermissionsQueryParams) {
+export function useCompaniesQuery(params?: CompaniesQueryParams) {
   return useQuery({
     queryKey: [
-      'permissions',
+      'companies',
       params?.page,
       params?.limit,
-      params?.company_id,
+      params?.order,
       params?.name,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
+        ...(params?.order ? { order: params.order } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 
       const url = queryParams.toString()
-        ? `/permissions?${queryParams.toString()}`
-        : '/permissions'
-      const response =
-        await apiClient.get<PaginationApiResponse<Permission>>(url)
+        ? `/companies?${queryParams.toString()}`
+        : '/companies'
+      const response = await apiClient.get<PaginationApiResponse<Company>>(url)
 
       return response.data
     },

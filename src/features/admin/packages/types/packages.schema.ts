@@ -6,6 +6,7 @@ export const createPackageSchema = z.object({
   yearly_price: z.number().min(1, 'Harga tahunan wajib diisi'),
   description: z.string().optional(),
   features: z.array(z.string()).min(1, 'Fitur minimal 1'),
+  is_active: z.boolean().optional(),
 })
 
 export type CreatePackageFormData = z.infer<typeof createPackageSchema>
@@ -17,6 +18,7 @@ export const updatePackageSchema = z.object({
   yearly_price: z.number().min(1, 'Harga tahunan wajib diisi'),
   description: z.string().optional(),
   features: z.array(z.string()).min(1, 'Fitur minimal 1'),
+  is_active: z.boolean().optional(),
 })
 
 export type UpdatePackageFormData = z.infer<typeof updatePackageSchema>

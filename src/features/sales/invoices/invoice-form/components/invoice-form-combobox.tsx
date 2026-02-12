@@ -2,8 +2,8 @@ import { useMemo, type ReactNode } from 'react'
 import type { Contact } from '@/types/domain/contact'
 import type { Product } from '@/types/domain/product'
 import { ComboboxBase } from '@/components/combobox-base'
-import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
+import { type ContactQueryParams, useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
+import { type ProductsQueryParams, useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 
 interface InvoiceFormComboboxProps {
@@ -45,7 +45,7 @@ function ContactCombobox({
     setSearchTerm,
   } = useComboboxQuery<
     Contact,
-    { page?: number; limit?: number; name?: string; type_id?: string }
+    ContactQueryParams
   >({
     queryHook: useContactsQuery,
     limit,
@@ -106,7 +106,7 @@ function ProductCombobox({
     setSearchTerm,
   } = useComboboxQuery<
     Product,
-    { page?: number; limit?: number; name?: string }
+    ProductsQueryParams
   >({
     queryHook: useProductsQuery,
     limit,

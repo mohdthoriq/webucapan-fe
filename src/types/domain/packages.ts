@@ -6,4 +6,5 @@ export interface Package extends GlobalResponse {
   yearly_price: number
   features: string[]
   description: string
+  is_active: boolean
 }

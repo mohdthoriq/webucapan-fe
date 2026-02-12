@@ -1,26 +1,27 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
-import { useDeletePermissionMutation } from '../hooks/use-permissions-mutation'
-import { PermissionsActionDialog } from './permissions-action-dialog'
-import { PermissionsDetailDialog } from './permissions-detail-dialog'
-import { usePermissions } from './permissions-provider'
+import { useDeleteSubscriptionMutation } from '../hooks/use-subscriptions-mutation'
+import { SubscriptionsActionDialog } from './subscriptions-action-dialog'
+import { SubscriptionsDetailDialog } from './subscriptions-detail-dialog'
+import { useSubscriptions } from './subscriptions-provider'
 
-export function PermissionsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = usePermissions()
+export function SubscriptionsDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow } = useSubscriptions()
 
-  const { mutate: deletePermission, isPending } = useDeletePermissionMutation()
+  const { mutate: deleteSubscription, isPending } =
+    useDeleteSubscriptionMutation()
 
   return (
     <>
-      <PermissionsActionDialog
-        key='permission-add'
+      <SubscriptionsActionDialog
+        key='subscription-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
 
       {currentRow && (
         <>
-          <PermissionsActionDialog
-            key={`permission-edit-${currentRow.id}`}
+          <SubscriptionsActionDialog
+            key={`subscription-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -31,8 +32,8 @@ export function PermissionsDialogs() {
             currentRow={currentRow}
           />
 
-          <PermissionsDetailDialog
-            key={`permission-view-${currentRow.id}`}
+          <SubscriptionsDetailDialog
+            key={`subscription-view-${currentRow.id}`}
             open={open === 'view'}
             onOpenChange={() => {
               setOpen('view')
@@ -44,7 +45,7 @@ export function PermissionsDialogs() {
           />
 
           <ConfirmDialog
-            key={`permission-delete-${currentRow.id}`}
+            key={`subscription-delete-${currentRow.id}`}
             destructive
             open={open === 'delete'}
             onOpenChange={() => {
@@ -54,7 +55,7 @@ export function PermissionsDialogs() {
               }, 500)
             }}
             handleConfirm={() => {
-              deletePermission({
+              deleteSubscription({
                 id: currentRow.id,
               })
               setOpen(null)
@@ -64,13 +65,13 @@ export function PermissionsDialogs() {
             }}
             disabled={isPending}
             className='max-w-md'
-            title={`Hapus permission "${currentRow.name}" ?`}
+            title={`Hapus berlangganan "${currentRow.company.name}" ?`}
             desc={
               <>
                 Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara
-                permanen permission{' '}
+                permanen berlangganan{' '}
                 <span className='text-foreground font-semibold'>
-                  "{currentRow.name}"
+                  "{currentRow.company.name}"
                 </span>{' '}
                 dari Aplikasi Manajerku.
               </>

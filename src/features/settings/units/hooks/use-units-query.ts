@@ -3,14 +3,14 @@ import type { PaginationApiResponse, Unit } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 
-interface RoleSettingsQueryParams {
+export interface UnitsQueryParams {
   page?: number
   limit?: number
   company_id?: string
   name?: string
 }
 
-export function useUnitsQuery(params?: RoleSettingsQueryParams) {
+export function useUnitsQuery(params?: UnitsQueryParams) {
   const user = useAuthStore((state) => state.auth.user)
 
   return useQuery({

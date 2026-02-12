@@ -1,6 +1,7 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Package } from '@/types'
 import { cn, formatNumber } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './packages-row-actions'
@@ -73,6 +74,33 @@ export const packagesColumns: ColumnDef<Package>[] = [
       return (
         <div className='overflow-hidden px-2'>
           <LongText className='truncate'>{formattedPrice}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
+    accessorKey: 'is_active',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ row }) => {
+      const { is_active } = row.original
+      return (
+        <div className='overflow-hidden px-2'>
+          <Badge
+            variant='outline'
+            className={cn(
+              'rounded-md px-3 py-1 font-semibold transition-colors',
+              is_active
+                ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
+                : 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400'
+            )}
+          >
+            {is_active ? 'Aktif' : 'Tidak Aktif'}
+          </Badge>
         </div>
       )
     },

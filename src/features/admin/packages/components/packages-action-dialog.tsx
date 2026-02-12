@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { usePackagesForm } from '../hooks/use-packages-form'
@@ -44,6 +45,8 @@ export function PackagesActionDialog({
     control: form.control,
     name: 'features' as never,
   })
+
+  const is_active = form.watch('is_active')
 
   return (
     <Dialog
@@ -173,6 +176,26 @@ export function PackagesActionDialog({
                   </Button>
                 </div>
               </div>
+
+              <FormField
+                control={form.control}
+                name='is_active'
+                render={({ field }) => (
+                  <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm'>
+                    <div className='grow space-y-0.5'>
+                      <FormLabel>
+                        {is_active ? 'Aktif' : 'Tidak Aktif'}
+                      </FormLabel>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}

@@ -55,7 +55,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
+    columnFilters: [{ columnId: 'name', searchKey: 'search', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library

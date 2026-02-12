@@ -1,40 +1,39 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Package, PaginationApiResponse } from '@/types'
+import type { PaginationApiResponse, Subscription } from '@/types'
 import apiClient from '@/lib/api-client'
 
-export interface PackagesQueryParams {
+export interface SubscriptionsQueryParams {
+  plan_id?: string
+  plan_name?: string
+  name?: string
   page?: number
   limit?: number
-  name?: string
-  order?: 'asc' | 'desc'
-  is_active?: boolean
 }
 
-export function usePackagesQuery(params?: PackagesQueryParams) {
+export function useSubscriptionsQuery(params?: SubscriptionsQueryParams) {
   return useQuery({
     queryKey: [
-      'packages',
+      'subscriptions-active',
       params?.page,
       params?.limit,
+      params?.plan_id,
+      params?.plan_name,
       params?.name,
-      params?.order,
-      params?.is_active,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
+        ...(params?.plan_id ? { plan_id: params.plan_id } : {}),
+        ...(params?.plan_name ? { plan_name: params.plan_name } : {}),
         ...(params?.name ? { name: params.name } : {}),
-        ...(params?.order ? { order: params.order } : {}),
-        ...(params?.is_active
-          ? { is_active: params.is_active.toString() }
-          : {}),
       })
 
       const url = queryParams.toString()
-        ? `/subscriptions/plans?${queryParams.toString()}`
-        : '/subscriptions/plans'
-      const response = await apiClient.get<PaginationApiResponse<Package>>(url)
+        ? `/subscriptions/active?${queryParams.toString()}`
+        : '/subscriptions/active'
+      const response =
+        await apiClient.get<PaginationApiResponse<Subscription>>(url)
 
       return response.data
     },

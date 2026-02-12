@@ -1,40 +1,44 @@
 import { useMemo, type ReactNode } from 'react'
-import type { Contact } from '@/types/domain/contact'
-import type { Product } from '@/types/domain/product'
-import { ComboboxBase } from '@/components/combobox-base'
-import { type ContactQueryParams, useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { type ProductsQueryParams, useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
+import type { Company, Package } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
+import { ComboboxBase } from '@/components/combobox-base'
+import {
+  type PackagesQueryParams,
+  usePackagesQuery,
+} from '../../packages/hooks/use-packages-query'
+import {
+  type CompaniesQueryParams,
+  useCompaniesQuery,
+} from '../hooks/use-companies-query'
 
-interface InvoiceFormComboboxProps {
+interface SubscriptionsComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
   limit?: number
-  type?: 'contact' | 'product'
+  type?: 'company' | 'plan'
   excludeIds?: string[]
   action?: ReactNode
   contactTypeId?: string
 }
 
-export function InvoiceFormCombobox({
-  type = 'contact',
+export function SubscriptionsCombobox({
+  type = 'company',
   ...props
-}: InvoiceFormComboboxProps) {
-  if (type === 'product') {
-    return <ProductCombobox {...props} />
+}: SubscriptionsComboboxProps) {
+  if (type === 'plan') {
+    return <PlanCombobox {...props} />
   }
-  return <ContactCombobox {...props} />
+  return <CompanyCombobox {...props} />
 }
 
-function ContactCombobox({
+function CompanyCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Pelanggan',
+  placeholder = 'Pilih Perusahaan',
   limit = 20,
   action,
-  contactTypeId,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<SubscriptionsComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -43,15 +47,9 @@ function ContactCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Contact,
-    ContactQueryParams
-  >({
-    queryHook: useContactsQuery,
+  } = useComboboxQuery<Company, CompaniesQueryParams>({
+    queryHook: useCompaniesQuery,
     limit,
-    extraParams: {
-      type_id: contactTypeId,
-    },
   })
 
   const selectedItem = useMemo(
@@ -77,9 +75,9 @@ function ContactCombobox({
       renderItem={(item) => (
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
-          {item.company?.name && (
+          {item.address && (
             <span className='text-muted-foreground text-xs'>
-              {item.company.name}
+              {item.address}
             </span>
           )}
         </div>
@@ -89,13 +87,13 @@ function ContactCombobox({
   )
 }
 
-function ProductCombobox({
+function PlanCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Produk',
+  placeholder = 'Pilih Paket',
   limit = 20,
   action,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<SubscriptionsComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -104,11 +102,8 @@ function ProductCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Product,
-    ProductsQueryParams
-  >({
-    queryHook: useProductsQuery,
+  } = useComboboxQuery<Package, PackagesQueryParams>({
+    queryHook: usePackagesQuery,
     limit,
   })
 
@@ -136,8 +131,7 @@ function ProductCombobox({
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
           <span className='text-muted-foreground text-xs'>
-            SKU: {item.sku} • Rp{' '}
-            {Number(item.sale_price).toLocaleString('id-ID')}
+            {item.description}
           </span>
         </div>
       )}

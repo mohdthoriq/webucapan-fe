@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { type Permission } from '@/types'
+import { type Subscription } from '@/types'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { usePermissions } from './permissions-provider'
+import { useSubscriptions } from './subscriptions-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<Permission>
+  row: Row<Subscription>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const permission = row.original
-  const { setOpen, setCurrentRow } = usePermissions()
+  const subscription = row.original
+  const { setOpen, setCurrentRow } = useSubscriptions()
 
   return (
     <>
@@ -32,11 +32,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <div className='text-muted-foreground text-center text-sm'>{`${permission?.name}`}</div>
+          <div className='text-muted-foreground text-center text-sm'>{`${subscription?.company.name}`}</div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(permission)
+              setCurrentRow(subscription)
               setOpen('view')
             }}
           >
@@ -44,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(permission)
+              setCurrentRow(subscription)
               setOpen('edit')
             }}
           >
@@ -53,7 +53,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(permission)
+              setCurrentRow(subscription)
               setOpen('delete')
             }}
             className='text-red-500!'

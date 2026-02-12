@@ -1,7 +1,17 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react'
 import type { PaginationMeta, Product } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useProductsQuery } from '../hooks/use-product-list-query'
+import {
+  useProductsQuery,
+  type ProductsQueryParams,
+} from '../hooks/use-product-list-query'
 
 type ProductsDialogType = 'add' | 'edit' | 'delete' | 'view'
 
@@ -9,12 +19,12 @@ type ProductsContextType = {
   open: ProductsDialogType | null
   setOpen: (str: ProductsDialogType | null) => void
   currentRow: Product | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<Product | null>>
+  setCurrentRow: Dispatch<SetStateAction<Product | null>>
   productsData: Product[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: ProductsQueryParams
 }
 
 const ProductsContext = createContext<ProductsContextType | null>(null)
@@ -23,8 +33,8 @@ export function ProductsProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: ProductsQueryParams
 }) {
   const [open, setOpen] = useDialogState<ProductsDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Product | null>(null)
