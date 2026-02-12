@@ -1,4 +1,5 @@
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import { type Subscription } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,7 @@ type DataTableRowActionsProps = {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const subscription = row.original
   const { setOpen, setCurrentRow } = useSubscriptions()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -50,6 +52,15 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             }}
           >
             Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              navigate({
+                to: `/_authenticated/admin/subscriptions/${subscription.plan_id}/permissions`,
+              })
+            }}
+          >
+            Manage Permission
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
