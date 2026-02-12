@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { DatePickerWithRange } from '@/features/sales/invoices/invoice-lists/components/date-picker-with-range'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
@@ -249,7 +249,7 @@ export function CashBankListFilter({
               <div className='grid grid-cols-1 gap-4'>
                 <div className='space-y-2'>
                   <label className='text-xs font-medium'>Minimal</label>
-                  <InputFieldRupiah
+                  <InputFieldNumberFormat
                     prefix='Rp'
                     placeholder='0'
                     value={amountFrom}
@@ -258,7 +258,7 @@ export function CashBankListFilter({
                 </div>
                 <div className='space-y-2'>
                   <label className='text-xs font-medium'>Maksimal</label>
-                  <InputFieldRupiah
+                  <InputFieldNumberFormat
                     prefix='Rp'
                     placeholder='0'
                     value={amountTo}

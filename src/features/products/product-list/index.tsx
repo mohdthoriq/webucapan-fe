@@ -50,10 +50,10 @@ function Products() {
   // Extract pagination parameters from URL search
   const page = search?.page ? parseInt(search.page) : undefined
   const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const searchProduct = search?.search ? search.search : undefined
 
   return (
-    <ProductsProvider paginationParams={{ page, limit, name }}>
+    <ProductsProvider paginationParams={{ page, limit, search: searchProduct }}>
       <ProductsContent />
     </ProductsProvider>
   )

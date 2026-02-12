@@ -1,23 +1,28 @@
+import {
+  type ComponentProps,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { cn, formatNumber } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { type ComponentProps, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
-interface InputFieldRupiahProps
+interface InputFieldNumberFormatProps
   extends Omit<ComponentProps<typeof Input>, 'value' | 'onChange'> {
   value?: number | string
   onValueChange?: (value: number | undefined) => void
   prefix?: string
 }
 
-export const InputFieldRupiah = forwardRef<
+export const InputFieldNumberFormat = forwardRef<
   HTMLInputElement,
-  InputFieldRupiahProps
+  InputFieldNumberFormatProps
 >(({ value, onValueChange, className, prefix, ...props }, ref) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const [displayValue, setDisplayValue] = useState<string>(
-    formatNumber(value)
-  )
+  const [displayValue, setDisplayValue] = useState<string>(formatNumber(value))
 
   // Sync display value when prop value changes from outside (e.g. form reset)
   useEffect(() => {
@@ -95,4 +100,4 @@ export const InputFieldRupiah = forwardRef<
   )
 })
 
-InputFieldRupiah.displayName = 'InputFieldRupiah'
+InputFieldNumberFormat.displayName = 'InputFieldNumberFormat'

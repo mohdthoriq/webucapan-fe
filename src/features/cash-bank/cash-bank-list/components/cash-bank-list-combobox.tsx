@@ -109,6 +109,7 @@ function AccountCombobox({
   >({
     queryHook: useAccountsQuery,
     limit,
+    searchKey: 'search',
   })
 
   const selectedItem = useMemo(

@@ -1,10 +1,16 @@
 import { useMemo, type ReactNode } from 'react'
 import type { Contact } from '@/types/domain/contact'
 import type { Product } from '@/types/domain/product'
-import { ComboboxBase } from '@/components/combobox-base'
-import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
+import { ComboboxBase } from '@/components/combobox-base'
+import {
+  type ContactQueryParams,
+  useContactsQuery,
+} from '@/features/contacts/hooks/use-contacts-query'
+import {
+  type ProductsQueryParams,
+  useProductsQuery,
+} from '@/features/products/product-list/hooks/use-product-list-query'
 
 interface InvoiceFormComboboxProps {
   value?: string
@@ -43,10 +49,7 @@ function ContactCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Contact,
-    { page?: number; limit?: number; name?: string; type_id?: string }
-  >({
+  } = useComboboxQuery<Contact, ContactQueryParams>({
     queryHook: useContactsQuery,
     limit,
     extraParams: {
@@ -104,12 +107,10 @@ function ProductCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Product,
-    { page?: number; limit?: number; name?: string }
-  >({
+  } = useComboboxQuery<Product, ProductsQueryParams>({
     queryHook: useProductsQuery,
     limit,
+    searchKey: 'search',
   })
 
   const selectedItem = useMemo(

@@ -1,9 +1,14 @@
+import { type ReactNode } from 'react'
 import { Outlet } from '@tanstack/react-router'
 import { getCookie } from '@/lib/cookies'
 import { cn } from '@/lib/utils'
 import { LayoutProvider } from '@/context/layout-provider'
 import { SearchProvider } from '@/context/search-provider'
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
 import { ProfileDropdown } from '../profile-dropdown'
@@ -14,7 +19,7 @@ import { Header } from './header'
 import { Main } from './main'
 
 type AuthenticatedLayoutProps = {
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
@@ -43,6 +48,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
           >
             {/* ===== Top Heading ===== */}
             <Header fixed>
+              <SidebarTrigger className='md:hidden' />
               <Search />
               <div className='ms-auto flex items-center space-x-4'>
                 <ThemeSwitch />

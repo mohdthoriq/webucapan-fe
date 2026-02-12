@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, type ReactNode, useContext, useState } from 'react'
 import type { PaginationMeta, Unit } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useUnitsQuery } from '../hooks/use-units-query'
+import { type UnitsQueryParams, useUnitsQuery } from '../hooks/use-units-query'
 
 type UnitsDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -14,7 +14,7 @@ type UnitsContextType = {
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: UnitsQueryParams
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -24,8 +24,8 @@ export function UnitsProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: UnitsQueryParams
 }) {
   const [open, setOpen] = useDialogState<UnitsDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Unit | null>(null)

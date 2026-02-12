@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
 import {
   useCheckFinanceNumberQuery,
@@ -226,7 +226,7 @@ export function ProductsFormContent({
               <FormItem>
                 <FormLabel>Harga Beli</FormLabel>
                 <FormControl>
-                  <InputFieldRupiah
+                  <InputFieldNumberFormat
                     placeholder='0'
                     value={field.value}
                     onValueChange={field.onChange}
@@ -244,7 +244,7 @@ export function ProductsFormContent({
               <FormItem>
                 <FormLabel>Harga Jual</FormLabel>
                 <FormControl>
-                  <InputFieldRupiah
+                  <InputFieldNumberFormat
                     placeholder='0'
                     value={field.value}
                     onValueChange={field.onChange}

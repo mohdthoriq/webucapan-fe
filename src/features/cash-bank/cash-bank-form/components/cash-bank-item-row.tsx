@@ -1,7 +1,8 @@
 import { memo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import type { Tax } from '@/types'
+import type { Account, Tax } from '@/types'
 import { Trash2 } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
@@ -14,11 +15,13 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { CashBankListCombobox } from '../../cash-bank-list/components/cash-bank-list-combobox'
 
 export const CashBankItemRow = memo(function CashBankItemRow({
@@ -36,6 +39,8 @@ export const CashBankItemRow = memo(function CashBankItemRow({
     name: `items.${index}`,
   })
 
+  const { openDialog } = useGlobalDialogStore()
+
   const amount = Number(itemValues?.amount) || 0
 
   return (
@@ -52,6 +57,20 @@ export const CashBankItemRow = memo(function CashBankItemRow({
                 value={field.value}
                 onValueChange={field.onChange}
                 placeholder='Pilih Akun'
+                action={
+                  <FormShortcutButton
+                    title='Tambah Akun Baru'
+                    onClick={() =>
+                      openDialog('account', {
+                        onSuccess: (data: Account) => {
+                          if (data?.id) {
+                            field.onChange(data.id)
+                          }
+                        },
+                      })
+                    }
+                  />
+                }
               />
             </FormItem>
           )}
@@ -81,7 +100,7 @@ export const CashBankItemRow = memo(function CashBankItemRow({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <InputFieldRupiah
+                <InputFieldNumberFormat
                   placeholder='0'
                   value={field.value}
                   onValueChange={field.onChange}
@@ -118,6 +137,19 @@ export const CashBankItemRow = memo(function CashBankItemRow({
                       {t.name} ({t.rate}%)
                     </SelectItem>
                   ))}
+                  <SelectSeparator />
+                  <FormShortcutButton
+                    title='Tambah Pajak Baru'
+                    onClick={() =>
+                      openDialog('tax', {
+                        onSuccess: (data: Tax) => {
+                          if (data?.id) {
+                            field.onChange(data.id)
+                          }
+                        },
+                      })
+                    }
+                  />
                 </SelectContent>
               </Select>
             </FormItem>

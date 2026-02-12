@@ -1,10 +1,10 @@
 import { useMemo, type ReactNode } from 'react'
 import type { Account } from '@/types'
 import type { Contact } from '@/types/domain/contact'
+import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { ComboboxBase } from '../../../../components/combobox-base'
-import { useComboboxQuery } from '@/hooks/use-combobox-query'
 
 interface InvoiceFormComboboxProps {
   value?: string
@@ -109,6 +109,7 @@ function AccountCombobox({
   >({
     queryHook: useAccountsQuery,
     limit,
+    searchKey: 'search',
   })
 
   const selectedItem = useMemo(

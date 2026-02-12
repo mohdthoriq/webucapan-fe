@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import type { Contact } from '@/types'
+import type { Contact, Tag } from '@/types'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import {
   FormControl,
@@ -108,6 +108,20 @@ export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
                 onChange={field.onChange}
                 placeholder='Pilih tag'
                 disabled={tags?.data.length === 0}
+                action={
+                  <FormShortcutButton
+                    title='Tambah Tag Baru'
+                    onClick={() =>
+                      openDialog('tag', {
+                        onSuccess: (data: Tag) => {
+                          if (data?.id) {
+                            field.onChange(data.id)
+                          }
+                        },
+                      })
+                    }
+                  />
+                }
               />
             </FormControl>
             <FormMessage />

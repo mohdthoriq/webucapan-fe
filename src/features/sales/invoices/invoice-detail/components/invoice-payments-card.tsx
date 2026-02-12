@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { InputFieldRupiah } from '@/components/forms/input-field-number-format'
+import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import {
   useCheckFinanceNumberQuery,
   useDefaultNumberingQuery,
@@ -153,7 +153,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                         : 'Pembayaran Sisa'}
                     </FormLabel>
                     <FormControl>
-                      <InputFieldRupiah
+                      <InputFieldNumberFormat
                         value={field.value ?? ''}
                         onValueChange={(value) => field.onChange(value ?? '')}
                         placeholder='0'

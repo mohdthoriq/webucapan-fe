@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Contact, PaginationApiResponse, ContactType } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface ContactQueryParams {
+export interface ContactQueryParams {
   page?: number
   limit?: number
   company_id?: string
