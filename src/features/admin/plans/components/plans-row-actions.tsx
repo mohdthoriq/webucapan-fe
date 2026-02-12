@@ -1,4 +1,5 @@
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import { type Plan } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,7 @@ type DataTableRowActionsProps = {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const plans = row.original
   const { setOpen, setCurrentRow } = usePlans()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -49,6 +51,15 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             }}
           >
             Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              navigate({
+                to: `/admin/plans/${plans.id}/permissions`,
+              })
+            }}
+          >
+            Manage Permission
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
