@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -7,13 +8,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
 
 type DatePickerProps = {
-  selected: Date | undefined
-  onSelect: (date: Date | undefined) => void
+  selected: Date | undefined | null
+  onSelect: (date: Date | undefined | null) => void
   placeholder?: string
   className?: string
+  startMonth?: Date
+  endMonth?: Date
 }
 
 export function DatePicker({
@@ -21,6 +23,8 @@ export function DatePicker({
   onSelect,
   placeholder = 'Pick a date',
   className,
+  startMonth = new Date(new Date().getFullYear() - 10, 0),
+  endMonth = new Date(new Date().getFullYear() + 10, 11),
 }: DatePickerProps) {
   return (
     <Popover>
@@ -28,26 +32,41 @@ export function DatePicker({
         <Button
           variant='outline'
           data-empty={!selected}
-          className={cn('data-[empty=true]:text-muted-foreground w-[240px] justify-start text-start font-normal', className)}
+          className={cn(
+            'data-[empty=true]:text-muted-foreground w-[240px] justify-start text-start font-normal',
+            className
+          )}
         >
+          <CalendarIcon className='me-2 h-4 w-4 opacity-50' />
           {selected ? (
             format(selected, 'MMM d, yyyy')
           ) : (
             <span>{placeholder}</span>
           )}
-          <CalendarIcon className='ms-auto h-4 w-4 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0'>
+      <PopoverContent className='w-auto p-0' align='start'>
         <Calendar
           mode='single'
           captionLayout='dropdown'
-          selected={selected}
-          onSelect={onSelect}
-          // disabled={(date: Date) =>
-          //   date > new Date() || date < new Date('1900-01-01')
-          // }
+          selected={selected ?? undefined}
+          onSelect={(date) => onSelect(date)}
+          startMonth={startMonth}
+          endMonth={endMonth}
         />
+        {selected && (
+          <div className='border-t p-2'>
+            <Button
+              variant='ghost'
+              size='sm'
+              className='w-full justify-start text-xs font-normal'
+              onClick={() => onSelect(null)}
+            >
+              <X className='me-2 h-3 w-3' />
+              Clear Selection
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   )

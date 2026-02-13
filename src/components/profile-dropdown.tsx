@@ -1,18 +1,12 @@
-import { useNavigate } from '@tanstack/react-router'
-import { CreditCard, LogOut, User } from 'lucide-react'
-import { useAuthStore } from '@/stores/auth-store'
-import useDialogState from '@/hooks/use-dialog-state'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { LogoutDialog } from '@/components/dialog/logout.dialog'
+import { useNavigate } from '@tanstack/react-router';
+import { CreditCard, LogOut, User } from 'lucide-react';
+import { useAuthStore } from '@/stores/auth-store';
+import useDialogState from '@/hooks/use-dialog-state';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { LogoutDialog } from '@/components/dialog/logout.dialog';
+
 
 // eslint-disable-next-line
 export const getInitials = (fullName: string): string => {
@@ -32,6 +26,7 @@ export function ProfileDropdown() {
   const fullName = user?.user?.full_name || 'User'
   const email = user?.user?.email || 'user@example.com'
   const companyName = user?.company?.name || 'Company'
+  const planName = user?.subscription?.plan_name || 'Paket Gratis Selamanya'
   const initials = getInitials(fullName)
 
   return (
@@ -54,6 +49,9 @@ export function ProfileDropdown() {
               </p>
               <p className='text-muted-foreground text-xs leading-none'>
                 {companyName}
+              </p>
+              <p className='text-primary mt-2 text-xs leading-none'>
+                {planName}
               </p>
             </div>
           </DropdownMenuLabel>

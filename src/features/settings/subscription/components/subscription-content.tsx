@@ -1,11 +1,11 @@
 import { AlertCircle } from 'lucide-react'
 import { CardContent } from '@/components/ui/card'
-import { PlanDetailsCard } from './plan-details-card'
+import { Separator } from '@/components/ui/separator'
+import { usePlansQuery } from '../hooks/use-plans-query'
+import { useSubscription } from '../hooks/use-subscription'
+// import { PlanDetailsCard } from './plan-details-card'
 import { PricingSection } from './pricing-section'
 import { SubscriptionInfoCard } from './subscription-info-card'
-import { useSubscription } from '../hooks/use-subscription'
-import { usePlansQuery } from '../hooks/use-plans-query'
-import { Separator } from '@/components/ui/separator'
 
 export function SubscriptionContent() {
   const { subscription, plan, company, user, isEmpty } = useSubscription()
@@ -24,11 +24,11 @@ export function SubscriptionContent() {
             bawah ini.
           </p>
         </div>
-        
-        <Separator className="my-8" />
-        
-        <PricingSection 
-          currentPlanName={undefined} 
+
+        <Separator className='my-8' />
+
+        <PricingSection
+          currentPlanName={undefined}
           plans={plans}
           isLoading={isPlansLoading}
         />
@@ -45,17 +45,16 @@ export function SubscriptionContent() {
           userName={user?.full_name}
         />
         {/* Hanya tampilkan detail paket jika ini adalah paket berbayar */}
-        {plan && plan.monthly_price > 0 && <PlanDetailsCard plan={plan} />}
+        {/* {plan && plan.monthly_price > 0 && <PlanDetailsCard plan={plan} />} */}
       </div>
-      
+
       <Separator />
-      
-      <PricingSection 
-        currentPlanName={plan?.name || subscription?.plan_name} 
+
+      <PricingSection
+        currentPlanName={plan?.name || subscription?.plan_name}
         plans={plans}
         isLoading={isPlansLoading}
       />
     </CardContent>
   )
 }
-

@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import { z } from 'zod';
+
 
 export enum StatusSubscriptions {
   Active = 'active',
@@ -9,7 +10,7 @@ export const createSubscriptionSchema = z.object({
   company_id: z.uuid().min(1, 'Company is required'),
   plan_id: z.uuid().min(1, 'Plan is required'),
   start_date: z.date(),
-  end_date: z.date(),
+  end_date: z.date().nullable(),
   status: z.enum(StatusSubscriptions),
 })
 
@@ -21,7 +22,7 @@ export const updateSubscriptionSchema = z.object({
   company_id: z.uuid().min(1, 'Company is required'),
   plan_id: z.uuid().min(1, 'Plan is required'),
   start_date: z.date(),
-  end_date: z.date(),
+  end_date: z.date().nullable(),
   status: z.enum(StatusSubscriptions),
 })
 

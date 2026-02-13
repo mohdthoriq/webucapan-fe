@@ -1,14 +1,9 @@
-import {
-  CalendarDays,
-  Building2,
-  User,
-  CreditCard,
-  Clock,
-} from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import type { Subscription } from '@/types'
-import { SubscriptionStatusBadge } from './subscription-status-badge'
+import type { Subscription } from '@/types';
+import { CalendarDays, Building2, User, CreditCard, Clock } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { SubscriptionStatusBadge } from './subscription-status-badge';
+
 
 interface SubscriptionInfoCardProps {
   subscription: Subscription
@@ -16,7 +11,8 @@ interface SubscriptionInfoCardProps {
   userName?: string
 }
 
-function formatDate(date: Date | string): string {
+function formatDate(date: Date | string | null | undefined): string {
+  if (!date) return 'Selamanya'
   return new Date(date).toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
@@ -24,7 +20,8 @@ function formatDate(date: Date | string): string {
   })
 }
 
-function getDaysRemaining(endDate: Date | string): number {
+function getDaysRemaining(endDate: Date | string | null | undefined): number {
+  if (!endDate) return 0
   const end = new Date(endDate)
   const now = new Date()
   const diff = end.getTime() - now.getTime()
@@ -33,8 +30,9 @@ function getDaysRemaining(endDate: Date | string): number {
 
 function getSubscriptionProgress(
   startDate: Date | string,
-  endDate: Date | string
+  endDate: Date | string | null | undefined
 ): number {
+  if (!endDate) return 100
   const start = new Date(startDate).getTime()
   const end = new Date(endDate).getTime()
   const now = Date.now()
@@ -84,9 +82,11 @@ export function SubscriptionInfoCard({
               Masa berlaku
             </span>
             <span className='font-medium'>
-              {daysRemaining > 0
-                ? `${daysRemaining} hari tersisa`
-                : 'Telah berakhir'}
+              {!subscription.end_date
+                ? 'Aktif selamanya'
+                : daysRemaining > 0
+                  ? `${daysRemaining} hari tersisa`
+                  : 'Telah berakhir'}
             </span>
           </div>
           <div className='bg-secondary h-2 w-full overflow-hidden rounded-full'>

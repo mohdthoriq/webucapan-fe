@@ -1,4 +1,5 @@
-import type { Subscription, Plan, Company, User } from '@/types'
+import type { Subscription, Plan, Company, User } from '@/types';
+
 
 export interface SubscriptionData {
   subscription: Subscription | undefined
@@ -24,4 +25,5 @@ export interface PricingPlan {
   features: string[]
   isPopular?: boolean
   buttonText?: string
+  isDefault?: boolean
 }

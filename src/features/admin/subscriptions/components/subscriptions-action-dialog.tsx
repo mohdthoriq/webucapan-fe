@@ -141,6 +141,7 @@ export function SubscriptionsActionDialog({
                           selected={field.value}
                           onSelect={field.onChange}
                           className='w-full'
+                          endMonth={new Date(new Date().getFullYear() + 5, 11)}
                         />
                       </FormControl>
                       <FormMessage />
