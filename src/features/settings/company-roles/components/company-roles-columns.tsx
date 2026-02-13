@@ -15,7 +15,7 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
       const { name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-36'>{name}</LongText>
+          <LongText className=''>{name}</LongText>
         </div>
       )
     },
@@ -35,13 +35,13 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[700px]',
+      className: 'w-full',
     },
   },
   {
