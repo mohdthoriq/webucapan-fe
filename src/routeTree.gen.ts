@@ -38,6 +38,7 @@ import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
 import { Route as AuthenticatedSettingsTagsIndexRouteImport } from './routes/_authenticated/settings/tags/index'
+import { Route as AuthenticatedSettingsSubscriptionIndexRouteImport } from './routes/_authenticated/settings/subscription/index'
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
@@ -225,6 +226,12 @@ const AuthenticatedSettingsTagsIndexRoute =
   AuthenticatedSettingsTagsIndexRouteImport.update({
     id: '/settings/tags/',
     path: '/settings/tags/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsSubscriptionIndexRoute =
+  AuthenticatedSettingsSubscriptionIndexRouteImport.update({
+    id: '/settings/subscription/',
+    path: '/settings/subscription/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsProfileIndexRoute =
@@ -442,6 +449,7 @@ export interface FileRoutesByFullPath {
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/subscription': typeof AuthenticatedSettingsSubscriptionIndexRoute
   '/settings/tags': typeof AuthenticatedSettingsTagsIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -500,6 +508,7 @@ export interface FileRoutesByTo {
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/subscription': typeof AuthenticatedSettingsSubscriptionIndexRoute
   '/settings/tags': typeof AuthenticatedSettingsTagsIndexRoute
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -560,6 +569,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
+  '/_authenticated/settings/subscription/': typeof AuthenticatedSettingsSubscriptionIndexRoute
   '/_authenticated/settings/tags/': typeof AuthenticatedSettingsTagsIndexRoute
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
@@ -620,6 +630,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/payment-terms'
     | '/settings/profile'
+    | '/settings/subscription'
     | '/settings/tags'
     | '/settings/taxes'
     | '/settings/units'
@@ -678,6 +689,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/payment-terms'
     | '/settings/profile'
+    | '/settings/subscription'
     | '/settings/tags'
     | '/settings/taxes'
     | '/settings/units'
@@ -737,6 +749,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/company/'
     | '/_authenticated/settings/payment-terms/'
     | '/_authenticated/settings/profile/'
+    | '/_authenticated/settings/subscription/'
     | '/_authenticated/settings/tags/'
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
@@ -967,6 +980,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/tags'
       fullPath: '/settings/tags'
       preLoaderRoute: typeof AuthenticatedSettingsTagsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/subscription/': {
+      id: '/_authenticated/settings/subscription/'
+      path: '/settings/subscription'
+      fullPath: '/settings/subscription'
+      preLoaderRoute: typeof AuthenticatedSettingsSubscriptionIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/profile/': {
@@ -1227,6 +1247,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
   AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
+  AuthenticatedSettingsSubscriptionIndexRoute: typeof AuthenticatedSettingsSubscriptionIndexRoute
   AuthenticatedSettingsTagsIndexRoute: typeof AuthenticatedSettingsTagsIndexRoute
   AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
@@ -1280,6 +1301,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsPaymentTermsIndexRoute,
   AuthenticatedSettingsProfileIndexRoute:
     AuthenticatedSettingsProfileIndexRoute,
+  AuthenticatedSettingsSubscriptionIndexRoute:
+    AuthenticatedSettingsSubscriptionIndexRoute,
   AuthenticatedSettingsTagsIndexRoute: AuthenticatedSettingsTagsIndexRoute,
   AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
