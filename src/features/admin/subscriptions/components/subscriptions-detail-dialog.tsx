@@ -51,7 +51,9 @@ export function SubscriptionsDetailDialog({
             <h4 className='text-muted-foreground text-sm font-medium'>
               Tanggal Berakhir Berlangganan
             </h4>
-            <p className='text-sm'>{formatDate(currentRow.end_date)}</p>
+            <p className='text-sm'>
+              {currentRow.end_date ? formatDate(currentRow.end_date) : '-'}
+            </p>
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
