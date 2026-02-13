@@ -63,6 +63,23 @@ export const menusColumns: ColumnDef<Menu>[] = [
     },
   },
   {
+    accessorKey: 'parent',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Parent Menu' />
+    ),
+    cell: ({ row }) => {
+      const { parent } = row.original
+      return (
+        <div className='w-full overflow-hidden px-2'>
+          <LongText className='truncate'>{parent?.name || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
     accessorKey: 'category',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Category' />
