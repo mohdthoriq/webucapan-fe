@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { LogOut, User } from 'lucide-react'
+import { CreditCard, LogOut, User } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -65,6 +65,13 @@ export function ProfileDropdown() {
             <User className='h-4 w-4' />
             Profil
           </DropdownMenuItem>
+          <DropdownMenuItem
+            variant='default'
+            onClick={() => navigate({ to: '/settings/subscription' })}
+          >
+            <CreditCard className='h-4 w-4' />
+            Langganan
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant='destructive' onClick={() => setOpen(true)}>
             <LogOut className='h-4 w-4' />
@@ -72,7 +79,6 @@ export function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
       <LogoutDialog open={!!open} onOpenChange={setOpen} />
     </>
   )
