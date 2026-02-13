@@ -1,4 +1,4 @@
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form'
 import { type Plan } from '@/types'
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -102,8 +102,10 @@ export function PlansActionDialog({
                         <InputFieldNumberFormat
                           prefix='Rp'
                           placeholder='0'
-                          value={field.value}
-                          onValueChange={field.onChange}
+                          value={field.value ?? 0}
+                          onValueChange={(value) =>
+                            field.onChange(value ? value : 0)
+                          }
                           className='w-[20px]'
                         />
                       </FormControl>
@@ -121,8 +123,10 @@ export function PlansActionDialog({
                         <InputFieldNumberFormat
                           prefix='Rp'
                           placeholder='0'
-                          value={field.value}
-                          onValueChange={field.onChange}
+                          value={field.value ?? 0}
+                          onValueChange={(value) =>
+                            field.onChange(value ? value : 0)
+                          }
                           className='w-[20px]'
                         />
                       </FormControl>

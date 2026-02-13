@@ -23,8 +23,8 @@ export function usePlansForm({ currentRow }: usePlansFormProps) {
       ? {
           name: currentRow?.name,
           description: currentRow?.description || '',
-          monthly_price: Number(currentRow?.monthly_price),
-          yearly_price: Number(currentRow?.yearly_price),
+          monthly_price: Number(currentRow?.monthly_price) || 0,
+          yearly_price: Number(currentRow?.yearly_price) || 0,
           features: currentRow?.features || [],
           is_active: currentRow?.is_active,
         }
