@@ -59,6 +59,7 @@ import { Route as AuthenticatedAdminSubscriptionsIndexRouteImport } from './rout
 import { Route as AuthenticatedAdminPlansIndexRouteImport } from './routes/_authenticated/admin/plans/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
+import { Route as AuthenticatedAdminMenuCategoriesIndexRouteImport } from './routes/_authenticated/admin/menu-categories/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
 import { Route as AuthenticatedSalesInvoicesEditIndexRouteImport } from './routes/_authenticated/sales/invoices/edit/index'
 import { Route as AuthenticatedSalesInvoicesDetailIndexRouteImport } from './routes/_authenticated/sales/invoices/detail/index'
@@ -354,6 +355,12 @@ const AuthenticatedAdminMenusIndexRoute =
     path: '/menus/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminMenuCategoriesIndexRoute =
+  AuthenticatedAdminMenuCategoriesIndexRouteImport.update({
+    id: '/menu-categories/',
+    path: '/menu-categories/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminAccountCategoriesIndexRoute =
   AuthenticatedAdminAccountCategoriesIndexRouteImport.update({
     id: '/account-categories/',
@@ -429,6 +436,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
@@ -488,6 +496,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
@@ -549,6 +558,7 @@ export interface FileRoutesById {
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/_authenticated/admin/menu-categories/': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
@@ -610,6 +620,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/admin/account-categories'
+    | '/admin/menu-categories'
     | '/admin/menus'
     | '/admin/permissions'
     | '/admin/plans'
@@ -669,6 +680,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/admin/account-categories'
+    | '/admin/menu-categories'
     | '/admin/menus'
     | '/admin/permissions'
     | '/admin/plans'
@@ -729,6 +741,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports/'
     | '/_authenticated/settings/'
     | '/_authenticated/admin/account-categories/'
+    | '/_authenticated/admin/menu-categories/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/admin/plans/'
@@ -1129,6 +1142,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMenusIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/menu-categories/': {
+      id: '/_authenticated/admin/menu-categories/'
+      path: '/menu-categories'
+      fullPath: '/admin/menu-categories'
+      preLoaderRoute: typeof AuthenticatedAdminMenuCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/account-categories/': {
       id: '/_authenticated/admin/account-categories/'
       path: '/account-categories'
@@ -1190,6 +1210,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAccountCategoriesIndexRoute: typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  AuthenticatedAdminMenuCategoriesIndexRoute: typeof AuthenticatedAdminMenuCategoriesIndexRoute
   AuthenticatedAdminMenusIndexRoute: typeof AuthenticatedAdminMenusIndexRoute
   AuthenticatedAdminPermissionsIndexRoute: typeof AuthenticatedAdminPermissionsIndexRoute
   AuthenticatedAdminPlansIndexRoute: typeof AuthenticatedAdminPlansIndexRoute
@@ -1201,6 +1222,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
   {
     AuthenticatedAdminAccountCategoriesIndexRoute:
       AuthenticatedAdminAccountCategoriesIndexRoute,
+    AuthenticatedAdminMenuCategoriesIndexRoute:
+      AuthenticatedAdminMenuCategoriesIndexRoute,
     AuthenticatedAdminMenusIndexRoute: AuthenticatedAdminMenusIndexRoute,
     AuthenticatedAdminPermissionsIndexRoute:
       AuthenticatedAdminPermissionsIndexRoute,

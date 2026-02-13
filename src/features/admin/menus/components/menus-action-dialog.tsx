@@ -22,6 +22,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useMenusForm } from '../hooks/use-menus-form'
+import { MenusCategoryCombobox } from './combobox/menus-category-combobox'
 import { MenusParentCombobox } from './combobox/menus-parent-combobox'
 import { MenusPermissionCombobox } from './combobox/menus-permission-combobox'
 
@@ -114,6 +115,24 @@ export function MenusActionDialog({
                           value={field.value || ''}
                           onValueChange={field.onChange}
                           placeholder='Pilih permission...'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='category_id'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <MenusCategoryCombobox
+                          value={field.value || ''}
+                          onValueChange={field.onChange}
+                          placeholder='Pilih category...'
                         />
                       </FormControl>
                       <FormMessage />
