@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import type { CompanyRole, PaginationMeta } from '@/types'
-import useDialogState from '@/hooks/use-dialog-state'
+import React, { useState } from 'react';
+import type { CompanyRole, PaginationMeta } from '@/types';
+import useDialogState from '@/hooks/use-dialog-state';
 import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query'
 
-type RolesDialogType = 'view' | 'edit' | 'add' | 'delete'
+type RolesDialogType = 'view' | 'edit' | 'add' | 'delete' | 'permissions'
 
 type RolesContextType = {
   open: RolesDialogType | null
