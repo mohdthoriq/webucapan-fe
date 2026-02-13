@@ -1,9 +1,10 @@
-import { type ColumnDef } from '@tanstack/react-table'
-import { type Menu } from '@/types'
-import { cn } from '@/lib/utils'
-import { DataTableColumnHeader } from '@/components/data-table'
-import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './menus-row-actions'
+import { type ColumnDef } from '@tanstack/react-table';
+import { type Menu } from '@/types';
+import { cn } from '@/lib/utils';
+import { DataTableColumnHeader } from '@/components/data-table';
+import { LongText } from '@/components/long-text';
+import { DataTableRowActions } from './menus-row-actions';
+
 
 export const menusColumns: ColumnDef<Menu>[] = [
   {
@@ -54,6 +55,23 @@ export const menusColumns: ColumnDef<Menu>[] = [
       return (
         <div className='w-full overflow-hidden px-2'>
           <LongText className='truncate'>{position}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Category' />
+    ),
+    cell: ({ row }) => {
+      const { category } = row.original
+      return (
+        <div className='w-full overflow-hidden px-2'>
+          <LongText className='truncate'>{category?.name || '-'}</LongText>
         </div>
       )
     },

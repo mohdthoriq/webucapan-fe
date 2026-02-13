@@ -40,6 +40,12 @@ export function MenusDetailDialog({
             </h4>
             <p className='text-sm'>{currentRow.title}</p>
           </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
+              Category
+            </h4>
+            <p className='text-sm'>{currentRow.category?.name || '-'}</p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
