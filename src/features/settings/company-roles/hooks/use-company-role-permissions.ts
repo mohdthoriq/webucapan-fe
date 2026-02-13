@@ -1,12 +1,23 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import type { AxiosError } from 'axios';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { ApiResponse, CompanyRole, Permission } from '@/types';
+import { toast } from 'sonner';
 import apiClient from '@/lib/api-client'
-import type { ApiResponse, CompanyRole, Permission } from '@/types'
-import type { AxiosError } from 'axios'
+
+export interface RolePermission {
+  id: string
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+  role_id: string
+  permission_id: string
+  permission: Permission
+}
 
 export interface RoleWithPermissions extends CompanyRole {
-  permissions: Permission[]
+  role_permissions: RolePermission[]
 }
+
 
 export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
   return useQuery({

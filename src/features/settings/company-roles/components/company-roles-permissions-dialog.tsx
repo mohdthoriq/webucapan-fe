@@ -1,27 +1,13 @@
-import { useState } from 'react'
-import { ChevronRight, ChevronDown, Save } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import { Checkbox } from '@/components/ui/checkbox'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  usePermissionTreeQuery,
-  type PermissionTreeItem,
-} from '@/features/admin/plans/hooks/use-permission-tree-query'
-import {
-  useCompanyRolePermissionsQuery,
-  useUpdateCompanyRolePermissionsMutation,
-} from '../hooks/use-company-role-permissions'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useState } from 'react';
+import { ChevronRight, ChevronDown, Save } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { usePermissionTreeQuery, type PermissionTreeItem } from '@/features/admin/plans/hooks/use-permission-tree-query';
+import { useCompanyRolePermissionsQuery, useUpdateCompanyRolePermissionsMutation } from '../hooks/use-company-role-permissions';
 import { useCompanyRoles } from './company-roles-provider'
-import type { Permission } from '@/types'
 
 interface Props {
   open: boolean
@@ -59,7 +45,7 @@ export function CompanyRolesPermissionsDialog({ open, onOpenChange }: Props) {
             key={`${roleId}-${open}`}
             roleId={roleId!}
             tree={tree}
-            initialSelectedIds={roleData?.permissions?.map((p: Permission) => p.id) || []}
+            initialSelectedIds={roleData?.role_permissions?.map((rp) => rp.permission_id) || []}
             onSuccess={() => onOpenChange(false)}
             onCancel={() => onOpenChange(false)}
           />
