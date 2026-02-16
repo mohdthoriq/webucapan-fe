@@ -1,9 +1,10 @@
-import { type ColumnDef } from '@tanstack/react-table'
-import { type Subscription } from '@/types'
-import { cn, formatDate } from '@/lib/utils'
-import { DataTableColumnHeader } from '@/components/data-table'
-import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './subscriptions-row-actions'
+import { type ColumnDef } from '@tanstack/react-table';
+import { type Subscription } from '@/types';
+import { cn, formatDate } from '@/lib/utils';
+import { DataTableColumnHeader } from '@/components/data-table';
+import { LongText } from '@/components/long-text';
+import { DataTableRowActions } from './subscriptions-row-actions';
+
 
 export const subscriptionsColumns: ColumnDef<Subscription>[] = [
   {
@@ -69,7 +70,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     ),
     cell: ({ row }) => {
       const { end_date } = row.original
-      const formattedDate = formatDate(end_date)
+      const formattedDate = end_date ? formatDate(end_date) : '-'
       return (
         <div className='overflow-hidden px-2'>
           <LongText className='truncate'>{formattedDate}</LongText>

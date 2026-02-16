@@ -11,9 +11,9 @@ import {
 } from '../hooks/use-plan-permissions'
 import { Skeleton } from '@/components/ui/skeleton'
 
-const route = getRouteApi('/_authenticated/admin/subscriptions/$planId/permissions/')
+const route = getRouteApi('/_authenticated/admin/plans/$planId/permissions/')
 
-export default function SubscriptionPermissions() {
+export default function PlanPermissions() {
   const { planId } = route.useParams()
   const { data: tree, isLoading: isTreeLoading } = usePermissionTreeQuery()
   const { data: currentPermissions, isSuccess: isPermsSuccess, isLoading: isPermsLoading } = usePlanPermissionsQuery(planId)

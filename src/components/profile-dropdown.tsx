@@ -1,18 +1,12 @@
-import { useNavigate } from '@tanstack/react-router'
-import { LogOut, User } from 'lucide-react'
-import { useAuthStore } from '@/stores/auth-store'
-import useDialogState from '@/hooks/use-dialog-state'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { LogoutDialog } from '@/components/dialog/logout.dialog'
+import { useNavigate } from '@tanstack/react-router';
+import { CreditCard, LogOut, User } from 'lucide-react';
+import { useAuthStore } from '@/stores/auth-store';
+import useDialogState from '@/hooks/use-dialog-state';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { LogoutDialog } from '@/components/dialog/logout.dialog';
+
 
 // eslint-disable-next-line
 export const getInitials = (fullName: string): string => {
@@ -32,6 +26,7 @@ export function ProfileDropdown() {
   const fullName = user?.user?.full_name || 'User'
   const email = user?.user?.email || 'user@example.com'
   const companyName = user?.company?.name || 'Company'
+  const planName = user?.subscription?.plan_name || 'Paket Gratis Selamanya'
   const initials = getInitials(fullName)
 
   return (
@@ -55,6 +50,9 @@ export function ProfileDropdown() {
               <p className='text-muted-foreground text-xs leading-none'>
                 {companyName}
               </p>
+              <p className='text-primary mt-2 text-xs leading-none'>
+                {planName}
+              </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -65,6 +63,13 @@ export function ProfileDropdown() {
             <User className='h-4 w-4' />
             Profil
           </DropdownMenuItem>
+          <DropdownMenuItem
+            variant='default'
+            onClick={() => navigate({ to: '/settings/subscription' })}
+          >
+            <CreditCard className='h-4 w-4' />
+            Langganan
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant='destructive' onClick={() => setOpen(true)}>
             <LogOut className='h-4 w-4' />
@@ -72,7 +77,6 @@ export function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
       <LogoutDialog open={!!open} onOpenChange={setOpen} />
     </>
   )

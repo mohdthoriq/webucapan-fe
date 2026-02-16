@@ -51,7 +51,16 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           >
             Edit
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+           <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(role)
+              setOpen('permissions')
+            }}
+            disabled={role?.is_default}
+          >
+            Manage Permissions
+          </DropdownMenuItem>
+            <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(role)

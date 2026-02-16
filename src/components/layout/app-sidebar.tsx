@@ -1,5 +1,7 @@
+import { useMemo } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
+import { cn } from '@/lib/utils'
 import { useLayout } from '@/context/layout-provider'
 import {
   Sidebar,
@@ -11,10 +13,10 @@ import {
 } from '@/components/ui/sidebar'
 import { Button } from '../ui/button'
 import { AppTitle } from './app-title'
-import { sidebarData } from './data/sidebar-data'
+// import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
 import { NavGroup } from './nav-group'
-import { cn } from '@/lib/utils'
+import { transformMenusToSidebarData } from './utils/menu-utils'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
@@ -23,13 +25,18 @@ export function AppSidebar() {
     auth: { user },
   } = useAuthStore()
 
-  const data =
-    user?.role?.name === 'superadmin' ? sidebarDataAdmin : sidebarData
+  const data = useMemo(() => {
+    if (user?.menus && user.menus.length > 0) {
+      return transformMenusToSidebarData(user.menus)
+    } else if (user?.role?.name === 'superadmin') {
+      return sidebarDataAdmin
+    }
+  }, [user])
 
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
-        <div 
+        <div
           className={cn(
             'flex items-center transition-all duration-200',
             'group-data-[collapsible=icon]:pt-2'
@@ -39,8 +46,8 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {data.navGroups.map((props) => (
-          <NavGroup key={props.title} {...props} />
+        {data?.navGroups?.map((group) => (
+          <NavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>
       <SidebarFooter className='border-t'>

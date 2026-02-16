@@ -57,6 +57,11 @@ export const sidebarDataAdmin: SidebarData = {
           url: '/admin/menus',
           icon: Menu,
         },
+        {
+          title: 'Menu Categories',
+          url: '/admin/menu-categories',
+          icon: Library,
+        },
       ],
     },
   ],
