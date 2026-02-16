@@ -1,9 +1,12 @@
+import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
+import { ArrowLeft, Loader2, Plus, Printer } from 'lucide-react'
+import { useReactToPrint } from 'react-to-print'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { InvoiceListsProvider } from './components/invoice-list-provider'
 import { InvoiceListsTable } from './components/invoice-list-table'
+import { PurchaseInvoicesTablePrint } from './components/print/purchase-invoices-list-print'
 import type { InvoiceListQueryParams } from './hooks/use-invoice-list-query'
 
 const route = getRouteApi('/_authenticated/purchases/invoices/')
@@ -11,6 +14,22 @@ const route = getRouteApi('/_authenticated/purchases/invoices/')
 function InvoiceListsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
+
+  const [isPrinting, setIsPrinting] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   return (
     <Card>
@@ -23,12 +42,21 @@ function InvoiceListsContent() {
             <p className='text-muted-foreground'>Kelola Tagihan Pembelian.</p>
           </div>
           <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'link'} onClick={() => history.go(-1)}>
+            <Button variant={'outline'} onClick={() => history.go(-1)}>
+              <ArrowLeft className='h-4 w-4' />
               Kembali
             </Button>
             <Button onClick={() => navigate({ to: '/purchases/invoices/add' })}>
-              <Plus className='mr-2 h-4 w-4' />
+              <Plus className='h-4 w-4' />
               Tambah Tagihan
+            </Button>
+            <Button variant={'outline'} onClick={() => handlePrint()}>
+              {isPrinting ? (
+                <Loader2 className='h-4 w-4 animate-spin' />
+              ) : (
+                <Printer className='h-4 w-4' />
+              )}{' '}
+              {isPrinting ? 'Memproses...' : 'Cetak'}
             </Button>
           </div>
         </div>
@@ -37,6 +65,13 @@ function InvoiceListsContent() {
       <CardContent>
         <InvoiceListsTable search={search} navigate={navigate} />
       </CardContent>
+      <div
+        className={
+          isPrinting ? 'absolute top-0 left-0 z-[-1] m-0 w-fit p-0' : 'hidden'
+        }
+      >
+        <PurchaseInvoicesTablePrint ref={printRef} />
+      </div>
     </Card>
   )
 }

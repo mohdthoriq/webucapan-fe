@@ -1,18 +1,28 @@
 import { format } from 'date-fns'
 import type { Expense } from '@/types/domain/expenses'
 import { id } from 'date-fns/locale'
-import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
+import { Building2, Printer, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
 import { formatCurrency, cn, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { usePrintExpensesQuery } from '../hooks/use-print-expenses-invoice-query'
 
 interface ExpensesDetailReceiptProps {
   expense: Expense
 }
 
 export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
+  const { refetch, isFetching: isPrinting } = usePrintExpensesQuery(expense.id)
+
+  const handlePrint = async () => {
+    const { data } = await refetch()
+    if (data) {
+      window.open(data, '_blank')
+    }
+  }
+
   return (
     <Card className='overflow-hidden shadow-md'>
       <CardHeader>
@@ -37,9 +47,15 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
           <Button
             variant='outline'
             className='gap-2 shadow-sm'
-            onClick={() => window.print()}
+            onClick={handlePrint}
+            disabled={isPrinting}
           >
-            <Printer className='h-4 w-4' /> Cetak Struk
+            {isPrinting ? (
+              <Loader2 className='h-4 w-4 animate-spin' />
+            ) : (
+              <Printer className='h-4 w-4' />
+            )}
+            {isPrinting ? 'Memproses...' : 'Cetak Struk'}
           </Button>
         </div>
       </CardHeader>

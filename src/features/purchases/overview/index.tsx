@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { Printer } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { Loader2, Printer } from 'lucide-react'
+import { useReactToPrint } from 'react-to-print'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Overdue } from './components/overdue'
 import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
 import { PaymentsReceived } from './components/payments-sent'
+import { PurchaseOverviewPrint } from './components/print/purchase-overview-print'
 import { ProductPurchasesCard } from './components/product-purchases-card'
 import { SalesChartCard } from './components/purchases-chart-card'
 import { TotalPurchases } from './components/total-purchases'
@@ -14,6 +16,21 @@ import { WaitingPayments } from './components/waiting-payments'
 
 export function PurchaseOverview() {
   const [period, setPeriod] = useState<'month' | 'year'>('month')
+  const [isPrinting, setIsPrinting] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   return (
     <>
@@ -23,9 +40,14 @@ export function PurchaseOverview() {
           <Button
             variant='outline'
             className='gap-2 shadow-sm'
-            onClick={() => window.print()}
+            onClick={handlePrint}
           >
-            <Printer className='h-4 w-4' /> Cetak
+            {isPrinting ? (
+              <Loader2 className='h-4 w-4 animate-spin' />
+            ) : (
+              <Printer className='h-4 w-4' />
+            )}{' '}
+            {isPrinting ? 'Memproses...' : 'Cetak'}
           </Button>
         </div>
         <div className='flex w-full items-center justify-end'>
@@ -60,6 +82,15 @@ export function PurchaseOverview() {
             <VendorPurchasesCard className='h-auto' globalPeriod={period} />
           </div>
         </div>
+      </div>
+      <div
+        className={
+          isPrinting
+            ? 'absolute top-0 left-0 z-[-1] m-0 w-[210mm] min-w-[210mm] p-0'
+            : 'hidden'
+        }
+      >
+        <PurchaseOverviewPrint ref={printRef} />
       </div>
     </>
   )

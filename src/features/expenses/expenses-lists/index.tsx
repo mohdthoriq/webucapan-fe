@@ -1,9 +1,12 @@
+import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
+import { ArrowLeft, Plus, Printer } from 'lucide-react'
+import { useReactToPrint } from 'react-to-print'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ExpensesListsProvider } from './components/expenses-list-provider'
 import { ExpensesListsTable } from './components/expenses-list-table'
+import { ExpenseListsTablePrint } from './components/print/expense-list-print'
 import { type ExpenseListQueryParams } from './hooks/use-expenses-list-query'
 
 const route = getRouteApi('/_authenticated/expenses/')
@@ -11,35 +14,62 @@ const route = getRouteApi('/_authenticated/expenses/')
 function ExpensesListsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
+  const printRef = useRef<HTMLDivElement>(null)
+  const [isPrinting, setIsPrinting] = useState(false)
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   return (
-    <Card>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <div className='mb-2 grid'>
-            <h2 className='text-2xl font-bold tracking-tight'>
-              Biaya
-            </h2>
-            <p className='text-muted-foreground'>
-              Kelola dan pantau seluruh pengeluaran operasional Anda.
-            </p>
+    <>
+      <Card>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <div className='mb-2 grid'>
+              <h2 className='text-2xl font-bold tracking-tight'>Biaya</h2>
+              <p className='text-muted-foreground'>
+                Kelola dan pantau seluruh pengeluaran operasional Anda.
+              </p>
+            </div>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
+              <Button variant={'outline'} onClick={() => history.go(-1)}>
+                <ArrowLeft className='h-4 w-4' />
+                Kembali
+              </Button>
+              <Button onClick={() => navigate({ to: '/expenses/add' })}>
+                <Plus className='h-4 w-4' />
+                Tambah Biaya
+              </Button>
+              <Button variant={'outline'} onClick={handlePrint}>
+                <Printer className='h-4 w-4' />
+                {isPrinting ? 'Memproses...' : 'Cetak'}
+              </Button>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'link'} onClick={() => history.go(-1)}>
-              Kembali
-            </Button>
-            <Button onClick={() => navigate({ to: '/expenses/add' })}>
-              <Plus className='mr-2 h-4 w-4' />
-              Tambah Biaya
-            </Button>
-          </div>
-        </div>
-        <hr />
-      </CardHeader>
-      <CardContent>
-        <ExpensesListsTable search={search} navigate={navigate} />
-      </CardContent>
-    </Card>
+          <hr />
+        </CardHeader>
+        <CardContent>
+          <ExpensesListsTable search={search} navigate={navigate} />
+        </CardContent>
+      </Card>
+      <div
+        className={
+          isPrinting ? 'absolute top-0 left-0 z-[-1] m-0 w-fit p-0' : 'hidden'
+        }
+      >
+        <ExpenseListsTablePrint ref={printRef} />
+      </div>
+    </>
   )
 }
 

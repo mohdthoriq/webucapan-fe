@@ -1,4 +1,12 @@
-import { createContext, type ReactNode, useContext } from 'react'
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
+import type { VisibilityState } from '@tanstack/react-table'
 import type { PaginationMeta, SalesInvoice } from '@/types'
 import {
   type InvoiceListQueryParams,
@@ -11,6 +19,8 @@ type InvoiceListsContextType = {
   isLoading: boolean
   isError: boolean
   paginationParams?: InvoiceListQueryParams
+  columnVisibility: VisibilityState
+  setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
 }
 
 const InvoiceListsContext = createContext<InvoiceListsContextType | null>(null)
@@ -22,6 +32,8 @@ export function InvoiceListsProvider({
   children: ReactNode
   paginationParams?: InvoiceListQueryParams
 }) {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+
   const {
     data: invoiceListsData,
     isLoading: isLoadingInvoiceLists,
@@ -39,6 +51,8 @@ export function InvoiceListsProvider({
     isLoading: isLoadingInvoiceLists,
     isError: isErrorInvoiceLists,
     paginationParams,
+    columnVisibility,
+    setColumnVisibility,
   }
 
   return (

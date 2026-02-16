@@ -6,6 +6,7 @@ import {
   useContext,
   useState,
 } from 'react'
+import type { VisibilityState } from '@tanstack/react-table'
 import type {
   CashBankTransaction,
   PaginationMeta,
@@ -30,6 +31,8 @@ type CashBankListsContextType = {
   isLoading: boolean
   isError: boolean
   paginationParams?: CashBankListQueryParams
+  columnVisibility: VisibilityState
+  setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
 }
 
 const CashBankListsContext = createContext<CashBankListsContextType | null>(
@@ -45,6 +48,7 @@ export function CashBankListsProvider({
 }) {
   const [open, setOpen] = useDialogState<CashBankListDialogType>(null)
   const [currentRow, setCurrentRow] = useState<TransactionData | null>(null)
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const {
     data: cashBankListsData,
@@ -68,6 +72,8 @@ export function CashBankListsProvider({
     isLoading: isLoadingCashBankLists,
     isError: isErrorCashBankLists,
     paginationParams,
+    columnVisibility,
+    setColumnVisibility,
   }
 
   return (
