@@ -26,7 +26,7 @@ export function CashBankDetailReceipt({
   const isReconciled = transaction?.status === 'reconciled'
 
   return (
-    <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
+    <Card className='overflow-hidden shadow-md'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-3'>
@@ -53,7 +53,7 @@ export function CashBankDetailReceipt({
               </Badge>
             </div>
           </div>
-          <div className='flex gap-2 print:hidden'>
+          <div className='flex gap-2'>
             <Button
               variant='outline'
               size='sm'

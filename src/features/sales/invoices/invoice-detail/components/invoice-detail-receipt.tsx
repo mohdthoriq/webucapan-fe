@@ -22,7 +22,7 @@ interface InvoiceDetailReceiptProps {
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
   return (
-    <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
+    <Card className='overflow-hidden shadow-md'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-1'>
