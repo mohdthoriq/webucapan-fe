@@ -4,11 +4,39 @@ import { type ColumnDef } from '@tanstack/react-table'
 import type { Expense } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './expenses-list-row-actions'
 
 export const expensesListsColumns: ColumnDef<Expense>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onClick={(e) => e.stopPropagation()}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    meta: {
+      className: 'w-4 p-2 z-9000',
+    },
+  },
   {
     accessorKey: 'invoice_number',
     header: ({ column }) => (
@@ -17,7 +45,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     cell: ({ row }) => {
       const { expense_number, id } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <Link
             to='/expenses/detail'
             state={{ currentRowId: id } as Record<string, unknown>}
@@ -45,7 +73,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     cell: ({ row }) => {
       const { contact } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{contact.name}</LongText>
         </div>
       )
@@ -64,7 +92,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       const { date } = row.original
       const formattedDate = format(date, 'dd/MM/yyyy')
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -82,7 +110,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       const { due_date } = row.original
       const formattedDate = format(due_date as Date, 'dd/MM/yyyy')
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -99,7 +127,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     cell: ({ row }) => {
       const { payment_status } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <Badge className={cn(getStatusStyles(payment_status))}>
             {invoiceLabel[payment_status] || payment_status}
           </Badge>
@@ -119,7 +147,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       const { outstanding } = row.original
       const formattedOutstanding = formatNumber(outstanding)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedOutstanding}</LongText>
         </div>
       )
@@ -137,7 +165,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       const { total } = row.original
       const formattedTotal = formatNumber(total)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedTotal}</LongText>
         </div>
       )
@@ -145,10 +173,5 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     meta: {
       className: 'w-full',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

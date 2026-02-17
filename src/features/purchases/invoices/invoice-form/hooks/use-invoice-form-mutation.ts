@@ -42,11 +42,11 @@ export function useCreateInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
-      toast.success('Invoice berhasil ditambahkan.')
+      toast.success('Tagihan Pembelian berhasil ditambahkan.')
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
-      toast.error('Invoice gagal ditambahkan.')
+      toast.error('Tagihan Pembelian gagal ditambahkan.')
     },
   })
 }
@@ -67,11 +67,11 @@ export function useUpdateInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
-      toast.success('Invoice berhasil diubah.')
+      toast.success('Tagihan Pembelian berhasil diubah.')
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
-      toast.error('Invoice gagal diubah.')
+      toast.error('Tagihan Pembelian gagal diubah.')
     },
   })
 }

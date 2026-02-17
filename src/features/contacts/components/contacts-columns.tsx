@@ -53,7 +53,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { company } = row.original
       return (
         <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{company.name}</LongText>
+          <LongText className='truncate'>{company.name || '-'}</LongText>
         </div>
       )
     },
@@ -70,7 +70,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { email } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{email}</LongText>
+          <LongText className='truncate'>{email || '-'}</LongText>
         </div>
       )
     },
@@ -87,7 +87,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { phone } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{phone}</LongText>
+          <LongText className='truncate'>{phone || '-'}</LongText>
         </div>
       )
     },
@@ -104,7 +104,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { address } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{address}</LongText>
+          <LongText className='truncate'>{address || '-'}</LongText>
         </div>
       )
     },

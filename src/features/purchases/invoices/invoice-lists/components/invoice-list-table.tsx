@@ -189,7 +189,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
-      <DataTableBulkActions table={table} entityName='invoice'>
+      <DataTableBulkActions table={table} entityName='tagihan pembelian'>
         {/* <Tooltip>
           <TooltipTrigger asChild>
             <Button

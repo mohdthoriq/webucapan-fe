@@ -44,11 +44,11 @@ export function useCreateInvoiceMutation() {
       await queryClient.invalidateQueries({
         queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
       })
-      toast.success('Invoice berhasil ditambahkan.')
+      toast.success('Tagihan Penjualan berhasil ditambahkan.')
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
-      toast.error('Invoice gagal ditambahkan.')
+      toast.error('Tagihan Penjualan gagal ditambahkan.')
     },
   })
 }
@@ -71,11 +71,11 @@ export function useUpdateInvoiceMutation() {
       await queryClient.invalidateQueries({
         queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
       })
-      toast.success('Invoice berhasil diubah.')
+      toast.success('Tagihan Penjualan berhasil diubah.')
     },
     onError: () => {
       toast.dismiss('invoices-form-toast')
-      toast.error('Invoice gagal diubah.')
+      toast.error('Tagihan Penjualan gagal diubah.')
     },
   })
 }

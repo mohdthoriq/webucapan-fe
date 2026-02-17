@@ -11,3 +11,11 @@ export const expensesPaymentsSchema = z.object({
 })
 
 export type ExpensesPaymentsFormData = z.infer<typeof expensesPaymentsSchema>
+
+export const deleteExpensesSchema = z.object({
+  ids: z
+    .array(z.string())
+    .min(1, 'Pilih setidaknya satu invoice untuk dihapus'),
+})
+
+export type DeleteExpensesFormData = z.infer<typeof deleteExpensesSchema>

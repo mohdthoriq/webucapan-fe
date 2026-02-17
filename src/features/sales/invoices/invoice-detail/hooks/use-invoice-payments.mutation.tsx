@@ -55,11 +55,11 @@ export function useDeleteSalesInvoiceMutation() {
       await queryClient.invalidateQueries({
         queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
       })
-      toast.success('Invoice berhasil dihapus.')
+      toast.success('Tagihan Penjualan berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('invoice-detail-toast')
-      toast.error('Invoice gagal dihapus.')
+      toast.error('Tagihan Penjualan gagal dihapus.')
     },
   })
 }

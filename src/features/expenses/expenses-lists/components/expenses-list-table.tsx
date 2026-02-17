@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type SortingState,
   type VisibilityState,
@@ -13,8 +14,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { Expense } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -25,7 +28,18 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useDeleteExpensesMutation } from '../../expenses-detail/hooks/use-expenses-payments.mutation'
+import { ExpensesBulkDeleteDialog } from './expenses-bulk-delete-dialog'
 import { expensesListsColumns } from './expenses-list-columns'
 import { ExpensesListFilter } from './expenses-list-filter'
 import { useExpensesLists } from './expenses-list-provider'
@@ -46,6 +60,9 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteMutation = useDeleteExpensesMutation()
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
@@ -97,6 +114,10 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
       ensurePageInRange(serverPagination.total_pages)
     }
   }, [serverPagination.total_pages, ensurePageInRange])
+
+  const selectedRows = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original)
 
   return (
     <div
@@ -170,6 +191,86 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='biaya'>
+        {/* <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg'
+            >
+              <ArrowUpCircle className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Ekspor</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+            >
+              <ArrowUpCircle className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Urutkan</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+            >
+              <Download className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Unduh</p>
+          </TooltipContent>
+        </Tooltip> */}
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <ExpensesBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteMutation.isPending}
+        onConfirm={(ids) => {
+          deleteMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }
@@ -191,6 +292,8 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<Expense> }) {
+  const navigate = useNavigate()
+
   return (
     <>
       {table.getRowModel().rows.map((row) => (
@@ -207,6 +310,14 @@ function TableRows({ table }: { table: TanstackTable<Expense> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={() =>
+                navigate({
+                  to: '/expenses/detail',
+                  state: {
+                    currentRowId: row.original.id,
+                  } as Record<string, unknown>,
+                })
+              }
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

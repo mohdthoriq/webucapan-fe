@@ -51,11 +51,11 @@ export function useDeletePurchasesInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoice-detail-toast')
       await queryClient.invalidateQueries({ queryKey: ['purchase-invoice-lists'] })
-      toast.success('Invoice berhasil dihapus.')
+      toast.success('Tagihan Pembelian berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('invoice-detail-toast')
-      toast.error('Invoice gagal dihapus.')
+      toast.error('Tagihan Pembelian gagal dihapus.')
     },
   })
 }
