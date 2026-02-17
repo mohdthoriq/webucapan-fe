@@ -12,4 +12,5 @@ export interface Account extends GlobalResponse {
   parent: Account | null
   company: Company
   balance: number
+  subRows?: Account[]
 }

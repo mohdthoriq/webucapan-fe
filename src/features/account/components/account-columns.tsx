@@ -1,6 +1,8 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Account } from '@/types'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn, formatNumber } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './account-row-actions'
@@ -15,7 +17,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       const { code } = row.original
       return (
         <div className='px-2'>
-          <LongText className=''>{code}</LongText>
+          <LongText className='max-w-xs truncate'>{code}</LongText>
         </div>
       )
     },
@@ -28,15 +30,36 @@ export const accountsColumns: ColumnDef<Account>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama' />
     ),
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{name}</LongText>
+        <div
+          className='flex items-center px-2'
+          style={{ paddingLeft: `${row.depth * 1}rem` }}
+        >
+          {row.getCanExpand() ? (
+            <Button
+              variant='ghost'
+              size='icon'
+              className='h-6 w-6 p-0 hover:bg-transparent'
+              onClick={row.getToggleExpandedHandler()}
+            >
+              {row.getIsExpanded() ? (
+                <ChevronDown className='h-4 w-4' />
+              ) : (
+                <ChevronRight className='h-4 w-4' />
+              )}
+            </Button>
+          ) : (
+            <div className='w-6' />
+          )}
+          <div onClick={row.getToggleExpandedHandler()}>
+            <LongText className='truncate font-medium'>{name}</LongText>
+          </div>
         </div>
       )
     },

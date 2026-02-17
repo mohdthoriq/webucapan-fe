@@ -2,7 +2,10 @@ import { type ReactNode, useMemo } from 'react'
 import type { AccountCategory } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
-import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
+import {
+  type AccountCategoryQueryParams,
+  useAccountCategoriesQuery,
+} from '@/features/admin/account-categories/hooks/use-account-categories-query'
 
 interface AccountCategoryComboboxProps {
   value?: string
@@ -27,10 +30,7 @@ export function AccountCategoryCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    AccountCategory,
-    { page?: number; limit?: number; name?: string }
-  >({
+  } = useComboboxQuery<AccountCategory, AccountCategoryQueryParams>({
     queryHook: useAccountCategoriesQuery,
     limit,
   })

@@ -11,6 +11,8 @@ import {
   getSortedRowModel,
   useReactTable,
   type Table as TanstackTable,
+  getExpandedRowModel,
+  type ExpandedState,
 } from '@tanstack/react-table'
 import type { Account } from '@/types'
 import { cn } from '@/lib/utils'
@@ -43,6 +45,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [expanded, setExpanded] = useState<ExpandedState>({})
 
   const {
     columnFilters,
@@ -55,7 +58,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
+    columnFilters: [{ columnId: 'Nama', searchKey: 'search', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -68,21 +71,25 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      expanded,
     },
     manualPagination: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
     onColumnFiltersChange,
+    onExpandedChange: setExpanded,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    getSubRows: (row) => row.subRows,
   })
 
   useEffect(() => {
@@ -101,7 +108,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
       <DataTableToolbar
         table={table}
         searchPlaceholder='Cari akun...'
-        searchKey='name'
+        searchKey='Nama'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>

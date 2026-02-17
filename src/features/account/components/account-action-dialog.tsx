@@ -151,10 +151,10 @@ export function AccountsActionDialog({
                   name='parent_id'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Parent Akun</FormLabel>
+                      <FormLabel>Sub Akun dari</FormLabel>
                       <FormControl>
                         <AccountsCombobox
-                          placeholder='Pilih parent akun...'
+                          placeholder='Pilih akun...'
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                           categoryId={categoryId}
@@ -170,7 +170,7 @@ export function AccountsActionDialog({
                   name='allow_transaction'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Allow Transaksi</FormLabel>
+                      <FormLabel>Izinkan Transaksi</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={(value) =>

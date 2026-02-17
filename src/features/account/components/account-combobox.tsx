@@ -2,7 +2,10 @@ import { type ReactNode, useMemo } from 'react'
 import type { Account } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
-import { useAccountsQuery } from '../hooks/use-account-query'
+import {
+  type AccountQueryParams,
+  useAccountsQuery,
+} from '../hooks/use-account-query'
 
 interface AccountsComboboxProps {
   value?: string | null
@@ -31,13 +34,11 @@ export function AccountsCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Account,
-    { page?: number; limit?: number; name?: string; category_id?: string }
-  >({
+  } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
     extraParams: { category_id: categoryId },
+    searchKey: 'search',
   })
 
   const selectedItem = useMemo(

@@ -2,7 +2,10 @@ import { useMemo, type ReactNode } from 'react'
 import type { Account } from '@/types'
 import type { Contact } from '@/types/domain/contact'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
-import { useAccountsQuery } from '@/features/account/hooks/use-account-query'
+import {
+  type AccountQueryParams,
+  useAccountsQuery,
+} from '@/features/account/hooks/use-account-query'
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { ComboboxBase } from '../../../../components/combobox-base'
 
@@ -103,10 +106,7 @@ function AccountCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<
-    Account,
-    { page?: number; limit?: number; name?: string }
-  >({
+  } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
     searchKey: 'search',
