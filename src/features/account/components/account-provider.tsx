@@ -1,7 +1,17 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react'
 import type { PaginationMeta, Account } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useAccountsQuery } from '../hooks/use-account-query'
+import {
+  type AccountQueryParams,
+  useAccountsQuery,
+} from '../hooks/use-account-query'
 
 type AccountsDialogType = 'view' | 'edit' | 'add' | 'delete' | 'ledger'
 
@@ -9,12 +19,12 @@ type AccountsContextType = {
   open: AccountsDialogType | null
   setOpen: (str: AccountsDialogType | null) => void
   currentRow: Account | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<Account | null>>
+  setCurrentRow: Dispatch<SetStateAction<Account | null>>
   accountsData: Account[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: AccountQueryParams
 }
 
 // eslint-disable-next-line
@@ -24,8 +34,8 @@ export function AccountsProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: AccountQueryParams
 }) {
   const [open, setOpen] = useDialogState<AccountsDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Account | null>(null)
@@ -36,12 +46,38 @@ export function AccountsProvider({
     isError: isErrorAccounts,
   } = useAccountsQuery(paginationParams)
 
+  const buildAccountTree = (accounts: Account[]): Account[] => {
+    const accountMap = new Map<string, Account & { subRows: Account[] }>()
+    const roots: Account[] = []
+
+    // First pass: create mapping
+    accounts.forEach((account) => {
+      accountMap.set(account.id, { ...account, subRows: [] })
+    })
+
+    // Second pass: build tree
+    accounts.forEach((account) => {
+      const node = accountMap.get(account.id)!
+      if (account.parent && accountMap.has(account.parent.id)) {
+        const parentNode = accountMap.get(account.parent.id)!
+        parentNode.subRows.push(node)
+      } else {
+        roots.push(node)
+      }
+    })
+
+    return roots
+  }
+
   const accountsProviderValues = {
     open,
     setOpen,
     currentRow,
     setCurrentRow,
-    accountsData: accountsData?.data ?? [],
+    accountsData:
+      accountsData && accountsData.data
+        ? buildAccountTree(accountsData.data)
+        : [],
     pagination: accountsData?.pagination ?? {
       page: 1,
       limit: 1000,

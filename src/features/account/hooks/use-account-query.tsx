@@ -7,11 +7,14 @@ import type {
 } from '@/types'
 import apiClient from '@/lib/api-client'
 
-interface AccountQueryParams {
+export interface AccountQueryParams {
   page?: number
   limit?: number
   search?: string
   category_id?: string
+  order?: 'asc' | 'desc'
+  is_active?: boolean
+  transaction_types?: string[]
 }
 
 export function useAccountsQuery(params?: AccountQueryParams) {
@@ -22,6 +25,9 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       params?.limit,
       params?.search,
       params?.category_id,
+      params?.is_active,
+      params?.transaction_types,
+      params?.order,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -29,6 +35,13 @@ export function useAccountsQuery(params?: AccountQueryParams) {
         limit: '1000',
         ...(params?.search ? { search: params.search } : {}),
         ...(params?.category_id ? { category_id: params.category_id } : {}),
+        ...(params?.is_active
+          ? { is_active: params.is_active.toString() }
+          : {}),
+        ...(params?.transaction_types
+          ? { transaction_types: params.transaction_types.join(',') }
+          : {}),
+        ...(params?.order ? { order: params.order } : {}),
       })
 
       const url = queryParams.toString()
@@ -43,7 +56,12 @@ export function useAccountsQuery(params?: AccountQueryParams) {
   })
 }
 
-export function useAccountLedgerQuery(accountId: string, from?: string, to?: string, search?: string) {
+export function useAccountLedgerQuery(
+  accountId: string,
+  from?: string,
+  to?: string,
+  search?: string
+) {
   return useQuery({
     queryKey: ['account-ledger', accountId, from, to, search],
     queryFn: async () => {

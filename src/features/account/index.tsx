@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { AccountsDialogs } from './components/account-dialogs'
 import { AccountsProvider, useAccounts } from './components/account-provider'
 import { AccountsTable } from './components/account-table'
+import type { AccountQueryParams } from './hooks/use-account-query'
 
 const route = getRouteApi('/_authenticated/account/')
 
@@ -48,13 +49,20 @@ function AccountContent() {
 function Account() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: AccountQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    search: search?.search ? search.search : undefined,
+    category_id: search?.category_id ? search.category_id : undefined,
+    is_active: search?.is_active ? !!search.is_active : undefined,
+    transaction_types: search?.transaction_types
+      ? search.transaction_types.split(',')
+      : undefined,
+    order: search?.order ? (search.order as 'asc' | 'desc') : undefined,
+  }
 
   return (
-    <AccountsProvider paginationParams={{ page, limit, name }}>
+    <AccountsProvider paginationParams={queryParams}>
       <AccountContent />
     </AccountsProvider>
   )
