@@ -21,7 +21,7 @@ export function useUserSettingsMutation(userId: string) {
 
       try {
         const response = await apiClient.get<ApiResponse<AuthMe>>(`auth/me`)
-        auth.setUser(response.data?.data)
+        auth.updateUser(response.data?.data)
         toast.success('Pengaturan berhasil diubah.')
       } catch (err) {
         toast.error('Gagal mengambil data profile.' + err)
