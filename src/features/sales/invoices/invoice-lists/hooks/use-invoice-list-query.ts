@@ -21,7 +21,7 @@ export interface InvoiceListQueryParams {
 
 export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
   return useQuery({
-    queryKey: ['invoice-list', params],
+    queryKey: ['sales-invoice-lists', params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

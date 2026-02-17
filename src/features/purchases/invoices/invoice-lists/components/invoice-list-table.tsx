@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type SortingState,
   flexRender,
@@ -12,8 +13,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { PurchaseInvoice } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -24,7 +27,18 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useDeletePurchasesInvoiceMutation } from '../../invoice-detail/hooks/use-invoice-payments.mutation'
+import { PurchaseInvoiceBulkDeleteDialog } from './invoice-bulk-delete-dialog'
 import { invoiceListsColumns } from './invoice-list-columns'
 import { InvoiceListFilter } from './invoice-list-filter'
 import { useInvoiceLists } from './invoice-list-provider'
@@ -46,6 +60,9 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteMutation = useDeletePurchasesInvoiceMutation()
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
@@ -98,6 +115,10 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     }
   }, [serverPagination.total_pages, ensurePageInRange])
 
+  const selectedRows = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original)
+
   return (
     <div
       className={cn(
@@ -112,21 +133,21 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
       >
         <InvoiceListFilter search={search} navigate={navigate} />
       </DataTableToolbar>
-        <Tabs
-          defaultValue=''
-          value={search.payment_status as string}
-          onValueChange={(value) =>
-            navigate({ search: { ...search, payment_status: value } })
-          }
-        >
-          <TabsList className='h-10'>
-            <TabsTrigger value=''>Semua</TabsTrigger>
-            <TabsTrigger value='paid'>Lunas</TabsTrigger>
-            <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
-            <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      <div className='overflow-hidden rounded-md border'>
+      <Tabs
+        defaultValue=''
+        value={search.payment_status as string}
+        onValueChange={(value) =>
+          navigate({ search: { ...search, payment_status: value } })
+        }
+      >
+        <TabsList className='h-10'>
+          <TabsTrigger value=''>Semua</TabsTrigger>
+          <TabsTrigger value='paid'>Lunas</TabsTrigger>
+          <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
+          <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
+        </TabsList>
+      </Tabs>
+      <div className='overflow-hidden rounded-lg border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -168,6 +189,86 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='invoice'>
+        {/* <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg'
+            >
+              <ArrowUpCircle className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Ekspor</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+            >
+              <ArrowUpCircle className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Urutkan</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+            >
+              <Download className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Unduh</p>
+          </TooltipContent>
+        </Tooltip> */}
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <PurchaseInvoiceBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteMutation.isPending}
+        onConfirm={(ids) => {
+          deleteMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }
@@ -189,6 +290,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<PurchaseInvoice> }) {
+  const navigate = useNavigate()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
@@ -205,6 +307,15 @@ function TableRows({ table }: { table: TanstackTable<PurchaseInvoice> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={() =>
+                navigate({
+                  to: '/purchases/invoices/detail',
+                  state: { currentRowId: row.original.id } as Record<
+                    string,
+                    unknown
+                  >,
+                })
+              }
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

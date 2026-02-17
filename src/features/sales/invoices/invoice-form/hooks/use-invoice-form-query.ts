@@ -13,7 +13,7 @@ interface InvoiceFormQueryParams {
 
 export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
   return useQuery({
-    queryKey: ['invoice-list', params?.id],
+    queryKey: ['sales-invoice-list', params?.id],
     queryFn: async () => {
       const url = `/sales-invoices/${params?.id}`
       const response = await apiClient.get<ApiResponse<SalesInvoice>>(url)

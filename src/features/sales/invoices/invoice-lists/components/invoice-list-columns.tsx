@@ -74,7 +74,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { customer } = row.original
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{customer.name}</LongText>
+          <LongText className='truncate'>{customer?.name}</LongText>
         </div>
       )
     },

@@ -41,7 +41,9 @@ export function useCreateInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
       toast.success('Invoice berhasil ditambahkan.')
     },
     onError: () => {
@@ -66,7 +68,9 @@ export function useUpdateInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
       toast.success('Invoice berhasil diubah.')
     },
     onError: () => {

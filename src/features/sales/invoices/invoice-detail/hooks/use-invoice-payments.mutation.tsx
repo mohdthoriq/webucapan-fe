@@ -22,9 +22,11 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
     onSuccess: async (_) => {
       toast.dismiss('invoice-payment-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['invoice-detail', invoiceId],
+        queryKey: ['sales-invoice-detail', invoiceId],
       })
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
@@ -50,7 +52,9 @@ export function useDeleteSalesInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoice-detail-toast')
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
       toast.success('Invoice berhasil dihapus.')
     },
     onError: () => {
