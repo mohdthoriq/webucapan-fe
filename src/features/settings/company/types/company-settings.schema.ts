@@ -6,6 +6,18 @@ export const companySettingsSchema = z.object({
     .min(2, { message: 'Nama perusahaan minimal 2 karakter' })
     .max(200, { message: 'Nama perusahaan maksimal 200 karakter' })
     .optional(),
+  email: z
+    .string()
+    .email({ message: 'Email tidak valid' })
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  phone: z
+    .string()
+    .min(7, { message: 'Nomor telepon minimal 7 karakter' })
+    .optional()
+    .nullable()
+    .or(z.literal('')),
   npwp: z
     .string()
     .optional()

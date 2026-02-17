@@ -29,6 +29,8 @@ export function useCompanySettingsForm() {
       address: '',
       npwp: undefined,
       logo_url: '',
+      email: '',
+      phone: '',
     },
   })
 
@@ -40,6 +42,8 @@ export function useCompanySettingsForm() {
         address: companyData.address || '',
         npwp: companyData.npwp || undefined,
         logo_url: companyData.logo_url || '',
+        email: companyData.email || '',
+        phone: companyData.phone || '',
       })
     }
   }, [companyData, form])

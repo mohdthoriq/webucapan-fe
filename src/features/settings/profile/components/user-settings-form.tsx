@@ -59,6 +59,27 @@ export function UserSettingsForm() {
 
           <FormField
             control={form.control}
+            name='phone'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nomor Telepon</FormLabel>
+                <FormControl>
+                  <Input
+                    type='tel'
+                    placeholder='Masukkan nomor telepon anda'
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Nomor telepon yang dapat dihubungi
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name='full_name'
             render={({ field }) => (
               <FormItem>

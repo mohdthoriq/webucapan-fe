@@ -9,6 +9,10 @@ export const userSettingsSchema = z
     email: z
       .email({ message: 'Email tidak valid' })
       .min(1, { message: 'Email wajib diisi' }),
+    phone: z
+      .string()
+      .min(1, { message: 'Nomor telepon wajib diisi' })
+      .min(7, { message: 'Nomor telepon tidak valid' }),
     old_password: z.string().optional(),
     new_password: z
       .string()
