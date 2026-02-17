@@ -12,6 +12,7 @@ export const RegisterSchema = z
         iss.input === '' ? 'Tolong masukkan email Anda' : undefined,
     }),
     full_name: z.string().min(1, 'Tolong masukkan nama lengkap Anda'),
+    phone: z.string().min(1, 'Tolong masukkan nomor telepon Anda'),
     company_name: z.string().min(1, 'Tolong masukkan nama perusahaan Anda'),
     address: z.string().min(1, 'Tolong masukkan alamat perusahaan Anda'),
     password: z

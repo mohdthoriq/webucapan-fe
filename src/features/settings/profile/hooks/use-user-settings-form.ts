@@ -20,6 +20,7 @@ export function useUserSettingsForm() {
     defaultValues: {
       full_name: user?.user.full_name || '',
       email: user?.user.email || '',
+      phone: user?.user.phone || '',
       old_password: undefined,
       new_password: undefined,
       confirm_password: undefined,

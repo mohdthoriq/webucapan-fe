@@ -55,6 +55,24 @@ export function RegisterForm({
 
         <FormField
           control={form.control}
+          name='phone'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nomor Telepon</FormLabel>
+              <FormControl>
+                <Input
+                  type='tel'
+                  placeholder='Masukkan nomor telepon anda'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='company_name'
           render={({ field }) => (
             <FormItem>

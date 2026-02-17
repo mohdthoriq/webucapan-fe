@@ -51,6 +51,55 @@ export function CompanySettingsForm() {
 
           <FormField
             control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email Perusahaan</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Masukkan email perusahaan'
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Email resmi yang digunakan untuk korespondensi
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='phone'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nomor Telepon</FormLabel>
+                <FormControl>
+                  <Input
+                    type='tel'
+                    placeholder='Masukkan nomor telepon perusahaan'
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Nomor telepon resmi perusahaan Anda
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name='address'
             render={({ field }) => (
               <FormItem>

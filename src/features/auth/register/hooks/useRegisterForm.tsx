@@ -9,6 +9,7 @@ export function useRegisterForm() {
     defaultValues: {
       email: '',
       full_name: '',
+      phone: '',
       company_name: '',
       address: '',
       password: '',
