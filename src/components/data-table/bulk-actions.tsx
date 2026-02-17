@@ -150,7 +150,7 @@ export function DataTableBulkActions<TData>({
       >
         <div
           className={cn(
-            'p-2 space-x-0 shadow-xl',
+            'space-x-0 p-2 shadow-xl',
             'rounded-xl border',
             'bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur-lg',
             'flex items-center gap-x-2'
@@ -187,16 +187,12 @@ export function DataTableBulkActions<TData>({
           >
             <Badge
               variant='default'
-              className='min-w-8 min-h-8 rounded-lg'
+              className='min-h-8 min-w-8 rounded-lg'
               aria-label={`${selectedCount} selected`}
             >
               {selectedCount}
             </Badge>{' '}
-            <span className='hidden sm:inline'>
-              {entityName}
-              {selectedCount > 1 ? 's' : ''}
-            </span>{' '}
-            terpilih
+            <span className='hidden sm:inline'>{entityName}</span>terpilih
           </div>
 
           <Separator

@@ -11,6 +11,7 @@ import type {
   CreateProductCategoryFormData,
   DeleteProductCategoryFormData,
   UpdateProductCategoryFormData,
+  BulkDeleteProductCategoryFormData,
 } from '../types/product-category.schema'
 
 export function useCreateProductCategoryMutation(
@@ -92,6 +93,34 @@ export function useDeleteProductCategoryMutation() {
       await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
       toast.success('Kategori produk berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('product-categories-toast')
+      toast.error('Kategori produk gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteProductCategoryMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteProductCategoryFormData) => {
+      const response = await apiClient.post(
+        `/product-categories/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'product-categories-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('product-categories-toast')
+      await queryClient.invalidateQueries({
+        queryKey: ['product-categories'],
+      })
+      toast.success('Kategori produk berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('product-categories-toast')

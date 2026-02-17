@@ -36,3 +36,9 @@ export const deleteAccountSchema = z.object({
 })
 
 export type DeleteAccountFormData = z.infer<typeof deleteAccountSchema>
+
+export const bulkDeleteAccountSchema = z.object({
+  ids: z.array(z.uuid()).min(1, 'Pilih minimal 1 akun untuk dihapus'),
+})
+
+export type BulkDeleteAccountFormData = z.infer<typeof bulkDeleteAccountSchema>

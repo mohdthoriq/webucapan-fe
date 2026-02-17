@@ -28,3 +28,9 @@ export const deleteContactSchema = z.object({
 })
 
 export type DeleteContactFormData = z.infer<typeof deleteContactSchema>
+
+export const bulkDeleteContactSchema = z.object({
+  ids: z.array(z.uuid()).min(1, 'Pilih minimal 1 kontak untuk dihapus'),
+})
+
+export type BulkDeleteContactFormData = z.infer<typeof bulkDeleteContactSchema>
