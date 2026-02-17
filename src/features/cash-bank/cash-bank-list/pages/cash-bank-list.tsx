@@ -1,11 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getRouteApi, useLocation } from '@tanstack/react-router'
+import { ArrowLeft, Loader2, Printer } from 'lucide-react'
+import { useReactToPrint } from 'react-to-print'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CashBankListDialogs } from '../components/cash-bank-list-dialogs'
 import { CashBankListsProvider } from '../components/cash-bank-list-provider'
 import { CashBankListsTable } from '../components/cash-bank-list-table'
 import { CashBankPrimaryButton } from '../components/cash-bank-primary-button'
+import { CashBankListsTablePrint } from '../components/print/cash-bank-list-transaction-print'
 import type { CashBankListQueryParams } from '../hooks/use-cash-bank-list-query'
 
 const route = getRouteApi('/_authenticated/cash-bank/$accountName')
@@ -13,6 +16,21 @@ const route = getRouteApi('/_authenticated/cash-bank/$accountName')
 function CashBankListsContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
+  const printRef = useRef<HTMLDivElement>(null)
+  const [isPrinting, setIsPrinting] = useState(false)
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   const location = useLocation()
 
@@ -20,31 +38,49 @@ function CashBankListsContent() {
   const { accountName } = route.useParams()
 
   return (
-    <Card>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <div className='mb-2 flex items-center gap-4'>
-            <h2 className='text-4xl font-bold tracking-tight'>
-              {decodeURIComponent(accountName)}
-            </h2>
-            <p className='text-muted-foreground text-2xl'>
-              {accountData?.accountCode || (search.code as string)}
-            </p>
+    <>
+      <Card>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <div className='mb-2 flex items-center gap-4'>
+              <h2 className='text-4xl font-bold tracking-tight'>
+                {decodeURIComponent(accountName)}
+              </h2>
+              <p className='text-muted-foreground text-2xl'>
+                {accountData?.accountCode || (search.code as string)}
+              </p>
+            </div>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
+              <Button variant={'outline'} onClick={() => window.history.back()}>
+                <ArrowLeft className='h-4 w-4' />
+                Kembali
+              </Button>
+              <CashBankPrimaryButton />
+              <Button variant={'outline'} onClick={() => handlePrint()}>
+                {isPrinting ? (
+                  <Loader2 className='h-4 w-4 animate-spin' />
+                ) : (
+                  <Printer className='h-4 w-4' />
+                )}{' '}
+                {isPrinting ? 'Memproses...' : 'Cetak'}
+              </Button>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'link'} onClick={() => window.history.back()}>
-              Kembali
-            </Button>
-            <CashBankPrimaryButton />
-          </div>
-        </div>
-        <hr />
-      </CardHeader>
-      <CardContent>
-        <CashBankListsTable search={search} navigate={navigate} />
-        <CashBankListDialogs />
-      </CardContent>
-    </Card>
+          <hr />
+        </CardHeader>
+        <CardContent>
+          <CashBankListsTable search={search} navigate={navigate} />
+          <CashBankListDialogs />
+        </CardContent>
+      </Card>
+      <div
+        className={
+          isPrinting ? 'absolute top-0 left-0 z-[-1] m-0 w-fit p-0' : 'hidden'
+        }
+      >
+        <CashBankListsTablePrint ref={printRef} />
+      </div>
+    </>
   )
 }
 

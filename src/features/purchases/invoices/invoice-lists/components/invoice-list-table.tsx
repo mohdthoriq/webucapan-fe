@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
   type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -40,11 +39,12 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     invoiceListsData,
     pagination: serverPagination,
     isLoading,
+    columnVisibility,
+    setColumnVisibility,
   } = useInvoiceLists()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
   // Synced with URL states (keys/defaults mirror roles route search schema)

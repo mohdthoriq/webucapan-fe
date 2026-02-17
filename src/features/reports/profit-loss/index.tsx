@@ -1,9 +1,7 @@
 import { format, parse, startOfMonth, endOfMonth } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
-import { id } from 'date-fns/locale'
 import { CalendarIcon, Printer, ArrowLeft } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
-import { useAuthStore } from '@/stores/auth-store'
 import { cn, formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -24,10 +22,8 @@ import { ReportSectionView } from './components/report-section-view'
 const route = getRouteApi('/_authenticated/reports/profit-loss/')
 
 function ProfitLossPageContent() {
-  const { auth } = useAuthStore()
   const { dateFrom, dateTo, setDateRange, data, isLoading } =
     useProfitLossContext()
-  const company = auth.user?.company
   const navigate = route.useNavigate()
 
   const handleSelectRange = (range: DateRange | undefined) => {
@@ -55,7 +51,7 @@ function ProfitLossPageContent() {
   return (
     <div className='flex flex-col gap-10'>
       {/* Header - Screen Only */}
-      <div className='flex items-center justify-between print:hidden'>
+      <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-semibold tracking-tight'>Laba Rugi</h1>
         </div>
@@ -104,26 +100,6 @@ function ProfitLossPageContent() {
       {/* Report Content */}
       <Card className='rounded-md border-none p-0'>
         <CardContent className='p-0'>
-          <div className='mb-6 hidden flex-col items-center justify-center space-y-2 border-b p-8 print:flex'>
-            {company?.logo_url && (
-              <img
-                src={company.logo_url}
-                alt={company.name}
-                className='mb-2 h-16 w-auto'
-              />
-            )}
-            <h2 className='text-2xl font-bold uppercase'>
-              {company?.name || 'Perusahaan'}
-            </h2>
-            <h3 className='text-xl font-semibold text-gray-700'>
-              Laporan Laba Rugi
-            </h3>
-            <p className='text-sm text-gray-500'>
-              Periode {format(dateFrom, 'd MMMM yyyy', { locale: id })} -{' '}
-              {format(dateTo, 'd MMMM yyyy', { locale: id })}
-            </p>
-          </div>
-
           {isLoading ? (
             <div className='flex h-96 items-center justify-center'>
               <div className='flex flex-col items-center gap-4'>

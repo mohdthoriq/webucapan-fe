@@ -115,7 +115,7 @@ export function BalanceSheetOverview() {
   }
 
   return (
-    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 print:hidden'>
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
       {/* QUICK RATIO */}
       <div className='bg-card text-card-foreground flex h-[150px] flex-col gap-8 rounded-xl border py-4 shadow-sm'>
         <div className='flex flex-row items-center justify-between px-6'>

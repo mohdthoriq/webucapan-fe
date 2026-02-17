@@ -2,7 +2,6 @@ import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
 import { ArrowLeft, CalendarIcon, Printer } from 'lucide-react'
-import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -29,9 +28,7 @@ import { ReportSectionView } from './components/report-section-view'
 const route = getRouteApi('/_authenticated/reports/balance-sheet/')
 
 function BalanceSheetPageContent() {
-  const { auth } = useAuthStore()
   const { date, setDate, data: rawData, isLoading } = useBalanceSheetContext()
-  const company = auth.user?.company
   const navigate = route.useNavigate()
 
   const reportDate = format(date, 'yyyy-MM-dd')
@@ -82,25 +79,6 @@ function BalanceSheetPageContent() {
 
       <Card className='rounded-md border-none p-0'>
         <CardContent className='p-0'>
-          <div className='mb-6 hidden flex-col items-center justify-center space-y-2 border-b p-8 print:flex'>
-            {company?.logo_url && (
-              <img
-                src={company.logo_url}
-                alt={company.name}
-                className='mb-2 h-16 w-auto'
-              />
-            )}
-            <h2 className='text-2xl font-bold uppercase'>
-              {company?.name || 'Perusahaan'}
-            </h2>
-            <h3 className='text-xl font-semibold text-gray-700'>
-              Laporan Neraca
-            </h3>
-            <p className='text-sm text-gray-500'>
-              Per {format(date, 'd MMMM yyyy', { locale: id })}
-            </p>
-          </div>
-
           {isLoading ? (
             <div className='flex flex-col gap-10'>
               <ReportSectionSkeleton />
@@ -203,7 +181,7 @@ export default function BalanceSheetPage() {
 
   return (
     <div className='flex flex-col gap-10'>
-      <div className='flex items-center justify-between print:hidden'>
+      <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
         </div>

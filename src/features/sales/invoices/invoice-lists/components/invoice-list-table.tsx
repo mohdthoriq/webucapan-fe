@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
   type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -40,11 +39,12 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     invoiceListsData,
     pagination: serverPagination,
     isLoading,
+    columnVisibility,
+    setColumnVisibility,
   } = useInvoiceLists()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
@@ -60,8 +60,8 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      // invoice_number per-column text filter
+      { columnId: 'invoice_number', searchKey: 'name', type: 'string' },
     ],
   })
 
@@ -107,8 +107,8 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
-        searchKey='name'
+        searchPlaceholder='Cari tagihan...'
+        searchKey='invoice_number'
       >
         <InvoiceListFilter search={search} navigate={navigate} />
       </DataTableToolbar>

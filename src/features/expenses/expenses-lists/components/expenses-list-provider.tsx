@@ -1,4 +1,12 @@
-import { createContext, type ReactNode, useContext } from 'react'
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react'
+import type { VisibilityState } from '@tanstack/react-table'
 import type { PaginationMeta, Expense } from '@/types'
 import {
   useExpensesListQuery,
@@ -11,6 +19,8 @@ type ExpensesListsContextType = {
   isLoading: boolean
   isError: boolean
   paginationParams?: ExpenseListQueryParams & { name?: string }
+  columnVisibility: VisibilityState
+  setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
 }
 
 const ExpensesListsContext = createContext<ExpensesListsContextType | null>(
@@ -24,6 +34,7 @@ export function ExpensesListsProvider({
   children: ReactNode
   paginationParams?: ExpenseListQueryParams & { name?: string }
 }) {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const {
     data: expensesListsData,
     isLoading: isLoadingExpensesLists,
@@ -44,6 +55,8 @@ export function ExpensesListsProvider({
     isLoading: isLoadingExpensesLists,
     isError: isErrorExpensesLists,
     paginationParams,
+    columnVisibility,
+    setColumnVisibility,
   }
 
   return (

@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
-import { Building2, Printer, Mail, Phone, MapPin } from 'lucide-react'
+import { Building2, Printer, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
 import { formatCurrency, cn, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,14 +15,26 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { usePrintSalesInvoiceQuery } from '../hooks/use-print-sales-invoice-query'
 
 interface InvoiceDetailReceiptProps {
   invoice: SalesInvoice
 }
 
 export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
+  const { refetch, isFetching: isPrinting } = usePrintSalesInvoiceQuery(
+    invoice.id
+  )
+
+  const handlePrint = async () => {
+    const { data } = await refetch()
+    if (data) {
+      window.open(data, '_blank')
+    }
+  }
+
   return (
-    <Card className='overflow-hidden shadow-md print:border print:shadow-none'>
+    <Card className='overflow-hidden shadow-md'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-1'>
@@ -45,9 +57,15 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
           <Button
             variant='outline'
             className='gap-2 shadow-sm'
-            onClick={() => window.print()}
+            onClick={handlePrint}
+            disabled={isPrinting}
           >
-            <Printer className='h-4 w-4' /> Cetak Struk
+            {isPrinting ? (
+              <Loader2 className='h-4 w-4 animate-spin' />
+            ) : (
+              <Printer className='h-4 w-4' />
+            )}
+            {isPrinting ? 'Memproses...' : 'Cetak Struk'}
           </Button>
         </div>
       </CardHeader>
