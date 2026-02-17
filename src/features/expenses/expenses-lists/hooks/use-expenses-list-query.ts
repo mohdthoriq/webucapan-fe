@@ -17,19 +17,7 @@ export interface ExpenseListQueryParams {
 
 export function useExpensesListQuery(params?: ExpenseListQueryParams) {
   return useQuery({
-    queryKey: [
-      'expenses-list',
-      params?.page,
-      params?.limit,
-      params?.order,
-      params?.expense_number,
-      params?.date_from,
-      params?.date_to,
-      params?.payment_status,
-      params?.contact_id,
-      params?.company_id,
-      params?.tags,
-    ],
+    queryKey: ['expenses-list', params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

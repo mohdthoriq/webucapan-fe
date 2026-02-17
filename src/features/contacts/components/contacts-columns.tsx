@@ -1,11 +1,36 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Contact } from '@/types'
 import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './contacts-row-actions'
 
 export const contactsColumns: ColumnDef<Contact>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -53,7 +78,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { company } = row.original
       return (
         <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{company.name}</LongText>
+          <LongText className='truncate'>{company.name || '-'}</LongText>
         </div>
       )
     },
@@ -70,7 +95,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { email } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{email}</LongText>
+          <LongText className='truncate'>{email || '-'}</LongText>
         </div>
       )
     },
@@ -87,7 +112,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { phone } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{phone}</LongText>
+          <LongText className='truncate'>{phone || '-'}</LongText>
         </div>
       )
     },
@@ -104,7 +129,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       const { address } = row.original
       return (
         <div className='w-full overflow-hidden'>
-          <LongText className='truncate'>{address}</LongText>
+          <LongText className='truncate'>{address || '-'}</LongText>
         </div>
       )
     },

@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { InvoicePaymentsFormData } from '../types/invoice-payments.schema'
+import type {
+  DeleteSalesInvoiceFormData,
+  InvoicePaymentsFormData,
+} from '../types/invoice-payments.schema'
 
 export function useCreateInvoicePaymentMutation(invoiceId: string) {
   const queryClient = useQueryClient()
@@ -19,14 +22,44 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
     onSuccess: async (_) => {
       toast.dismiss('invoice-payment-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['invoice-detail', invoiceId],
+        queryKey: ['sales-invoice-detail', invoiceId],
       })
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
       toast.dismiss('invoice-payment-toast')
       toast.error('Gagal melakukan pembayaran.')
+    },
+  })
+}
+
+export function useDeleteSalesInvoiceMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: DeleteSalesInvoiceFormData) => {
+      const response = await apiClient.post(
+        `/sales-invoices/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'invoice-detail-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('invoice-detail-toast')
+      await queryClient.invalidateQueries({
+        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+      })
+      toast.success('Tagihan Penjualan berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('invoice-detail-toast')
+      toast.error('Tagihan Penjualan gagal dihapus.')
     },
   })
 }

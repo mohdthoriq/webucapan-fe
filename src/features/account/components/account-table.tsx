@@ -15,8 +15,10 @@ import {
   type ExpandedState,
 } from '@tanstack/react-table'
 import type { Account } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -26,7 +28,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useBulkDeleteAccountMutation } from '../hooks/use-account-mutation'
+import { AccountBulkDeleteDialog } from './account-bulk-delete-dialog'
 import { accountsColumns } from './account-columns'
 import { useAccounts } from './account-provider'
 
@@ -45,6 +58,9 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteMutation = useBulkDeleteAccountMutation()
   const [expanded, setExpanded] = useState<ExpandedState>({})
 
   const {
@@ -97,6 +113,10 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
       ensurePageInRange(serverPagination.total_pages)
     }
   }, [serverPagination.total_pages, ensurePageInRange])
+
+  const selectedRows = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original)
 
   return (
     <div
@@ -151,6 +171,44 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
+
+      <DataTablePagination table={table} className='mt-auto' />
+
+      <DataTableBulkActions table={table} entityName='akun'>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <AccountBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteMutation.isPending}
+        onConfirm={(ids) => {
+          deleteMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }

@@ -1,11 +1,36 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Product } from '@/types'
 import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './products-row-actions'
 
 export const productsColumns: ColumnDef<Product>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'sku',
     header: ({ column }) => (
@@ -14,7 +39,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const { sku } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='min-w-sm'>{sku}</LongText>
         </div>
       )
@@ -35,7 +60,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{name}</LongText>
         </div>
       )
@@ -52,7 +77,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const { unit } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{unit.name}</LongText>
         </div>
       )
@@ -69,7 +94,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const { product_category } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{product_category.name}</LongText>
         </div>
       )

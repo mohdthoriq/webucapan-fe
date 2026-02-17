@@ -1,14 +1,15 @@
 import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Contact } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import {
   type CreateContactFormData,
   type UpdateContactFormData,
   type DeleteContactFormData,
+  type BulkDeleteContactFormData,
 } from '@/features/contacts/types/contacts.schema'
 import { ContactsContext } from '../components/contacts-provider'
-import type { Contact } from '@/types'
 
 export function useCreateContactMutation(onSuccess?: (data: Contact) => void) {
   const context = useContext(ContactsContext)
@@ -83,6 +84,33 @@ export function useDeleteContactMutation() {
       await queryClient.invalidateQueries({ queryKey: ['contacts'] })
       toast.success('Kontak berhasil dihapus.')
       context?.setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('contacts-toast')
+      toast.error('Kontak gagal dihapus.')
+    },
+  })
+}
+export function useBulkDeleteContactMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteContactFormData) => {
+      const response = await apiClient.post(
+        `/contacts/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'contacts-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('contacts-toast')
+      await queryClient.invalidateQueries({
+        queryKey: ['contacts'],
+      })
+      toast.success('Kontak berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('contacts-toast')

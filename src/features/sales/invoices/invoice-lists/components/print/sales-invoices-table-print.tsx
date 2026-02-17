@@ -19,7 +19,7 @@ export const SalesInvoicesTablePrint = forwardRef<
 
   // Filter out 'actions' and hidden columns
   const visibleColumns = invoiceListsColumns.filter((col) => {
-    if (col.id === 'actions') return false
+    if (col.id === 'actions' || col.id === 'select') return false
     const id = col.id || (col as any).accessorKey
     return columnVisibility[id] !== false
   })

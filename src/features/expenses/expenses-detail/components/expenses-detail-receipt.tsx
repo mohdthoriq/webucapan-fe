@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { usePrintExpensesQuery } from '../hooks/use-print-expenses-invoice-query'
+import { ExpenseDetailRowActions } from './expenses-detail-row-actions'
 
 interface ExpensesDetailReceiptProps {
   expense: Expense
@@ -24,13 +25,10 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
   }
 
   return (
-    <Card className='overflow-hidden shadow-md'>
+    <Card className='gap-3 overflow-hidden py-4 shadow-md'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-1'>
-            <span className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
-              Expense
-            </span>
             <CardTitle className='flex items-center gap-4 text-2xl font-bold tracking-tight'>
               # {expense.expense_number}
               <Badge
@@ -44,110 +42,117 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
               </Badge>
             </CardTitle>
           </div>
-          <Button
-            variant='outline'
-            className='gap-2 shadow-sm'
-            onClick={handlePrint}
-            disabled={isPrinting}
-          >
-            {isPrinting ? (
-              <Loader2 className='h-4 w-4 animate-spin' />
-            ) : (
-              <Printer className='h-4 w-4' />
-            )}
-            {isPrinting ? 'Memproses...' : 'Cetak Struk'}
-          </Button>
+          <div className='flex items-center gap-2'>
+            <Button
+              variant='outline'
+              className='gap-2 shadow-sm'
+              onClick={handlePrint}
+              disabled={isPrinting}
+            >
+              {isPrinting ? (
+                <Loader2 className='h-4 w-4 animate-spin' />
+              ) : (
+                <Printer className='h-4 w-4' />
+              )}
+              {isPrinting ? 'Memproses...' : 'Cetak Struk'}
+            </Button>
+            <ExpenseDetailRowActions expense={expense} />
+          </div>
         </div>
       </CardHeader>
       <hr />
 
       <CardContent>
-        {/* Customer & Info Headers */}
-        <div className='mb-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='mb-10 grid grid-cols-1 gap-10 px-2 py-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className='space-y-4'>
-            <div className='space-y-3'>
+            <p className='mb-3 text-sm font-bold tracking-widest'>Penerima :</p>
+            <div className='space-y-4'>
               <div>
                 <p className='text-primary mb-2 text-lg font-bold'>
                   {expense.contact?.name}
                 </p>
                 <div className='flex items-center gap-2'>
-                  <Building2 className='text-muted-foreground h-3.5 w-3.5' />
+                  <Building2 className='text-muted-foreground h-4 w-4' />
                   <p className='text-muted-foreground text-sm'>
                     {expense.company?.name || '-'}
                   </p>
                 </div>
               </div>
 
-              <div className='space-y-1.5'>
+              <div className='space-y-3'>
                 <div className='flex items-center gap-2'>
-                  <Mail className='text-muted-foreground h-3.5 w-3.5' />
+                  <Mail className='text-muted-foreground h-4 w-4' />
                   <p className='text-muted-foreground text-sm'>
                     {expense.contact?.email || '-'}
                   </p>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Phone className='text-muted-foreground h-3.5 w-3.5' />
+                  <Phone className='text-muted-foreground h-4 w-4' />
                   <p className='text-muted-foreground text-sm'>
                     {expense.contact?.phone || '-'}
                   </p>
                 </div>
-                {expense.contact?.address && (
-                  <div className='flex items-start gap-2 pt-1'>
-                    <MapPin className='text-muted-foreground mt-0.5 h-3.5 w-3.5 flex-shrink-0' />
-                    <p className='text-muted-foreground max-w-xs text-sm leading-relaxed'>
-                      {expense.contact.address}
-                    </p>
-                  </div>
-                )}
+                <div className='flex items-start gap-2 pt-1'>
+                  <MapPin className='text-muted-foreground mt-0.5 h-4 w-4 flex-shrink-0' />
+                  <p className='text-muted-foreground max-w-xs text-sm leading-relaxed'>
+                    {expense.contact?.address || '-'}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          <div className='space-y-1'>
+          <div className='space-y-4'>
             <div>
-              <p className='text-muted-foreground mb-3 text-[10px] font-bold tracking-[0.2em] uppercase'>
-                Detail Waktu
+              <p className='mb-3 text-sm font-bold tracking-widest'>
+                Nomor Biaya :
               </p>
-              <div className='space-y-2'>
+              <p className='text-primary text-md font-semibold'>
+                {expense.expense_number || '-'}
+              </p>
+            </div>
+            <div>
+              <p className='mb-3 text-sm font-bold tracking-widest'>
+                Detail Waktu :
+              </p>
+              <div className='space-y-3'>
                 <div className='flex items-baseline gap-3'>
                   <span className='text-muted-foreground w-32 text-sm'>
-                    Tanggal Expense:
+                    Tanggal Biaya:
                   </span>
-                  <span className='text-sm font-semibold'>
+                  <span className='text-primary text-sm font-semibold'>
                     {format(new Date(expense.date), 'dd MMMM yyyy', {
                       locale: id,
                     })}
                   </span>
                 </div>
-                {expense.is_paylater && expense.due_date && (
-                  <div className='flex items-baseline gap-3'>
-                    <span className='text-muted-foreground w-32 text-sm'>
-                      Jatuh Tempo:
-                    </span>
-                    <span className='text-sm font-semibold'>
-                      {format(new Date(expense.due_date), 'dd MMMM yyyy', {
+                <div className='flex items-baseline gap-3'>
+                  <span className='text-muted-foreground w-32 text-sm'>
+                    Jatuh Tempo:
+                  </span>
+                  <span className='text-primary text-sm font-semibold'>
+                    {format(
+                      new Date(expense.due_date as Date),
+                      'dd MMMM yyyy',
+                      {
                         locale: id,
-                      })}
-                    </span>
-                  </div>
-                )}
-                {expense.is_paylater && expense.payment_term && (
-                  <div className='flex items-baseline gap-3'>
-                    <span className='text-muted-foreground w-32 text-sm'>
-                      Termin Pembayaran:
-                    </span>
-                    <span className='text-sm font-semibold'>
-                      {expense.payment_term?.name || '-'}
-                    </span>
-                  </div>
-                )}
+                      }
+                    )}
+                  </span>
+                </div>
+                <div className='flex items-baseline gap-3'>
+                  <span className='text-muted-foreground w-32 text-sm'>
+                    Termin Pembayaran:
+                  </span>
+                  <span className='text-primary text-sm font-semibold'>
+                    {expense.payment_term?.name || '-'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
           <div className='space-y-1'>
             <div>
-              <p className='text-muted-foreground mb-3 text-[10px] font-bold tracking-[0.2em] uppercase'>
-                Tag
-              </p>
+              <p className='mb-3 text-sm font-bold tracking-widest'>Tag</p>
               <div className='flex flex-wrap gap-2'>
                 {expense.tags && expense.tags.length > 0 ? (
                   expense.tags.map((tag, idx) => (
@@ -172,13 +177,12 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
         {/* Expense Items List */}
         <div className='mb-8 flex flex-col'>
           {expense.expense_items.map((item, _) => (
-            <div
-              key={item.id}
-              className='flex flex-col border-b py-4 last:border-0'
-            >
+            <div key={item.id} className='flex flex-col border-b py-4'>
               <div className='flex items-center justify-between'>
                 <span className='font-medium text-blue-500'>
-                  {item.account?.code} - {item.account?.name}
+                  {item.account?.code
+                    ? item.account?.code + '-' + item.account?.name
+                    : item.account?.name}
                 </span>
                 <span className='text-base font-bold'>
                   {formatCurrency(Number(item.amount), expense.currency)}

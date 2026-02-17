@@ -26,3 +26,11 @@ export const deleteProductCategorySchema = z.object({
 export type DeleteProductCategoryFormData = z.infer<
   typeof deleteProductCategorySchema
 >
+
+export const bulkDeleteProductCategorySchema = z.object({
+  ids: z.array(z.uuid()).min(1, 'Pilih minimal 1 kategori untuk dihapus'),
+})
+
+export type BulkDeleteProductCategoryFormData = z.infer<
+  typeof bulkDeleteProductCategorySchema
+>

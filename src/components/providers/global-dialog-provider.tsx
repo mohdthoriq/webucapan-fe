@@ -1,7 +1,7 @@
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { ContactsActionDialog } from '@/features/contacts/components/contacts-action-dialog'
 import { ProductCategoryActionDialog } from '@/features/product-categories/components/product-category-action-dialog'
-import { ProductActionDialog } from '@/features/products/product-list/components/product-action-dialog'
+import { ProductActionDialog } from '@/features/products/product-list/components/products-action-dialog'
 import { PaymentTermsActionDialog } from '@/features/settings/payment-terms/components/payment-terms-action-dialog'
 import { TagsActionDialog } from '@/features/settings/tags/components/tags-action-dialog'
 import { TaxesActionDialog } from '@/features/settings/taxes/components/taxes-action-dialog'

@@ -3,8 +3,8 @@ import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useExpensesFormQuery } from '../expenses-form/hooks/use-expenses-form-query'
-import { ExpensesDetailReceipt } from './components/invoice-detail-receipt'
-import { ExpensesPaymentsCard } from './components/invoice-payments-card'
+import { ExpensesDetailReceipt } from './components/expenses-detail-receipt'
+import { ExpensesPaymentsCard } from './components/expenses-payments-card'
 import { TransactionTable } from './components/transaction-table'
 
 export function ExpensesDetail() {

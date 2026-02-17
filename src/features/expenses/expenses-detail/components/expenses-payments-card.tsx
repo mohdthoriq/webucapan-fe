@@ -31,7 +31,7 @@ import { InputFieldNumberFormat } from '@/components/forms/input-field-number-fo
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { useExpensesPaymentsForm } from '../hooks/use-expenses-payments-form'
-import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
+import { InvoicePaymentsCombobox } from './expenses-payments-combobox'
 
 interface ExpensesPaymentsCardProps {
   expense: Expense

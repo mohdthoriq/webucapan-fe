@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import type { ExpensesPaymentsFormData } from '../types/expenses-payments.schema'
+import type {
+  DeleteExpensesFormData,
+  ExpensesPaymentsFormData,
+} from '../types/expenses-payments.schema'
 
 export function useCreateExpensesPaymentMutation(expenseId: string) {
   const queryClient = useQueryClient()
@@ -27,6 +30,34 @@ export function useCreateExpensesPaymentMutation(expenseId: string) {
     onError: () => {
       toast.dismiss('expense-payment-toast')
       toast.error('Gagal melakukan pembayaran.')
+    },
+  })
+}
+
+export function useDeleteExpensesMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: DeleteExpensesFormData) => {
+      const response = await apiClient.post(
+        `/expenses/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'invoice-detail-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('invoice-detail-toast')
+      await queryClient.invalidateQueries({
+        queryKey: ['expenses-list'],
+      })
+      toast.success('Pengeluaran berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('invoice-detail-toast')
+      toast.error('Pengeluaran gagal dihapus.')
     },
   })
 }

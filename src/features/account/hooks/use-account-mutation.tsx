@@ -8,6 +8,7 @@ import type {
   CreateAccountFormData,
   DeleteAccountFormData,
   UpdateAccountFormData,
+  BulkDeleteAccountFormData,
 } from '../types/account.schema'
 
 export function useCreateAccountMutation(onSuccess?: (data: Account) => void) {
@@ -83,6 +84,34 @@ export function useDeleteAccountMutation() {
       await queryClient.invalidateQueries({ queryKey: ['accounts'] })
       toast.success('Akun berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('accounts-toast')
+      toast.error('Akun gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteAccountMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteAccountFormData) => {
+      const response = await apiClient.post(
+        `/accounts/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'accounts-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('accounts-toast')
+      await queryClient.invalidateQueries({
+        queryKey: ['accounts'],
+      })
+      toast.success('Akun berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('accounts-toast')

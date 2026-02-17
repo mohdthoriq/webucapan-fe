@@ -150,7 +150,7 @@ export function DataTableBulkActions<TData>({
       >
         <div
           className={cn(
-            'p-2 shadow-xl',
+            'space-x-0 p-2 shadow-xl',
             'rounded-xl border',
             'bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur-lg',
             'flex items-center gap-x-2'
@@ -167,11 +167,11 @@ export function DataTableBulkActions<TData>({
                 title='Clear selection (Escape)'
               >
                 <X />
-                <span className='sr-only'>Clear selection</span>
+                <span className='sr-only'>Bersihkan pilihan</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Clear selection (Escape)</p>
+              <p>Bersihkan pilihan (Escape)</p>
             </TooltipContent>
           </Tooltip>
 
@@ -182,21 +182,17 @@ export function DataTableBulkActions<TData>({
           />
 
           <div
-            className='flex items-center gap-x-1 text-sm'
+            className='flex items-center gap-x-2 text-sm'
             id='bulk-actions-description'
           >
             <Badge
               variant='default'
-              className='min-w-8 rounded-lg'
+              className='min-h-8 min-w-8 rounded-lg'
               aria-label={`${selectedCount} selected`}
             >
               {selectedCount}
             </Badge>{' '}
-            <span className='hidden sm:inline'>
-              {entityName}
-              {selectedCount > 1 ? 's' : ''}
-            </span>{' '}
-            selected
+            <span className='hidden sm:inline'>{entityName}</span>terpilih
           </div>
 
           <Separator

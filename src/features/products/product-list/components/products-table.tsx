@@ -13,8 +13,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { Product } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -24,7 +26,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useBulkDeleteProductMutation } from '../hooks/use-product-list-mutation'
+import { ProductsBulkDeleteDialog } from './products-bulk-delete-dialog'
 import { productsColumns } from './products-columns'
 import { useProducts } from './products-provider'
 
@@ -43,6 +56,9 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteMutation = useBulkDeleteProductMutation()
 
   const {
     columnFilters,
@@ -90,6 +106,10 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
       ensurePageInRange(serverPagination.total_pages)
     }
   }, [serverPagination.total_pages, ensurePageInRange])
+
+  const selectedRows = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original)
 
   return (
     <div
@@ -145,6 +165,86 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='produk'>
+        {/* <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='size-10 rounded-lg'
+                  >
+                    <ArrowUpCircle className='size-4' />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+                  <p>Ekspor</p>
+                </TooltipContent>
+              </Tooltip>
+      
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+                  >
+                    <ArrowUpCircle className='size-4' />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+                  <p>Urutkan</p>
+                </TooltipContent>
+              </Tooltip>
+      
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='size-10 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-50'
+                  >
+                    <Download className='size-4' />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+                  <p>Unduh</p>
+                </TooltipContent>
+              </Tooltip> */}
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <ProductsBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteMutation.isPending}
+        onConfirm={(ids) => {
+          deleteMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }
