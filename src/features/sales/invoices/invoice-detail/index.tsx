@@ -42,11 +42,11 @@ export function InvoiceDetail() {
   return (
     <div className='space-y-6'>
       <Card>
-        <CardHeader>
+        <CardHeader className='py-4'>
           <div className='mb-2 flex items-center justify-between'>
             <div>
               <h1 className='text-4xl font-semibold tracking-tight'>
-                Detail Tagihan Pembelian {invoice.invoice_number}
+                Detail Tagihan Penjualan {invoice.invoice_number}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>

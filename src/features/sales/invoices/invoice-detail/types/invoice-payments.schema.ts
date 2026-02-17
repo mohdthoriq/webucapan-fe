@@ -10,3 +10,11 @@ export const invoicePaymentsSchema = z.object({
 })
 
 export type InvoicePaymentsFormData = z.infer<typeof invoicePaymentsSchema>
+
+export const deleteSalesInvoiceSchema = z.object({
+  ids: z.array(z.uuid()).min(1, 'Pilih minimal satu invoice'),
+})
+
+export type DeleteSalesInvoiceFormData = z.infer<
+  typeof deleteSalesInvoiceSchema
+>

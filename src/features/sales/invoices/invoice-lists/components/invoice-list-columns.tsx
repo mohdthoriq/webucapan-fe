@@ -4,11 +4,39 @@ import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './invoice-list-row-actions'
 
 export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onClick={(e) => e.stopPropagation()}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    meta: {
+      className: 'w-4 p-2 z-9000',
+    },
+  },
   {
     accessorKey: 'invoice_number',
     header: ({ column }) => (
@@ -17,7 +45,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     cell: ({ row }) => {
       const { invoice_number, id } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <Link
             to='/sales/invoices/detail'
             state={{ currentRowId: id } as Record<string, unknown>}
@@ -45,13 +73,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     cell: ({ row }) => {
       const { customer } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{customer.name}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
     enableHiding: false,
   },
@@ -64,13 +92,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { invoice_date } = row.original
       const formattedDate = format(invoice_date, 'dd/MM/yyyy')
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
   },
   {
@@ -82,13 +110,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { due_date } = row.original
       const formattedDate = due_date ? format(due_date, 'dd/MM/yyyy') : '-'
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
   },
   {
@@ -99,7 +127,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
     cell: ({ row }) => {
       const { payment_status } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <Badge className={cn(getStatusStyles(payment_status))}>
             {invoiceLabel[payment_status] || payment_status}
           </Badge>
@@ -107,7 +135,7 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
   },
   {
@@ -119,13 +147,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { outstanding } = row.original
       const formattedOutstanding = formatNumber(outstanding)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedOutstanding}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
   },
   {
@@ -137,18 +165,13 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
       const { total } = row.original
       const formattedTotal = formatNumber(total)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedTotal}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-full px-2',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

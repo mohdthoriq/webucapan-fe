@@ -21,23 +21,7 @@ export interface InvoiceListQueryParams {
 
 export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
   return useQuery({
-    queryKey: [
-      'invoice-list',
-      params?.page,
-      params?.limit,
-      params?.order,
-      params?.invoice_number,
-      params?.date_from,
-      params?.date_to,
-      params?.payment_status,
-      params?.customer_id,
-      params?.company_id,
-      params?.due_date_from,
-      params?.due_date_to,
-      params?.payment_date_from,
-      params?.payment_date_to,
-      params?.tags,
-    ],
+    queryKey: ['invoice-list', params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
