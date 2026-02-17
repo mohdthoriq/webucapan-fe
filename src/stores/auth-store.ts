@@ -12,6 +12,7 @@ interface AuthState {
   auth: {
     user: AuthMe | null
     setUser: (user: AuthMe | null) => void
+    updateUser: (user: Partial<AuthMe> | null) => void
     accessToken: string
     refreshToken: string
     isAuthenticated: boolean
@@ -61,6 +62,27 @@ export const useAuthStore = create<AuthState>()((set) => {
             }
           }
           return { ...state, auth: { ...state.auth, user } }
+        }),
+      updateUser: (partialUser) =>
+        set((state) => {
+          if (!partialUser) {
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem(USER_DATA)
+            }
+            return { ...state, auth: { ...state.auth, user: null } }
+          }
+
+          const currentUser = state.auth.user
+          const updatedUser = currentUser
+            ? { ...currentUser, ...partialUser }
+            : (partialUser as AuthMe)
+
+          // Persist merged user data to localStorage
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(USER_DATA, JSON.stringify(updatedUser))
+          }
+
+          return { ...state, auth: { ...state.auth, user: updatedUser } }
         }),
       accessToken: initToken,
       refreshToken: initRefreshToken,

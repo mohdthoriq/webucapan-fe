@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { useAuthStore } from '@/stores/auth-store'
+import type { ApiResponse, AuthMe } from '@/types'
 import { type CompanySettingsFormData } from '../types/company-settings.schema'
 
 export function useCompanySettingsMutation(companyId: string) {
   const queryClient = useQueryClient()
+  const { auth } = useAuthStore()
   return useMutation({
     mutationFn: async (credentials: CompanySettingsFormData) => {
       const response = await apiClient.patch(
@@ -19,7 +22,14 @@ export function useCompanySettingsMutation(companyId: string) {
     onSuccess: async (_) => {
       toast.dismiss('company-settings-toast')
       await queryClient.invalidateQueries({ queryKey: ['company', companyId] })
-      toast.success('Pengaturan perusahaan berhasil diubah.')
+      
+      try {
+        const response = await apiClient.get<ApiResponse<AuthMe>>(`auth/me`)
+        auth.updateUser(response.data?.data)
+        toast.success('Pengaturan perusahaan berhasil diubah.')
+      } catch (err) {
+        toast.error('Gagal menyinkronkan data perusahaan.' + err)
+      }
     },
     onError: () => {
       toast.dismiss('company-settings-toast')
