@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 import type { PaymentReceived, Period } from '../types/sales-overview'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface TotalPaymentsQueryParams {
   date_from: string
@@ -12,7 +13,9 @@ interface TotalPaymentsQueryParams {
 export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
   return useQuery({
     queryKey: [
-      'sales-total-payments',
+      QUERY_KEY.SALES,
+      QUERY_KEY.SALES_OVERVIEW,
+      QUERY_KEY.SALES_TOTAL_PAYMENTS,
       params?.date_from,
       params?.date_to,
       params?.period,

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, AutoNumberingResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface AutoNumberingApiResult {
   success: boolean
@@ -10,7 +11,7 @@ interface AutoNumberingApiResult {
 
 export function useAutoNumberingQuery() {
   return useQuery({
-    queryKey: ['auto-numbering'],
+    queryKey: [QUERY_KEY.AUTO_NUMBERING],
     queryFn: async () => {
       const url = '/auto-numbering'
       const response =

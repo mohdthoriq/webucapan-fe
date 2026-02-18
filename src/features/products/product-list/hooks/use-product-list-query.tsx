@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Product } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface ProductsQueryParams {
   page?: number
@@ -13,7 +14,7 @@ export interface ProductsQueryParams {
 export function useProductsQuery(params?: ProductsQueryParams) {
   return useQuery({
     queryKey: [
-      'products',
+      QUERY_KEY.PRODUCTS,
       params?.page,
       params?.limit,
       params?.search,

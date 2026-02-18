@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { ApiResponse, FinanceNumber } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export function useUpdateAutoNumberingMutation() {
   const queryClient = useQueryClient()
@@ -13,7 +14,7 @@ export function useUpdateAutoNumberingMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['auto-numbering'],
+        queryKey: [QUERY_KEY.AUTO_NUMBERING],
       })
     },
   })

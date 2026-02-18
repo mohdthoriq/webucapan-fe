@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, Company } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export function useCompanySettingsQuery(companyId?: string) {
   return useQuery<Company>({
-    queryKey: ['company', companyId],
+    queryKey: [QUERY_KEY.COMPANY, companyId],
     queryFn: async () => {
       const response = await apiClient.get<ApiResponse<Company>>(
         `/companies/${companyId}`

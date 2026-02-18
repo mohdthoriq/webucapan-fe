@@ -7,6 +7,7 @@ import {
   type UpdateCompanyRoleSettingsFormData,
   type DeleteCompanyRoleSettingsFormData,
 } from '../types/company-roles.schema'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export function useCreateCompanyRoleMutation() {
   const { setOpen } = useCompanyRoles()
@@ -22,7 +23,7 @@ export function useCreateCompanyRoleMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.COMPANY_ROLES] })
       toast.success('Peran berhasil ditambahkan.')
       setOpen(null)
     },
@@ -50,7 +51,7 @@ export function useUpdateCompanyRoleMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.COMPANY_ROLES] })
       toast.success('Peran berhasil diubah.')
       setOpen(null)
     },
@@ -76,7 +77,7 @@ export function useDeleteCompanyRoleMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.COMPANY_ROLES] })
       toast.success('Peran berhasil dihapus.')
       setOpen(null)
     },

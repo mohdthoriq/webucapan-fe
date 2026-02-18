@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AccountCategory, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 export interface AccountCategoryQueryParams {
   page?: number
@@ -13,7 +14,7 @@ export interface AccountCategoryQueryParams {
 export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
   return useQuery({
     queryKey: [
-      'account-categories',
+      QUERY_KEY_ADMIN.ACCOUNT_CATEGORIES,
       params?.page,
       params?.limit,
       params?.name,

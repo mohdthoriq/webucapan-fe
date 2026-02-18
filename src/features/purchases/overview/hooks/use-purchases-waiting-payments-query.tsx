@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { WaitingPayments } from '../types/purchases-overview'
 
 interface WaitingPaymentsQueryParams {
@@ -12,7 +13,9 @@ interface WaitingPaymentsQueryParams {
 export function useWaitingPaymentsQuery(params?: WaitingPaymentsQueryParams) {
   return useQuery({
     queryKey: [
-      'purchases-waiting-payments',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.PURCHASES_OVERVIEW,
+      QUERY_KEY.PURCHASES_WAITING_PAYMENTS,
       params?.date_from,
       params?.date_to,
       params?.period,

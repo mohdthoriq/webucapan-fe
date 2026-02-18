@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 
 interface CashBankDetailQueryParams {
@@ -10,11 +11,7 @@ interface CashBankDetailQueryParams {
 
 export function useCashBankDetailQuery(params?: CashBankDetailQueryParams) {
   return useQuery({
-    queryKey: [
-      'cash-bank-transaction',
-      params?.accountId,
-      params?.transactionId,
-    ],
+    queryKey: [QUERY_KEY.CASH_BANK, params?.accountId, params?.transactionId],
     queryFn: async () => {
       const url = `/cash-bank/${params?.accountId}/transactions/${params?.transactionId}`
       const response =

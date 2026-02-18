@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Plan, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 export interface PlansQueryParams {
   page?: number
@@ -13,7 +14,7 @@ export interface PlansQueryParams {
 export function usePlansQuery(params?: PlansQueryParams) {
   return useQuery({
     queryKey: [
-      'plans',
+      QUERY_KEY_ADMIN.PLANS,
       params?.page,
       params?.limit,
       params?.name,

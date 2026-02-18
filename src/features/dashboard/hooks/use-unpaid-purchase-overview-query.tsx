@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, DashboardData } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 interface UnpaidPurchaseOverviewQueryParams {
@@ -14,7 +15,8 @@ export function useUnpaidPurchaseOverviewQuery(
 ) {
   return useQuery({
     queryKey: [
-      'unpaid-purchase-overview',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.DASHBOARD_UNPAID_PURCHASES,
       params?.date_from,
       params?.date_to,
       params?.period,

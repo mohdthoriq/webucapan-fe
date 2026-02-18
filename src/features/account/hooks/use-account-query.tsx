@@ -6,6 +6,7 @@ import type {
   PaginationApiResponse,
 } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface AccountQueryParams {
   page?: number
@@ -20,7 +21,7 @@ export interface AccountQueryParams {
 export function useAccountsQuery(params?: AccountQueryParams) {
   return useQuery({
     queryKey: [
-      'accounts',
+      QUERY_KEY.ACCOUNT,
       params?.page,
       params?.limit,
       params?.search,

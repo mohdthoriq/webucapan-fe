@@ -1,8 +1,9 @@
-import type { AxiosError } from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ApiResponse, CompanyRole, Permission } from '@/types';
-import { toast } from 'sonner';
+import type { AxiosError } from 'axios'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import type { ApiResponse, CompanyRole, Permission } from '@/types'
+import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface RolePermission {
   id: string
@@ -18,10 +19,9 @@ export interface RoleWithPermissions extends CompanyRole {
   role_permissions: RolePermission[]
 }
 
-
 export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
   return useQuery({
-    queryKey: ['company-role-permissions', roleId],
+    queryKey: [QUERY_KEY.COMPANY_ROLE_PERMISSIONS, roleId],
     queryFn: async () => {
       const response = await apiClient.get<ApiResponse<RoleWithPermissions>>(
         `/roles/${roleId}`
@@ -32,7 +32,9 @@ export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
   })
 }
 
-export function useUpdateCompanyRolePermissionsMutation(roleId: string | undefined) {
+export function useUpdateCompanyRolePermissionsMutation(
+  roleId: string | undefined
+) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (permissionIds: string[]) => {
@@ -47,7 +49,7 @@ export function useUpdateCompanyRolePermissionsMutation(roleId: string | undefin
     onSuccess: () => {
       toast.dismiss('role-permissions-toast')
       queryClient.invalidateQueries({
-        queryKey: ['company-role-permissions', roleId],
+        queryKey: [QUERY_KEY.COMPANY_ROLE_PERMISSIONS, roleId],
       })
       toast.success('Permissions updated successfully.')
     },

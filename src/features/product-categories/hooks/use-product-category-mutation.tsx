@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { ProductCategory } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import {
   ProductCategoryContext,
   useProductCategories,
@@ -30,7 +31,9 @@ export function useCreateProductCategoryMutation(
     },
     onSuccess: async (data) => {
       toast.dismiss('product-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PRODUCT_CATEGORIES],
+      })
       toast.success('Kategori produk berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -61,7 +64,9 @@ export function useUpdateProductCategoryMutation(
     },
     onSuccess: async (data) => {
       toast.dismiss('product-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PRODUCT_CATEGORIES],
+      })
       toast.success('Kategori produk berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -90,7 +95,9 @@ export function useDeleteProductCategoryMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('product-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['product-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PRODUCT_CATEGORIES],
+      })
       toast.success('Kategori produk berhasil dihapus.')
       setOpen(null)
     },
@@ -118,7 +125,7 @@ export function useBulkDeleteProductCategoryMutation() {
     onSuccess: async (_) => {
       toast.dismiss('product-categories-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['product-categories'],
+        queryKey: [QUERY_KEY.PRODUCT_CATEGORIES],
       })
       toast.success('Kategori produk berhasil dihapus.')
     },

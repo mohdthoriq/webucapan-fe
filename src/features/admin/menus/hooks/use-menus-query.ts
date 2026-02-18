@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Menu } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 interface MenusQueryParams {
   page?: number
@@ -12,7 +13,7 @@ interface MenusQueryParams {
 export function useMenusQuery(params?: MenusQueryParams) {
   return useQuery({
     queryKey: [
-      'menus',
+      QUERY_KEY_ADMIN.MENUS,
       params?.page,
       params?.limit,
       params?.company_id,

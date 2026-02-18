@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, User } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface UsersQueryParams {
   page?: number
@@ -15,7 +16,7 @@ export function useUsersQuery(params?: UsersQueryParams) {
 
   return useQuery({
     queryKey: [
-      'users',
+      QUERY_KEY.USERS,
       params?.page,
       params?.limit,
       params?.name,

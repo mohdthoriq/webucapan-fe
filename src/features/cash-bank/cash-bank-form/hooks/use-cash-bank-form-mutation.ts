@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { CashBankFormFormData } from '../types/cash-bank-form.schema'
 
 export function useCreateSpendMoneyMutation() {
@@ -19,8 +20,7 @@ export function useCreateSpendMoneyMutation() {
     },
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-list'] })
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-overview'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Transaksi pengeluaran dana berhasil ditambahkan.')
 
       // Navigate to detail page with transaction ID and account ID
@@ -56,8 +56,7 @@ export function useCreateReceiveMoneyMutation() {
     },
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-list'] })
-      await queryClient.invalidateQueries({ queryKey: ['cash-bank-overview'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Transaksi penerimaan dana berhasil ditambahkan.')
 
       // Navigate to detail page with transaction ID and account ID

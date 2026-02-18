@@ -1,18 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { TopVendor } from '../types/purchases-overview'
 
-interface TopCustomerQueryParams {
+interface TopVendorQueryParams {
   date_from: string
   date_to: string
   period: 'day' | 'week' | 'month' | 'year'
 }
 
-export function useTopCustomerQuery(params?: TopCustomerQueryParams) {
+export function useTopVendorQuery(params?: TopVendorQueryParams) {
   return useQuery({
     queryKey: [
-      'purchases-top-customer',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.PURCHASES_OVERVIEW,
+      QUERY_KEY.PURCHASES_TOP_VENDORS,
       params?.date_from,
       params?.date_to,
       params?.period,

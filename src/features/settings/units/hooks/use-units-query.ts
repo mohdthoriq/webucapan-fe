@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Unit } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface UnitsQueryParams {
   page?: number
@@ -15,7 +16,7 @@ export function useUnitsQuery(params?: UnitsQueryParams) {
 
   return useQuery({
     queryKey: [
-      'units',
+      QUERY_KEY.UNITS,
       params?.page,
       params?.limit,
       params?.company_id,

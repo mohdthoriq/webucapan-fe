@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, DashboardData } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 interface CashBankOverviewQueryParams {
@@ -9,10 +10,13 @@ interface CashBankOverviewQueryParams {
   period: Period
 }
 
-export function useCashBankOverviewQuery(params?: CashBankOverviewQueryParams) {
+export function useCashBankDashboardOverviewQuery(
+  params?: CashBankOverviewQueryParams
+) {
   return useQuery({
     queryKey: [
-      'cash-bank-overview',
+      QUERY_KEY.CASH_BANK,
+      QUERY_KEY.DASHBOARD_CASH_BANK,
       params?.date_from,
       params?.date_to,
       params?.period,

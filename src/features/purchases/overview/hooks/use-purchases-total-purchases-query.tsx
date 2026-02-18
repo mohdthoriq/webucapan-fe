@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { TotalPurchases } from '../types/purchases-overview'
 
 interface TotalPurchasesQueryParams {
@@ -12,7 +13,9 @@ interface TotalPurchasesQueryParams {
 export function useTotalPurchasesQuery(params?: TotalPurchasesQueryParams) {
   return useQuery({
     queryKey: [
-      'purchases-total-purchases',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.PURCHASES_OVERVIEW,
+      QUERY_KEY.PURCHASES_TOTAL,
       params?.date_from,
       params?.date_to,
       params?.period,

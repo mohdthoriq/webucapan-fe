@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Expense, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface ExpenseListQueryParams {
   page?: number
@@ -17,7 +18,7 @@ export interface ExpenseListQueryParams {
 
 export function useExpensesListQuery(params?: ExpenseListQueryParams) {
   return useQuery({
-    queryKey: ['expenses-list', params],
+    queryKey: [QUERY_KEY.EXPENSES, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

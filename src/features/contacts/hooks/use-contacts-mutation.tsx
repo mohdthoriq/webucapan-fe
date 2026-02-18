@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Contact } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import {
   type CreateContactFormData,
   type UpdateContactFormData,
@@ -25,7 +26,7 @@ export function useCreateContactMutation(onSuccess?: (data: Contact) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('contacts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['contacts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT] })
       toast.success('Kontak berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -54,7 +55,7 @@ export function useUpdateContactMutation(onSuccess?: (data: Contact) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('contacts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['contacts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT] })
       toast.success('Kontak berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -81,7 +82,7 @@ export function useDeleteContactMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('contacts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['contacts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT] })
       toast.success('Kontak berhasil dihapus.')
       context?.setOpen(null)
     },
@@ -108,7 +109,7 @@ export function useBulkDeleteContactMutation() {
     onSuccess: async (_) => {
       toast.dismiss('contacts-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['contacts'],
+        queryKey: [QUERY_KEY.CONTACT],
       })
       toast.success('Kontak berhasil dihapus.')
     },

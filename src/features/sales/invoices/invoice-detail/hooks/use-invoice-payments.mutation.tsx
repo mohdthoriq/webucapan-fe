@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type {
   DeleteSalesInvoiceFormData,
   InvoicePaymentsFormData,
@@ -22,11 +23,9 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
     onSuccess: async (_) => {
       toast.dismiss('invoice-payment-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['sales-invoice-detail', invoiceId],
+        queryKey: [QUERY_KEY.SALES],
       })
-      await queryClient.invalidateQueries({
-        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
-      })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
@@ -53,8 +52,9 @@ export function useDeleteSalesInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoice-detail-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+        queryKey: [QUERY_KEY.SALES],
       })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Tagihan Penjualan berhasil dihapus.')
     },
     onError: () => {

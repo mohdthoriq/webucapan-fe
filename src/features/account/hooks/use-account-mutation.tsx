@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Account } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { AccountsContext, useAccounts } from '../components/account-provider'
 import type {
   CreateAccountFormData,
@@ -25,7 +26,7 @@ export function useCreateAccountMutation(onSuccess?: (data: Account) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Akun berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -54,7 +55,7 @@ export function useUpdateAccountMutation(onSuccess?: (data: Account) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Akun berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -81,7 +82,7 @@ export function useDeleteAccountMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('accounts-toast')
-      await queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Akun berhasil dihapus.')
       setOpen(null)
     },
@@ -109,7 +110,7 @@ export function useBulkDeleteAccountMutation() {
     onSuccess: async (_) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['accounts'],
+        queryKey: [QUERY_KEY.ACCOUNT],
       })
       toast.success('Akun berhasil dihapus.')
     },

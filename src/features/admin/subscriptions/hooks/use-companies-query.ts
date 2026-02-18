@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Company, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface CompaniesQueryParams {
   name?: string
@@ -12,7 +13,7 @@ export interface CompaniesQueryParams {
 export function useCompaniesQuery(params?: CompaniesQueryParams) {
   return useQuery({
     queryKey: [
-      'companies',
+      QUERY_KEY.COMPANY,
       params?.page,
       params?.limit,
       params?.order,

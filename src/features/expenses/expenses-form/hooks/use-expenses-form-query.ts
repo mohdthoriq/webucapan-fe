@@ -6,6 +6,7 @@ import type {
   Expense,
 } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface ExpensesFormQueryParams {
   id?: string
@@ -13,7 +14,7 @@ interface ExpensesFormQueryParams {
 
 export function useExpensesFormQuery(params?: ExpensesFormQueryParams) {
   return useQuery({
-    queryKey: ['expenses-list', params?.id],
+    queryKey: [QUERY_KEY.EXPENSES, params?.id],
     queryFn: async () => {
       const url = `/expenses/${params?.id}`
       const response = await apiClient.get<ApiResponse<Expense>>(url)
@@ -32,7 +33,7 @@ interface AutoNumberingQueryParams {
 
 export function useDefaultNumberingQuery(params: AutoNumberingQueryParams) {
   return useQuery({
-    queryKey: ['auto-numbering', params.type],
+    queryKey: [QUERY_KEY.AUTO_NUMBERING, params.type],
     queryFn: async () => {
       const url = `/auto-numbering/type/${params.type}`
       const response = await apiClient.get<ApiResponse<FinanceNumber>>(url)
@@ -57,7 +58,7 @@ export interface CheckFinanceNumberResponse {
 
 export function useCheckFinanceNumberQuery(params: CheckFinanceNumberParams) {
   return useQuery({
-    queryKey: ['check-finance-number', params.type, params.number],
+    queryKey: [QUERY_KEY.CHECK_FINANCE_NUMBER, params.type, params.number],
     queryFn: async () => {
       const response = await apiClient.get<
         ApiResponse<CheckFinanceNumberResponse>

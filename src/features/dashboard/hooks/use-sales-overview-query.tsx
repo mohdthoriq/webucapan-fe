@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, DashboardData } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 interface SalesOverviewQueryParams {
@@ -12,7 +13,8 @@ interface SalesOverviewQueryParams {
 export function useSalesOverviewQuery(params?: SalesOverviewQueryParams) {
   return useQuery({
     queryKey: [
-      'sales-overview',
+      QUERY_KEY.SALES,
+      QUERY_KEY.DASHBOARD_SALES,
       params?.date_from,
       params?.date_to,
       params?.period,

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Tax, PaginationApiResponse } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface TaxesQueryParams {
   page?: number
@@ -15,7 +16,7 @@ export function useTaxesQuery(params?: TaxesQueryParams) {
 
   return useQuery({
     queryKey: [
-      'taxes',
+      QUERY_KEY.TAXES,
       params?.page,
       params?.limit,
       params?.name,

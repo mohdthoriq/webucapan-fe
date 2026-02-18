@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { RecentUnpaid } from '../types/purchases-overview'
 
 interface RecentUnpaidQueryParams {
@@ -12,7 +13,9 @@ interface RecentUnpaidQueryParams {
 export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
   return useQuery({
     queryKey: [
-      'purchases-recent-unpaid',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.PURCHASES_OVERVIEW,
+      QUERY_KEY.PURCHASES_RECENT_UNPAID,
       params?.date_from,
       params?.date_to,
       params?.period,

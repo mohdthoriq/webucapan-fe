@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaymentTerm, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface PaymentTermsQueryParams {
   page?: number
@@ -12,7 +13,7 @@ interface PaymentTermsQueryParams {
 export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
   return useQuery({
     queryKey: [
-      'payment-terms',
+      QUERY_KEY.PAYMENT_TERMS,
       params?.page,
       params?.limit,
       params?.name,
