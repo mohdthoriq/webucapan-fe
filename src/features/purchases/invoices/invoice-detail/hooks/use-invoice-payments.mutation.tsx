@@ -24,6 +24,7 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
       toast.dismiss('invoice-payment-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PURCHASES] })
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
@@ -53,6 +54,7 @@ export function useDeletePurchasesInvoiceMutation() {
         queryKey: [QUERY_KEY.PURCHASES],
       })
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Tagihan Pembelian berhasil dihapus.')
     },
     onError: () => {

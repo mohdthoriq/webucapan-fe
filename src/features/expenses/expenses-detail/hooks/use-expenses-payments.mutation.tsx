@@ -27,6 +27,7 @@ export function useCreateExpensesPaymentMutation(expenseId: string) {
       })
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPENSES] })
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
@@ -56,6 +57,7 @@ export function useDeleteExpensesMutation() {
         queryKey: [QUERY_KEY.EXPENSES],
       })
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Pengeluaran berhasil dihapus.')
     },
     onError: () => {

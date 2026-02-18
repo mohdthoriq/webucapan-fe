@@ -43,6 +43,7 @@ export function useCreateExpenseMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPENSES] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Invoice berhasil ditambahkan.')
     },
     onError: () => {
@@ -68,6 +69,7 @@ export function useUpdateExpenseMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPENSES] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Invoice berhasil diubah.')
     },
     onError: () => {
