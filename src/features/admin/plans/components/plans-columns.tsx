@@ -8,6 +8,27 @@ import { DataTableRowActions } from './plans-row-actions'
 
 export const plansColumns: ColumnDef<Plan>[] = [
   {
+    accessorKey: 'code',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Kode Plan' />
+    ),
+    cell: ({ row }) => {
+      const { code } = row.original
+      return (
+        <div className='px-2'>
+          <LongText>{code}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: cn(
+        'w-full drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+        'ps-0.5 max-sm:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+      ),
+    },
+    enableHiding: false,
+  },
+  {
     accessorKey: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Plan' />
@@ -37,7 +58,12 @@ export const plansColumns: ColumnDef<Plan>[] = [
       const { description } = row.original
       return (
         <div className='overflow-hidden px-2'>
-          <LongText className='max-w-xs truncate'>{description}</LongText>
+          <LongText
+            className='max-w-xs truncate'
+            contentClassName='w-xs text-sm'
+          >
+            {description}
+          </LongText>
         </div>
       )
     },
