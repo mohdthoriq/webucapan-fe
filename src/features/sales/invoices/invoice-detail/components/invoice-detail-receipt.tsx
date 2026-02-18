@@ -211,10 +211,10 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               {invoice.sales_invoice_items.map((item, idx) => (
                 <TableRow key={idx} className='hover:bg-transparent'>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.product?.name}</p>
+                    <p className='font-semibold'>{item.product?.name || '-'}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.description}</p>
+                    <p className='font-semibold'>{item.description || '-'}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
@@ -225,7 +225,9 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     </p>
                   </TableCell>
                   <TableCell className='p-4 text-center align-top'>
-                    <p className='text-sm font-medium'>{item.quantity}</p>
+                    <p className='text-sm font-medium'>
+                      {item.quantity || '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>

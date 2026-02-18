@@ -167,7 +167,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 name='account_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Akun (Bank/Kas)</FormLabel>
+                    <FormLabel>Dibayar dari</FormLabel>
                     <InvoicePaymentsCombobox
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
