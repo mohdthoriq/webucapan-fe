@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { useCompanyRoles } from '../components/company-roles-provider'
+import React from 'react'
+import { RolesContext } from '../components/company-roles-provider'
 import {
   type CreateCompanyRoleSettingsFormData,
   type UpdateCompanyRoleSettingsFormData,
@@ -9,7 +10,7 @@ import {
 } from '../types/company-roles.schema'
 
 export function useCreateCompanyRoleMutation() {
-  const { setOpen } = useCompanyRoles()
+  const rolesContext = React.useContext(RolesContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -24,7 +25,7 @@ export function useCreateCompanyRoleMutation() {
       toast.dismiss('company-roles-toast')
       await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
       toast.success('Peran berhasil ditambahkan.')
-      setOpen(null)
+      rolesContext?.setOpen(null)
     },
     onError: () => {
       toast.dismiss('company-roles-toast')
@@ -34,7 +35,7 @@ export function useCreateCompanyRoleMutation() {
 }
 
 export function useUpdateCompanyRoleMutation() {
-  const { setOpen } = useCompanyRoles()
+  const rolesContext = React.useContext(RolesContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -52,7 +53,7 @@ export function useUpdateCompanyRoleMutation() {
       toast.dismiss('company-roles-toast')
       await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
       toast.success('Peran berhasil diubah.')
-      setOpen(null)
+      rolesContext?.setOpen(null)
     },
     onError: () => {
       toast.dismiss('company-roles-toast')
@@ -62,7 +63,7 @@ export function useUpdateCompanyRoleMutation() {
 }
 
 export function useDeleteCompanyRoleMutation() {
-  const { setOpen } = useCompanyRoles()
+  const rolesContext = React.useContext(RolesContext)
 
   const queryClient = useQueryClient()
   return useMutation({
@@ -78,7 +79,7 @@ export function useDeleteCompanyRoleMutation() {
       toast.dismiss('company-roles-toast')
       await queryClient.invalidateQueries({ queryKey: ['company-roles'] })
       toast.success('Peran berhasil dihapus.')
-      setOpen(null)
+      rolesContext?.setOpen(null)
     },
     onError: () => {
       toast.dismiss('company-roles-toast')

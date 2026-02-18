@@ -106,7 +106,7 @@ function PermissionsForm({
   }
 
   const handleSave = () => {
-    updateMutation.mutate(selectedIds, {
+    updateMutation.mutate({ permissionIds: selectedIds }, {
       onSuccess: () => {
         onSuccess()
       },

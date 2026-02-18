@@ -58,11 +58,9 @@ export function useCompanySettingsForm({
         name: data.name,
         description: data.description,
       }
-      await updateMutation.mutateAsync(updateData)
-      form.reset()
+      return await updateMutation.mutateAsync(updateData)
     } else {
-      await createMutation.mutateAsync(data)
-      form.reset()
+      return await createMutation.mutateAsync(data)
     }
   }
 
