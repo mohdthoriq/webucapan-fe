@@ -200,7 +200,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                 name='account_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Akun (Bank/Kas)</FormLabel>
+                    <FormLabel>Dibayar ke</FormLabel>
                     <InvoicePaymentsCombobox
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
