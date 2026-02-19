@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { FinanceNumberType } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type {
   CreateExpenseFormData,
   UpdateExpenseFormData,
@@ -19,7 +20,7 @@ export function useGenerateNextNumber() {
     },
     onSuccess: async (_) => {
       await queryClient.invalidateQueries({
-        queryKey: ['auto-numbering'],
+        queryKey: [QUERY_KEY.AUTO_NUMBERING],
       })
       toast.dismiss('invoices-form-toast')
     },
@@ -41,7 +42,8 @@ export function useCreateExpenseMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['expenses-list'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPENSES] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Invoice berhasil ditambahkan.')
     },
     onError: () => {
@@ -66,7 +68,8 @@ export function useUpdateExpenseMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
-      await queryClient.invalidateQueries({ queryKey: ['expenses-list'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPENSES] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Invoice berhasil diubah.')
     },
     onError: () => {

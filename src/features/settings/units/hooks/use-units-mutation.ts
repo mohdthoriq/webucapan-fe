@@ -1,14 +1,15 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Unit } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import {
   type CreateUnitFormData,
   type UpdateUnitFormData,
   type DeleteUnitFormData,
 } from '@/features/settings/units/types/units.schema'
 import { UnitsContext, useUnits } from '../components/units-provider'
-import type { Unit } from '@/types'
-import { useContext } from 'react'
 
 export function useCreateUnitMutation(onSuccess?: (data: Unit) => void) {
   const context = useContext(UnitsContext)
@@ -23,7 +24,7 @@ export function useCreateUnitMutation(onSuccess?: (data: Unit) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('units-toast')
-      await queryClient.invalidateQueries({ queryKey: ['units'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.UNITS] })
       toast.success('Satuan berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -52,7 +53,7 @@ export function useUpdateUnitMutation(onSuccess?: (data: Unit) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('units-toast')
-      await queryClient.invalidateQueries({ queryKey: ['units'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.UNITS] })
       toast.success('Satuan berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -79,7 +80,7 @@ export function useDeleteUnitMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('units-toast')
-      await queryClient.invalidateQueries({ queryKey: ['units'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.UNITS] })
       toast.success('Satuan berhasil dihapus.')
       setOpen(null)
     },

@@ -38,9 +38,9 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'invoice_number',
+    accessorKey: 'Nomor',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='No. Invoice' />
+      <DataTableColumnHeader column={column} title='Nomor' />
     ),
     cell: ({ row }) => {
       const { invoice_number, id } = row.original
@@ -66,7 +66,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'vendor',
+    accessorKey: 'Vendor',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Vendor' />
     ),
@@ -84,7 +84,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'invoice_date',
+    accessorKey: 'Tanggal Invoice',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tanggal Invoice' />
     ),
@@ -102,7 +102,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'due_date',
+    accessorKey: 'Jatuh Tempo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Jatuh Tempo' />
     ),
@@ -120,7 +120,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'payment_status',
+    accessorKey: 'Status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
@@ -139,7 +139,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'outstanding',
+    accessorKey: 'Sisa Tagihan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Sisa Tagihan' />
     ),
@@ -157,7 +157,7 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     },
   },
   {
-    accessorKey: 'total',
+    accessorKey: 'Total',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Total' />
     ),

@@ -1,16 +1,22 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { PaymentTerm } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { PaymentTermsContext, usePaymentTerms } from '../components/payment-terms-provider'
+import { QUERY_KEY } from '@/constants/query-key'
+import {
+  PaymentTermsContext,
+  usePaymentTerms,
+} from '../components/payment-terms-provider'
 import {
   type CreatePaymentTermsFormData,
   type UpdatePaymentTermsFormData,
   type DeletePaymentTermsFormData,
 } from '../types/payment-terms.schema'
-import type { PaymentTerm } from '@/types'
-import { useContext } from 'react'
 
-export function useCreatePaymentTermMutation(onSuccess?: (data: PaymentTerm) => void) {
+export function useCreatePaymentTermMutation(
+  onSuccess?: (data: PaymentTerm) => void
+) {
   const context = useContext(PaymentTermsContext)
 
   const queryClient = useQueryClient()
@@ -24,7 +30,9 @@ export function useCreatePaymentTermMutation(onSuccess?: (data: PaymentTerm) => 
     },
     onSuccess: async (data) => {
       toast.dismiss('payment-terms-toast')
-      await queryClient.invalidateQueries({ queryKey: ['payment-terms'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PAYMENT_TERMS],
+      })
       toast.success('Termin Pembayaran berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -36,7 +44,9 @@ export function useCreatePaymentTermMutation(onSuccess?: (data: PaymentTerm) => 
   })
 }
 
-export function useUpdatePaymentTermMutation(onSuccess?: (data: PaymentTerm) => void) {
+export function useUpdatePaymentTermMutation(
+  onSuccess?: (data: PaymentTerm) => void
+) {
   const context = useContext(PaymentTermsContext)
 
   const queryClient = useQueryClient()
@@ -53,7 +63,9 @@ export function useUpdatePaymentTermMutation(onSuccess?: (data: PaymentTerm) => 
     },
     onSuccess: async (data) => {
       toast.dismiss('payment-terms-toast')
-      await queryClient.invalidateQueries({ queryKey: ['payment-terms'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PAYMENT_TERMS],
+      })
       toast.success('Termin Pembayaran berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -80,7 +92,7 @@ export function useDeletePaymentTermMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('payment-terms-toast')
-      await queryClient.invalidateQueries({ queryKey: ['payment-terms'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PAYMENT_TERMS] })
       toast.success('Termin Pembayaran berhasil dihapus.')
       setOpen(null)
     },

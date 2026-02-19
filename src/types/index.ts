@@ -29,4 +29,6 @@ export * from './domain/balance-sheet'
 export * from './domain/profit-loss'
 export * from './domain/plans'
 export * from './domain/subscriptions'
+export * from './domain/payments'
+
 

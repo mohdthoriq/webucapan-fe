@@ -7,7 +7,7 @@ import { DataTableRowActions } from './taxes-row-actions'
 
 export const taxesColumns: ColumnDef<Tax>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Pajak' />
     ),
@@ -28,9 +28,9 @@ export const taxesColumns: ColumnDef<Tax>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'rate',
+    accessorKey: 'Persentase',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Rate' />
+      <DataTableColumnHeader column={column} title='Persentase' />
     ),
     cell: ({ row }) => {
       const { rate } = row.original

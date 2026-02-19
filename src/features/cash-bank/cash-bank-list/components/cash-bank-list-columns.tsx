@@ -1,36 +1,14 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { TransactionData } from '@/types'
-import { cn, formatNumber, getStatusStyles } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import { cn, formatNumber } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './cash-bank-list-row-actions'
+import { NavigationCell } from './cash-bank-list-nomor-cell'
 
 export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
   {
-    accessorKey: 'reference',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='No. Referensi' />
-    ),
-    cell: ({ row }) => {
-      const { reference } = row.original
-      return (
-        <div className='px-2'>
-          <LongText>{reference}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: cn(
-        'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
-        'ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
-      ),
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'date',
+    accessorKey: 'Tanggal',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tanggal' />
     ),
@@ -38,7 +16,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       const { date } = row.original
       const formattedDate = format(new Date(date), 'dd/MM/yyyy')
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -48,15 +26,39 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'Nomor',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Nomor' />
+    ),
+    cell: ({ row }) => <NavigationCell row={row} name={'ref_number'} />,
+    meta: {
+      className: cn(
+        'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+        'ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none'
+      ),
+    },
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'Deskripsi',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Deskripsi' />
     ),
+    cell: ({ row }) => <NavigationCell row={row} name={'description'} />,
+    meta: {
+      className: 'w-full ',
+    },
+  },
+  {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
     cell: ({ row }) => {
-      const { description } = row.original
+      const { reference } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
-          <LongText className='truncate'>{description || '-'}</LongText>
+        <div className='w-full overflow-hidden p-2'>
+          <LongText className='truncate'>{reference || '-'}</LongText>
         </div>
       )
     },
@@ -65,7 +67,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: 'received',
+    accessorKey: 'Terima',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Terima' />
     ),
@@ -73,7 +75,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       const { received } = row.original
       const formattedReceived = formatNumber(received)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedReceived}</LongText>
         </div>
       )
@@ -83,7 +85,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: 'spent',
+    accessorKey: 'Keluar',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Keluar' />
     ),
@@ -91,7 +93,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       const { spent } = row.original
       const formattedSpent = formatNumber(spent)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedSpent}</LongText>
         </div>
       )
@@ -101,7 +103,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: 'balance',
+    accessorKey: 'Saldo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Saldo' />
     ),
@@ -109,7 +111,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       const { balance } = row.original
       const formattedBalance = formatNumber(balance)
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='truncate'>{formattedBalance}</LongText>
         </div>
       )
@@ -118,26 +120,21 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       className: 'w-full',
     },
   },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
-    ),
-    cell: ({ row }) => {
-      const { status } = row.original
-      return (
-        <div className='px-2'>
-          <Badge className={cn(getStatusStyles(status))}>{status}</Badge>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
-  },
+  // {
+  //   accessorKey: 'Status',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Status' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { status } = row.original
+  //     return (
+  //       <div className='p-2'>
+  //         <Badge className={cn(getStatusStyles(status))}>{status}</Badge>
+  //       </div>
+  //     )
+  //   },
+  //   meta: {
+  //     className: 'w-full',
+  //   },
+  // },
 ]

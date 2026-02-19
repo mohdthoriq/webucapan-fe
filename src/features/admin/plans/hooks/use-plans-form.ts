@@ -21,6 +21,7 @@ export function usePlansForm({ currentRow }: usePlansFormProps) {
     resolver: zodResolver(createPlanSchema),
     defaultValues: isEdit
       ? {
+          code: currentRow?.code,
           name: currentRow?.name,
           description: currentRow?.description || '',
           monthly_price: Number(currentRow?.monthly_price) || 0,
@@ -29,6 +30,7 @@ export function usePlansForm({ currentRow }: usePlansFormProps) {
           is_active: currentRow?.is_active,
         }
       : {
+          code: '',
           name: '',
           description: '',
           monthly_price: 0,

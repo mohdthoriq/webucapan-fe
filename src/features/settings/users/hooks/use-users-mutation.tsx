@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { useUsers } from '../components/users-provider'
 import type { CreateUserFormData } from '../types/users.schema'
 
@@ -18,7 +19,7 @@ export function useCreateUserMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('users-toast')
-      await queryClient.invalidateQueries({ queryKey: ['users'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] })
       toast.success('Pengguna berhasil diundang.')
       setOpen(null)
     },

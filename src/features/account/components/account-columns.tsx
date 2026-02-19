@@ -34,14 +34,14 @@ export const accountsColumns: ColumnDef<Account>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'code',
+    accessorKey: 'Kode',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kode' />
     ),
     cell: ({ row }) => {
       const { code } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='max-w-xs truncate'>{code}</LongText>
         </div>
       )
@@ -63,7 +63,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       const { name } = row.original
       return (
         <div
-          className='flex items-center px-2'
+          className='flex items-center p-2'
           style={{ paddingLeft: `${row.depth * 1}rem` }}
         >
           {row.getCanExpand() ? (
@@ -89,28 +89,28 @@ export const accountsColumns: ColumnDef<Account>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'Kategori',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kategori' />
     ),
     cell: ({ row }) => {
       const { category } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{category.name}</LongText>
         </div>
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full',
     },
   },
   {
-    accessorKey: 'balance',
+    accessorKey: 'Saldo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Saldo' />
     ),
@@ -119,7 +119,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       return (
         <div
           className={cn(
-            'w-full min-w-48 overflow-hidden px-2',
+            'w-full min-w-48 overflow-hidden p-2',
             balance < 0 ? 'text-red-500' : 'text-blue-500'
           )}
         >
@@ -128,7 +128,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full',
     },
   },
   {

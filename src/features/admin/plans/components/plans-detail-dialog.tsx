@@ -30,6 +30,12 @@ export function PlansDetailDialog({
         <div className='space-y-4'>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
+              Kode Plan
+            </h4>
+            <p className='text-sm font-medium'>{currentRow.code}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
               Nama Plan
             </h4>
             <p className='text-sm font-medium'>{currentRow.name}</p>

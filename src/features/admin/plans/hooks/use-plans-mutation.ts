@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import { usePlans } from '../components/plans-provider'
 import {
   type CreatePlanFormData,
@@ -22,7 +23,7 @@ export function useCreatePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: ['plans'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
       toast.success('Plan berhasil ditambahkan.')
       setOpen(null)
     },
@@ -50,7 +51,7 @@ export function useUpdatePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: ['plans'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
       toast.success('Plan berhasil diubah.')
       setOpen(null)
     },
@@ -78,7 +79,7 @@ export function useDeletePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: ['plans'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
       toast.success('Plan berhasil dihapus.')
       setOpen(null)
     },

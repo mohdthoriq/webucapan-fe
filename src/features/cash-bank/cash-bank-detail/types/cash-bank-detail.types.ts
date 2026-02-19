@@ -30,6 +30,9 @@ export interface CashBankTransactionDetail {
   account_code: string
   account_name: string
   entry_number: string
+  ref_number: string
+  source_id: string
+  source_type: string
   transaction_type: string
   transaction_title: string
   status: CashBankTransactionStatus

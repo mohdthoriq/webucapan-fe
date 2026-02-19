@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
@@ -13,10 +12,11 @@ import {
 } from '@/components/ui/sidebar'
 import { Button } from '../ui/button'
 import { AppTitle } from './app-title'
-// import { sidebarData } from './data/sidebar-data'
+import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
 import { NavGroup } from './nav-group'
-import { transformMenusToSidebarData } from './utils/menu-utils'
+
+// import { transformMenusToSidebarData } from './utils/menu-utils'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
@@ -25,14 +25,16 @@ export function AppSidebar() {
     auth: { user },
   } = useAuthStore()
 
-  const data = useMemo(() => {
-    if (user?.menus && user.menus.length > 0) {
-      return transformMenusToSidebarData(user.menus)
-    } else if (user?.role?.name === 'superadmin') {
-      return sidebarDataAdmin
-    }
-  }, [user])
+  // const data = useMemo(() => {
+  //   if (user?.menus && user.menus.length > 0) {
+  //     return transformMenusToSidebarData(user.menus)
+  //   } else if (user?.role?.name === 'superadmin') {
+  //     return sidebarDataAdmin
+  //   }
+  // }, [user])
 
+  const data =
+    user?.role?.name === 'superadmin' ? sidebarDataAdmin : sidebarData
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>

@@ -2,7 +2,7 @@ import { useSearch } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { CashBankDetailReceipt } from './components/cash-bank-detail-receipt'
+import { CashBankDetailReceipt } from './components/cash-bank-receipt'
 import { useCashBankDetailQuery } from './hooks/use-cash-bank-detail-query'
 
 export function CashBankDetail() {
@@ -65,7 +65,7 @@ export function CashBankDetail() {
           <div className='mb-2 flex items-center justify-between'>
             <div>
               <h1 className='text-4xl font-semibold tracking-tight'>
-                Detail Transaksi {transaction.entry_number}
+                Detail Transaksi {transaction.ref_number}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>

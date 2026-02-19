@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/table'
 import { usePrintSalesInvoiceQuery } from '../hooks/use-print-sales-invoice-query'
 import { InvoiceDetailRowActions } from './invoice-detail-row-actions'
+// import { useNavigate } from '@tanstack/react-router'
 
 interface InvoiceDetailReceiptProps {
   invoice: SalesInvoice
@@ -33,6 +34,8 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
       window.open(data, '_blank')
     }
   }
+
+  // const navigate = useNavigate()
 
   return (
     <Card className='gap-3 overflow-hidden py-4 shadow-md'>
@@ -183,7 +186,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
-              <TableRow className='hover:bg-transparent'>
+              <TableRow className='bg-muted hover:bg-transparent'>
                 <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
                   Item
                 </TableHead>
@@ -209,12 +212,17 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             </TableHeader>
             <TableBody>
               {invoice.sales_invoice_items.map((item, idx) => (
-                <TableRow key={idx} className='hover:bg-transparent'>
+                <TableRow
+                  key={idx}
+                  className='hover:bg-muted/80 transition-colors'
+                >
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.product?.name}</p>
+                    <p className='text-primary cursor-pointer font-semibold hover:underline'>
+                      {item.product?.name || '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.description}</p>
+                    <p className='font-semibold'>{item.description || '-'}</p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
@@ -225,7 +233,9 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     </p>
                   </TableCell>
                   <TableCell className='p-4 text-center align-top'>
-                    <p className='text-sm font-medium'>{item.quantity}</p>
+                    <p className='text-sm font-medium'>
+                      {item.quantity || '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
@@ -257,7 +267,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
           </div>
 
           <div className='bg-muted/30 w-full space-y-3 rounded-lg p-6 md:w-120'>
-            <div className='flex justify-between text-sm'>
+            <div className='flex justify-between border-b pb-2 text-sm'>
               <span className='text-muted-foreground'>Subtotal</span>
               <span className='font-medium'>
                 {formatCurrency(Number(invoice.subtotal), invoice.currency)}
@@ -282,7 +292,10 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 {} as Record<string, number>
               )
             ).map(([name, amount]) => (
-              <div key={name} className='flex justify-between text-sm'>
+              <div
+                key={name}
+                className='flex justify-between border-b pb-2 text-sm'
+              >
                 <span className='text-muted-foreground'>{name}</span>
                 <span className='font-medium'>
                   {formatCurrency(amount, invoice.currency)}
@@ -293,7 +306,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             {/* Fallback if no specific tax items but a total exists */}
             {invoice.sales_invoice_items.every((item) => !item.tax) &&
               Number(invoice.tax_total) > 0 && (
-                <div className='flex justify-between text-sm font-medium'>
+                <div className='flex justify-between border-b pb-2 text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>
                   <span>
                     {formatCurrency(
@@ -304,16 +317,33 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 </div>
               )}
 
-            <div className='flex justify-between text-sm'>
-              <span className='text-muted-foreground'>Total</span>
-              <span className='font-medium'>
+            <div className='flex justify-between border-b pb-2 text-sm'>
+              <span className='text-lg font-medium'>Total</span>
+              <span className='text-lg font-medium'>
                 {formatCurrency(Number(invoice.total), invoice.currency)}
               </span>
             </div>
 
-            <Separator className='my-2 bg-zinc-300 dark:bg-zinc-700' />
+            {invoice.payments?.map((payment) => (
+              <div
+                key={payment.id}
+                className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
+                // onClick={() => navigate({
+                //   to: '/cash-bank/detail',
+                //   search: {
+                //     accountId: payment.account.id,
+                //     transactionId: payment.id
+                //   }
+                // })}
+              >
+                <span>Pembayaran {payment.account.name}</span>
+                <span>
+                  {formatCurrency(Number(payment.amount), invoice.currency)}
+                </span>
+              </div>
+            ))}
             <div className='flex items-center justify-between'>
-              <span className='text-base font-bold'>Sisa Tagihan</span>
+              <span className='text-lg font-bold'>Sisa Tagihan</span>
               <span className='text-primary text-2xl font-black'>
                 {formatCurrency(Number(invoice.outstanding), invoice.currency)}
               </span>

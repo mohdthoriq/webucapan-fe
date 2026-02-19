@@ -31,11 +31,10 @@ export function useExpensesPaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: '',
       account_id: undefined,
-      reference_no: '',
       note: '',
       tags: [],
+      expense_id: expenseId,
     },
   })
 
@@ -54,11 +53,10 @@ export function useExpensesPaymentsForm({
     form.reset({
       payment_date: new Date(),
       amount: remaining > 0 ? remaining : 0,
-      method: '',
       account_id: undefined,
-      reference_no: '',
       note: '',
       tags: [],
+      expense_id: expenseId,
     })
   }
 

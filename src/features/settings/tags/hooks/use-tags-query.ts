@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Tag } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface RoleSettingsQueryParams {
   page?: number
@@ -12,7 +13,7 @@ interface RoleSettingsQueryParams {
 export function useTagsQuery(params?: RoleSettingsQueryParams) {
   return useQuery({
     queryKey: [
-      'tags',
+      QUERY_KEY.TAGS,
       params?.page,
       params?.limit,
       params?.order,

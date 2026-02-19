@@ -1,9 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import apiClient from '@/lib/api-client';
-import { useSubscriptions } from '../components/subscriptions-provider';
-import { type CreateSubscriptionFormData, type UpdateSubscriptionFormData, type DeleteSubscriptionFormData } from '../types/subscriptions.schema';
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
+import { useSubscriptions } from '../components/subscriptions-provider'
+import {
+  type CreateSubscriptionFormData,
+  type UpdateSubscriptionFormData,
+  type DeleteSubscriptionFormData,
+} from '../types/subscriptions.schema'
 
 export function useCreateSubscriptionMutation() {
   const { setOpen } = useSubscriptions()
@@ -23,7 +27,7 @@ export function useCreateSubscriptionMutation() {
     onSuccess: async (_) => {
       toast.dismiss('subscriptions-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['subscriptions-active'],
+        queryKey: [QUERY_KEY_ADMIN.SUBSCRIPTIONS],
       })
       toast.success('Subscription berhasil ditambahkan.')
       setOpen(null)
@@ -52,7 +56,9 @@ export function useUpdateSubscriptionMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('subscriptions-toast')
-      await queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.SUBSCRIPTIONS],
+      })
       toast.success('Subscription berhasil diubah.')
       setOpen(null)
     },
@@ -78,7 +84,9 @@ export function useDeleteSubscriptionMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('subscriptions-toast')
-      await queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.SUBSCRIPTIONS],
+      })
       toast.success('Subscription berhasil dihapus.')
       setOpen(null)
     },

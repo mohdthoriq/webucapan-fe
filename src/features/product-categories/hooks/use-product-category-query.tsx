@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, ProductCategory } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface ProductCategoryQueryParams {
   page?: number
@@ -11,7 +12,7 @@ interface ProductCategoryQueryParams {
 
 export function useProductCategoryQuery(params?: ProductCategoryQueryParams) {
   return useQuery({
-    queryKey: ['product-categories', params?.page, params?.limit, params?.name],
+    queryKey: [QUERY_KEY.PRODUCT_CATEGORIES, params?.page, params?.limit, params?.name],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

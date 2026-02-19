@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const createPlanSchema = z.object({
+  code: z.string().min(1, 'Kode plan wajib diisi'),
   name: z.string().min(1, 'Nama plan wajib diisi'),
   monthly_price: z.number().nonnegative('Harga bulanan tidak boleh negatif'),
   yearly_price: z.number().nonnegative('Harga tahunan tidak boleh negatif'),
@@ -13,6 +14,7 @@ export type CreatePlanFormData = z.infer<typeof createPlanSchema>
 
 export const updatePlanSchema = z.object({
   id: z.uuid(),
+  code: z.string().min(1, 'Kode plan wajib diisi'),
   name: z.string().min(1, 'Nama plan wajib diisi'),
   monthly_price: z.number().nonnegative('Harga bulanan tidak boleh negatif'),
   yearly_price: z.number().nonnegative('Harga tahunan tidak boleh negatif'),

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type { PaidRatio } from '../types/purchases-overview'
 
 interface PaidRatioQueryParams {
@@ -12,7 +13,9 @@ interface PaidRatioQueryParams {
 export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
   return useQuery({
     queryKey: [
-      'purchases-paid-ratio',
+      QUERY_KEY.PURCHASES,
+      QUERY_KEY.PURCHASES_OVERVIEW,
+      QUERY_KEY.PURCHASES_PAID_RATIO,
       params?.date_from,
       params?.date_to,
       params?.period,

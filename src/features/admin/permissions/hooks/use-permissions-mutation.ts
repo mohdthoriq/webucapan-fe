@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import { usePermissions } from '../components/permissions-provider'
 import {
   type CreatePermissionFormData,
@@ -22,7 +23,9 @@ export function useCreatePermissionMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('permissions-toast')
-      await queryClient.invalidateQueries({ queryKey: ['permissions'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
+      })
       toast.success('Permission berhasil ditambahkan.')
       setOpen(null)
     },
@@ -50,7 +53,9 @@ export function useUpdatePermissionMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('permissions-toast')
-      await queryClient.invalidateQueries({ queryKey: ['permissions'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
+      })
       toast.success('Permission berhasil diubah.')
       setOpen(null)
     },
@@ -76,7 +81,9 @@ export function useDeletePermissionMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('permissions-toast')
-      await queryClient.invalidateQueries({ queryKey: ['permissions'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
+      })
       toast.success('Permission berhasil dihapus.')
       setOpen(null)
     },

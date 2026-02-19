@@ -32,14 +32,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama' />
     ),
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -53,14 +53,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'Tipe Kontak',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tipe Kontak' />
     ),
     cell: ({ row }) => {
       const { type } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{type.name}</LongText>
         </div>
       )
@@ -70,14 +70,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'Perusahaan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Perusahaan' />
     ),
     cell: ({ row }) => {
       const { company } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{company.name || '-'}</LongText>
         </div>
       )
@@ -87,14 +87,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'email',
+    accessorKey: 'Email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
     cell: ({ row }) => {
       const { email } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{email || '-'}</LongText>
         </div>
       )
@@ -104,14 +104,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'phone',
+    accessorKey: 'Telepon',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Telepon' />
     ),
     cell: ({ row }) => {
       const { phone } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{phone || '-'}</LongText>
         </div>
       )
@@ -121,14 +121,14 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'address',
+    accessorKey: 'Alamat',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Alamat' />
     ),
     cell: ({ row }) => {
       const { address } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{address || '-'}</LongText>
         </div>
       )

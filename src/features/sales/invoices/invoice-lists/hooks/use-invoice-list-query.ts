@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, SalesInvoice } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface InvoiceListQueryParams {
   page?: number
@@ -21,7 +22,7 @@ export interface InvoiceListQueryParams {
 
 export function useInvoiceListQuery(params?: InvoiceListQueryParams) {
   return useQuery({
-    queryKey: ['sales-invoice-lists', params],
+    queryKey: [QUERY_KEY.SALES, QUERY_KEY.SALES_INVOICE, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),

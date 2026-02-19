@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type {
   DeletePurchasesInvoiceFormData,
   InvoicePaymentsFormData,
@@ -21,10 +22,9 @@ export function useCreateInvoicePaymentMutation(invoiceId: string) {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoice-payment-toast')
-      await queryClient.invalidateQueries({
-        queryKey: ['invoice-detail', invoiceId],
-      })
-      await queryClient.invalidateQueries({ queryKey: ['invoice-list'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PURCHASES] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Pembayaran berhasil dilakukan.')
     },
     onError: () => {
@@ -50,7 +50,11 @@ export function useDeletePurchasesInvoiceMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('invoice-detail-toast')
-      await queryClient.invalidateQueries({ queryKey: ['purchase-invoice-lists'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PURCHASES],
+      })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Tagihan Pembelian berhasil dihapus.')
     },
     onError: () => {

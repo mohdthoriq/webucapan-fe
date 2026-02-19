@@ -6,7 +6,7 @@ import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
-import { useCashBankOverviewQuery } from '../hooks/use-cash-bank-overview-query'
+import { useCashBankDashboardOverviewQuery } from '../hooks/use-cash-bank-overview-query'
 
 export function CashOverview() {
   const [period, setPeriod] = useState<Period>('month')
@@ -17,7 +17,7 @@ export function CashOverview() {
     : undefined
   const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
 
-  const { data } = useCashBankOverviewQuery({
+  const { data } = useCashBankDashboardOverviewQuery({
     period,
     date_from: date_from as string,
     date_to: date_to as string,

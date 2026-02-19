@@ -32,7 +32,7 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama' />
     ),
@@ -53,7 +53,7 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'Deskripsi',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Deskripsi' />
     ),

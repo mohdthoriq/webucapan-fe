@@ -5,10 +5,11 @@ import type {
   CashBankTransaction,
 } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export function useCashBankOverviewQuery() {
   return useQuery({
-    queryKey: ['cash-bank-overview'],
+    queryKey: [QUERY_KEY.CASH_BANK, QUERY_KEY.CASH_BANK_OVERVIEW],
     queryFn: async () => {
       const url = `/cash-bank`
       const response = await apiClient.get<ApiResponse<CashBankOverview>>(url)
@@ -37,7 +38,8 @@ export interface CashBankListQueryParams {
 export function useCashBankListQuery(params?: CashBankListQueryParams) {
   return useQuery({
     queryKey: [
-      'cash-bank-list',
+      QUERY_KEY.CASH_BANK,
+      QUERY_KEY.CASH_BANK_TRANSACTIONS,
       params?.page,
       params?.limit,
       params?.order,

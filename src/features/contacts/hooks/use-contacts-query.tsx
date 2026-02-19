@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Contact, PaginationApiResponse, ContactType } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export interface ContactQueryParams {
   page?: number
@@ -13,7 +14,7 @@ export interface ContactQueryParams {
 export function useContactsQuery(params?: ContactQueryParams) {
   return useQuery({
     queryKey: [
-      'contacts',
+      QUERY_KEY.CONTACT,
       params?.page,
       params?.limit,
       params?.company_id,

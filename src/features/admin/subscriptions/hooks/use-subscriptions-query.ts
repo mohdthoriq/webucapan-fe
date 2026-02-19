@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Subscription } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 export interface SubscriptionsQueryParams {
   plan_id?: string
@@ -13,7 +14,7 @@ export interface SubscriptionsQueryParams {
 export function useSubscriptionsQuery(params?: SubscriptionsQueryParams) {
   return useQuery({
     queryKey: [
-      'subscriptions-active',
+      QUERY_KEY_ADMIN.SUBSCRIPTIONS,
       params?.page,
       params?.limit,
       params?.plan_id,

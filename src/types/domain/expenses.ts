@@ -3,6 +3,7 @@ import type { Account } from './account'
 import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
+import type { Payment } from './payments'
 import type { DocumentStatus, PaymentStatus } from './sales-invoices'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
@@ -12,17 +13,6 @@ export interface ExpenseItem extends GlobalResponse {
   description: string
   tax: Tax
   amount: number
-}
-
-export interface ExpensePayment extends GlobalResponse {
-  payment_date: Date
-  amount: number
-  method: string
-  reference_no: string
-  note: string
-  status: PaymentStatus
-  account: Account
-  tags: (string | Tag)[]
 }
 
 export interface Expense extends GlobalResponse {
@@ -43,7 +33,7 @@ export interface Expense extends GlobalResponse {
   document_status: DocumentStatus
   is_paylater: boolean
   expense_items: ExpenseItem[]
-  expense_payments: ExpensePayment[]
+  payments: Payment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }

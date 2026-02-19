@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import { useMenus } from '../components/menus-provider'
 import {
   type CreateMenusFormData,
@@ -22,7 +23,7 @@ export function useCreateMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menus'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
       toast.success('Menu berhasil ditambahkan.')
       setOpen(null)
     },
@@ -50,7 +51,7 @@ export function useUpdateMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menus'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
       toast.success('Menu berhasil diubah.')
       setOpen(null)
     },
@@ -76,7 +77,7 @@ export function useDeleteMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menus'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
       toast.success('Menu berhasil dihapus.')
       setOpen(null)
     },

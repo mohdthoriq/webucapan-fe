@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { PaginationApiResponse, Permission } from '@/types'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 interface PermissionsQueryParams {
   page?: number
@@ -12,7 +13,7 @@ interface PermissionsQueryParams {
 export function usePermissionsQuery(params?: PermissionsQueryParams) {
   return useQuery({
     queryKey: [
-      'permissions',
+      QUERY_KEY_ADMIN.PERMISSIONS,
       params?.page,
       params?.limit,
       params?.company_id,

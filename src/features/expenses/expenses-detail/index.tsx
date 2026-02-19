@@ -70,7 +70,7 @@ export function ExpensesDetail() {
 
           {showTransactionTable && (
             <TransactionTable
-              payments={expense.expense_payments}
+              payments={expense.payments}
               currency={expense.currency}
             />
           )}

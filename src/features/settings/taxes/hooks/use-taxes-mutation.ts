@@ -1,14 +1,15 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Tax } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { TaxesContext, useTaxes } from '../components/taxes-provider'
 import {
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
   type DeleteTaxesFormData,
 } from '../types/taxes.schema'
-import type { Tax } from '@/types'
-import { useContext } from 'react'
 
 export function useCreateTaxMutation(onSuccess?: (data: Tax) => void) {
   const context = useContext(TaxesContext)
@@ -24,7 +25,7 @@ export function useCreateTaxMutation(onSuccess?: (data: Tax) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('taxes-toast')
-      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
       toast.success('Pajak berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -53,7 +54,7 @@ export function useUpdateTaxMutation(onSuccess?: (data: Tax) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('taxes-toast')
-      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
       toast.success('Pajak berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -80,7 +81,7 @@ export function useDeleteTaxMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('taxes-toast')
-      await queryClient.invalidateQueries({ queryKey: ['taxes'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
       toast.success('Pajak berhasil dihapus.')
       setOpen(null)
     },

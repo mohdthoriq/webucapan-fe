@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { useCashBankLists } from '../components/cash-bank-list-provider'
 import { type CreateCashBankListFormData } from '../types/cash-bank-list.schema'
 
@@ -21,7 +22,7 @@ export function useCreateCashBankListMutation() {
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-lists-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['cash-bank-list', 'cash-bank-overview'],
+        queryKey: [QUERY_KEY.CASH_BANK],
       })
       toast.success('Transfer dana berhasil ditambahkan')
       setOpen(null)

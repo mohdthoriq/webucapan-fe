@@ -20,18 +20,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import { ExpensesFormCombobox } from '../../expenses-form/components/expenses-form-combobox'
 import { useExpensesPaymentsForm } from '../hooks/use-expenses-payments-form'
-import { InvoicePaymentsCombobox } from './expenses-payments-combobox'
 
 interface ExpensesPaymentsCardProps {
   expense: Expense
@@ -47,12 +45,6 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
 
   if (expense.payment_status === 'paid') return null
 
-  const paymentMethods = [
-    { label: 'Tunai (Cash)', value: 'cash' },
-    { label: 'Transfer Bank', value: 'bank_transfer' },
-    { label: 'E-Wallet', value: 'ewallet' },
-  ]
-
   return (
     <Card>
       <CardHeader>
@@ -65,7 +57,27 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-4 pt-4'
           >
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              {/* Amount */}
+              <FormField
+                control={form.control}
+                name='amount'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Pembayaran</FormLabel>
+                    <FormControl>
+                      <InputFieldNumberFormat
+                        value={field.value ?? ''}
+                        onValueChange={(value) => field.onChange(value ?? '')}
+                        placeholder='0'
+                        prefix='Rp'
+                        className='min-w-[100px]'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* Payment Date */}
               <FormField
                 control={form.control}
@@ -108,93 +120,23 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                   </FormItem>
                 )}
               />
-
-              {/* Amount */}
-              <FormField
-                control={form.control}
-                name='amount'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {expense.payment_status === 'paid'
-                        ? 'Jumlah Pembayaran'
-                        : 'Pembayaran Sisa'}
-                    </FormLabel>
-                    <FormControl>
-                      <InputFieldNumberFormat
-                        value={field.value ?? ''}
-                        onValueChange={(value) => field.onChange(value ?? '')}
-                        placeholder='0'
-                        prefix='Rp'
-                        className='min-w-[100px]'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='method'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Metode Pembayaran</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Pilih metode' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {paymentMethods.map((method) => (
-                          <SelectItem key={method.value} value={method.value}>
-                            {method.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Payment Method */}
-            <div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-3'>
               {/* Account */}
               <FormField
                 control={form.control}
                 name='account_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Akun (Bank/Kas)</FormLabel>
-                    <InvoicePaymentsCombobox
+                    <FormLabel>Dibayar dari</FormLabel>
+                    <ExpensesFormCombobox
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
                       placeholder='Pilih akun'
+                      type='account'
                     />
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {/* Reference No */}
-              <FormField
-                control={form.control}
-                name='reference_no'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nomor Referensi</FormLabel>
-                    <FormControl>
-                      <div className='relative'>
-                        <Input placeholder='Contoh: TRF-12345' {...field} />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name='tags'
@@ -219,27 +161,38 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                   </FormItem>
                 )}
               />
+              {/* Note */}
+              <FormField
+                control={form.control}
+                name='note'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Referensi
+                      <Tooltip>
+                        <TooltipProvider>
+                          <TooltipTrigger>
+                            <span className='text-muted-foreground text-xs'>
+                              (?)
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              Catatan internal untuk mempermudah pencarian
+                              (opsional)
+                            </p>
+                          </TooltipContent>
+                        </TooltipProvider>
+                      </Tooltip>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Referensi pembayaran...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-
-            {/* Note */}
-            <FormField
-              control={form.control}
-              name='note'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Catatan</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder='Catatan tambahan mengenai pembayaran ini...'
-                      className='min-h-[80px] resize-none'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className='flex justify-end'>
               <Button type='submit' disabled={isSubmitting}>
                 {isSubmitting ? 'Memproses...' : 'Simpan Pembayaran'}

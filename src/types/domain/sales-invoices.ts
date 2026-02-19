@@ -1,8 +1,8 @@
 import type { GlobalResponse } from '../api/global-response'
-import type { Account } from './account'
 import type { Company } from './company'
 import type { Contact } from './contact'
 import type { PaymentTerm } from './payment-term'
+import type { Payment } from './payments'
 import type { Product } from './product'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
@@ -29,16 +29,6 @@ export interface InvoiceItem extends GlobalResponse {
   line_total: number
 }
 
-export interface InvoicePayment extends GlobalResponse {
-  payment_date: Date
-  amount: number
-  method: string
-  reference_no: string
-  note: string
-  status: PaymentStatus
-  account: Account
-}
-
 export interface SalesInvoice extends GlobalResponse {
   company: Company
   customer: Contact
@@ -55,7 +45,7 @@ export interface SalesInvoice extends GlobalResponse {
   payment_status: PaymentStatus
   document_status: DocumentStatus
   sales_invoice_items: InvoiceItem[]
-  sales_invoice_payments: InvoicePayment[]
+  payments: Payment[]
   tags: (string | Tag)[]
   taxes: Tax[]
 }

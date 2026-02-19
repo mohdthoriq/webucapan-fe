@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import {
   type CreateAccountCategoryFormData,
   type UpdateAccountCategoryFormData,
@@ -22,7 +23,9 @@ export function useCreateAccountCategoryMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('account-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['account-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.ACCOUNT_CATEGORIES],
+      })
       toast.success('Kategori akun berhasil ditambahkan.')
       setOpen(null)
     },
@@ -50,7 +53,9 @@ export function useUpdateAccountCategoryMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('account-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['account-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.ACCOUNT_CATEGORIES],
+      })
       toast.success('Kategori akun berhasil diubah.')
       setOpen(null)
     },
@@ -78,7 +83,9 @@ export function useDeleteAccountCategoryMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('account-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['account-categories'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.ACCOUNT_CATEGORIES],
+      })
       toast.success('Kategori akun berhasil dihapus.')
       setOpen(null)
     },

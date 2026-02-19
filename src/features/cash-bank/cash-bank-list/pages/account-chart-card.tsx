@@ -9,7 +9,7 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts'
-import { formatNumber } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -69,7 +69,12 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
           <div className='flex flex-col justify-center gap-6 md:col-span-1'>
             <div className='flex flex-col'>
-              <span className='text-xl font-semibold'>
+              <span
+                className={cn(
+                  'text-xl font-semibold',
+                  data.statement_balance < 0 && 'text-red-500'
+                )}
+              >
                 {formatNumber(data.statement_balance)}
               </span>
               <span className='text-muted-foreground mt-1 text-sm'>
@@ -77,7 +82,12 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
               </span>
             </div>
             <div className='flex flex-col'>
-              <span className='text-xl font-semibold'>
+              <span
+                className={cn(
+                  'text-xl font-semibold',
+                  data.closing_balance < 0 && 'text-red-400'
+                )}
+              >
                 {formatNumber(data.closing_balance)}
               </span>
               <span className='text-muted-foreground mt-1 text-sm'>

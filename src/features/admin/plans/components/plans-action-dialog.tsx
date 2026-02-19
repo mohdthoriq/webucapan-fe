@@ -91,6 +91,24 @@ export function PlansActionDialog({
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name='code'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kode Plan</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan kode plan...'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
                 <FormField
                   control={form.control}

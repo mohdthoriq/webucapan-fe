@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import apiClient from '@/lib/api-client'
-import { useAuthStore } from '@/stores/auth-store'
 import type { ApiResponse, AuthMe } from '@/types'
+import { toast } from 'sonner'
+import { useAuthStore } from '@/stores/auth-store'
+import apiClient from '@/lib/api-client'
 import { type CompanySettingsFormData } from '../types/company-settings.schema'
+import { QUERY_KEY } from '@/constants/query-key'
 
 export function useCompanySettingsMutation(companyId: string) {
   const queryClient = useQueryClient()
@@ -21,8 +22,8 @@ export function useCompanySettingsMutation(companyId: string) {
     },
     onSuccess: async (_) => {
       toast.dismiss('company-settings-toast')
-      await queryClient.invalidateQueries({ queryKey: ['company', companyId] })
-      
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.COMPANY, companyId] })
+
       try {
         const response = await apiClient.get<ApiResponse<AuthMe>>(`auth/me`)
         auth.updateUser(response.data?.data)

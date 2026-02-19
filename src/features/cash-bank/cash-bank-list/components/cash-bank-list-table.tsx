@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import {
   type SortingState,
   type VisibilityState,
@@ -191,6 +192,11 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<TransactionData> }) {
+  const navigate = useNavigate()
+  const { paginationParams } = useCashBankLists()
+  const search = useSearch({ strict: false }) as Record<string, unknown>
+  const accountId = (paginationParams?.id || search?.id) as string
+
   return (
     <>
       {table.getRowModel().rows.map((row) => (
@@ -198,6 +204,15 @@ function TableRows({ table }: { table: TanstackTable<TransactionData> }) {
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
           className='group/row'
+          onClick={() =>
+            navigate({
+              to: '/cash-bank/detail',
+              search: {
+                accountId,
+                transactionId: row.original.id,
+              },
+            })
+          }
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell

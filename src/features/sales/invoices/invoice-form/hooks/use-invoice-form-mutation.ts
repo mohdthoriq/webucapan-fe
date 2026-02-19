@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { FinanceNumberType } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
@@ -19,7 +20,7 @@ export function useGenerateNextNumber() {
     },
     onSuccess: async (_) => {
       await queryClient.invalidateQueries({
-        queryKey: ['auto-numbering'],
+        queryKey: [QUERY_KEY.AUTO_NUMBERING],
       })
       toast.dismiss('invoices-form-toast')
     },
@@ -42,7 +43,7 @@ export function useCreateInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+        queryKey: [QUERY_KEY.SALES],
       })
       toast.success('Tagihan Penjualan berhasil ditambahkan.')
     },
@@ -69,7 +70,7 @@ export function useUpdateInvoiceMutation() {
     onSuccess: async (_) => {
       toast.dismiss('invoices-form-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['sales-invoice-lists', 'sales-invoice-list'],
+        queryKey: [QUERY_KEY.SALES],
       })
       toast.success('Tagihan Penjualan berhasil diubah.')
     },

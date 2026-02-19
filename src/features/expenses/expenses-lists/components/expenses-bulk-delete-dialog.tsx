@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import type { Expense } from '@/types'
+import { AlertCircle, Trash2 } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
@@ -21,30 +23,9 @@ export function ExpensesBulkDeleteDialog({
 }: ExpensesBulkDeleteDialogProps) {
   const [confirmValue, setConfirmValue] = useState('')
 
-  const summary = useMemo(() => {
-    const deletableCount = selectedRows.filter(
-      (expense) =>
-        expense.expense_payments.length === 0 &&
-        expense.payment_status === 'unpaid'
-    ).length
-    const nonDeletableCount = selectedRows.length - deletableCount
-
-    return {
-      deletableCount,
-      nonDeletableCount,
-      deletableIds: selectedRows
-        .filter(
-          (expense) =>
-            expense.expense_payments.length === 0 &&
-            expense.payment_status === 'unpaid'
-        )
-        .map((i) => i.id),
-    }
-  }, [selectedRows])
-
   const handleConfirm = () => {
     if (confirmValue === 'DELETE') {
-      onConfirm(summary.deletableIds)
+      onConfirm(selectedRows.map((i) => i.id))
       setConfirmValue('')
     }
   }
@@ -56,48 +37,54 @@ export function ExpensesBulkDeleteDialog({
         onOpenChange(v)
         if (!v) setConfirmValue('')
       }}
-      title='Hapus Multiple Biaya'
+      title={
+        <div className='flex items-center gap-2'>
+          <Trash2 className='text-destructive h-5 w-5' />
+          <span>Hapus Multiple Biaya</span>
+        </div>
+      }
       destructive
-      disabled={confirmValue !== 'DELETE' || summary.deletableCount === 0}
+      disabled={confirmValue !== 'DELETE' || selectedRows.length === 0}
       isLoading={isLoading}
       handleConfirm={handleConfirm}
+      confirmText='Hapus Biaya'
       desc={
         <div className='mt-2 space-y-4 text-start'>
-          <p className='text-muted-foreground text-sm'>
-            Hapus {selectedRows.length} biaya yang dipilih. Biaya yang sudah
-            memiliki transaksi pembayaran tidak dapat dihapus.
-          </p>
+          <Alert
+            variant='destructive'
+            className='bg-destructive/5 border-destructive/20'
+          >
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle className='text-sm font-semibold'>
+              Peringatan
+            </AlertTitle>
+            <AlertDescription className='text-xs opacity-90'>
+              Anda akan menghapus <strong>{selectedRows.length} biaya</strong>.
+              Tindakan ini permanen dan tidak dapat dibatalkan.
+            </AlertDescription>
+          </Alert>
 
-          <div className='divide-border overflow-hidden rounded-md border text-sm'>
-            <div className='bg-muted/50 grid grid-cols-[1fr_100px] border-b font-medium'>
-              <div className='p-2 px-3'>Status</div>
-              <div className='border-l p-2 text-center'>Jumlah</div>
-            </div>
-            <div className='grid grid-cols-[1fr_100px] border-b'>
-              <div className='p-2 px-3'>Bisa dihapus</div>
-              <div className='border-l p-2 text-center'>
-                {summary.deletableCount}
+          <div className='bg-muted/30 space-y-3 rounded-lg border p-4 font-medium'>
+            <div className='space-y-1.5'>
+              <Label
+                htmlFor='confirmDelete'
+                className='text-muted-foreground text-xs'
+              >
+                Konfirmasi penghapusan dengan mengetik kata di bawah ini:
+              </Label>
+              <div className='flex flex-col gap-2'>
+                <p className='text-destructive text-xs font-bold tracking-wider uppercase'>
+                  DELETE
+                </p>
+                <Input
+                  id='confirmDelete'
+                  placeholder='DELETE'
+                  value={confirmValue}
+                  onChange={(e) => setConfirmValue(e.target.value)}
+                  autoComplete='off'
+                />
               </div>
             </div>
-            <div className='grid grid-cols-[1fr_100px]'>
-              <div className='p-2 px-3'>Tidak bisa dihapus</div>
-              <div className='border-l p-2 text-center'>
-                {summary.nonDeletableCount}
-              </div>
-            </div>
-          </div>
-
-          <div className='space-y-2'>
-            <Label htmlFor='confirmDelete' className='text-xs font-bold'>
-              Ketik <span className='text-destructive'>DELETE</span> untuk
-              mengkonfirmasi
-            </Label>
-            <Input
-              id='confirmDelete'
-              placeholder='DELETE'
-              value={confirmValue}
-              onChange={(e) => setConfirmValue(e.target.value)}
-            />
           </div>
         </div>
       }

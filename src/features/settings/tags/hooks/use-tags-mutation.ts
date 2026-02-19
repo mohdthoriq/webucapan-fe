@@ -1,16 +1,17 @@
+import { useContext } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Tag } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { TagsContext, useTags } from '../components/tags-provider'
 import type {
   CreateTagFormData,
   DeleteTagFormData,
   UpdateTagFormData,
 } from '../types/tags.schema'
-import type { Tag } from '@/types'
-import { useContext } from 'react'
 
-export function useCreateTagMutation(onSuccess?: (data: Tag) => void ) {
+export function useCreateTagMutation(onSuccess?: (data: Tag) => void) {
   const context = useContext(TagsContext)
   const queryClient = useQueryClient()
   return useMutation({
@@ -23,7 +24,7 @@ export function useCreateTagMutation(onSuccess?: (data: Tag) => void ) {
     },
     onSuccess: async (data) => {
       toast.dismiss('tags-toast')
-      await queryClient.invalidateQueries({ queryKey: ['tags'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAGS] })
       toast.success('Tag berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -35,7 +36,7 @@ export function useCreateTagMutation(onSuccess?: (data: Tag) => void ) {
   })
 }
 
-export function useUpdateTagMutation(onSuccess?: (data: Tag) => void ) {
+export function useUpdateTagMutation(onSuccess?: (data: Tag) => void) {
   const context = useContext(TagsContext)
 
   const queryClient = useQueryClient()

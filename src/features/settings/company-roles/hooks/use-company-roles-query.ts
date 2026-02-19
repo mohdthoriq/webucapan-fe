@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { CompanyRole, PaginationApiResponse } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 
 interface RoleSettingsQueryParams {
   page?: number
@@ -17,7 +18,7 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
 
   return useQuery({
     queryKey: [
-      'company-roles',
+      QUERY_KEY.COMPANY_ROLES,
       params?.page,
       params?.limit,
       params?.company_id,

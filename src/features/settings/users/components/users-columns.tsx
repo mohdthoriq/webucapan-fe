@@ -7,7 +7,7 @@ import { DataTableRowActions } from './users-row-actions'
 
 export const usersColumns: ColumnDef<User>[] = [
   {
-    accessorKey: 'full_name',
+    accessorKey: 'Nama Lengkap',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Lengkap' />
     ),
@@ -28,7 +28,7 @@ export const usersColumns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'Email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
@@ -45,7 +45,7 @@ export const usersColumns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: 'role',
+    accessorKey: 'Peran',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Peran' />
     ),

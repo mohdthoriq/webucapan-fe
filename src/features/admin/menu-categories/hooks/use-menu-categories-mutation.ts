@@ -8,6 +8,7 @@ import {
   type UpdateMenuCategoriesFormData,
   type DeleteMenuCategoriesFormData,
 } from '../types/menu-categories.schema'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 export function useCreateMenuCategoryMutation() {
   const { setOpen } = useMenuCategories()
@@ -23,7 +24,7 @@ export function useCreateMenuCategoryMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('menu-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menu-categories'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENU_CATEGORIES] })
       toast.success('Kategori menu berhasil ditambahkan.')
       setOpen(null)
     },
@@ -55,7 +56,7 @@ export function useUpdateMenuCategoryMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('menu-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menu-categories'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENU_CATEGORIES] })
       toast.success('Kategori menu berhasil diubah.')
       setOpen(null)
     },
@@ -84,7 +85,7 @@ export function useDeleteMenuCategoryMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('menu-categories-toast')
-      await queryClient.invalidateQueries({ queryKey: ['menu-categories'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENU_CATEGORIES] })
       toast.success('Kategori menu berhasil dihapus.')
       setOpen(null)
     },

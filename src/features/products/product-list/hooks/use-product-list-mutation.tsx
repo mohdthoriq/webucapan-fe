@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY } from '@/constants/query-key'
 import { useProducts } from '../components/products-provider'
 import type {
   BulkDeleteProductFormData,
@@ -22,7 +23,7 @@ export function useDeleteProductMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('products-toast')
-      await queryClient.invalidateQueries({ queryKey: ['products'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] })
       toast.success('Produk berhasil dihapus.')
       setOpen(null)
     },
@@ -50,7 +51,7 @@ export function useBulkDeleteProductMutation() {
     onSuccess: async (_) => {
       toast.dismiss('products-toast')
       await queryClient.invalidateQueries({
-        queryKey: ['products'],
+        queryKey: [QUERY_KEY.PRODUCTS],
       })
       toast.success('Produk berhasil dihapus.')
     },
