@@ -1,4 +1,5 @@
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
+import { AccountsActionDialog } from '@/features/account/components/account-action-dialog'
 import { ContactsActionDialog } from '@/features/contacts/components/contacts-action-dialog'
 import { ProductCategoryActionDialog } from '@/features/product-categories/components/product-category-action-dialog'
 import { ProductActionDialog } from '@/features/products/product-list/components/products-action-dialog'
@@ -6,7 +7,6 @@ import { PaymentTermsActionDialog } from '@/features/settings/payment-terms/comp
 import { TagsActionDialog } from '@/features/settings/tags/components/tags-action-dialog'
 import { TaxesActionDialog } from '@/features/settings/taxes/components/taxes-action-dialog'
 import { UnitsActionDialog } from '@/features/settings/units/components/units-action-dialog'
-import { AccountsActionDialog } from '@/features/account/components/account-action-dialog'
 
 export function GlobalDialogProvider() {
   const { stack, closeDialog } = useGlobalDialogStore()
@@ -44,7 +44,7 @@ export function GlobalDialogProvider() {
             return <UnitsActionDialog key={id} {...commonProps} />
           case 'product-category':
             return <ProductCategoryActionDialog key={id} {...commonProps} />
-          case 'account': 
+          case 'account':
             return <AccountsActionDialog key={id} {...commonProps} />
           default:
             return null
