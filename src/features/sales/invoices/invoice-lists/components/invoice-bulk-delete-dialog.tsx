@@ -24,8 +24,7 @@ export function SalesInvoiceBulkDeleteDialog({
   const summary = useMemo(() => {
     const deletableCount = selectedRows.filter(
       (invoice) =>
-        invoice.sales_invoice_payments.length === 0 &&
-        invoice.payment_status === 'unpaid'
+        invoice.payments.length === 0 && invoice.payment_status === 'unpaid'
     ).length
     const nonDeletableCount = selectedRows.length - deletableCount
 
@@ -35,8 +34,7 @@ export function SalesInvoiceBulkDeleteDialog({
       deletableIds: selectedRows
         .filter(
           (invoice) =>
-            invoice.sales_invoice_payments.length === 0 &&
-            invoice.payment_status === 'unpaid'
+            invoice.payments.length === 0 && invoice.payment_status === 'unpaid'
         )
         .map((i) => i.id),
     }
