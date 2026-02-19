@@ -34,7 +34,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'code',
+    accessorKey: 'Kode',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kode' />
     ),
@@ -93,7 +93,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
     },
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'Kategori',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kategori' />
     ),
@@ -110,7 +110,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
     },
   },
   {
-    accessorKey: 'balance',
+    accessorKey: 'Saldo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Saldo' />
     ),

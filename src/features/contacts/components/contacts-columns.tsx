@@ -32,7 +32,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama' />
     ),
@@ -53,7 +53,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'Tipe Kontak',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tipe Kontak' />
     ),
@@ -70,7 +70,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'Perusahaan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Perusahaan' />
     ),
@@ -87,7 +87,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'email',
+    accessorKey: 'Email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
@@ -104,7 +104,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'phone',
+    accessorKey: 'Telepon',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Telepon' />
     ),
@@ -121,7 +121,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: 'address',
+    accessorKey: 'Alamat',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Alamat' />
     ),

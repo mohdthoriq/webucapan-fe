@@ -7,7 +7,7 @@ import { DataTableRowActions } from './payment-terms-row-actions'
 
 export const paymentTermsColumns: ColumnDef<PaymentTerm>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Termin Pembayaran' />
     ),
@@ -28,7 +28,7 @@ export const paymentTermsColumns: ColumnDef<PaymentTerm>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'days',
+    accessorKey: 'Lama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Lama' />
     ),

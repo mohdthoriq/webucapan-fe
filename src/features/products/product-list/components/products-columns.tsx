@@ -32,7 +32,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'sku',
+    accessorKey: 'SKU',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='SKU' />
     ),
@@ -53,7 +53,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama' />
     ),
@@ -70,7 +70,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'unit',
+    accessorKey: 'Satuan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Satuan' />
     ),
@@ -87,7 +87,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'product_category',
+    accessorKey: 'Kategori',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Kategori' />
     ),

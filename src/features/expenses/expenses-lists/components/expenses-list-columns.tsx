@@ -38,7 +38,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: 'expense_number',
+    accessorKey: 'Nomor',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='No. Biaya' />
     ),
@@ -66,7 +66,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'contact',
+    accessorKey: 'Penerima',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Penerima' />
     ),
@@ -84,7 +84,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'Tanggal',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tanggal Expense' />
     ),
@@ -102,7 +102,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: 'due_date',
+    accessorKey: 'Jatuh Tempo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Jatuh Tempo' />
     ),
@@ -120,7 +120,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: 'payment_status',
+    accessorKey: 'Status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
@@ -139,7 +139,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: 'outstanding',
+    accessorKey: 'Sisa Tagihan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Sisa Tagihan' />
     ),
@@ -157,7 +157,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: 'total',
+    accessorKey: 'Total',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Total' />
     ),

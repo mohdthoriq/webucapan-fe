@@ -7,7 +7,7 @@ import { DataTableRowActions } from './tags-row-actions'
 
 export const tagsColumns: ColumnDef<Tag>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Tag' />
     ),
@@ -28,7 +28,7 @@ export const tagsColumns: ColumnDef<Tag>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'description',
+    accessorKey: 'Deskripsi',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Deskripsi' />
     ),
