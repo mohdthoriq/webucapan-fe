@@ -45,7 +45,9 @@ export function RoleFormPage() {
 
   if (roleWithPermissions && roleWithPermissions.id !== prevRoleId) {
     setPrevRoleId(roleWithPermissions.id)
-    const perms = roleWithPermissions.role_permissions?.map(p => p.permission_id) || []
+    const rolePermissions = roleWithPermissions.role_permissions?.map(p => p.permission_id) || []
+    const directPermissions = roleWithPermissions.permissions?.map((p) => p.id) || []
+    const perms = rolePermissions.length > 0 ? rolePermissions : directPermissions
     setSelectedIds(perms)
   }
 
@@ -73,22 +75,19 @@ export function RoleFormPage() {
 
   const handleSaveAll = async (data: CreateCompanyRoleSettingsFormData) => {
     try {
-      // 1. Create or Update the role
-      const response = await onSubmit(data)
-      const roleId = isEdit ? currentRowId : response?.data?.id
-
-      if (roleId) {
-        // 2. Update permissions
-        await updatePermissionsMutation.mutateAsync({
-          id: roleId,
-          permissionIds: selectedIds
-        })
-        
-        toast.success(isEdit ? 'Peran dan hak akses berhasil diperbarui.' : 'Peran dan hak akses berhasil disimpan.')
-        navigate({ to: '/settings/company-roles' })
+      // Explicitly include selectedIds in the data sent to onSubmit
+      const submissionData = {
+        ...data,
+        permission_ids: selectedIds,
       }
+
+      // 1. Create or Update the role (including permissions if backend supports it in PATCH/POST)
+      await onSubmit(submissionData)
+      
+      toast.success(isEdit ? 'Peran berhasil diperbarui.' : 'Peran berhasil disimpan.')
+      navigate({ to: '/settings/company-roles' })
     } catch (_) {
-      toast.error('Gagal menyimpan peran atau hak akses.')
+      // Errors are handled by the hooks
     }
   }
 

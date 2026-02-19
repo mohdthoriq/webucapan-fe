@@ -45,7 +45,11 @@ export function CompanyRolesPermissionsDialog({ open, onOpenChange }: Props) {
             key={`${roleId}-${open}`}
             roleId={roleId!}
             tree={tree}
-            initialSelectedIds={roleData?.role_permissions?.map((rp) => rp.permission_id) || []}
+            initialSelectedIds={
+              (roleData?.role_permissions?.length ?? 0) > 0 
+                ? roleData?.role_permissions?.map((rp) => rp.permission_id) || []
+                : roleData?.permissions?.map((p) => p.id) || []
+            }
             onSuccess={() => onOpenChange(false)}
             onCancel={() => onOpenChange(false)}
           />
