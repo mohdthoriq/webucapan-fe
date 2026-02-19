@@ -179,7 +179,7 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
           {expense.expense_items.map((item, _) => (
             <div key={item.id} className='flex flex-col border-b py-4'>
               <div className='flex items-center justify-between'>
-                <span className='font-medium text-blue-500'>
+                <span className='text-primary cursor-pointer font-semibold hover:underline'>
                   {item.account?.code
                     ? item.account?.code + '-' + item.account?.name
                     : item.account?.name}

@@ -181,7 +181,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
-              <TableRow className='hover:bg-transparent'>
+              <TableRow className='bg-muted hover:bg-transparent'>
                 <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
                   Item
                 </TableHead>
@@ -207,9 +207,14 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             </TableHeader>
             <TableBody>
               {invoice.purchase_invoice_items.map((item, idx) => (
-                <TableRow key={idx} className='hover:bg-transparent'>
+                <TableRow
+                  key={idx}
+                  className='hover:bg-muted/80 transition-colors'
+                >
                   <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.product?.name || '-'}</p>
+                    <p className='text-primary cursor-pointer font-semibold hover:underline'>
+                      {item.product?.name || '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='font-semibold'>{item.description || '-'}</p>
@@ -223,7 +228,9 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     </p>
                   </TableCell>
                   <TableCell className='p-4 text-center align-top'>
-                    <p className='text-sm font-medium'>{item.quantity || '-'}</p>
+                    <p className='text-sm font-medium'>
+                      {item.quantity || '-'}
+                    </p>
                   </TableCell>
                   <TableCell className='p-4 align-top'>
                     <p className='text-sm font-medium'>
