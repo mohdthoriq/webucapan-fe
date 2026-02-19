@@ -30,7 +30,7 @@ export function useCompanySettingsForm({
   const isEdit = !!currentRow
   const form = useForm<CreateCompanyRoleSettingsFormData>({
     resolver: zodResolver(createCompanyRoleSettingsSchema),
-    defaultValues: isEdit
+    values: isEdit
       ? {
           name: currentRow?.name ?? '',
           description: currentRow?.description ?? '',

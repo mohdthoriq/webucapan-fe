@@ -28,26 +28,17 @@ export function CompanyRolesForm() {
   
   const { data: tree, isLoading: isTreeLoading } = usePermissionTreeQuery()
   
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [expandedIds, setExpandedIds] = useState<string[]>([])
-  const [prevRoleId, setPrevRoleId] = useState<string | undefined>(undefined)
 
-  if (roleWithPermissions && roleWithPermissions.id !== prevRoleId) {
-    setPrevRoleId(roleWithPermissions.id)
-    const rolePermissions = roleWithPermissions.role_permissions?.map(p => p.permission_id) || []
-    const directPermissions = roleWithPermissions.permissions?.map((p) => p.id) || []
-    const perms = rolePermissions.length > 0 ? rolePermissions : directPermissions
-    setSelectedIds(perms)
+  const selectedIds = form.watch('permission_ids') || []
+  const setSelectedIds = (val: React.SetStateAction<string[]>) => {
+    const nextVal = typeof val === 'function' ? (val as (prev: string[]) => string[])(selectedIds) : val
+    form.setValue('permission_ids', nextVal, { shouldDirty: true, shouldValidate: true })
   }
 
   const handleSaveAll = async (data: CreateCompanyRoleSettingsFormData) => {
     try {
-      const submissionData = {
-        ...data,
-        permission_ids: selectedIds,
-      }
-
-      await onSubmit(submissionData)
+      await onSubmit(data)
       
       toast.success(isEdit ? 'Peran berhasil diperbarui.' : 'Peran berhasil disimpan.')
       navigate({ to: '/settings/company-roles' })
