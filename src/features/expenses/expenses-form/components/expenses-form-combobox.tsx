@@ -9,7 +9,7 @@ import {
 import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { ComboboxBase } from '../../../../components/combobox-base'
 
-interface InvoiceFormComboboxProps {
+interface ExpensesFormComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
@@ -23,7 +23,7 @@ interface InvoiceFormComboboxProps {
 export function ExpensesFormCombobox({
   type = 'contact',
   ...props
-}: InvoiceFormComboboxProps) {
+}: ExpensesFormComboboxProps) {
   if (type === 'account') {
     return <AccountCombobox {...props} />
   }
@@ -37,7 +37,7 @@ function ContactCombobox({
   limit = 20,
   disabled,
   action,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<ExpensesFormComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -97,7 +97,7 @@ function AccountCombobox({
   limit = 20,
   disabled,
   action,
-}: Omit<InvoiceFormComboboxProps, 'type'>) {
+}: Omit<ExpensesFormComboboxProps, 'type'>) {
   const {
     allItems,
     isLoading,
@@ -122,7 +122,7 @@ function AccountCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari produk...'
+      searchPlaceholder='Cari akun...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -135,9 +135,11 @@ function AccountCombobox({
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
-          <span className='font-medium'>{item.name}</span>
+          <span className='font-medium'>
+            {item.code} - {item.name}
+          </span>
           <span className='text-muted-foreground text-xs'>
-            {item.name} - {item.code}
+            {item.category.name}
           </span>
         </div>
       )}

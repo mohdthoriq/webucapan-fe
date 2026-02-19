@@ -28,8 +28,8 @@ import {
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import { ExpensesFormCombobox } from '../../expenses-form/components/expenses-form-combobox'
 import { useExpensesPaymentsForm } from '../hooks/use-expenses-payments-form'
-import { InvoicePaymentsCombobox } from './expenses-payments-combobox'
 
 interface ExpensesPaymentsCardProps {
   expense: Expense
@@ -127,10 +127,11 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Dibayar dari</FormLabel>
-                    <InvoicePaymentsCombobox
+                    <ExpensesFormCombobox
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
                       placeholder='Pilih akun'
+                      type='account'
                     />
                     <FormMessage />
                   </FormItem>
