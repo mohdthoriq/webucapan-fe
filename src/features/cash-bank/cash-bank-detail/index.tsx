@@ -70,7 +70,7 @@ export function CashBankDetail() {
             </div>
             <div className='mr-4 flex gap-2'>
               <Button
-                variant='ghost'
+                variant='outline'
                 onClick={() => history.back()}
                 className='gap-2'
               >
