@@ -2,8 +2,9 @@
 
 import { format } from 'date-fns'
 import { useWatch } from 'react-hook-form'
-import { FinanceNumberType, type SalesInvoice } from '@/types'
+import { FinanceNumberType, type Tag, type SalesInvoice } from '@/types'
 import { CalendarIcon } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
@@ -24,14 +25,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import {
   useCheckFinanceNumberQuery,
   useDefaultNumberingQuery,
@@ -47,6 +49,10 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
   const { data: invoicePaymentsAutoNumbering } = useDefaultNumberingQuery({
     type: FinanceNumberType.sales_payment,
   })
+
+  const openDialog = useGlobalDialogStore((state) => state.openDialog)
+
+  const { data: tags } = useTagsQuery()
 
   const { form, onSubmit, isSubmitting } = useInvoicePaymentsForm({
     invoiceId: invoice.id,
@@ -79,12 +85,6 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
 
   if (invoice.payment_status === 'paid') return null
 
-  const paymentMethods = [
-    { label: 'Tunai (Cash)', value: 'cash' },
-    { label: 'Transfer Bank', value: 'bank_transfer' },
-    { label: 'E-Wallet', value: 'ewallet' },
-  ]
-
   return (
     <Card>
       <CardHeader>
@@ -98,6 +98,75 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
             className='space-y-4 pt-4'
           >
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              {/* Amount */}
+              <FormField
+                control={form.control}
+                name='amount'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Dibayar</FormLabel>
+                    <FormControl>
+                      <InputFieldNumberFormat
+                        value={field.value ?? ''}
+                        onValueChange={(value) => field.onChange(value ?? '')}
+                        placeholder='0'
+                        prefix='Rp'
+                        className='min-w-[100px]'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Reference No */}
+              <FormField
+                control={form.control}
+                name='reference_no'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nomor Transaksi</FormLabel>
+                    <FormControl>
+                      <div className='relative'>
+                        <Input placeholder='Contoh: TRF-12345' {...field} />
+                        {isCheckingNumber && (
+                          <div className='absolute top-1/2 right-2 -translate-y-1/2'>
+                            <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    {numberIsTaken || hasCheckError ? (
+                      <p className='text-destructive text-[0.8rem] font-medium'>
+                        {checkResult?.message ||
+                          (hasCheckError
+                            ? 'Gagal memeriksa nomor referensi'
+                            : 'Nomor referensi sudah digunakan')}
+                      </p>
+                    ) : (
+                      <FormMessage />
+                    )}
+                  </FormItem>
+                )}
+              />
+
+              {/* Account */}
+              <FormField
+                control={form.control}
+                name='account_id'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dibayar ke</FormLabel>
+                    <InvoicePaymentsCombobox
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                      placeholder='Pilih akun'
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* Payment Date */}
               <FormField
                 control={form.control}
@@ -140,25 +209,68 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                   </FormItem>
                 )}
               />
-
-              {/* Amount */}
+              {/* Note */}
               <FormField
                 control={form.control}
-                name='amount'
+                name='note'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {invoice.payment_status === 'paid'
-                        ? 'Jumlah Pembayaran'
-                        : 'Pembayaran Sisa'}
+                      Referensi
+                      <Tooltip>
+                        <TooltipProvider>
+                          <TooltipTrigger>
+                            <span className='text-muted-foreground text-xs'>
+                              (?)
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              Catatan internal untuk mempermudah pencarian
+                              (opsional)
+                            </p>
+                          </TooltipContent>
+                        </TooltipProvider>
+                      </Tooltip>
                     </FormLabel>
                     <FormControl>
-                      <InputFieldNumberFormat
-                        value={field.value ?? ''}
-                        onValueChange={(value) => field.onChange(value ?? '')}
-                        placeholder='0'
-                        prefix='Rp'
-                        className='min-w-[100px]'
+                      <Input placeholder='Referensi pembayaran...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name='tags'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tag</FormLabel>
+                    <FormControl>
+                      <MultiSelectDropdown
+                        options={
+                          tags?.data.map((tag) => ({
+                            label: tag.name,
+                            value: tag.id,
+                          })) || []
+                        }
+                        selected={field.value || []}
+                        onChange={field.onChange}
+                        placeholder='Pilih tag'
+                        action={
+                          <FormShortcutButton
+                            title='Tambah Tag Baru'
+                            onClick={() =>
+                              openDialog('tag', {
+                                onSuccess: (data: Tag) => {
+                                  if (data?.id) {
+                                    field.onChange(data.id)
+                                  }
+                                },
+                              })
+                            }
+                          />
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -166,102 +278,6 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                 )}
               />
             </div>
-
-            {/* Payment Method */}
-            <div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-3'>
-              <FormField
-                control={form.control}
-                name='method'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Metode Pembayaran</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Pilih metode' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {paymentMethods.map((method) => (
-                          <SelectItem key={method.value} value={method.value}>
-                            {method.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Account */}
-              <FormField
-                control={form.control}
-                name='account_id'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dibayar ke</FormLabel>
-                    <InvoicePaymentsCombobox
-                      value={field.value}
-                      onValueChange={(value) => field.onChange(value)}
-                      placeholder='Pilih akun'
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Reference No */}
-              <FormField
-                control={form.control}
-                name='reference_no'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nomor Referensi</FormLabel>
-                    <FormControl>
-                      <div className='relative'>
-                        <Input placeholder='Contoh: TRF-12345' {...field} />
-                        {isCheckingNumber && (
-                          <div className='absolute top-1/2 right-2 -translate-y-1/2'>
-                            <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
-                          </div>
-                        )}
-                      </div>
-                    </FormControl>
-                    {numberIsTaken || hasCheckError ? (
-                      <p className='text-destructive text-[0.8rem] font-medium'>
-                        {checkResult?.message ||
-                          (hasCheckError
-                            ? 'Gagal memeriksa nomor referensi'
-                            : 'Nomor referensi sudah digunakan')}
-                      </p>
-                    ) : (
-                      <FormMessage />
-                    )}
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Note */}
-            <FormField
-              control={form.control}
-              name='note'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Catatan</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder='Catatan tambahan mengenai pembayaran ini...'
-                      className='min-h-[80px] resize-none'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className='flex justify-end'>
               <Button type='submit' disabled={isSubmitting}>
                 {isSubmitting ? 'Memproses...' : 'Simpan Pembayaran'}

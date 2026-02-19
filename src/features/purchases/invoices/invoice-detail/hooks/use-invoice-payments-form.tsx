@@ -35,10 +35,11 @@ export function useInvoicePaymentsForm({
     defaultValues: {
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: '',
       account_id: undefined,
       reference_no: defaultNumber?.format || '',
       note: '',
+      tags: undefined,
+      purchase_invoice_id: invoiceId,
     },
   })
 
@@ -59,10 +60,11 @@ export function useInvoicePaymentsForm({
     form.reset({
       payment_date: new Date(),
       amount: defaultAmount || 0,
-      method: '',
       account_id: undefined,
       reference_no: defaultNumber?.format || '',
       note: '',
+      tags: undefined,
+      purchase_invoice_id: invoiceId,
     })
     generateNextNumber.mutate(FinanceNumberType.purchase_payment)
   }

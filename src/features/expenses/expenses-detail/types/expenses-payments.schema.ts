@@ -3,11 +3,10 @@ import { z } from 'zod'
 export const expensesPaymentsSchema = z.object({
   payment_date: z.date(),
   amount: z.number().min(1, 'Jumlah harus lebih dari 0'),
-  method: z.string().min(1, 'Metode pembayaran harus dipilih'),
   account_id: z.uuid('Akun harus dipilih'),
-  reference_no: z.string().optional(),
   note: z.string().optional(),
   tags: z.array(z.uuid()).nullable(),
+  expense_id: z.uuid(),
 })
 
 export type ExpensesPaymentsFormData = z.infer<typeof expensesPaymentsSchema>
