@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { usePrintExpensesQuery } from '../hooks/use-print-expenses-invoice-query'
 import { ExpenseDetailRowActions } from './expenses-detail-row-actions'
+// import { useNavigate } from '@tanstack/react-router'
 
 interface ExpensesDetailReceiptProps {
   expense: Expense
@@ -16,6 +17,8 @@ interface ExpensesDetailReceiptProps {
 
 export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
   const { refetch, isFetching: isPrinting } = usePrintExpensesQuery(expense.id)
+
+  // const navigate = useNavigate()
 
   const handlePrint = async () => {
     const { data } = await refetch()
@@ -255,6 +258,15 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
               <div
                 key={payment.id}
                 className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
+                // onClick={() =>
+                //   navigate({
+                //     to: '/cash-bank/detail',
+                //     search: {
+                //       accountId: payment.account.id,
+                //       transactionId: payment.id,
+                //     },
+                //   })
+                // }
               >
                 <span>Pembayaran {payment.account.name}</span>
                 <span>

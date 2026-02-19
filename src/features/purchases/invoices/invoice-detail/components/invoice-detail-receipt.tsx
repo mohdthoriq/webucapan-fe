@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+// import { useNavigate } from '@tanstack/react-router'
 import type { PurchaseInvoice } from '@/types'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
@@ -26,6 +27,8 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
   const { refetch, isFetching: isPrinting } = usePrintPurchaseInvoiceQuery(
     invoice.id
   )
+
+  // const navigate = useNavigate()
 
   const handlePrint = async () => {
     const { data } = await refetch()
@@ -322,7 +325,16 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             {invoice.payments?.map((payment) => (
               <div
                 key={payment.id}
-                className='text-primary hover:underline cursor-pointer flex justify-between border-b pb-2 text-sm font-medium'
+                className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
+                // onClick={() =>
+                //   navigate({
+                //     to: '/cash-bank/detail',
+                //     search: {
+                //       accountId: payment.account.id,
+                //       transactionId: payment.id,
+                //     },
+                //   })
+                // }
               >
                 <span>Pembayaran {payment.account.name}</span>
                 <span>

@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+// import { useNavigate } from '@tanstack/react-router'
 import { type Payment } from '@/types'
 import { id } from 'date-fns/locale'
 import { formatCurrency } from '@/lib/utils'
@@ -21,6 +22,8 @@ export function TransactionTable({
   payments,
   currency,
 }: TransactionTableProps) {
+  // const navigate = useNavigate()
+
   if (!payments || payments.length === 0) return null
 
   return (
@@ -48,13 +51,33 @@ export function TransactionTable({
                 <TableRow
                   key={payment.id}
                   className='hover:bg-muted/30 transition-colors'
+                  // onClick={() =>
+                  //   navigate({
+                  //     to: '/cash-bank/detail',
+                  //     search: {
+                  //       accountId: payment.account.id,
+                  //       transactionId: payment.id,
+                  //     },
+                  //   })
+                  // }
                 >
                   <TableCell className='p-4 font-medium'>
                     {format(new Date(payment.payment_date), 'dd MMMM yyyy', {
                       locale: id,
                     })}
                   </TableCell>
-                  <TableCell className='text-muted-foreground p-4'>
+                  <TableCell
+                    // onClick={() =>
+                    //   navigate({
+                    //     to: '/cash-bank/detail',
+                    //     search: {
+                    //       accountId: payment.account.id,
+                    //       transactionId: payment.id,
+                    //     },
+                    //   })
+                    // }
+                    className='text-muted-foreground p-4'
+                  >
                     {payment.reference_no || '-'}
                   </TableCell>
                   <TableCell className='text-primary cursor-pointer p-4 hover:underline'>
