@@ -190,7 +190,7 @@ export default function BalanceSheetPage() {
             <Printer className='h-4 w-4' />
             Cetak
           </Button>
-          <Button variant={'link'} onClick={() => history.back()}>
+          <Button variant={'outline'} onClick={() => history.back()}>
             <ArrowLeft className='h-4 w-4' />
             Kembali
           </Button>

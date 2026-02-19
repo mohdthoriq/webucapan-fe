@@ -1,8 +1,7 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { TransactionData } from '@/types'
-import { cn, formatNumber, getStatusStyles } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import { cn, formatNumber } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { NavigationCell } from './cash-bank-list-nomor-cell'
@@ -121,21 +120,21 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       className: 'w-full',
     },
   },
-  {
-    accessorKey: 'Status',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
-    ),
-    cell: ({ row }) => {
-      const { status } = row.original
-      return (
-        <div className='p-2'>
-          <Badge className={cn(getStatusStyles(status))}>{status}</Badge>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
+  // {
+  //   accessorKey: 'Status',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Status' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { status } = row.original
+  //     return (
+  //       <div className='p-2'>
+  //         <Badge className={cn(getStatusStyles(status))}>{status}</Badge>
+  //       </div>
+  //     )
+  //   },
+  //   meta: {
+  //     className: 'w-full',
+  //   },
+  // },
 ]
