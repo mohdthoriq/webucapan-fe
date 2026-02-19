@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, type UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ApiResponse, CompanyRole } from '@/types'
 import { useAuthStore } from '@/stores/auth-store'
@@ -19,22 +19,37 @@ type useCompanySettingsFormProps = {
 
 export function useCompanySettingsForm({
   currentRow,
-}: useCompanySettingsFormProps) {
+}: useCompanySettingsFormProps): {
+  form: UseFormReturn<CreateCompanyRoleSettingsFormData>
+  onSubmit: (data: CreateCompanyRoleSettingsFormData) => Promise<ApiResponse<CompanyRole> | void>
+  isSubmitting: boolean
+  errorMessage: string | null
+} {
   const company = useAuthStore((state) => state.auth.user?.company)
 
   const isEdit = !!currentRow
   const form = useForm<CreateCompanyRoleSettingsFormData>({
     resolver: zodResolver(createCompanyRoleSettingsSchema),
-    defaultValues: isEdit
+    values: isEdit
       ? {
-          name: currentRow?.name,
-          description: currentRow?.description,
-          company_id: currentRow?.company?.id ?? company?.id ?? '',
+          name: currentRow?.name ?? '',
+          description: currentRow?.description ?? '',
+          company_id: currentRow?.company_id ?? company?.id ?? '',
+          system_role: currentRow?.system_role ?? false,
+          is_default: currentRow?.is_default ?? false,
+          is_pos: currentRow?.is_pos ?? false,
+          position: currentRow?.position ?? 0,
+          permission_ids: (currentRow as unknown as { role_permissions?: Array<{permission_id: string}> })?.role_permissions?.map((p) => p.permission_id) ?? [],
         }
       : {
           company_id: company?.id ?? '',
           name: '',
           description: '',
+          system_role: false,
+          is_default: false,
+          is_pos: false,
+          position: 0,
+          permission_ids: [],
         },
   })
 
@@ -55,14 +70,11 @@ export function useCompanySettingsForm({
     if (isEdit && currentRow) {
       const updateData: UpdateCompanyRoleSettingsFormData = {
         id: currentRow.id,
-        name: data.name,
-        description: data.description,
+        ...data
       }
-      await updateMutation.mutateAsync(updateData)
-      form.reset()
+      return await updateMutation.mutateAsync(updateData)
     } else {
-      await createMutation.mutateAsync(data)
-      form.reset()
+      return await createMutation.mutateAsync(data)
     }
   }
 
@@ -71,5 +83,5 @@ export function useCompanySettingsForm({
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     errorMessage,
-  }
+  } 
 }

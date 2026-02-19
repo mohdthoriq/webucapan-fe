@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useNavigate } from '@tanstack/react-router'
 import { useCompanyRoles } from './company-roles-provider'
 
 type DataTableRowActionsProps = {
@@ -16,6 +17,7 @@ type DataTableRowActionsProps = {
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const navigate = useNavigate()
   const role = row.original
   const { setOpen, setCurrentRow } = useCompanyRoles()
 
@@ -45,20 +47,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(role)
-              setOpen('edit')
+              navigate({
+                to: '/settings/company-roles/edit',
+                state: { currentRowId: role.id } as Record<string, unknown>,
+              })
             }}
             disabled={role?.is_default}
           >
             Edit
-          </DropdownMenuItem>
-           <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(role)
-              setOpen('permissions')
-            }}
-            disabled={role?.is_default}
-          >
-            Manage Permissions
           </DropdownMenuItem>
             <DropdownMenuSeparator />
           <DropdownMenuItem

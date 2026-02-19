@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CompanyRolesDialogs } from './components/company-roles-dialogs'
 import {
-  useCompanyRoles,
   CompanyRolesProvider,
 } from './components/company-roles-provider'
 import { CompanyRolesTable } from './components/company-roles-table'
@@ -14,7 +13,6 @@ const route = getRouteApi('/_authenticated/settings/company-roles/')
 function CompanyRolesContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = useCompanyRoles()
 
   return (
     <Card>
@@ -33,7 +31,7 @@ function CompanyRolesContent() {
               <Button variant={'link'} onClick={() => history.go(-1)}>
                 Kembali
               </Button>
-              <Button onClick={() => setOpen('add')}>
+              <Button onClick={() => navigate({ to: '/settings/company-roles/add' })}>
                 <Plus className='mr-2 h-4 w-4' />
                 Tambah Peran
               </Button>

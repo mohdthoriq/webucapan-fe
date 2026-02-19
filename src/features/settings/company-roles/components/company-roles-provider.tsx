@@ -3,7 +3,7 @@ import type { CompanyRole, PaginationMeta } from '@/types';
 import useDialogState from '@/hooks/use-dialog-state';
 import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query'
 
-type RolesDialogType = 'view' | 'edit' | 'add' | 'delete' | 'permissions'
+type RolesDialogType = 'view' | 'delete'
 
 type RolesContextType = {
   open: RolesDialogType | null
@@ -17,7 +17,8 @@ type RolesContextType = {
   paginationParams?: { page?: number; limit?: number }
 }
 
-const RolesContext = React.createContext<RolesContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const RolesContext = React.createContext<RolesContextType | null>(null)
 
 export function CompanyRolesProvider({
   children,

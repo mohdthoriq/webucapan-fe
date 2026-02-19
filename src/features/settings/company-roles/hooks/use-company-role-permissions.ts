@@ -16,7 +16,8 @@ export interface RolePermission {
 }
 
 export interface RoleWithPermissions extends CompanyRole {
-  role_permissions: RolePermission[]
+  role_permissions?: RolePermission[]
+  permissions?: Permission[]
 }
 
 export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
