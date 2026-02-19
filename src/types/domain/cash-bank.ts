@@ -11,6 +11,7 @@ export interface TransactionData extends GlobalResponse {
   date: Date
   description: string
   reference: string
+  ref_number: string
   tags: (string | Tag)[]
   received: number
   spent: number

@@ -39,7 +39,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { type } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{type.name}</LongText>
         </div>
       )
@@ -77,7 +77,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { company } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{company.name || '-'}</LongText>
         </div>
       )
@@ -94,7 +94,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { email } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{email || '-'}</LongText>
         </div>
       )
@@ -111,7 +111,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { phone } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{phone || '-'}</LongText>
         </div>
       )
@@ -128,7 +128,7 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       const { address } = row.original
       return (
-        <div className='w-full overflow-hidden'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{address || '-'}</LongText>
         </div>
       )
