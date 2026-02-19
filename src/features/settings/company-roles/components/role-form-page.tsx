@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { usePermissionTreeQuery, type PermissionTreeItem } from '@/features/admin/plans/hooks/use-permission-tree-query'
-import { useUpdateCompanyRolePermissionsMutation, useCompanyRolePermissionsQuery } from '../hooks/use-company-role-permissions'
+import { useCompanyRolePermissionsQuery } from '../hooks/use-company-role-permissions'
 import { useCompanySettingsForm } from '../hooks/use-company-roles-form'
 import { toast } from 'sonner'
 import type { CreateCompanyRoleSettingsFormData } from '../types/company-roles.schema'
@@ -51,7 +51,6 @@ export function RoleFormPage() {
     setSelectedIds(perms)
   }
 
-  const updatePermissionsMutation = useUpdateCompanyRolePermissionsMutation()
 
   const handleToggle = (id: string, children: PermissionTreeItem[]) => {
     const allChildIds = getAllChildIds(children)
@@ -213,7 +212,7 @@ export function RoleFormPage() {
         <Button 
           type='submit' 
           form='role-form' 
-          disabled={isSubmitting || updatePermissionsMutation.isPending}
+          disabled={isSubmitting}
         >
           <Save className='mr-2 h-4 w-4' />
           {isEdit ? 'Perbarui Peran & Hak Akses' : 'Simpan Peran & Hak Akses'}
