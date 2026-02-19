@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { RoleFormPage } from '@/features/settings/company-roles/components/role-form-page'
+import { CompanyRolesFormPage } from '@/features/settings/company-roles/pages/company-roles-form-page'
 
 export const Route = createFileRoute(
   '/_authenticated/settings/company-roles/add/'
 )({
-  component: RoleFormPage,
+  component: CompanyRolesFormPage,
 })
