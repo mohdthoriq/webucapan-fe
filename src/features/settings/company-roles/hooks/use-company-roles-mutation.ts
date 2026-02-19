@@ -39,10 +39,11 @@ export function useUpdateCompanyRoleMutation() {
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateCompanyRoleSettingsFormData) => {
+    mutationFn: async (payload: UpdateCompanyRoleSettingsFormData) => {
+      const { id, ...data } = payload
       const response = await apiClient.patch(
-        `roles/${credentials.id}`,
-        credentials
+        `roles/${id}`,
+        data
       )
       return response.data
     },

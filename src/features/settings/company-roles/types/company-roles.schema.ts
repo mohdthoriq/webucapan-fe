@@ -1,9 +1,14 @@
 import { z } from 'zod'
 
 export const createCompanyRoleSettingsSchema = z.object({
+  company_id: z.string(),
   name: z.string(),
   description: z.string(),
-  company_id: z.string(),
+  system_role: z.boolean(),
+  is_default: z.boolean(),
+  is_pos: z.boolean(),
+  position: z.number().int().optional(),
+  permission_ids: z.array(z.string()).optional(),
 })
 
 export type CreateCompanyRoleSettingsFormData = z.infer<
@@ -11,9 +16,15 @@ export type CreateCompanyRoleSettingsFormData = z.infer<
 >
 
 export const updateCompanyRoleSettingsSchema = z.object({
-  id: z.uuid(),
-  name: z.string(),
-  description: z.string(),
+  id: z.string(),
+  company_id: z.string().optional(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  system_role: z.boolean().optional(),
+  is_default: z.boolean().optional(),
+  is_pos: z.boolean().optional(),
+  position: z.number().int().optional(),
+  permission_ids: z.array(z.string()).optional(),
 })
 
 export type UpdateCompanyRoleSettingsFormData = z.infer<

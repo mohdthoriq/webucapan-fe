@@ -7,6 +7,9 @@ interface RoleSettingsQueryParams {
   page?: number
   limit?: number
   company_id?: string
+  name?: string
+  is_system_role?: boolean
+  order?: 'asc' | 'desc'
 }
 
 export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
@@ -18,6 +21,9 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
       params?.page,
       params?.limit,
       params?.company_id,
+      params?.name,
+      params?.is_system_role,
+      params?.order,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams()
@@ -27,6 +33,15 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
       }
       if (params?.limit !== undefined) {
         queryParams.append('limit', params.limit.toString())
+      }
+      if (params?.name !== undefined) {
+        queryParams.append('name', params.name)
+      }
+      if (params?.is_system_role !== undefined) {
+        queryParams.append('is_system_role', params.is_system_role.toString())
+      }
+      if (params?.order !== undefined) {
+        queryParams.append('order', params.order)
       }
       if (params?.company_id !== undefined) {
         queryParams.append('company_id', params.company_id)

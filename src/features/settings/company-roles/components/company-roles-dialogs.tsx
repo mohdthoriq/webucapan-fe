@@ -1,8 +1,6 @@
 import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
 import { useDeleteCompanyRoleMutation } from '../hooks/use-company-roles-mutation'
-import { CompanyRolesActionDialog } from './company-roles-action-dialog'
 import { CompanyRolesDetailDialog } from './company-roles-detail-dialog'
-import { CompanyRolesPermissionsDialog } from './company-roles-permissions-dialog'
 import { useCompanyRoles } from './company-roles-provider'
 
 export function CompanyRolesDialogs() {
@@ -15,18 +13,6 @@ export function CompanyRolesDialogs() {
 
       {currentRow && (
         <>
-          <CompanyRolesActionDialog
-            key={`role-edit-${currentRow.id}`}
-            open={open === 'edit'}
-            onOpenChange={() => {
-              setOpen('edit')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
-            }}
-            currentRow={currentRow}
-          />
-
           <CompanyRolesDetailDialog
             key={`role-view-${currentRow.id}`}
             open={open === 'view'}
@@ -37,19 +23,6 @@ export function CompanyRolesDialogs() {
               }, 500)
             }}
             currentRow={currentRow}
-          />
-
-          <CompanyRolesPermissionsDialog
-            key={`role-permissions-${currentRow.id}`}
-            open={open === 'permissions'}
-            onOpenChange={(isOpen) => {
-              if (!isOpen) {
-                setOpen(null)
-                setTimeout(() => {
-                  setCurrentRow(null)
-                }, 500)
-              }
-            }}
           />
 
           <ConfirmDialog

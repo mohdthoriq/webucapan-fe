@@ -3,7 +3,7 @@ import type { CompanyRole, PaginationMeta } from '@/types';
 import useDialogState from '@/hooks/use-dialog-state';
 import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query'
 
-type RolesDialogType = 'view' | 'edit' | 'add' | 'delete' | 'permissions'
+type RolesDialogType = 'view' | 'delete'
 
 type RolesContextType = {
   open: RolesDialogType | null

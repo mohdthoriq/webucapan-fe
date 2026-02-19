@@ -1,7 +1,5 @@
-import type { AxiosError } from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { ApiResponse, CompanyRole, Permission } from '@/types';
-import { toast } from 'sonner';
 import apiClient from '@/lib/api-client'
 
 export interface RolePermission {
@@ -15,7 +13,8 @@ export interface RolePermission {
 }
 
 export interface RoleWithPermissions extends CompanyRole {
-  role_permissions: RolePermission[]
+  role_permissions?: RolePermission[]
+  permissions?: Permission[]
 }
 
 
@@ -29,44 +28,5 @@ export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
       return response.data.data
     },
     enabled: !!roleId,
-  })
-}
-
-export function useUpdateCompanyRolePermissionsMutation(
-  roleId?: string
-) {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async ({
-      permissionIds,
-      id,
-    }: {
-      permissionIds: string[]
-      id?: string
-    }) => {
-      const activeId = id || roleId
-      if (!activeId) throw new Error('Role ID is required')
-
-      const response = await apiClient.put(`/roles/${activeId}/permissions`, {
-        permission_ids: permissionIds,
-      })
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Updating permissions...', { id: 'role-permissions-toast' })
-    },
-    onSuccess: () => {
-      toast.dismiss('role-permissions-toast')
-      queryClient.invalidateQueries({
-        queryKey: ['company-role-permissions', roleId],
-      })
-      toast.success('Permissions updated successfully.')
-    },
-    onError: (error: AxiosError<ApiResponse>) => {
-      toast.dismiss('role-permissions-toast')
-      toast.error(
-        error.response?.data?.message || 'Failed to update permissions.'
-      )
-    },
   })
 }
