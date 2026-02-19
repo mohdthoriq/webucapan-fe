@@ -32,11 +32,22 @@ export function useCompanyRolePermissionsQuery(roleId: string | undefined) {
   })
 }
 
-export function useUpdateCompanyRolePermissionsMutation(roleId: string | undefined) {
+export function useUpdateCompanyRolePermissionsMutation(
+  roleId?: string
+) {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (permissionIds: string[]) => {
-      const response = await apiClient.put(`/roles/${roleId}/permissions`, {
+    mutationFn: async ({
+      permissionIds,
+      id,
+    }: {
+      permissionIds: string[]
+      id?: string
+    }) => {
+      const activeId = id || roleId
+      if (!activeId) throw new Error('Role ID is required')
+
+      const response = await apiClient.put(`/roles/${activeId}/permissions`, {
         permission_ids: permissionIds,
       })
       return response.data

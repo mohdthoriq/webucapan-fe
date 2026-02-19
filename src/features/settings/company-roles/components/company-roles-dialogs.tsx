@@ -12,11 +12,6 @@ export function CompanyRolesDialogs() {
 
   return (
     <>
-      <CompanyRolesActionDialog
-        key='role-add'
-        open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
-      />
 
       {currentRow && (
         <>

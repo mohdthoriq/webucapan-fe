@@ -17,7 +17,8 @@ type RolesContextType = {
   paginationParams?: { page?: number; limit?: number }
 }
 
-const RolesContext = React.createContext<RolesContextType | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const RolesContext = React.createContext<RolesContextType | null>(null)
 
 export function CompanyRolesProvider({
   children,
