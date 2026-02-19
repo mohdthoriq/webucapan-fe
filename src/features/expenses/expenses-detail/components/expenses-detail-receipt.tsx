@@ -196,7 +196,7 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
         <div className='mt-10 flex flex-col items-start justify-between gap-8 md:flex-row'>
           <div className='hidden flex-1 md:block'></div>
           <div className='bg-muted/30 w-full space-y-3 rounded-lg p-6 md:w-120'>
-            <div className='flex justify-between text-sm'>
+            <div className='flex justify-between border-b pb-2 text-sm'>
               <span className='text-muted-foreground'>Subtotal</span>
               <span className='font-medium'>
                 {formatCurrency(Number(expense.subtotal), expense.currency)}
@@ -219,7 +219,10 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 {} as Record<string, number>
               )
             ).map(([name, amount]) => (
-              <div key={name} className='flex justify-between text-sm'>
+              <div
+                key={name}
+                className='flex justify-between border-b pb-2 text-sm'
+              >
                 <span className='text-muted-foreground'>{name}</span>
                 <span className='font-medium'>
                   {formatCurrency(amount, expense.currency)}
@@ -230,7 +233,7 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
             {/* Fallback if no specific tax items but a total exists */}
             {expense.expense_items.every((item) => !item.tax) &&
               Number(expense.tax_total) > 0 && (
-                <div className='flex justify-between text-sm font-medium'>
+                <div className='flex justify-between border-b pb-2 text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>
                   <span>
                     {formatCurrency(
@@ -241,16 +244,26 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 </div>
               )}
 
-            <div className='flex justify-between text-sm'>
-              <span className='text-muted-foreground'>Total</span>
-              <span className='font-medium'>
+            <div className='flex justify-between border-b pb-2 text-sm'>
+              <span className='text-lg font-medium'>Total</span>
+              <span className='text-lg font-medium'>
                 {formatCurrency(Number(expense.total), expense.currency)}
               </span>
             </div>
 
-            <Separator className='my-2 bg-zinc-300 dark:bg-zinc-700' />
+            {expense.payments?.map((payment) => (
+              <div
+                key={payment.id}
+                className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
+              >
+                <span>Pembayaran {payment.account.name}</span>
+                <span>
+                  {formatCurrency(Number(payment.amount), expense.currency)}
+                </span>
+              </div>
+            ))}
             <div className='flex items-center justify-between'>
-              <span className='text-base font-bold'>Sisa Tagihan</span>
+              <span className='text-lg font-bold'>Sisa Tagihan</span>
               <span className='text-primary text-2xl font-black'>
                 {formatCurrency(Number(expense.outstanding), expense.currency)}
               </span>
