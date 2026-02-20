@@ -6,20 +6,27 @@ import { useGenerateNextNumber } from '../../invoice-form/hooks/use-invoice-form
 import {
   type InvoicePaymentsFormData,
   invoicePaymentsSchema,
+  type UpdateInvoicePaymentsFormData,
 } from '../types/invoice-payments.schema'
-import { useCreateInvoicePaymentMutation } from './use-invoice-payments.mutation'
+import {
+  useCreateInvoicePaymentMutation,
+  useUpdateInvoicePaymentMutation,
+} from './use-invoice-payments.mutation'
 
 type UseInvoicePaymentsFormProps = {
   invoiceId: string
   defaultAmount?: number
   defaultNumber?: FinanceNumber | null
+  currentRow?: UpdateInvoicePaymentsFormData
 }
 
 export function useInvoicePaymentsForm({
   invoiceId,
   defaultAmount,
   defaultNumber,
+  currentRow,
 }: UseInvoicePaymentsFormProps) {
+  const isEdit = !!currentRow
   const form = useForm<InvoicePaymentsFormData>({
     resolver: zodResolver(
       invoicePaymentsSchema.refine(
@@ -32,19 +39,32 @@ export function useInvoicePaymentsForm({
         }
       )
     ),
-    defaultValues: {
-      payment_date: new Date(),
-      amount: defaultAmount || 0,
-      account_id: undefined,
-      reference_no: defaultNumber?.format || '',
-      note: '',
-      tags: undefined,
-      sales_invoice_id: invoiceId,
-    },
+    defaultValues: currentRow
+      ? {
+          payment_date: currentRow?.payment_date
+            ? new Date(currentRow.payment_date)
+            : new Date(),
+          amount: currentRow?.amount ?? 0,
+          account_id: currentRow?.account_id ?? undefined,
+          reference_no: currentRow?.reference_no ?? '',
+          note: currentRow?.note ?? '',
+          tags: currentRow?.tags ?? [],
+          sales_invoice_id: currentRow?.sales_invoice_id ?? invoiceId,
+        }
+      : {
+          payment_date: new Date(),
+          amount: defaultAmount || 0,
+          account_id: undefined,
+          reference_no: defaultNumber?.format || '',
+          note: '',
+          tags: undefined,
+          sales_invoice_id: invoiceId,
+        },
   })
 
   const createMutation = useCreateInvoicePaymentMutation(invoiceId)
   const generateNextNumber = useGenerateNextNumber()
+  const updateMutation = useUpdateInvoicePaymentMutation()
 
   useEffect(() => {
     if (defaultAmount !== undefined) {
@@ -56,7 +76,15 @@ export function useInvoicePaymentsForm({
   }, [defaultAmount, defaultNumber, form])
 
   const onSubmit = async (data: InvoicePaymentsFormData) => {
-    await createMutation.mutateAsync(data)
+    if (isEdit) {
+      const updateData: UpdateInvoicePaymentsFormData = {
+        id: currentRow.id,
+        ...data,
+      }
+      await updateMutation.mutateAsync(updateData)
+    } else {
+      await createMutation.mutateAsync(data)
+    }
     const remaining = (defaultAmount || 0) - data.amount
 
     form.reset({

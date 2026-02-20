@@ -9,6 +9,7 @@ export type GlobalDialogType =
   | 'unit'
   | 'product-category'
   | 'account'
+  | 'transfer'
 
 interface DialogInstance {
   id: string

@@ -3,23 +3,30 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearch } from '@tanstack/react-router'
 import {
+  type CashBankFormEditData,
   cashBankFormSchema,
   type CashBankFormFormData,
 } from '../types/cash-bank-form.schema'
 import {
   useCreateSpendMoneyMutation,
   useCreateReceiveMoneyMutation,
+  useUpdateSpendMoneyMutation,
+  useUpdateReceiveMoneyMutation,
 } from './use-cash-bank-form-mutation'
 
 type UseCashBankFormProps = {
   type: 'spend' | 'receive'
+  currentRow?: CashBankFormEditData
 }
 
-export function useCashBankForm({ type }: UseCashBankFormProps) {
+export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
   const search = useSearch({ strict: false }) as { bank_account_id?: string }
 
-  const defaultValues = useMemo<CashBankFormFormData>(
-    () => ({
+  const defaultValues = useMemo<CashBankFormFormData>(() => {
+    if (currentRow) {
+      return currentRow
+    }
+    return {
       bank_account_id: search?.bank_account_id || '',
       date: new Date(),
       description: '',
@@ -37,14 +44,15 @@ export function useCashBankForm({ type }: UseCashBankFormProps) {
         },
       ],
       withholdings: [],
-    }),
-    [search?.bank_account_id]
-  )
+    }
+  }, [search?.bank_account_id, currentRow])
 
   const form = useForm<CashBankFormFormData>({
     resolver: zodResolver(cashBankFormSchema),
     defaultValues,
   })
+
+  console.log('FORM ERRORS:', form.formState.errors)
 
   const {
     fields: itemFields,
@@ -66,14 +74,32 @@ export function useCashBankForm({ type }: UseCashBankFormProps) {
 
   const spendMutation = useCreateSpendMoneyMutation()
   const receiveMutation = useCreateReceiveMoneyMutation()
+  const updateSpendMutation = useUpdateSpendMoneyMutation()
+  const updateReceiveMutation = useUpdateReceiveMoneyMutation()
 
-  const isSubmitting = spendMutation.isPending || receiveMutation.isPending
+  const isSubmitting =
+    spendMutation.isPending ||
+    receiveMutation.isPending ||
+    updateSpendMutation.isPending ||
+    updateReceiveMutation.isPending
 
   const onSubmit = async (data: CashBankFormFormData) => {
-    if (type === 'spend') {
-      await spendMutation.mutateAsync(data)
+    if (currentRow?.id) {
+      const UpdateData = {
+        id: currentRow.id,
+        ...data,
+      }
+      if (type === 'spend') {
+        await updateSpendMutation.mutateAsync(UpdateData)
+      } else {
+        await updateReceiveMutation.mutateAsync(UpdateData)
+      }
     } else {
-      await receiveMutation.mutateAsync(data)
+      if (type === 'spend') {
+        await spendMutation.mutateAsync(data)
+      } else {
+        await receiveMutation.mutateAsync(data)
+      }
     }
   }
 

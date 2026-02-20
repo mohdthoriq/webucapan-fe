@@ -19,27 +19,54 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { DatePicker } from '@/components/forms/date-picker'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cash-bank-detail.types'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
 
 type CashBankListActionDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
+  currentRow?: CashBankTransactionDetail
+  onSuccess?: () => void
 }
 
 export function CashBankListActionDialog({
   open,
   onOpenChange,
+  currentRow,
+  onSuccess,
 }: CashBankListActionDialogProps) {
-  const { form, onSubmit, isSubmitting } = useCashBankListForm()
+  const { form, onSubmit, isSubmitting } = useCashBankListForm(
+    currentRow
+      ? {
+          id: currentRow?.id,
+          from_account_id: currentRow?.bank_account?.id || '',
+          to_account_id: currentRow?.items[0]?.account_id || '',
+          tags:
+            currentRow?.tags?.map((tag) =>
+              typeof tag === 'object' ? tag.id : tag
+            ) || [],
+          amount: currentRow?.items[0]?.amount || 0,
+          date: currentRow?.trans_date
+            ? new Date(currentRow.trans_date)
+            : new Date(),
+          description: currentRow?.items[0]?.desc || '',
+        }
+      : undefined,
+    onSuccess
+  )
   const { data: tags } = useTagsQuery()
   const { openDialog } = useGlobalDialogStore()
+
+  const isEdit = !!currentRow
+
   return (
     <Dialog
       open={open}
@@ -50,12 +77,16 @@ export function CashBankListActionDialog({
     >
       <DialogContent className='sm:max-w-md'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{'Transfer Dana'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Ubah Transfer Dana' : 'Transfer Dana'}
+          </DialogTitle>
           <DialogDescription>
-            {'Transfer dana antar akun kas dan bank Anda.'}
+            {isEdit
+              ? 'Ubah rincian transfer dana antar akun kas dan bank Anda.'
+              : 'Transfer dana antar akun kas dan bank Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <ScrollArea className='h-[60vh] py-4 pr-4'>
           <Form {...form}>
             <form
               id='transfer-form'
@@ -228,7 +259,7 @@ export function CashBankListActionDialog({
               />
             </form>
           </Form>
-        </div>
+        </ScrollArea>
         <DialogFooter>
           <Button type='submit' form='transfer-form' disabled={isSubmitting}>
             {'Transfer'}

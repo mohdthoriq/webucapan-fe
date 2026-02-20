@@ -19,3 +19,18 @@ export const deletePurchasesInvoiceSchema = z.object({
 export type DeletePurchasesInvoiceFormData = z.infer<
   typeof deletePurchasesInvoiceSchema
 >
+
+export const updateInvoicePaymentsSchema = z.object({
+  id: z.uuid(),
+  payment_date: z.date(),
+  amount: z.number().min(1, 'Jumlah harus lebih dari 0'),
+  account_id: z.uuid('Akun harus dipilih'),
+  reference_no: z.string().optional(),
+  note: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  purchase_invoice_id: z.uuid(),
+})
+
+export type UpdateInvoicePaymentsFormData = z.infer<
+  typeof updateInvoicePaymentsSchema
+>

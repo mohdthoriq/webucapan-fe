@@ -1,5 +1,6 @@
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { AccountsActionDialog } from '@/features/account/components/account-action-dialog'
+import { CashBankListActionDialog } from '@/features/cash-bank/cash-bank-list/components/cash-bank-list-action-dialog'
 import { ContactsActionDialog } from '@/features/contacts/components/contacts-action-dialog'
 import { ProductCategoryActionDialog } from '@/features/product-categories/components/product-category-action-dialog'
 import { ProductActionDialog } from '@/features/products/product-list/components/products-action-dialog'
@@ -23,7 +24,7 @@ export function GlobalDialogProvider() {
           onOpenChange: (open: boolean) => !open && closeDialog(id),
           currentRow: data,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onSuccess: (result: any) => {
+          onSuccess: (result?: any) => {
             onSuccess?.(result)
             closeDialog(id)
           },
@@ -46,6 +47,8 @@ export function GlobalDialogProvider() {
             return <ProductCategoryActionDialog key={id} {...commonProps} />
           case 'account':
             return <AccountsActionDialog key={id} {...commonProps} />
+          case 'transfer':
+            return <CashBankListActionDialog key={id} {...commonProps} />
           default:
             return null
         }
