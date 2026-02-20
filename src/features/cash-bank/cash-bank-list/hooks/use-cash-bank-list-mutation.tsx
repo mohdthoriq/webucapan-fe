@@ -28,6 +28,9 @@ export function useCreateCashBankListMutation() {
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.CASH_BANK],
       })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ACCOUNT],
+      })
       toast.success('Transfer dana berhasil ditambahkan')
       context?.setOpen(null)
 
@@ -61,6 +64,9 @@ export function useUpdateCashBankListMutation() {
       toast.dismiss('cash-bank-lists-toast')
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.CASH_BANK],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ACCOUNT],
       })
       toast.success('Transfer dana berhasil diperbarui')
       context?.setOpen(null)

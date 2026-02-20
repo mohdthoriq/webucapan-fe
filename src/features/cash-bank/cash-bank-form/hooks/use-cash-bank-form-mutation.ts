@@ -24,6 +24,7 @@ export function useCreateSpendMoneyMutation() {
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Transaksi pengeluaran dana berhasil ditambahkan.')
 
       // Navigate to detail page with transaction ID and account ID
@@ -60,6 +61,7 @@ export function useCreateReceiveMoneyMutation() {
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Transaksi penerimaan dana berhasil ditambahkan.')
 
       // Navigate to detail page with transaction ID and account ID
@@ -95,6 +97,7 @@ export function useUpdateSpendMoneyMutation() {
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Transaksi pengeluaran dana berhasil diperbarui.')
 
       navigate({
@@ -130,6 +133,7 @@ export function useUpdateReceiveMoneyMutation() {
     onSuccess: async (data) => {
       toast.dismiss('cash-bank-form-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
       toast.success('Transaksi penerimaan dana berhasil diperbarui.')
 
       navigate({
