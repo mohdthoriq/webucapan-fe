@@ -16,6 +16,7 @@ export interface AccountQueryParams {
   order?: 'asc' | 'desc'
   is_active?: boolean
   transaction_types?: string[]
+  code_prefix?: string[]
 }
 
 export function useAccountsQuery(params?: AccountQueryParams) {
@@ -29,6 +30,7 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       params?.is_active,
       params?.transaction_types,
       params?.order,
+      params?.code_prefix,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -43,6 +45,9 @@ export function useAccountsQuery(params?: AccountQueryParams) {
           ? { transaction_types: params.transaction_types.join(',') }
           : {}),
         ...(params?.order ? { order: params.order } : {}),
+        ...(params?.code_prefix
+          ? { code_prefix: params.code_prefix.join(',') }
+          : {}),
       })
 
       const url = queryParams.toString()

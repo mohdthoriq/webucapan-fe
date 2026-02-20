@@ -6,7 +6,10 @@ import {
   type AccountQueryParams,
   useAccountsQuery,
 } from '@/features/account/hooks/use-account-query'
-import { useContactsQuery } from '@/features/contacts/hooks/use-contacts-query'
+import {
+  type ContactQueryParams,
+  useContactsQuery,
+} from '@/features/contacts/hooks/use-contacts-query'
 import { ComboboxBase } from '../../../../components/combobox-base'
 
 interface ExpensesFormComboboxProps {
@@ -18,6 +21,7 @@ interface ExpensesFormComboboxProps {
   excludeIds?: string[]
   disabled?: boolean
   action?: ReactNode
+  extraParams?: Partial<AccountQueryParams | ContactQueryParams>
 }
 
 export function ExpensesFormCombobox({
@@ -37,6 +41,7 @@ function ContactCombobox({
   limit = 20,
   disabled,
   action,
+  extraParams,
 }: Omit<ExpensesFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -52,6 +57,7 @@ function ContactCombobox({
   >({
     queryHook: useContactsQuery,
     limit,
+    extraParams: extraParams,
   })
 
   const selectedItem = useMemo(
@@ -97,6 +103,7 @@ function AccountCombobox({
   limit = 20,
   disabled,
   action,
+  extraParams,
 }: Omit<ExpensesFormComboboxProps, 'type'>) {
   const {
     allItems,
@@ -110,6 +117,7 @@ function AccountCombobox({
     queryHook: useAccountsQuery,
     limit,
     searchKey: 'search',
+    extraParams: extraParams,
   })
 
   const selectedItem = useMemo(
