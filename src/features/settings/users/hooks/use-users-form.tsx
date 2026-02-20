@@ -8,6 +8,7 @@ import {
   createUserSchema,
 } from '../types/users.schema'
 import { useCreateUserMutation } from './use-users-mutation'
+import { useEffect } from 'react'
 
 type useUsersFormProps = {
   currentRow?: User
@@ -15,8 +16,8 @@ type useUsersFormProps = {
 
 export function useUsersForm({ currentRow }: useUsersFormProps) {
   const company = useAuthStore((state) => state.auth.user?.company)
-
   const isEdit = !!currentRow
+
   const form = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserSchema),
     defaultValues: isEdit
@@ -24,15 +25,23 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
           email: currentRow?.email ?? '',
           full_name: currentRow?.full_name ?? '',
           role_id: currentRow?.role?.id ?? '',
+          phone: currentRow?.phone ?? '',
           company_id: currentRow?.company?.id ?? company?.id ?? '',
         }
       : {
           email: '',
           full_name: '',
           role_id: '',
-          company_id: '',
+          phone: '',
+          company_id: company?.id ?? '',
         },
   })
+
+  useEffect(() => {
+    if (!isEdit && company?.id) {
+      form.setValue('company_id', company.id)
+    }
+  }, [company?.id, isEdit, form])
 
   const createMutation = useCreateUserMutation()
 
@@ -47,23 +56,35 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
   const onSubmit = async (data: CreateUserFormData) => {
-    if (isEdit && currentRow) {
-      // const updateData: UpdateUserFormData = {
-      //   id: currentRow.id,
-      //   name: data.name,
-      //   type_id: data.type_id,
-      //   code: data.code,
-      //   category_id: data.category_id,
-      //   parent_id: data.parent_id,
-      //   allow_transaction: data.allow_transaction,
-      //   is_active: data.is_active,
-      //   description: data.description,
-      // }
-      // await updateMutation.mutateAsync(updateData)
-      // form.reset()
-    } else {
-      await createMutation.mutateAsync(data)
-      form.reset()
+    try {
+      if (isEdit && currentRow) {
+        // const updateData: UpdateUserFormData = {
+        //   id: currentRow.id,
+        //   name: data.name,
+        //   type_id: data.type_id,
+        //   code: data.code,
+        //   category_id: data.category_id,
+        //   parent_id: data.parent_id,
+        //   allow_transaction: data.allow_transaction,
+        //   is_active: data.is_active,
+        //   description: data.description,
+        // }
+        // await updateMutation.mutateAsync(updateData)
+        // form.reset()
+      } else {
+        await createMutation.mutateAsync(data)
+        
+        form.reset({
+          email: '',
+          full_name: '',
+          role_id: '',
+          phone: '',
+          company_id: company?.id ?? '', 
+        })
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Submit error:', error);
     }
   }
 
