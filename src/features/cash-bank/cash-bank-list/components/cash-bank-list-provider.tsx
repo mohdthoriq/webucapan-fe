@@ -23,8 +23,6 @@ type CashBankListDialogType = 'edit' | 'transfer'
 type CashBankListsContextType = {
   open: CashBankListDialogType | null
   setOpen: (str: CashBankListDialogType | null) => void
-  currentRow: TransactionData | null
-  setCurrentRow: Dispatch<SetStateAction<TransactionData | null>>
   cashBankListsData: CashBankTransaction | null | undefined
   cashBankTransactionListsData: TransactionData[]
   pagination: PaginationMeta
@@ -35,9 +33,9 @@ type CashBankListsContextType = {
   setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
 }
 
-const CashBankListsContext = createContext<CashBankListsContextType | null>(
-  null
-)
+// eslint-disable-next-line react-refresh/only-export-components
+export const CashBankListsContext =
+  createContext<CashBankListsContextType | null>(null)
 
 export function CashBankListsProvider({
   children,
@@ -47,7 +45,6 @@ export function CashBankListsProvider({
   paginationParams?: CashBankListQueryParams
 }) {
   const [open, setOpen] = useDialogState<CashBankListDialogType>(null)
-  const [currentRow, setCurrentRow] = useState<TransactionData | null>(null)
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const {
@@ -59,8 +56,6 @@ export function CashBankListsProvider({
   const cashBankListsProviderValues = {
     open,
     setOpen,
-    currentRow,
-    setCurrentRow,
     cashBankListsData: cashBankListsData,
     cashBankTransactionListsData: cashBankListsData?.transactions ?? [],
     pagination: cashBankListsData?.pagination ?? {

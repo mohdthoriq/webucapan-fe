@@ -6,24 +6,28 @@ import { CashBankFormActions } from './sections/cash-bank-form-actions'
 import { CashBankFormHeader } from './sections/cash-bank-form-header'
 import { CashBankFormItems } from './sections/cash-bank-form-items'
 import { CashBankFormSummary } from './sections/cash-bank-form-summary'
+import type { CashBankFormEditData } from './types/cash-bank-form.schema'
 
 type CashBankFormPageProps = {
   type: 'spend' | 'receive'
+  currentRow?: CashBankFormEditData
 }
 
-export function CashBankFormPage({ type }: CashBankFormPageProps) {
+export function CashBankFormPage({ type, currentRow }: CashBankFormPageProps) {
   const cashBankForm = useCashBankForm({
     type,
+    currentRow,
   })
 
   const title = type === 'spend' ? 'Kirim Dana' : 'Terima Dana'
+  const EditTitle = type === 'spend' ? 'Ubah Kirim Dana' : 'Ubah Terima Dana'
 
   return (
     <Card className='mb-8'>
       <CardHeader>
         <CardTitle>
           <div className='flex items-center justify-between'>
-            {title}
+            {currentRow ? EditTitle : title}
             <Button variant='link' onClick={() => history.back()}>
               Kembali
             </Button>

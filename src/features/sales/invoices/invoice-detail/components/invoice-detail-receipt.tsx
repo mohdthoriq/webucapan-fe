@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table'
 import { usePrintSalesInvoiceQuery } from '../hooks/use-print-sales-invoice-query'
 import { InvoiceDetailRowActions } from './invoice-detail-row-actions'
-// import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 
 interface InvoiceDetailReceiptProps {
   invoice: SalesInvoice
@@ -35,7 +35,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
     }
   }
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   return (
     <Card className='gap-3 overflow-hidden py-4 shadow-md'>
@@ -328,13 +328,13 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               <div
                 key={payment.id}
                 className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
-                // onClick={() => navigate({
-                //   to: '/cash-bank/detail',
-                //   search: {
-                //     accountId: payment.account.id,
-                //     transactionId: payment.id
-                //   }
-                // })}
+                onClick={() => navigate({
+                  to: '/cash-bank/detail',
+                  search: {
+                    accountId: payment.account.id,
+                    transactionId: payment.id
+                  }
+                })}
               >
                 <span>Pembayaran {payment.account.name}</span>
                 <span>

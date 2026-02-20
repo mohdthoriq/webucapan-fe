@@ -1,6 +1,11 @@
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
+import { TransactionType } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
+// import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
+// import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
+
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,17 +15,30 @@ import {
 } from '@/components/ui/dropdown-menu'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 
-// import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
-// import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
-
 type CashBankRowActionsProps = {
   transaction: CashBankTransactionDetail
 }
 
 export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
   const navigate = useNavigate()
-  // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  // const deleteMutation = useDeleteSalesInvoiceMutation()
+  const { openDialog } = useGlobalDialogStore()
+
+  const handleEdit = () => {
+    if (transaction.trans_type_id === TransactionType.BankTransfer) {
+      openDialog('transfer', {
+        data: transaction,
+      })
+      return
+    }
+
+    navigate({
+      to: '/cash-bank/edit',
+      search: {
+        transactionId: transaction.id,
+        accountId: transaction?.bank_account?.id || '',
+      },
+    })
+  }
 
   return (
     <>
@@ -30,22 +48,12 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
             variant='ghost'
             className='data-[state=open]:bg-muted flex h-8 w-8 p-0'
           >
-            <DotsVerticalIcon className='h-8 w-8' />
+            <DotsVerticalIcon className='h-[1.2rem] w-[1.2rem]' />
             <span className='sr-only'>Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <DropdownMenuItem
-            onClick={() => {
-              navigate({
-                // to: `/cash-bank/edit`,
-                state: { currentRowId: transaction.id } as Record<
-                  string,
-                  unknown
-                >,
-              })
-            }}
-          >
+          <DropdownMenuItem onClick={handleEdit}>
             <PencilIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>

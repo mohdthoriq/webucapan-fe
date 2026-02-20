@@ -51,6 +51,7 @@ export function VerifyEmailForm({
                   maxLength={6}
                   {...field}
                   containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
+                  onComplete={() => form.handleSubmit(onSubmit)()}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />

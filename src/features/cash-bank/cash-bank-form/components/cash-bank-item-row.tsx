@@ -127,11 +127,10 @@ export const CashBankItemRow = memo(function CashBankItemRow({
               >
                 <FormControl>
                   <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Tanpa Pajak' />
+                    <SelectValue placeholder='Pajak' />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value='none'>Tanpa Pajak</SelectItem>
                   {taxes.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
                       {t.name} ({t.rate}%)

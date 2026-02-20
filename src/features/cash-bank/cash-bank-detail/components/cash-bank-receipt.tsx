@@ -17,18 +17,10 @@ import {
 } from '@/components/ui/table'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 import { CashBankRowActions } from './cash-bank-row-actions'
+import { TransactionType } from '@/types'
 
 interface CashBankDetailReceiptProps {
   transaction: CashBankTransactionDetail | null | undefined
-}
-
-enum TransactionType {
-  SalesInvoice = 'SalesInvoice',
-  PurchaseInvoice = 'PurchaseInvoice',
-  Expense = 'Expense',
-  BankTransfer = 'bank_transfer',
-  SpendMoney = 'spend_money',
-  ReceiveMoney = 'receive_money',
 }
 
 export function CashBankDetailReceipt({
@@ -37,30 +29,61 @@ export function CashBankDetailReceipt({
   const navigate = useNavigate()
 
   const url: LinkProps['to'] =
-    transaction?.source_type === TransactionType.SalesInvoice
+    transaction?.trans_type_id === TransactionType.SalesInvoice
       ? `/sales/invoices/detail`
-      : transaction?.source_type === TransactionType.PurchaseInvoice
+      : transaction?.trans_type_id === TransactionType.PurchaseInvoice
         ? `/purchases/invoices/detail`
         : `/expenses/detail`
+
+  const isNavigate =
+    transaction?.trans_type_id === TransactionType.SalesInvoice ||
+    transaction?.trans_type_id === TransactionType.PurchaseInvoice ||
+    transaction?.trans_type_id === TransactionType.Expense
+
+  const getTransactionTitle = (transTypeId: string | undefined) => {
+    switch (transTypeId) {
+      case TransactionType.SalesInvoice:
+        return 'Penerimaan Pembayaran'
+      case TransactionType.PurchaseInvoice:
+        return 'Pembayaran Pembelian'
+      case TransactionType.Expense:
+        return 'Pembayaran Biaya'
+      case TransactionType.BankTransfer:
+        return 'Transfer Dana'
+      case TransactionType.SpendMoney:
+        return 'Kirim Dana'
+      case TransactionType.ReceiveMoney:
+        return 'Terima Dana'
+      default:
+        return 'Detail Transaksi'
+    }
+  }
 
   return (
     <Card className='gap-3 overflow-hidden py-4 shadow-md'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-3'>
-            <CardTitle
-              onClick={() =>
-                navigate({
-                  to: url,
-                  state: {
-                    currentRowId: transaction?.source_id,
-                  } as Record<string, unknown>,
-                })
-              }
-              className='text-primary flex cursor-pointer items-center gap-4 text-2xl font-bold tracking-tight'
-            >
-              {transaction?.transaction_title}
-            </CardTitle>
+            {isNavigate ? (
+              <CardTitle
+                onClick={() =>
+                  navigate({
+                    to: url,
+                    state: {
+                      currentRowId: transaction?.items[0].id,
+                    } as Record<string, unknown>,
+                  })
+                }
+                className='text-primary flex cursor-pointer items-center gap-4 text-2xl font-bold tracking-tight'
+              >
+                {getTransactionTitle(transaction?.trans_type_id)}
+              </CardTitle>
+            ) : (
+              <CardTitle className='text-primary flex items-center gap-4 text-2xl font-bold tracking-tight'>
+                {getTransactionTitle(transaction?.trans_type_id) ||
+                  transaction?.desc}
+              </CardTitle>
+            )}
           </div>
           <div className='flex gap-2'>
             <Button
@@ -84,53 +107,53 @@ export function CashBankDetailReceipt({
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
           <div className='flex flex-col gap-6'>
             <div className='space-y-2'>
-              <p className='text-muted-foreground text-sm font-semibold'>
-                Akun
+              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em]'>
+                Kontak
               </p>
-              <div className='flex items-center gap-2'>
-                <span className='text-md font-semibold'>
-                  {transaction?.account_code}
-                </span>
-                {'-'}
-                <span className='text-md font-semibold'>
-                  {transaction?.account_name}
-                </span>
-              </div>
+              <p className='text-md font-semibold'>
+                {transaction?.contact?.name || '-'}
+              </p>
             </div>
             <div className='space-y-2'>
-              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
+              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em]'>
                 Tanggal Transaksi
               </p>
               <p className='text-md font-semibold'>
-                {transaction?.date
-                  ? format(new Date(transaction.date), 'dd MMMM yyyy', {
+                {transaction?.trans_date
+                  ? format(new Date(transaction.trans_date), 'dd MMMM yyyy', {
                       locale: id,
                     })
                   : '-'}
               </p>
             </div>
+
             <div className='space-y-2'>
-              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
-                Referensi
+              <p className='text-muted-foreground text-sm font-semibold'>
+                Akun
               </p>
-              <p className='text-md font-semibold'>
-                {transaction?.reference || '-'}
-              </p>
+              <div className='flex items-center gap-2'>
+                <span className='text-md font-semibold'>
+                  {transaction?.bank_account?.ref_code}
+                </span>
+                {'-'}
+                <span className='text-md font-semibold'>
+                  {transaction?.bank_account?.name}
+                </span>
+              </div>
             </div>
           </div>
 
           <div className='flex flex-col gap-6'>
             <div className='space-y-2'>
-              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
-                Kontak
+              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em]'>
+                Nomor
               </p>
               <p className='text-md font-semibold'>
-                {transaction?.contact_name || '-'}
+                {transaction?.ref_number || '-'}
               </p>
             </div>
-
             <div className='space-y-2'>
-              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em] uppercase'>
+              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em]'>
                 Tag
               </p>
               <div className='flex flex-wrap gap-2'>
@@ -159,55 +182,43 @@ export function CashBankDetailReceipt({
 
         {/* Journal Lines Table */}
         <div className='space-y-4'>
-          <h4 className='text-muted-foreground text-md font-bold tracking-wider uppercase'>
-            Rincian Jurnal
-          </h4>
-          <div className='rounded-md border'>
+          <div className='rounded-xl border'>
             <Table>
               <TableHeader>
                 <TableRow className='bg-muted/50'>
-                  <TableHead className='w-[150px] p-4'>Kode</TableHead>
-                  <TableHead className='w-[150px] p-4'>Akun</TableHead>
                   <TableHead className='p-4'>Deskripsi</TableHead>
-                  <TableHead className='w-[120px] p-4 text-right'>
-                    Debit
-                  </TableHead>
-                  <TableHead className='w-[120px] p-4 text-right'>
-                    Kredit
-                  </TableHead>
                   <TableHead className='w-[120px] p-4 text-right'>
                     Total
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transaction?.lines?.map((line) => (
-                  <TableRow key={line.id}>
-                    <TableCell className='p-4 font-medium'>
-                      {line.account_code}
-                    </TableCell>
-                    <TableCell className='p-4'>
-                      <div className='flex flex-col'>
-                        <span className='font-medium'>{line.account_name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className='p-4'>
-                      {line.description ? (
-                        <span className='text-muted-foreground text-xs'>
-                          {line.description}
-                        </span>
-                      ) : (
-                        '-'
-                      )}
-                    </TableCell>
+                {transaction?.items?.map((item) => (
+                  <TableRow key={item.id}>
+                    {isNavigate ? (
+                      <TableCell className='p-4'>
+                        {item.desc ? (
+                          <span className='text-md text-primary cursor-pointer font-medium hover:underline'>
+                            {item.desc}
+                          </span>
+                        ) : (
+                          '-'
+                        )}
+                      </TableCell>
+                    ) : (
+                      <TableCell className='p-4'>
+                        {item.desc ? (
+                          <span className='text-md font-medium'>
+                            {item.desc}
+                          </span>
+                        ) : (
+                          '-'
+                        )}
+                      </TableCell>
+                    )}
+
                     <TableCell className='p-4 text-right'>
-                      {line.debit > 0 ? formatCurrency(line.debit) : '-'}
-                    </TableCell>
-                    <TableCell className='p-4 text-right'>
-                      {line.credit > 0 ? formatCurrency(line.credit) : '-'}
-                    </TableCell>
-                    <TableCell className='p-4 text-right'>
-                      {line.amount > 0 ? formatCurrency(line.amount) : '-'}
+                      {item.amount > 0 ? formatCurrency(item.amount) : '-'}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -225,7 +236,7 @@ export function CashBankDetailReceipt({
                   Total :
                 </span>
                 <span className='text-lg font-medium'>
-                  {formatCurrency(transaction?.total as number)}
+                  {formatCurrency(transaction?.amount_after_tax as number)}
                 </span>
               </div>
             </div>

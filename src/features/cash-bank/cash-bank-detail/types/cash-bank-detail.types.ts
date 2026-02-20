@@ -1,50 +1,51 @@
 import type { Tag } from '@/types'
 
-export interface CashBankTransactionLine {
+export interface CashBankTransactionItem {
   id: string
+  desc: string
+  qty: number
+  price: number
+  amount: number
   account_id: string
   account_code: string
   account_name: string
-  description: string
-  debit: number
-  credit: number
-  amount: number
+}
+
+export interface CashBankTransactionContact {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  address: string | null
+}
+
+export interface CashBankTransactionBankAccount {
+  id: string
+  name: string
+  ref_code: string
 }
 
 export interface CashBankTransactionAudit {
-  created_by: string
   created_at: string
-  updated_by: string
   updated_at: string
 }
 
-export type CashBankTransactionStatus =
-  | 'reconciled'
-  | 'unreconciled'
-  | 'cleared'
-  | 'voided'
-  | 'deleted'
-
 export interface CashBankTransactionDetail {
   id: string
-  account_code: string
-  account_name: string
-  entry_number: string
+  trans_date: string
   ref_number: string
-  source_id: string
-  source_type: string
-  transaction_type: string
-  transaction_title: string
-  status: CashBankTransactionStatus
-  date: string
-  reference: string
-  reference_type: string
-  reference_id: string
-  contact_name: string
   contact_id: string
-  description: string
-  tags: (Tag | string)[]
-  lines: CashBankTransactionLine[]
-  total: number
+  amount: number
+  amount_after_tax: number
+  memo: string
+  desc: string
+  trans_type_id: string
+  transaction_type?: string
+  valid: boolean
+  items: CashBankTransactionItem[]
+  contact: CashBankTransactionContact
+  bank_account: CashBankTransactionBankAccount
+  tags: Tag[]
   audit: CashBankTransactionAudit
+  id_journal: string
 }

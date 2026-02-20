@@ -4,18 +4,25 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   type ExpensesPaymentsFormData,
   expensesPaymentsSchema,
+  type ExpensesPaymentsUpdateFormData,
 } from '../types/expenses-payments.schema'
-import { useCreateExpensesPaymentMutation } from './use-expenses-payments.mutation'
+import {
+  useCreateExpensesPaymentMutation,
+  useUpdateExpensesPaymentMutation,
+} from './use-expenses-payments.mutation'
 
 type UseExpensesPaymentsFormProps = {
   expenseId: string
   defaultAmount?: number
+  currentRow?: ExpensesPaymentsUpdateFormData
 }
 
 export function useExpensesPaymentsForm({
   expenseId,
   defaultAmount,
+  currentRow,
 }: UseExpensesPaymentsFormProps) {
+  const isUpdate = !!currentRow
   const form = useForm<ExpensesPaymentsFormData>({
     resolver: zodResolver(
       expensesPaymentsSchema.refine(
@@ -28,17 +35,29 @@ export function useExpensesPaymentsForm({
         }
       )
     ),
-    defaultValues: {
-      payment_date: new Date(),
-      amount: defaultAmount || 0,
-      account_id: undefined,
-      note: '',
-      tags: [],
-      expense_id: expenseId,
-    },
+    defaultValues: isUpdate
+      ? {
+          payment_date: currentRow?.payment_date
+            ? new Date(currentRow.payment_date)
+            : new Date(),
+          amount: currentRow?.amount ?? 0,
+          account_id: currentRow?.account_id ?? undefined,
+          note: currentRow?.note ?? '',
+          tags: currentRow?.tags ?? null,
+          expense_id: currentRow?.expense_id ?? expenseId,
+        }
+      : {
+          payment_date: new Date(),
+          amount: defaultAmount || 0,
+          account_id: undefined,
+          note: '',
+          tags: [],
+          expense_id: expenseId,
+        },
   })
 
   const createMutation = useCreateExpensesPaymentMutation(expenseId)
+  const updateMutation = useUpdateExpensesPaymentMutation()
 
   useEffect(() => {
     if (defaultAmount !== undefined) {
@@ -47,7 +66,15 @@ export function useExpensesPaymentsForm({
   }, [defaultAmount, form])
 
   const onSubmit = async (data: ExpensesPaymentsFormData) => {
-    await createMutation.mutateAsync(data)
+    if (isUpdate) {
+      const UpdateData: ExpensesPaymentsUpdateFormData = {
+        id: currentRow?.id,
+        ...data,
+      }
+      await updateMutation.mutateAsync(UpdateData)
+    } else {
+      await createMutation.mutateAsync(data)
+    }
     const remaining = (defaultAmount || 0) - data.amount
 
     form.reset({

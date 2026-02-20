@@ -3,7 +3,10 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
-import type { CashBankFormFormData } from '../types/cash-bank-form.schema'
+import type {
+  CashBankFormEditData,
+  CashBankFormFormData,
+} from '../types/cash-bank-form.schema'
 
 export function useCreateSpendMoneyMutation() {
   const queryClient = useQueryClient()
@@ -72,6 +75,75 @@ export function useCreateReceiveMoneyMutation() {
       toast.dismiss('cash-bank-form-toast')
       const message =
         error.response?.data?.message || 'Transaksi gagal ditambahkan.'
+      toast.error(message)
+    },
+  })
+}
+export function useUpdateSpendMoneyMutation() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const search = useSearch({ strict: false }) as { accountId?: string }
+
+  return useMutation({
+    mutationFn: async (data: CashBankFormEditData) => {
+      const response = await apiClient.put(`cash-bank/spend/`, data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menyimpan transaksi...', { id: 'cash-bank-form-toast' })
+    },
+    onSuccess: async (data) => {
+      toast.dismiss('cash-bank-form-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      toast.success('Transaksi pengeluaran dana berhasil diperbarui.')
+
+      navigate({
+        to: '/cash-bank/detail',
+        search: {
+          transactionId: data.data.id,
+          accountId: search.accountId,
+        },
+      })
+    },
+    onError: (error: { response?: { data?: { message?: string } } }) => {
+      toast.dismiss('cash-bank-form-toast')
+      const message =
+        error.response?.data?.message || 'Transaksi gagal diperbarui.'
+      toast.error(message)
+    },
+  })
+}
+
+export function useUpdateReceiveMoneyMutation() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const search = useSearch({ strict: false }) as { bank_account_id?: string }
+
+  return useMutation({
+    mutationFn: async (data: CashBankFormEditData) => {
+      const response = await apiClient.put(`cash-bank/receive/`, data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menyimpan transaksi...', { id: 'cash-bank-form-toast' })
+    },
+    onSuccess: async (data) => {
+      toast.dismiss('cash-bank-form-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
+      toast.success('Transaksi penerimaan dana berhasil diperbarui.')
+
+      navigate({
+        to: '/cash-bank/detail',
+        search: {
+          transactionId: data.data.id,
+          accountId: search.bank_account_id,
+        },
+      })
+    },
+    onError: (error: { response?: { data?: { message?: string } } }) => {
+      toast.dismiss('cash-bank-form-toast')
+      const message =
+        error.response?.data?.message || 'Transaksi gagal diperbarui.'
       toast.error(message)
     },
   })

@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-// import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import type { Payment } from '@/types'
 import { id } from 'date-fns/locale'
 import { formatCurrency } from '@/lib/utils'
@@ -22,7 +22,7 @@ export function TransactionTable({
   payments,
   currency,
 }: TransactionTableProps) {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   if (!payments || payments.length === 0) return null
 
   return (
@@ -57,29 +57,29 @@ export function TransactionTable({
                     })}
                   </TableCell>
                   <TableCell
-                    // onClick={() =>
-                    //   navigate({
-                    //     to: '/cash-bank/detail',
-                    //     search: {
-                    //       accountId: payment.account.id,
-                    //       transactionId: payment.id,
-                    //     },
-                    //   })
-                    // }
+                    onClick={() =>
+                      navigate({
+                        to: '/cash-bank/detail',
+                        search: {
+                          accountId: payment.account.id,
+                          transactionId: payment.id,
+                        },
+                      })
+                    }
                     className='text-primary cursor-pointer p-4 hover:underline'
                   >
                     {payment.reference_no || '-'}
                   </TableCell>
                   <TableCell
-                    // onClick={() =>
-                    // //   navigate({
-                    // //     to: '/cash-bank/detail',
-                    // //     search: {
-                    // //       accountId: payment.account.id,
-                    // //       transactionId: payment.id,
-                    // //     },
-                    // //   })
-                    // // }
+                    onClick={() =>
+                      navigate({
+                        to: '/cash-bank/detail',
+                        search: {
+                          accountId: payment.account.id,
+                          transactionId: payment.id,
+                        },
+                      })
+                    }
                     className='text-primary cursor-pointer p-4 hover:underline'
                   >
                     {payment.note || '-'}

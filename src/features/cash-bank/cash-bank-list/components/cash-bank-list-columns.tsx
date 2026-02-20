@@ -2,6 +2,7 @@ import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { TransactionData } from '@/types'
 import { cn, formatNumber } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { NavigationCell } from './cash-bank-list-nomor-cell'
@@ -13,8 +14,8 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       <DataTableColumnHeader column={column} title='Tanggal' />
     ),
     cell: ({ row }) => {
-      const { date } = row.original
-      const formattedDate = format(new Date(date), 'dd/MM/yyyy')
+      const { trans_date } = row.original
+      const formattedDate = format(trans_date, 'dd/MM/yyyy')
       return (
         <div className='p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
@@ -55,10 +56,10 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       <DataTableColumnHeader column={column} title='Referensi' />
     ),
     cell: ({ row }) => {
-      const { reference } = row.original
+      const { memo } = row.original
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{reference || '-'}</LongText>
+          <LongText className='truncate'>{memo || '-'}</LongText>
         </div>
       )
     },
@@ -67,34 +68,22 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: 'Terima',
+    accessorKey: 'Tag',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Terima' />
+      <DataTableColumnHeader column={column} title='Tag' />
     ),
     cell: ({ row }) => {
-      const { received } = row.original
-      const formattedReceived = formatNumber(received)
+      const { tags } = row.original
       return (
-        <div className='p-2'>
-          <LongText className='truncate'>{formattedReceived}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
-  {
-    accessorKey: 'Keluar',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Keluar' />
-    ),
-    cell: ({ row }) => {
-      const { spent } = row.original
-      const formattedSpent = formatNumber(spent)
-      return (
-        <div className='p-2'>
-          <LongText className='truncate'>{formattedSpent}</LongText>
+        <div className='flex flex-wrap gap-1 p-2'>
+          {tags.map((tag) => {
+            const tagName = typeof tag === 'object' ? tag.name : tag
+            return (
+              <Badge key={tagName} variant='outline' className='text-[10px]'>
+                {tagName}
+              </Badge>
+            )
+          })}
         </div>
       )
     },

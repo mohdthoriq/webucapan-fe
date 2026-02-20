@@ -35,3 +35,19 @@ export const cashBankFormSchema = z.object({
 })
 
 export type CashBankFormFormData = z.infer<typeof cashBankFormSchema>
+
+export const cashBankFormEditSchema = z.object({
+  id: z.uuid(),
+  bank_account_id: z.uuid(),
+  date: z.date(),
+  description: z.string().optional(),
+  contact_id: z.uuid('Kontak harus dipilih').optional().nullable(),
+  reference: z.string().optional(),
+  tags: z.array(z.string()).nullable(),
+  include_tax: z.boolean(),
+  tax_total: z.number().nonnegative(),
+  items: z.array(cashBankFormItemSchema).min(1, 'Minimal harus ada 1 item'),
+  withholdings: z.array(cashBankWithholdingSchema),
+})
+
+export type CashBankFormEditData = z.infer<typeof cashBankFormEditSchema>

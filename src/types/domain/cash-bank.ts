@@ -2,21 +2,31 @@ import type { GlobalResponse } from '../api/global-response'
 import type { PaginationMeta } from '../api/pagination'
 import type { Tag } from './tag'
 
+export enum TransactionType {
+  SalesInvoice = 'SalesInvoicePayment',
+  PurchaseInvoice = 'PurchaseInvoicePayment',
+  Expense = 'ExpensePayment',
+  BankTransfer = 'bank_transfer',
+  SpendMoney = 'spend_money',
+  ReceiveMoney = 'receive_money',
+}
+
 export interface GraphicData {
   date: Date
   balance: number
 }
 
 export interface TransactionData extends GlobalResponse {
-  date: Date
-  description: string
-  reference: string
+  trans_date: Date
+  desc: string
+  memo: string
   ref_number: string
   tags: (string | Tag)[]
-  received: number
-  spent: number
+  amount_after_tax: number
   balance: number
-  status: string
+  status_id: number
+  trans_type_id: number
+  valid: boolean
   reference_id: string | null
   reference_type: string | null
 }

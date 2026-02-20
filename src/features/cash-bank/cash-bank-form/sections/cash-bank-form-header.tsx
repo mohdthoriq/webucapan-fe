@@ -81,7 +81,7 @@ export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
         name='reference'
         render={({ field }) => (
           <FormItem>
-            <FormLabel>No. Referensi</FormLabel>
+            <FormLabel>Referensi</FormLabel>
             <FormControl>
               <Input placeholder='Contoh: REF001' {...field} />
             </FormControl>
