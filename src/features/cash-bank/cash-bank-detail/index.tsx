@@ -65,7 +65,7 @@ export function CashBankDetail() {
           <div className='mb-2 flex items-center justify-between'>
             <div>
               <h1 className='text-4xl font-semibold tracking-tight'>
-                Detail Transaksi {transaction.ref_number}
+                {transaction.transaction_type?.name}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>

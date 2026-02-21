@@ -1,6 +1,6 @@
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
-import { TransactionType } from '@/types'
+import { TransactionCode } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
 // import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
 // import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
@@ -24,7 +24,7 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
   const { openDialog } = useGlobalDialogStore()
 
   const handleEdit = () => {
-    if (transaction.trans_type_id === TransactionType.BankTransfer) {
+    if (transaction.transaction_type?.code === TransactionCode.BankTransfer) {
       openDialog('transfer', {
         data: transaction,
       })
@@ -35,7 +35,7 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
       to: '/cash-bank/edit',
       search: {
         transactionId: transaction.id,
-        accountId: transaction?.bank_account?.id || '',
+        accountId: transaction?.account?.id || '',
       },
     })
   }

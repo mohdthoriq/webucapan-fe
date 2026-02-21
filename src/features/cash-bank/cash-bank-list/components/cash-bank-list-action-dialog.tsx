@@ -48,8 +48,8 @@ export function CashBankListActionDialog({
     currentRow
       ? {
           id: currentRow?.id,
-          from_account_id: currentRow?.bank_account?.id || '',
-          to_account_id: currentRow?.items[0]?.account_id || '',
+          from_account_id: currentRow?.account?.id || '',
+          to_account_id: currentRow?.items[0]?.account?.id || '',
           tags:
             currentRow?.tags?.map((tag) =>
               typeof tag === 'object' ? tag.id : tag

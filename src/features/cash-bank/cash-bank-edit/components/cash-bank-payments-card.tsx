@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { TransactionType } from '@/types'
+import { TransactionCode } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -48,7 +48,7 @@ function ExpensePaymentForm({ transaction }: CashBankPaymentsCardProps) {
       id: transaction.id,
       payment_date: new Date(transaction.trans_date),
       amount: transaction.amount,
-      account_id: transaction.bank_account.id,
+      account_id: transaction.account.id,
       note: transaction.memo ?? undefined,
       tags: transaction.tags.map((t) => t.id) ?? null,
       expense_id: transaction.items[0]?.id,
@@ -76,8 +76,8 @@ function SalesInvoicePaymentForm({ transaction }: CashBankPaymentsCardProps) {
       id: transaction.id,
       payment_date: new Date(transaction.trans_date),
       amount: transaction.amount,
-      account_id: transaction.bank_account.id,
-      reference_no: transaction.ref_number ?? undefined,
+      account_id: transaction.account.id,
+      reference_no: transaction.reference.number ?? undefined,
       note: transaction.memo ?? undefined,
       tags: transaction.tags.map((t) => t.id),
       sales_invoice_id: transaction.items[0]?.id,
@@ -107,8 +107,8 @@ function PurchaseInvoicePaymentForm({
       id: transaction.id,
       payment_date: new Date(transaction.trans_date),
       amount: transaction.amount,
-      account_id: transaction.bank_account.id,
-      reference_no: transaction.ref_number ?? undefined,
+      account_id: transaction.account.id,
+      reference_no: transaction.reference.number ?? undefined,
       note: transaction.memo ?? undefined,
       tags: transaction.tags.map((t) => t.id),
       purchase_invoice_id: transaction.items[0]?.id,
@@ -319,12 +319,12 @@ export function CashBankPaymentsCard({
   transaction,
 }: CashBankPaymentsCardProps) {
   const renderForm = () => {
-    switch (transaction.trans_type_id) {
-      case TransactionType.SalesInvoice:
+    switch (transaction.transaction_type?.code) {
+      case TransactionCode.SalesInvoice:
         return <SalesInvoicePaymentForm transaction={transaction} />
-      case TransactionType.PurchaseInvoice:
+      case TransactionCode.PurchaseInvoice:
         return <PurchaseInvoicePaymentForm transaction={transaction} />
-      case TransactionType.Expense:
+      case TransactionCode.Expense:
         return <ExpensePaymentForm transaction={transaction} />
       default:
         return (

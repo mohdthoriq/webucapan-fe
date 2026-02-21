@@ -1,4 +1,4 @@
-import type { Tag } from '@/types'
+import type { Account, Reference, Tag, TransactionType } from '@/types'
 
 export interface CashBankTransactionItem {
   id: string
@@ -6,9 +6,7 @@ export interface CashBankTransactionItem {
   qty: number
   price: number
   amount: number
-  account_id: string
-  account_code: string
-  account_name: string
+  account: Account
 }
 
 export interface CashBankTransactionContact {
@@ -19,12 +17,6 @@ export interface CashBankTransactionContact {
   address: string | null
 }
 
-export interface CashBankTransactionBankAccount {
-  id: string
-  name: string
-  ref_code: string
-}
-
 export interface CashBankTransactionAudit {
   created_at: string
   updated_at: string
@@ -33,18 +25,18 @@ export interface CashBankTransactionAudit {
 export interface CashBankTransactionDetail {
   id: string
   trans_date: string
-  ref_number: string
+  reference: Reference
   contact_id: string
   amount: number
   amount_after_tax: number
   memo: string
   desc: string
-  trans_type_id: string
-  transaction_type?: string
+  // trans_type_id: string
+  transaction_type?: TransactionType
   valid: boolean
   items: CashBankTransactionItem[]
   contact: CashBankTransactionContact
-  bank_account: CashBankTransactionBankAccount
+  account: Account
   tags: Tag[]
   audit: CashBankTransactionAudit
   id_journal: string

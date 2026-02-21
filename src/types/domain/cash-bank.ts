@@ -1,15 +1,8 @@
 import type { GlobalResponse } from '../api/global-response'
 import type { PaginationMeta } from '../api/pagination'
+import type { Account } from './account'
+import type { Reference, TransactionType } from './payments'
 import type { Tag } from './tag'
-
-export enum TransactionType {
-  SalesInvoice = 'SalesInvoicePayment',
-  PurchaseInvoice = 'PurchaseInvoicePayment',
-  Expense = 'ExpensePayment',
-  BankTransfer = 'bank_transfer',
-  SpendMoney = 'spend_money',
-  ReceiveMoney = 'receive_money',
-}
 
 export interface GraphicData {
   date: Date
@@ -20,15 +13,14 @@ export interface TransactionData extends GlobalResponse {
   trans_date: Date
   desc: string
   memo: string
-  ref_number: string
+  account: Account
+  reference: Reference
   tags: (string | Tag)[]
   amount_after_tax: number
   balance: number
-  status_id: number
-  trans_type_id: number
+  trans_type_id: string
+  transaction_type: TransactionType
   valid: boolean
-  reference_id: string | null
-  reference_type: string | null
 }
 
 export interface CashBankOverview extends GlobalResponse {

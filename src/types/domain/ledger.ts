@@ -1,20 +1,10 @@
 import type { Account } from './account'
-
-export interface TransactionSource {
-  name: string
-  code: string
-}
-
-export interface Reference {
-  id: string
-  number: string
-  type: string
-}
+import type { Reference, TransactionType } from './payments'
 
 export interface LedgerEntry {
   id: string
   date: string
-  source: TransactionSource
+  source: TransactionType
   description: string
   account: Account
   reference: Reference

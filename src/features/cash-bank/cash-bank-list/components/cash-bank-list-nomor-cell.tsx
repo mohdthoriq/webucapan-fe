@@ -11,7 +11,7 @@ export function NavigationCell({
   row: Row<TransactionData>
   name: 'ref_number' | 'description'
 }) {
-  const { ref_number, id, desc } = row.original
+  const { reference, id, desc } = row.original
   const navigate = useNavigate()
   const { paginationParams } = useCashBankLists()
   const search = useSearch({ strict: false }) as Record<string, unknown>
@@ -31,7 +31,7 @@ export function NavigationCell({
       }}
     >
       <LongText className='text-primary max-w-xs truncate p-2 hover:underline'>
-        {name === 'ref_number' ? ref_number : desc}
+        {name === 'ref_number' ? reference?.number : desc}
       </LongText>
     </div>
   )
