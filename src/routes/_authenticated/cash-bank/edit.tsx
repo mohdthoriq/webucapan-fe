@@ -1,6 +1,5 @@
 import { useSearch, createFileRoute } from '@tanstack/react-router'
-import { TransactionType } from '@/types'
-// import { Card, CardContent } from '@/components/ui/card'
+import { CashBankTransactionType } from '@/types'
 import { CashBankEdit } from '@/features/cash-bank/cash-bank-detail/components/cash-bank-edit-source-view'
 import { useCashBankDetailQuery } from '@/features/cash-bank/cash-bank-detail/hooks/use-cash-bank-detail-query'
 import { CashBankFormPage } from '@/features/cash-bank/cash-bank-form'
@@ -37,15 +36,15 @@ function EditTransactionComponent() {
   }
 
   if (
-    transaction.trans_type_id === TransactionType.Expense ||
-    transaction.trans_type_id === TransactionType.SalesInvoice ||
-    transaction.trans_type_id === TransactionType.PurchaseInvoice
+    transaction.trans_type_id === CashBankTransactionType.Expense ||
+    transaction.trans_type_id === CashBankTransactionType.SalesInvoice ||
+    transaction.trans_type_id === CashBankTransactionType.PurchaseInvoice
   ) {
     return <CashBankEdit transaction={transaction} />
   }
 
   const type =
-    transaction.trans_type_id === TransactionType.SpendMoney
+    transaction.trans_type_id === CashBankTransactionType.SpendMoney
       ? 'spend'
       : 'receive'
 

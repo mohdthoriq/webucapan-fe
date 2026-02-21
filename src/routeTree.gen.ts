@@ -56,6 +56,7 @@ import { Route as AuthenticatedProductsAddIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedExpensesEditIndexRouteImport } from './routes/_authenticated/expenses/edit/index'
 import { Route as AuthenticatedExpensesDetailIndexRouteImport } from './routes/_authenticated/expenses/detail/index'
 import { Route as AuthenticatedExpensesAddIndexRouteImport } from './routes/_authenticated/expenses/add/index'
+import { Route as AuthenticatedAdminTransactionTypesIndexRouteImport } from './routes/_authenticated/admin/transaction-types/index'
 import { Route as AuthenticatedAdminSubscriptionsIndexRouteImport } from './routes/_authenticated/admin/subscriptions/index'
 import { Route as AuthenticatedAdminPlansIndexRouteImport } from './routes/_authenticated/admin/plans/index'
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
@@ -340,6 +341,12 @@ const AuthenticatedExpensesAddIndexRoute =
     path: '/expenses/add/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminTransactionTypesIndexRoute =
+  AuthenticatedAdminTransactionTypesIndexRouteImport.update({
+    id: '/transaction-types/',
+    path: '/transaction-types/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminSubscriptionsIndexRoute =
   AuthenticatedAdminSubscriptionsIndexRouteImport.update({
     id: '/subscriptions/',
@@ -463,6 +470,7 @@ export interface FileRoutesByFullPath {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/subscriptions': typeof AuthenticatedAdminSubscriptionsIndexRoute
+  '/admin/transaction-types': typeof AuthenticatedAdminTransactionTypesIndexRoute
   '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
   '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
   '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
@@ -526,6 +534,7 @@ export interface FileRoutesByTo {
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
   '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/subscriptions': typeof AuthenticatedAdminSubscriptionsIndexRoute
+  '/admin/transaction-types': typeof AuthenticatedAdminTransactionTypesIndexRoute
   '/expenses/add': typeof AuthenticatedExpensesAddIndexRoute
   '/expenses/detail': typeof AuthenticatedExpensesDetailIndexRoute
   '/expenses/edit': typeof AuthenticatedExpensesEditIndexRoute
@@ -591,6 +600,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
   '/_authenticated/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
   '/_authenticated/admin/subscriptions/': typeof AuthenticatedAdminSubscriptionsIndexRoute
+  '/_authenticated/admin/transaction-types/': typeof AuthenticatedAdminTransactionTypesIndexRoute
   '/_authenticated/expenses/add/': typeof AuthenticatedExpensesAddIndexRoute
   '/_authenticated/expenses/detail/': typeof AuthenticatedExpensesDetailIndexRoute
   '/_authenticated/expenses/edit/': typeof AuthenticatedExpensesEditIndexRoute
@@ -656,6 +666,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/admin/plans'
     | '/admin/subscriptions'
+    | '/admin/transaction-types'
     | '/expenses/add'
     | '/expenses/detail'
     | '/expenses/edit'
@@ -719,6 +730,7 @@ export interface FileRouteTypes {
     | '/admin/permissions'
     | '/admin/plans'
     | '/admin/subscriptions'
+    | '/admin/transaction-types'
     | '/expenses/add'
     | '/expenses/detail'
     | '/expenses/edit'
@@ -783,6 +795,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/permissions/'
     | '/_authenticated/admin/plans/'
     | '/_authenticated/admin/subscriptions/'
+    | '/_authenticated/admin/transaction-types/'
     | '/_authenticated/expenses/add/'
     | '/_authenticated/expenses/detail/'
     | '/_authenticated/expenses/edit/'
@@ -1160,6 +1173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedExpensesAddIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/transaction-types/': {
+      id: '/_authenticated/admin/transaction-types/'
+      path: '/transaction-types'
+      fullPath: '/admin/transaction-types'
+      preLoaderRoute: typeof AuthenticatedAdminTransactionTypesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/subscriptions/': {
       id: '/_authenticated/admin/subscriptions/'
       path: '/subscriptions'
@@ -1275,6 +1295,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminPermissionsIndexRoute: typeof AuthenticatedAdminPermissionsIndexRoute
   AuthenticatedAdminPlansIndexRoute: typeof AuthenticatedAdminPlansIndexRoute
   AuthenticatedAdminSubscriptionsIndexRoute: typeof AuthenticatedAdminSubscriptionsIndexRoute
+  AuthenticatedAdminTransactionTypesIndexRoute: typeof AuthenticatedAdminTransactionTypesIndexRoute
   AuthenticatedAdminPlansPlanIdPermissionsIndexRoute: typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 
@@ -1290,6 +1311,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminPlansIndexRoute: AuthenticatedAdminPlansIndexRoute,
     AuthenticatedAdminSubscriptionsIndexRoute:
       AuthenticatedAdminSubscriptionsIndexRoute,
+    AuthenticatedAdminTransactionTypesIndexRoute:
+      AuthenticatedAdminTransactionTypesIndexRoute,
     AuthenticatedAdminPlansPlanIdPermissionsIndexRoute:
       AuthenticatedAdminPlansPlanIdPermissionsIndexRoute,
   }
