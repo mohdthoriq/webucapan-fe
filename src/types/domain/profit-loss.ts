@@ -1,3 +1,6 @@
+import type { Account } from './account'
+import type { Reference, TransactionSource } from './ledger'
+
 export interface ProfitLossReportData {
   period: DatePeriod
   revenue: RevenueItem
@@ -81,15 +84,15 @@ export interface ProfitLossTransactionData {
   id: string
   tran_id: string
   desc: string
-  account_id: string
-  reference: string
+  account: Account
+  reference: Reference
   credit: number
   debit: number
   amount: string
   trans_type_id: number
+  transaction_type: string
   balance: string
-  ref_number: string
-  source: string
+  source: TransactionSource
   valid: boolean
 }
 

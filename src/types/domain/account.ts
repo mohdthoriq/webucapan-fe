@@ -13,4 +13,5 @@ export interface Account extends GlobalResponse {
   company: Company
   balance: number
   subRows?: Account[]
+  sub_accounts?: Account[]
 }
