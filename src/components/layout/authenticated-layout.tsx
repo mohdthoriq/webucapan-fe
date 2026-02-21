@@ -10,7 +10,6 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
-import { SkipToMain } from '@/components/skip-to-main'
 import { ProfileDropdown } from '../profile-dropdown'
 import { GlobalDialogProvider } from '../providers/global-dialog-provider'
 import { Search } from '../search'
@@ -30,7 +29,6 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
       <GlobalDialogProvider />
       <LayoutProvider>
         <SidebarProvider defaultOpen={defaultOpen}>
-          <SkipToMain />
           <AppSidebar />
           <SidebarInset
             className={cn(

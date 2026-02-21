@@ -11,7 +11,7 @@ interface CashBankListComboboxProps {
   placeholder?: string
   limit?: number
   type?: 'contact' | 'account'
-  excludeIds?: string[]
+  excludeIds?: Set<string>
   action?: ReactNode
   contactTypeId?: string
 }
@@ -93,6 +93,7 @@ function AccountCombobox({
   onValueChange,
   placeholder = 'Pilih Akun',
   limit = 20,
+  excludeIds,
   action,
 }: Omit<CashBankListComboboxProps, 'type'>) {
   const {
@@ -117,13 +118,20 @@ function AccountCombobox({
     [allItems, value]
   )
 
+  const filteredItems = useMemo(() => {
+    if (!excludeIds || excludeIds.size === 0) return allItems
+    return allItems.filter(
+      (item) => !excludeIds.has(item.id) || item.id === value
+    )
+  }, [allItems, excludeIds, value])
+
   return (
     <ComboboxBase
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
       searchPlaceholder='Cari akun...'
-      items={allItems}
+      items={filteredItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
       isError={isError}
