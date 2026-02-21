@@ -1,3 +1,6 @@
+import type { Account } from "./account"
+import type { Reference, TransactionSource } from "./ledger"
+
 interface Period {
   last_period_start: string
   last_period_end: string
@@ -110,15 +113,15 @@ export interface BalanceSheetTransactionData {
   id: string
   tran_id: string
   desc: string
-  account_id: string
-  reference: string
+  account: Account
+  reference: Reference
   credit: number
   debit: number
   amount: string
-  trans_type_id: number
+  trans_type_id: string
+  transaction_type: string
   balance: string
-  ref_number: string
-  source: string
+  source: TransactionSource
   valid: boolean
 }
 

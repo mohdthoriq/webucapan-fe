@@ -34,6 +34,9 @@ export function InvoicePaymentsCombobox({
     queryHook: useAccountsQuery,
     limit,
     searchKey: 'search',
+    extraParams: {
+      code_prefix: ['1-100'],
+    },
   })
 
   const selectedItem = useMemo(

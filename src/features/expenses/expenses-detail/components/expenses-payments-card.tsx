@@ -132,6 +132,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                       onValueChange={(value) => field.onChange(value)}
                       placeholder='Pilih akun'
                       type='account'
+                      extraParams={{ code_prefix: ['1-100'] }}
                     />
                     <FormMessage />
                   </FormItem>

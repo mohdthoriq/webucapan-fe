@@ -157,7 +157,7 @@ export function ProductsFormContent({
                   <SelectContent>
                     {units?.data.map((unit) => (
                       <SelectItem key={unit.id} value={unit.id}>
-                        {unit.name}
+                        {unit.code}
                       </SelectItem>
                     ))}
                     <SelectSeparator />

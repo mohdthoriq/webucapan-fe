@@ -1,7 +1,9 @@
+import { useRef, useState } from 'react'
 import { format, parse, startOfMonth, endOfMonth } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
-import { CalendarIcon, Printer, ArrowLeft } from 'lucide-react'
+import { CalendarIcon, Printer, ArrowLeft, Loader2 } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
+import { useReactToPrint } from 'react-to-print'
 import { cn, formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -11,6 +13,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { ReportSectionSkeleton } from '../balance-sheet/components/report-section-skeleton'
+import { ProfitLossPrint } from './components/print/profit-loss-print'
 import { ProfitLossAccountDetailDialog } from './components/profit-loss-account-detail-dialog'
 // import { ProfitLossOverview } from './components/profit-loss-overview' // Placeholder if not implemented yet
 import {
@@ -40,13 +44,29 @@ function ProfitLossPageContent() {
     }
   }
 
-  const handlePrint = () => {
-    if (data?.print_url) {
-      window.open(data.print_url, '_blank')
-    } else {
-      window.print()
-    }
-  }
+  // const handlePrintFromServer = () => {
+  //   if (data?.print_url) {
+  //     window.open(data.print_url, '_blank')
+  //   } else {
+  //     window.print()
+  //   }
+  // }
+
+  const [isPrinting, setIsPrinting] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   return (
     <div className='flex flex-col gap-10'>
@@ -56,9 +76,17 @@ function ProfitLossPageContent() {
           <h1 className='text-3xl font-semibold tracking-tight'>Laba Rugi</h1>
         </div>
         <div className='flex items-center gap-3'>
-          <Button variant='outline' onClick={handlePrint}>
-            <Printer className='h-4 w-4' />
-            Cetak
+          <Button
+            variant='outline'
+            onClick={() => handlePrint()}
+            disabled={isPrinting || isLoading || !data}
+          >
+            {isPrinting ? (
+              <Loader2 className='h-4 w-4 animate-spin' />
+            ) : (
+              <Printer className='h-4 w-4' />
+            )}
+            {isPrinting ? 'Memproses...' : 'Cetak'}
           </Button>
           <Button variant={'outline'} onClick={() => history.back()}>
             <ArrowLeft className='h-4 w-4' />
@@ -101,13 +129,10 @@ function ProfitLossPageContent() {
       <Card className='rounded-md border-none p-0'>
         <CardContent className='p-0'>
           {isLoading ? (
-            <div className='flex h-96 items-center justify-center'>
-              <div className='flex flex-col items-center gap-4'>
-                <div className='border-primary h-10 w-10 animate-spin rounded-full border-2 border-t-transparent' />
-                <p className='text-muted-foreground animate-pulse'>
-                  Memuat data laporan...
-                </p>
-              </div>
+            <div className='flex flex-col gap-10'>
+              <ReportSectionSkeleton />
+              <ReportSectionSkeleton />
+              <ReportSectionSkeleton />
             </div>
           ) : data ? (
             <div className='flex flex-col gap-8'>
@@ -164,6 +189,24 @@ function ProfitLossPageContent() {
         </CardContent>
       </Card>
       <ProfitLossAccountDetailDialog />
+
+      {/* Hidden Print Content */}
+      {data && (
+        <div
+          className={
+            isPrinting
+              ? 'absolute top-0 left-0 z-[-1] m-0 w-[210mm] min-w-[210mm] p-0'
+              : 'hidden'
+          }
+        >
+          <ProfitLossPrint
+            ref={printRef}
+            data={data}
+            dateFrom={dateFrom}
+            dateTo={dateTo}
+          />
+        </div>
+      )}
     </div>
   )
 }

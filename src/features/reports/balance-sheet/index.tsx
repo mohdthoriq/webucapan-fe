@@ -1,7 +1,9 @@
+import { useRef, useState } from 'react'
 import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
-import { ArrowLeft, CalendarIcon, Printer } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
+import { useReactToPrint } from 'react-to-print'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -22,6 +24,7 @@ import {
   BalanceSheetProvider,
   useBalanceSheetContext,
 } from './components/balance-sheet-provider'
+import { BalanceSheetPrint } from './components/print/balance-sheet-print'
 import { ReportSectionSkeleton } from './components/report-section-skeleton'
 import { ReportSectionView } from './components/report-section-view'
 
@@ -30,9 +33,24 @@ const route = getRouteApi('/_authenticated/reports/balance-sheet/')
 function BalanceSheetPageContent() {
   const { date, setDate, data: rawData, isLoading } = useBalanceSheetContext()
   const navigate = route.useNavigate()
+  const [isPrinting, setIsPrinting] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
 
   const reportDate = format(date, 'yyyy-MM-dd')
   const data = rawData?.[reportDate]
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    onBeforePrint: async () => {
+      setIsPrinting(true)
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false)
+    },
+  })
 
   const handleSelectDate = (d: Date) => {
     setDate(d)
@@ -48,6 +66,21 @@ function BalanceSheetPageContent() {
   return (
     <div className='flex flex-col gap-10'>
       <div className='flex items-center justify-end gap-3'>
+        <Button
+          variant='outline'
+          className='gap-2'
+          onClick={() => handlePrint()}
+          disabled={
+            isPrinting || isLoading || !data || typeof data === 'string'
+          }
+        >
+          {isPrinting ? (
+            <Loader2 className='h-4 w-4 animate-spin' />
+          ) : (
+            <Printer className='h-4 w-4' />
+          )}
+          {isPrinting ? 'Memproses...' : 'Cetak'}
+        </Button>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -121,6 +154,19 @@ function BalanceSheetPageContent() {
         </CardContent>
       </Card>
       <BalanceSheetAccountDetailDialog />
+
+      {/* Hidden Print Content */}
+      {data && typeof data !== 'string' && (
+        <div
+          className={
+            isPrinting
+              ? 'absolute top-0 left-0 z-[-1] m-0 w-[210mm] min-w-[210mm] p-0'
+              : 'hidden'
+          }
+        >
+          <BalanceSheetPrint ref={printRef} data={data} date={date} />
+        </div>
+      )}
     </div>
   )
 }
@@ -186,17 +232,13 @@ export default function BalanceSheetPage() {
           <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
         </div>
         <div className='flex items-center gap-3'>
-          <Button variant='outline' onClick={() => window.print()}>
-            <Printer className='h-4 w-4' />
-            Cetak
-          </Button>
           <Button variant={'outline'} onClick={() => history.back()}>
             <ArrowLeft className='h-4 w-4' />
             Kembali
           </Button>
         </div>
       </div>
-      {/* Report Content */}
+
       <BalanceSheetOverviewProvider defaultDate={defaultDate}>
         <BalanceSheetOverviewWithFilters />
       </BalanceSheetOverviewProvider>

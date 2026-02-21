@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react'
 import { format } from 'date-fns'
+import { useNavigate } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
 import { Search, X } from 'lucide-react'
 import { formatNumber } from '@/lib/utils'
@@ -36,6 +37,8 @@ export function BalanceSheetAccountDetailDialog() {
     page,
     per_page: 100,
   })
+
+  const navigate = useNavigate()
 
   if (!isOpen) return null
 
@@ -81,9 +84,6 @@ export function BalanceSheetAccountDetailDialog() {
                   <TableHead className='h-10 p-4 font-bold'>
                     Deskripsi
                   </TableHead>
-                  <TableHead className='h-10 p-4 font-bold'>
-                    Referensi
-                  </TableHead>
                   <TableHead className='h-10 p-4 font-bold'>Nomor</TableHead>
                   <TableHead className='h-10 p-4 text-right font-bold'>
                     Debit
@@ -100,7 +100,7 @@ export function BalanceSheetAccountDetailDialog() {
                 {/* Loading State */}
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className='py-20 text-center'>
+                    <TableCell colSpan={7} className='py-20 text-center'>
                       <div className='text-muted-foreground flex flex-col items-center gap-2'>
                         <div className='border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent' />
                         <span>Memuat data detail...</span>
@@ -113,7 +113,7 @@ export function BalanceSheetAccountDetailDialog() {
                       <Fragment key={item.id}>
                         {/* Saldo Awal Row */}
                         <TableRow className='font-bold'>
-                          <TableCell colSpan={5} className='p-4'>
+                          <TableCell colSpan={4} className='p-4'>
                             Saldo Awal
                           </TableCell>
                           <TableCell className='p-4 text-right'>
@@ -134,10 +134,10 @@ export function BalanceSheetAccountDetailDialog() {
                               t.desc
                                 .toLowerCase()
                                 .includes(search.toLowerCase()) ||
-                              t.source
+                              t.source.name
                                 .toLowerCase()
                                 .includes(search.toLowerCase()) ||
-                              t.ref_number
+                              t.reference.number
                                 .toLowerCase()
                                 .includes(search.toLowerCase())
                           )
@@ -152,16 +152,35 @@ export function BalanceSheetAccountDetailDialog() {
                                   : '-'}
                               </TableCell>
                               <TableCell className='p-4'>
-                                {trans.source}
+                                {trans.source.name}
                               </TableCell>
-                              <TableCell className='max-w-[300px] p-4 break-words text-blue-400'>
+                              <TableCell
+                                onClick={() =>
+                                  navigate({
+                                    to: '/cash-bank/detail',
+                                    search: {
+                                      accountId: trans.account.id,
+                                      transactionId: trans.reference.id,
+                                    },
+                                  })
+                                }
+                                className='text-primary cursor-pointer p-4 break-words hover:underline'
+                              >
                                 {trans.desc}
                               </TableCell>
-                              <TableCell className='p-4'>
-                                {trans.reference}
-                              </TableCell>
-                              <TableCell className='p-4'>
-                                {trans.ref_number}
+                              <TableCell
+                                onClick={() =>
+                                  navigate({
+                                    to: '/cash-bank/detail',
+                                    search: {
+                                      accountId: trans.account.id,
+                                      transactionId: trans.reference.id,
+                                    },
+                                  })
+                                }
+                                className='text-primary cursor-pointer p-4 hover:underline'
+                              >
+                                {trans.reference.number}
                               </TableCell>
                               <TableCell className='p-4 text-right'>
                                 {formatNumber(trans.debit)}
@@ -177,7 +196,7 @@ export function BalanceSheetAccountDetailDialog() {
 
                         {/* Saldo Akhir Row */}
                         <TableRow className='font-bold'>
-                          <TableCell colSpan={5} className='p-4'>
+                          <TableCell colSpan={4} className='p-4'>
                             Saldo Akhir
                           </TableCell>
                           <TableCell className='p-4 text-right'>
@@ -196,7 +215,7 @@ export function BalanceSheetAccountDetailDialog() {
                     {/* Grand Total Row */}
                     {detailData?.journal_total && (
                       <TableRow className='border-t font-bold'>
-                        <TableCell colSpan={5} className='p-4'>
+                        <TableCell colSpan={4} className='p-4'>
                           Total
                         </TableCell>
                         <TableCell className='p-4 text-right'>
@@ -215,7 +234,7 @@ export function BalanceSheetAccountDetailDialog() {
                   (!detailData || detailData.data.length === 0) && (
                     <TableRow>
                       <TableCell
-                        colSpan={8}
+                        colSpan={7}
                         className='text-muted-foreground py-10 text-center italic'
                       >
                         Tidak ada detail untuk akun ini.

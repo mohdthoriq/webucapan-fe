@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import type { Account, Tag } from '@/types'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { Button } from '@/components/ui/button'
@@ -67,6 +68,27 @@ export function CashBankListActionDialog({
 
   const isEdit = !!currentRow
 
+  const currentFromAccountId = form.watch('from_account_id')
+  const currentToAccountId = form.watch('to_account_id')
+
+  // Combobox "Dari Akun" hanya mengecualikan akun yang dipilih di "Ke Akun"
+  const excludeFromIds = useMemo(() => {
+    const ids = new Set<string>()
+    if (currentToAccountId) {
+      ids.add(currentToAccountId)
+    }
+    return ids
+  }, [currentToAccountId])
+
+  // Combobox "Ke Akun" hanya mengecualikan akun yang dipilih di "Dari Akun"
+  const excludeToIds = useMemo(() => {
+    const ids = new Set<string>()
+    if (currentFromAccountId) {
+      ids.add(currentFromAccountId)
+    }
+    return ids
+  }, [currentFromAccountId])
+
   return (
     <Dialog
       open={open}
@@ -107,6 +129,7 @@ export function CashBankListActionDialog({
                           field.onChange(value)
                         }}
                         placeholder='Pilih akun asal'
+                        excludeIds={excludeFromIds}
                         action={
                           <FormShortcutButton
                             title='Tambah Akun Baru'
@@ -140,6 +163,7 @@ export function CashBankListActionDialog({
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder='Pilih akun tujuan'
+                        excludeIds={excludeToIds}
                         action={
                           <FormShortcutButton
                             title='Tambah Akun Baru'
