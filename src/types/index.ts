@@ -30,5 +30,4 @@ export * from './domain/profit-loss'
 export * from './domain/plans'
 export * from './domain/subscriptions'
 export * from './domain/payments'
-
-
+export * from './domain/transaction-types'
