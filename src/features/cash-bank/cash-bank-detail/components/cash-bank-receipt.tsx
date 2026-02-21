@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 import { CashBankRowActions } from './cash-bank-row-actions'
-import { TransactionType } from '@/types'
+import { CashBankTransactionType } from '@/types'
 
 interface CashBankDetailReceiptProps {
   transaction: CashBankTransactionDetail | null | undefined
@@ -29,30 +29,30 @@ export function CashBankDetailReceipt({
   const navigate = useNavigate()
 
   const url: LinkProps['to'] =
-    transaction?.trans_type_id === TransactionType.SalesInvoice
+    transaction?.trans_type_id === CashBankTransactionType.SalesInvoice
       ? `/sales/invoices/detail`
-      : transaction?.trans_type_id === TransactionType.PurchaseInvoice
+      : transaction?.trans_type_id === CashBankTransactionType.PurchaseInvoice
         ? `/purchases/invoices/detail`
         : `/expenses/detail`
 
   const isNavigate =
-    transaction?.trans_type_id === TransactionType.SalesInvoice ||
-    transaction?.trans_type_id === TransactionType.PurchaseInvoice ||
-    transaction?.trans_type_id === TransactionType.Expense
+    transaction?.trans_type_id === CashBankTransactionType.SalesInvoice ||
+    transaction?.trans_type_id === CashBankTransactionType.PurchaseInvoice ||
+    transaction?.trans_type_id === CashBankTransactionType.Expense
 
   const getTransactionTitle = (transTypeId: string | undefined) => {
     switch (transTypeId) {
-      case TransactionType.SalesInvoice:
+      case CashBankTransactionType.SalesInvoice:
         return 'Penerimaan Pembayaran'
-      case TransactionType.PurchaseInvoice:
+      case CashBankTransactionType.PurchaseInvoice:
         return 'Pembayaran Pembelian'
-      case TransactionType.Expense:
+      case CashBankTransactionType.Expense:
         return 'Pembayaran Biaya'
-      case TransactionType.BankTransfer:
+      case CashBankTransactionType.BankTransfer:
         return 'Transfer Dana'
-      case TransactionType.SpendMoney:
+      case CashBankTransactionType.SpendMoney:
         return 'Kirim Dana'
-      case TransactionType.ReceiveMoney:
+      case CashBankTransactionType.ReceiveMoney:
         return 'Terima Dana'
       default:
         return 'Detail Transaksi'

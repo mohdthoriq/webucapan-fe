@@ -1,4 +1,4 @@
-import { Library, Package, CreditCard, ShieldCheck, Menu, LayoutDashboard } from 'lucide-react';
+import { Library, Package, CreditCard, ShieldCheck, Menu, LayoutDashboard, Layers } from 'lucide-react';
 import { type SidebarData } from '../types';
 
 
@@ -21,6 +21,11 @@ export const sidebarDataAdmin: SidebarData = {
           title: 'Account Categories',
           icon: Library,
           url: '/admin/account-categories',
+        },
+        {
+          title: 'Transaction Types',
+          icon: Layers,
+          url: '/admin/transaction-types',
         },
       ],
     },

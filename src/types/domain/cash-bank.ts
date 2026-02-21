@@ -2,7 +2,7 @@ import type { GlobalResponse } from '../api/global-response'
 import type { PaginationMeta } from '../api/pagination'
 import type { Tag } from './tag'
 
-export enum TransactionType {
+export enum CashBankTransactionType {
   SalesInvoice = 'SalesInvoicePayment',
   PurchaseInvoice = 'PurchaseInvoicePayment',
   Expense = 'ExpensePayment',

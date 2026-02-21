@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { TransactionType } from '@/types'
+import { CashBankTransactionType } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -320,11 +320,11 @@ export function CashBankPaymentsCard({
 }: CashBankPaymentsCardProps) {
   const renderForm = () => {
     switch (transaction.trans_type_id) {
-      case TransactionType.SalesInvoice:
+      case CashBankTransactionType.SalesInvoice:
         return <SalesInvoicePaymentForm transaction={transaction} />
-      case TransactionType.PurchaseInvoice:
+      case CashBankTransactionType.PurchaseInvoice:
         return <PurchaseInvoicePaymentForm transaction={transaction} />
-      case TransactionType.Expense:
+      case CashBankTransactionType.Expense:
         return <ExpensePaymentForm transaction={transaction} />
       default:
         return (
