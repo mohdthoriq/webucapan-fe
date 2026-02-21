@@ -1,5 +1,5 @@
 import type { Account } from './account'
-import type { Reference, TransactionSource } from './ledger'
+import type { Reference, TransactionType } from './payments'
 
 export interface ProfitLossReportData {
   period: DatePeriod
@@ -92,7 +92,7 @@ export interface ProfitLossTransactionData {
   trans_type_id: number
   transaction_type: string
   balance: string
-  source: TransactionSource
+  source: TransactionType
   valid: boolean
 }
 

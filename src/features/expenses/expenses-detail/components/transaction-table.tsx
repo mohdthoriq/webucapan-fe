@@ -76,12 +76,12 @@ export function TransactionTable({
                         },
                       })
                     }
-                    className='text-muted-foreground p-4'
+                    className='text-primary cursor-pointer p-4 hover:underline'
                   >
                     {payment.reference_no || '-'}
                   </TableCell>
                   <TableCell className='text-primary cursor-pointer p-4 hover:underline'>
-                    {payment.note}
+                    {payment.note || '-'}
                   </TableCell>
                   <TableCell className='p-4 capitalize'>
                     <span className='font-medium'>{payment.account?.name}</span>

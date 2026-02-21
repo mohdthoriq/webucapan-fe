@@ -1,5 +1,5 @@
 import { useSearch, createFileRoute } from '@tanstack/react-router'
-import { CashBankTransactionType } from '@/types'
+import { TransactionCode } from '@/types'
 import { CashBankEdit } from '@/features/cash-bank/cash-bank-detail/components/cash-bank-edit-source-view'
 import { useCashBankDetailQuery } from '@/features/cash-bank/cash-bank-detail/hooks/use-cash-bank-detail-query'
 import { CashBankFormPage } from '@/features/cash-bank/cash-bank-form'
@@ -36,32 +36,32 @@ function EditTransactionComponent() {
   }
 
   if (
-    transaction.trans_type_id === CashBankTransactionType.Expense ||
-    transaction.trans_type_id === CashBankTransactionType.SalesInvoice ||
-    transaction.trans_type_id === CashBankTransactionType.PurchaseInvoice
+    transaction.transaction_type?.code === TransactionCode.Expense ||
+    transaction.transaction_type?.code === TransactionCode.SalesInvoice ||
+    transaction.transaction_type?.code === TransactionCode.PurchaseInvoice
   ) {
     return <CashBankEdit transaction={transaction} />
   }
 
   const type =
-    transaction.trans_type_id === CashBankTransactionType.SpendMoney
+    transaction.transaction_type?.code === TransactionCode.SpendMoney
       ? 'spend'
       : 'receive'
 
   const currentRow = {
     id: transaction.id,
-    bank_account_id: transaction.bank_account.id,
+    bank_account_id: transaction.account.id,
     date: transaction.trans_date
       ? new Date(transaction.trans_date)
       : new Date(),
     description: transaction.desc ?? undefined,
-    contact_id: transaction.contact_id ?? undefined,
-    reference: transaction.ref_number ?? undefined,
+    contact_id: transaction.contact?.id ?? undefined,
+    reference: transaction.reference.number ?? undefined,
     tags: transaction.tags.map((tag) => tag.id),
     include_tax: false,
     tax_total: 0,
     items: transaction.items.map((item) => ({
-      account_id: item.account_id,
+      account_id: item.account?.id,
       amount: item.amount,
       description: item.desc ?? undefined,
       tax_id: null,

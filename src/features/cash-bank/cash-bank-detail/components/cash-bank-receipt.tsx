@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { type LinkProps, useNavigate } from '@tanstack/react-router'
+import { TransactionCode } from '@/types'
 import { id } from 'date-fns/locale'
 import { Printer } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/table'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 import { CashBankRowActions } from './cash-bank-row-actions'
-import { CashBankTransactionType } from '@/types'
 
 interface CashBankDetailReceiptProps {
   transaction: CashBankTransactionDetail | null | undefined
@@ -29,30 +29,30 @@ export function CashBankDetailReceipt({
   const navigate = useNavigate()
 
   const url: LinkProps['to'] =
-    transaction?.trans_type_id === CashBankTransactionType.SalesInvoice
+    transaction?.transaction_type?.code === TransactionCode.SalesInvoice
       ? `/sales/invoices/detail`
-      : transaction?.trans_type_id === CashBankTransactionType.PurchaseInvoice
+      : transaction?.transaction_type?.code === TransactionCode.PurchaseInvoice
         ? `/purchases/invoices/detail`
         : `/expenses/detail`
 
   const isNavigate =
-    transaction?.trans_type_id === CashBankTransactionType.SalesInvoice ||
-    transaction?.trans_type_id === CashBankTransactionType.PurchaseInvoice ||
-    transaction?.trans_type_id === CashBankTransactionType.Expense
+    transaction?.transaction_type?.code === TransactionCode.SalesInvoice ||
+    transaction?.transaction_type?.code === TransactionCode.PurchaseInvoice ||
+    transaction?.transaction_type?.code === TransactionCode.Expense
 
-  const getTransactionTitle = (transTypeId: string | undefined) => {
-    switch (transTypeId) {
-      case CashBankTransactionType.SalesInvoice:
-        return 'Penerimaan Pembayaran'
-      case CashBankTransactionType.PurchaseInvoice:
+  const getTransactionTitle = (transTypeCode: string | undefined) => {
+    switch (transTypeCode) {
+      case TransactionCode.SalesInvoice:
+        return 'Penerimaan Pembayaran Penjualan'
+      case TransactionCode.PurchaseInvoice:
         return 'Pembayaran Pembelian'
-      case CashBankTransactionType.Expense:
+      case TransactionCode.Expense:
         return 'Pembayaran Biaya'
-      case CashBankTransactionType.BankTransfer:
+      case TransactionCode.BankTransfer:
         return 'Transfer Dana'
-      case CashBankTransactionType.SpendMoney:
+      case TransactionCode.SpendMoney:
         return 'Kirim Dana'
-      case CashBankTransactionType.ReceiveMoney:
+      case TransactionCode.ReceiveMoney:
         return 'Terima Dana'
       default:
         return 'Detail Transaksi'
@@ -76,12 +76,11 @@ export function CashBankDetailReceipt({
                 }
                 className='text-primary flex cursor-pointer items-center gap-4 text-2xl font-bold tracking-tight'
               >
-                {getTransactionTitle(transaction?.trans_type_id)}
+                {getTransactionTitle(transaction?.transaction_type?.code)}
               </CardTitle>
             ) : (
               <CardTitle className='text-primary flex items-center gap-4 text-2xl font-bold tracking-tight'>
-                {getTransactionTitle(transaction?.trans_type_id) ||
-                  transaction?.desc}
+                {getTransactionTitle(transaction?.transaction_type?.code)}
               </CardTitle>
             )}
           </div>
@@ -133,11 +132,11 @@ export function CashBankDetailReceipt({
               </p>
               <div className='flex items-center gap-2'>
                 <span className='text-md font-semibold'>
-                  {transaction?.bank_account?.ref_code}
+                  {transaction?.account?.code}
                 </span>
                 {'-'}
                 <span className='text-md font-semibold'>
-                  {transaction?.bank_account?.name}
+                  {transaction?.account?.name}
                 </span>
               </div>
             </div>
@@ -149,7 +148,7 @@ export function CashBankDetailReceipt({
                 Nomor
               </p>
               <p className='text-md font-semibold'>
-                {transaction?.ref_number || '-'}
+                {transaction?.reference?.number || '-'}
               </p>
             </div>
             <div className='space-y-2'>
