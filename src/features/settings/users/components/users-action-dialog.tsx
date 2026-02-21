@@ -112,6 +112,23 @@ export function UsersActionDialog({
               />
               <FormField
                 control={form.control}
+                name='phone'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Telepon</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan nomor telepon...'
+                        autoComplete='off'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name='role_id'
                 render={({ field }) => (
                   <FormItem>
