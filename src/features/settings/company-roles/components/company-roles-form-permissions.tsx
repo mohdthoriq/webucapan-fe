@@ -1,4 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CompanyRolesPermissionItem } from './company-roles-permission-item'
@@ -43,21 +42,22 @@ export function CompanyRolesFormPermissions({
   }
 
   return (
-    <Card className='flex flex-col h-[600px]'>
-      <CardHeader>
-        <CardTitle>Hak Akses</CardTitle>
-        <CardDescription>
+    <div className='flex flex-col space-y-6'>
+      <div>
+        <h3 className="text-lg font-medium">Hak Akses</h3>
+        <p className="text-sm text-muted-foreground">
           Pilih hak akses yang akan diberikan ke peran ini.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className='flex-1 overflow-hidden'>
+        </p>
+      </div>
+
+      <div className='rounded-md border bg-card p-4'>
         {isLoading ? (
           <div className='space-y-4'>
             <Skeleton className='h-8 w-[200px]' />
             <Skeleton className='h-[300px] w-full' />
           </div>
         ) : (
-          <ScrollArea className='h-full pr-4'>
+          <ScrollArea className='h-[400px] pr-4'>
             <div className='space-y-4'>
               {tree?.map((item: PermissionTreeItem) => (
                 <CompanyRolesPermissionItem
@@ -72,7 +72,7 @@ export function CompanyRolesFormPermissions({
             </div>
           </ScrollArea>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
