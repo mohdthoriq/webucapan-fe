@@ -85,7 +85,7 @@ export function TransactionTypesActionDialog({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FormField control={form.control} name='code' render={({ field }) => (
-              <FormItem><FormLabel>Kode</FormLabel><FormControl><Input placeholder='Contoh: sales_invoice' {...field} /></FormControl><FormMessage /></FormItem>
+              <FormItem><FormLabel>Kode</FormLabel><FormControl><Input placeholder='Contoh: sales_invoice' {...field} readOnly disabled/></FormControl><FormMessage /></FormItem>
             )} />
             <FormField control={form.control} name='name' render={({ field }) => (
               <FormItem><FormLabel>Nama</FormLabel><FormControl><Input placeholder='Contoh: Penjualan Tunai' {...field} /></FormControl><FormMessage /></FormItem>

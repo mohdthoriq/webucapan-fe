@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import { useTransactionTypes } from '../components/transaction-types-provider'
 import type { TransactionTypeFormValues } from '../types/transaction-types.schema'
 
@@ -18,7 +19,9 @@ export function useCreateTransactionTypeMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('transaction-types-toast')
-      await queryClient.invalidateQueries({ queryKey: ['transaction-types'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.TRANSACTION_TYPES],
+      })
       toast.success('Tipe Transaksi berhasil ditambahkan.')
       setOpen(null)
     },
@@ -34,7 +37,13 @@ export function useUpdateTransactionTypeMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: TransactionTypeFormValues }) => {
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string
+      data: TransactionTypeFormValues
+    }) => {
       const response = await apiClient.patch(`/transaction-types/${id}`, data)
       return response.data
     },
@@ -43,7 +52,9 @@ export function useUpdateTransactionTypeMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('transaction-types-toast')
-      await queryClient.invalidateQueries({ queryKey: ['transaction-types'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.TRANSACTION_TYPES],
+      })
       toast.success('Tipe Transaksi berhasil diubah.')
       setOpen(null)
     },
@@ -68,7 +79,9 @@ export function useDeleteTransactionTypeMutation() {
     },
     onSuccess: async () => {
       toast.dismiss('transaction-types-toast')
-      await queryClient.invalidateQueries({ queryKey: ['transaction-types'] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.TRANSACTION_TYPES],
+      })
       toast.success('Tipe Transaksi berhasil dihapus.')
       setOpen(null)
     },

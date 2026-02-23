@@ -54,4 +54,5 @@ export const QUERY_KEY_ADMIN = {
   PERMISSIONS: 'permissions',
   MENUS: 'menus',
   MENU_CATEGORIES: 'menu_categories',
+  TRANSACTION_TYPES: 'transaction_types',
 }
