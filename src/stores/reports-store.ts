@@ -2,29 +2,29 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface ReportsState {
-  favorites: string[]
-  addFavorite: (slug: string) => void
-  removeFavorite: (slug: string) => void
-  toggleFavorite: (slug: string) => void
+  favorites: number[]
+  addFavorite: (id: number) => void
+  removeFavorite: (id: number) => void
+  toggleFavorite: (id: number) => void
 }
 
 export const useReportsStore = create<ReportsState>()(
   persist(
     (set) => ({
       favorites: [],
-      addFavorite: (slug) =>
-        set((state) => ({ favorites: [...state.favorites, slug] })),
-      removeFavorite: (slug) =>
+      addFavorite: (id) =>
+        set((state) => ({ favorites: [...state.favorites, id] })),
+      removeFavorite: (id) =>
         set((state) => ({
-          favorites: state.favorites.filter((s) => s !== slug),
+          favorites: state.favorites.filter((s) => s !== id),
         })),
-      toggleFavorite: (slug) =>
+      toggleFavorite: (id) =>
         set((state) => {
-          const isFavorite = state.favorites.includes(slug)
+          const isFavorite = state.favorites.includes(id)
           return {
             favorites: isFavorite
-              ? state.favorites.filter((s) => s !== slug)
-              : [...state.favorites, slug],
+              ? state.favorites.filter((s) => s !== id)
+              : [...state.favorites, id],
           }
         }),
     }),

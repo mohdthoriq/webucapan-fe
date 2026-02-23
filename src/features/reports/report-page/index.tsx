@@ -21,7 +21,7 @@ function ReportContents() {
 
   const favoriteReports = reportData
     ?.flatMap((cat) => cat.reports)
-    .filter((report) => favorites.includes(report.url as string))
+    .filter((report) => favorites.includes(report.id))
 
   return (
     <div className='flex flex-col space-y-8'>
@@ -71,7 +71,7 @@ function ReportContents() {
                   <ReportItem
                     key={report.url}
                     report={report}
-                    isFavorite={favorites.includes(report.url as string)}
+                    isFavorite={favorites.includes(report.id)}
                     toggleFavorite={toggleFavorite}
                   />
                 ))}

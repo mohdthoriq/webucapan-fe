@@ -6,6 +6,7 @@ export interface ReportData {
 }
 
 export interface Report {
+  id: number
   name: string
   url?: LinkProps['to']
 }
