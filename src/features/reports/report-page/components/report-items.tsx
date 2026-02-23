@@ -9,16 +9,16 @@ export function ReportItem({
 }: {
   report: Report
   isFavorite: boolean
-  toggleFavorite: (url: string) => void
+  toggleFavorite: (id: number) => void
 }) {
   return (
     <div
-      key={report.url}
+      key={report.id}
       className='group hover:bg-muted/80 flex items-center rounded-lg p-2 transition-colors hover:border hover:border-blue-600'
     >
       <div className='p-4 pr-0'>
         <button
-          onClick={() => toggleFavorite(report.url as string)}
+          onClick={() => toggleFavorite(report.id)}
           className='focus:outline-none'
         >
           <Star
