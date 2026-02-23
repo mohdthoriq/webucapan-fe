@@ -8,8 +8,8 @@ import {
 } from '../hooks/use-account-query'
 
 interface AccountsComboboxProps {
-  value?: string | null
-  onValueChange?: (value: string | null) => void
+  value?: string | undefined
+  onValueChange?: (value: string | undefined) => void
   placeholder?: string
   limit?: number
   action?: ReactNode

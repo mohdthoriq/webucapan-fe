@@ -64,7 +64,7 @@ export function AccountsActionDialog({
 
   useEffect(() => {
     if (prevCategoryId.current !== categoryId) {
-      form.setValue('parent_id', '')
+      form.setValue('parent_id', undefined)
       prevCategoryId.current = categoryId
     }
   }, [categoryId, form])
