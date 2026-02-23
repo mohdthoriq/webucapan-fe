@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ApiResponse } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 interface PlanPermissionResponse {
   id: string
@@ -11,7 +12,7 @@ interface PlanPermissionResponse {
 
 export function usePlanPermissionsQuery(planId: string) {
   return useQuery({
-    queryKey: ['plan-permissions', planId],
+    queryKey: [QUERY_KEY_ADMIN.PLAN_PERMISSIONS, planId],
     queryFn: async () => {
       const response = await apiClient.get<
         ApiResponse<PlanPermissionResponse[]>
@@ -40,8 +41,13 @@ export function useUpdatePlanPermissionsMutation(planId: string) {
     },
     onSuccess: () => {
       toast.dismiss('plan-permissions-toast')
-      queryClient.invalidateQueries({ queryKey: ['plan-permissions', planId] })
-      toast.success('Permissions updated successfully.')
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLAN_PERMISSIONS, planId],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLANS],
+      })
+      toast.success('Permissions berhasil diubah.')
     },
     onError: (error: AxiosError<ApiResponse>) => {
       toast.dismiss('plan-permissions-toast')

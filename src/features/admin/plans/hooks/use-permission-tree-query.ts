@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import apiClient from '@/lib/api-client'
 import type { Permission, ApiResponse } from '@/types'
+import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
 export interface PermissionTreeItem extends Permission {
   children: PermissionTreeItem[]
@@ -8,7 +9,7 @@ export interface PermissionTreeItem extends Permission {
 
 export function usePermissionTreeQuery() {
   return useQuery({
-    queryKey: ['permissions-tree'],
+    queryKey: [QUERY_KEY_ADMIN.PERMISSIONS_TREE],
     queryFn: async () => {
       const response = await apiClient.get<ApiResponse<PermissionTreeItem[]>>(
         '/permissions/tree'

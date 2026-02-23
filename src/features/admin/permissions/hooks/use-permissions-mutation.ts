@@ -26,6 +26,12 @@ export function useCreatePermissionMutation() {
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
       })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS_TREE],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLAN_PERMISSIONS],
+      })
       toast.success('Permission berhasil ditambahkan.')
       setOpen(null)
     },
@@ -56,6 +62,12 @@ export function useUpdatePermissionMutation() {
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
       })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS_TREE],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLAN_PERMISSIONS],
+      })
       toast.success('Permission berhasil diubah.')
       setOpen(null)
     },
@@ -83,6 +95,12 @@ export function useDeletePermissionMutation() {
       toast.dismiss('permissions-toast')
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_ADMIN.PERMISSIONS],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PERMISSIONS_TREE],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLAN_PERMISSIONS],
       })
       toast.success('Permission berhasil dihapus.')
       setOpen(null)
