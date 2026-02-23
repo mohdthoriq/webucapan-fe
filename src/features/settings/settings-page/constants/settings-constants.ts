@@ -34,6 +34,7 @@ export const settingsTabs = [
       {
         title: 'Billing',
         description: 'Upgrade dan perpanjang paket Manajerku',
+        url: '/settings/subscription',
         icon: ReceiptText,
       },
     ],

@@ -3,7 +3,7 @@ import type { PaginationApiResponse, MenuCategory } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
-interface MenuCategoriesQueryParams {
+export interface MenuCategoriesQueryParams {
   page?: number
   limit?: number
   name?: string
@@ -27,7 +27,8 @@ export function useMenuCategoriesQuery(params?: MenuCategoriesQueryParams) {
       const url = queryParams.toString()
         ? `/menu-categories?${queryParams.toString()}`
         : '/menu-categories'
-      const response = await apiClient.get<PaginationApiResponse<MenuCategory>>(url)
+      const response =
+        await apiClient.get<PaginationApiResponse<MenuCategory>>(url)
 
       return response.data
     },

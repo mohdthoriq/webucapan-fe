@@ -22,9 +22,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useMenusForm } from '../hooks/use-menus-form'
-import { MenusCategoryCombobox } from './combobox/menus-category-combobox'
-import { MenusParentCombobox } from './combobox/menus-parent-combobox'
-import { MenusPermissionCombobox } from './combobox/menus-permission-combobox'
+import { MenusCombobox } from './menus-combobox'
 
 type MenusActionDialogProps = {
   currentRow?: Menu
@@ -62,7 +60,7 @@ export function MenusActionDialog({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='max-h-[calc(100vh-200px)] py-4'>
-          <div className='px-4'>
+          <div className='pr-4 pl-2'>
             <Form {...form}>
               <form
                 id='role-form'
@@ -111,7 +109,8 @@ export function MenusActionDialog({
                     <FormItem>
                       <FormLabel>Permission</FormLabel>
                       <FormControl>
-                        <MenusPermissionCombobox
+                        <MenusCombobox
+                          type='permission'
                           value={field.value || ''}
                           onValueChange={field.onChange}
                           placeholder='Pilih permission...'
@@ -129,7 +128,8 @@ export function MenusActionDialog({
                     <FormItem>
                       <FormLabel>Category</FormLabel>
                       <FormControl>
-                        <MenusCategoryCombobox
+                        <MenusCombobox
+                          type='category'
                           value={field.value || ''}
                           onValueChange={field.onChange}
                           placeholder='Pilih category...'
@@ -191,7 +191,8 @@ export function MenusActionDialog({
                     <FormItem>
                       <FormLabel>Parent Menu</FormLabel>
                       <FormControl>
-                        <MenusParentCombobox
+                        <MenusCombobox
+                          type='menu'
                           value={field.value || ''}
                           onValueChange={field.onChange}
                           placeholder='Pilih parent menu...'

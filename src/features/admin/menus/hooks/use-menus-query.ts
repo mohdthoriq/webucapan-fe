@@ -3,7 +3,7 @@ import type { PaginationApiResponse, Menu } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
-interface MenusQueryParams {
+export interface MenusQueryParams {
   page?: number
   limit?: number
   company_id?: string
