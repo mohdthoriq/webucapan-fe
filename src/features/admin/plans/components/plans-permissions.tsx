@@ -84,12 +84,11 @@ export default function PlanPermissions() {
             Edit permissions for plan ID: {planId}
           </CardDescription>
         </div>
-        {/* Tombol Kembali di Header */}
         <Button variant='link' onClick={() => history.back()}>
           Kembali
         </Button>
       </CardHeader>
-      <CardContent className='space-y-6'>
+      <CardContent>
         <div className='space-y-4'>
           {tree?.map((item: PermissionTreeItem) => (
             <PermissionItem
@@ -103,10 +102,8 @@ export default function PlanPermissions() {
           ))}
         </div>
 
-        {/* Separator visual */}
-        <div className='bg-border h-px' />
+        <div className='bg-border h-px my-2' />
 
-        {/* Tombol aksi dipindah ke bawah */}
         <div className='flex justify-end gap-2'>
           <Button variant='outline' onClick={() => history.back()}>
             Cancel
