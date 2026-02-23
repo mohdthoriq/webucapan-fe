@@ -84,15 +84,9 @@ export default function PlanPermissions() {
             Edit permissions for plan ID: {planId}
           </CardDescription>
         </div>
-        <div className='flex gap-2'>
-          <Button variant='outline' onClick={() => history.go(-1)}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={updateMutation.isPending}>
-            <Save className='mr-2 h-4 w-4' />
-            Save Changes
-          </Button>
-        </div>
+        <Button variant='link' onClick={() => history.back()}>
+          Kembali
+        </Button>
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
@@ -106,6 +100,18 @@ export default function PlanPermissions() {
               onExpand={toggleExpand}
             />
           ))}
+        </div>
+
+        <div className='bg-border h-px my-2' />
+
+        <div className='flex justify-end gap-2'>
+          <Button variant='outline' onClick={() => history.back()}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave} disabled={updateMutation.isPending}>
+            <Save className='mr-2 h-4 w-4' />
+            Save Changes
+          </Button>
         </div>
       </CardContent>
     </Card>

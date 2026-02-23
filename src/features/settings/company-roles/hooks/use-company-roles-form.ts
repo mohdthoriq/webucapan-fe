@@ -12,6 +12,7 @@ import {
   useUpdateCompanyRoleMutation,
 } from './use-company-roles-mutation'
 import type { AxiosError } from 'axios'
+import { usePermissionTreeQuery, type PermissionTreeItem } from '@/features/admin/plans/hooks/use-permission-tree-query'
 
 type useCompanySettingsFormProps = {
   currentRow?: CompanyRole
@@ -24,8 +25,10 @@ export function useCompanySettingsForm({
   onSubmit: (data: CreateCompanyRoleSettingsFormData) => Promise<ApiResponse<CompanyRole> | void>
   isSubmitting: boolean
   errorMessage: string | null
+  isEdit: boolean
 } {
   const company = useAuthStore((state) => state.auth.user?.company)
+  const { data: permissionsTree } = usePermissionTreeQuery()
 
   const isEdit = !!currentRow
   const form = useForm<CreateCompanyRoleSettingsFormData>({
@@ -59,12 +62,36 @@ export function useCompanySettingsForm({
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
   const mutationError = createMutation.error || updateMutation.error
-  const errorMessage =
+  
+  const findPermissionsByIds = (tree: PermissionTreeItem[], ids: string[]): string[] => {
+    let foundNames: string[] = []
+    for (const item of tree) {
+      if (ids.includes(item.id)) {
+        foundNames.push(item.name)
+      }
+      if (item.children && item.children.length > 0) {
+        foundNames = foundNames.concat(findPermissionsByIds(item.children, ids))
+      }
+    }
+    return foundNames
+  }
+
+  let errorMessage =
     (mutationError
       ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
         'Terjadi kesalahan saat menyimpan data'
       : null) ||
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
+
+  if (errorMessage && errorMessage.startsWith("Some permissions are not allowed by the company's subscription plan:")) {
+    const permissionIds = errorMessage.split(': ')[1].split(', ')
+    if (permissionsTree) {
+      const permissionNames = findPermissionsByIds(permissionsTree, permissionIds)
+      if (permissionNames.length > 0) {
+        errorMessage = `Beberapa hak akses tidak diizinkan oleh paket langganan perusahaan Anda: ${permissionNames.join(', ')}`
+      }
+    }
+  }
 
   const onSubmit = async (data: CreateCompanyRoleSettingsFormData) => {
     if (isEdit && currentRow) {
@@ -83,5 +110,6 @@ export function useCompanySettingsForm({
     onSubmit,
     isSubmitting: createMutation.isPending || updateMutation.isPending,
     errorMessage,
+    isEdit,
   } 
 }
