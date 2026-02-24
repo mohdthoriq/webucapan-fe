@@ -20,13 +20,14 @@ export function CompanyRolesPermissionItem({
 }: CompanyRolesPermissionItemProps) {
   const isExpanded = expandedIds.includes(item.id)
   const isSelected = selectedIds.includes(item.id)
-  const hasChildren = item.children.length > 0
+  const hasChildren = item.children && item.children.length > 0
 
   return (
     <div className='ml-4'>
       <div className='flex items-center gap-2 py-1'>
         {hasChildren ? (
           <Button
+            type='button'
             variant='ghost'
             size='icon'
             className='h-6 w-6'
@@ -56,7 +57,7 @@ export function CompanyRolesPermissionItem({
       </div>
       {hasChildren && isExpanded && (
         <div className='ml-3 border-l pl-2'>
-          {item.children.map((child: PermissionTreeItem) => (
+          {item.children?.map((child: PermissionTreeItem) => (
             <CompanyRolesPermissionItem
               key={child.id}
               item={child}

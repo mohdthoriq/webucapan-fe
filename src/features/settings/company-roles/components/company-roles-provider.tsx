@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { CompanyRole, PaginationMeta } from '@/types';
 import useDialogState from '@/hooks/use-dialog-state';
-import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query'
+import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query';
 
 type RolesDialogType = 'view' | 'delete'
 
