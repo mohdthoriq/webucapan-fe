@@ -45,15 +45,15 @@ export function CompanyRolesPermissionItem({
         <Checkbox
           id={item.id}
           checked={isSelected}
-          onCheckedChange={() => onToggle(item.id, item.children)}
+          onCheckedChange={() => onToggle(item.id, item.children || [])}
         />
         <label
           htmlFor={item.id}
-          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
+          className='cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
         >
           {item.description || item.name}
         </label>
-        <span className='text-xs text-muted-foreground'>({item.name})</span>
+        <span className='text-muted-foreground text-xs'>({item.name})</span>
       </div>
       {hasChildren && isExpanded && (
         <div className='ml-3 border-l pl-2'>
