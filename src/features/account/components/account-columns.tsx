@@ -4,6 +4,11 @@ import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn, formatNumber } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './account-row-actions'
@@ -67,18 +72,25 @@ export const accountsColumns: ColumnDef<Account>[] = [
           style={{ paddingLeft: `${row.depth * 1}rem` }}
         >
           {row.getCanExpand() ? (
-            <Button
-              variant='ghost'
-              size='icon'
-              className='h-6 w-6 p-0 hover:bg-transparent'
-              onClick={row.getToggleExpandedHandler()}
-            >
-              {row.getIsExpanded() ? (
-                <ChevronDown className='h-4 w-4' />
-              ) : (
-                <ChevronRight className='h-4 w-4' />
-              )}
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='mr-2 h-6 w-6 p-0 hover:bg-transparent'
+                  onClick={row.getToggleExpandedHandler()}
+                >
+                  {row.getIsExpanded() ? (
+                    <ChevronDown className='h-4 w-4' />
+                  ) : (
+                    <ChevronRight className='h-4 w-4' />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {row.getIsExpanded() ? 'Tutup sub akun' : 'Lihat sub akun'}
+              </TooltipContent>
+            </Tooltip>
           ) : (
             <div className='w-6' />
           )}
