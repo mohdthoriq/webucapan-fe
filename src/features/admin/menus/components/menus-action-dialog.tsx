@@ -63,7 +63,7 @@ export function MenusActionDialog({
           <div className='pr-4 pl-2'>
             <Form {...form}>
               <form
-                id='role-form'
+                id='menu-form'
                 onSubmit={form.handleSubmit(onSubmit)}
                 className='space-y-4'
               >
@@ -240,7 +240,7 @@ export function MenusActionDialog({
           </div>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='role-form' disabled={isSubmitting}>
+          <Button type='submit' form='menu-form' disabled={isSubmitting}>
             {isEdit ? 'Update Menu' : 'Tambah Menu'}
           </Button>
         </DialogFooter>

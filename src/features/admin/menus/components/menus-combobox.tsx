@@ -74,9 +74,9 @@ function MenuCombobox({
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
-          <span className='font-medium'>{item.name}</span>
+          <span className='font-medium'>{item?.title} - {item.name}</span>
           <span className='text-muted-foreground text-xs'>
-            {item.category?.name}
+            {item.category?.title}
           </span>
         </div>
       )}

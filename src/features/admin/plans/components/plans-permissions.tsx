@@ -1,22 +1,36 @@
 import { useState, useEffect } from 'react'
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, useSearch } from '@tanstack/react-router'
 import { ChevronRight, ChevronDown, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-import { usePermissionTreeQuery, type PermissionTreeItem } from '../hooks/use-permission-tree-query'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  usePermissionTreeQuery,
+  type PermissionTreeItem,
+} from '../hooks/use-permission-tree-query'
 import {
   usePlanPermissionsQuery,
   useUpdatePlanPermissionsMutation,
 } from '../hooks/use-plan-permissions'
-import { Skeleton } from '@/components/ui/skeleton'
 
 const route = getRouteApi('/_authenticated/admin/plans/$planId/permissions/')
 
 export default function PlanPermissions() {
   const { planId } = route.useParams()
+  const { planName } = useSearch({ strict: false }) as { planName: string }
   const { data: tree, isLoading: isTreeLoading } = usePermissionTreeQuery()
-  const { data: currentPermissions, isSuccess: isPermsSuccess, isLoading: isPermsLoading } = usePlanPermissionsQuery(planId)
+  const {
+    data: currentPermissions,
+    isSuccess: isPermsSuccess,
+    isLoading: isPermsLoading,
+  } = usePlanPermissionsQuery(planId)
   const updateMutation = useUpdatePlanPermissionsMutation(planId)
 
   const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -31,10 +45,10 @@ export default function PlanPermissions() {
     }
   }, [isPermsSuccess, currentPermissions])
 
-  const handleToggle = (id: string, children: PermissionTreeItem[]) => {
+  const handleToggle = (id: string, children: PermissionTreeItem[] = []) => {
     const allChildIds = getAllChildIds(children)
     const idsToToggle = [id, ...allChildIds]
-    
+
     setSelectedIds((prev) => {
       const isSelected = prev.includes(id)
       if (isSelected) {
@@ -45,11 +59,12 @@ export default function PlanPermissions() {
     })
   }
 
-  const getAllChildIds = (children: PermissionTreeItem[]): string[] => {
+  const getAllChildIds = (children?: PermissionTreeItem[]): string[] => {
+    if (!children) return []
     let ids: string[] = []
     children.forEach((child) => {
       ids.push(child.id)
-      if (child.children.length > 0) {
+      if (child.children && child.children.length > 0) {
         ids = [...ids, ...getAllChildIds(child.children)]
       }
     })
@@ -68,7 +83,7 @@ export default function PlanPermissions() {
 
   if (isTreeLoading || isPermsLoading) {
     return (
-      <div className='p-4 space-y-4'>
+      <div className='space-y-4 p-4'>
         <Skeleton className='h-8 w-[200px]' />
         <Skeleton className='h-[400px] w-full' />
       </div>
@@ -81,7 +96,7 @@ export default function PlanPermissions() {
         <div>
           <CardTitle>Manage Permissions</CardTitle>
           <CardDescription>
-            Edit permissions for plan ID: {planId}
+            Edit permissions for plan: {planName}
           </CardDescription>
         </div>
         <div className='flex gap-2'>
@@ -116,7 +131,7 @@ interface PermissionItemProps {
   item: PermissionTreeItem
   selectedIds: string[]
   expandedIds: string[]
-  onToggle: (id: string, children: PermissionTreeItem[]) => void
+  onToggle: (id: string, children?: PermissionTreeItem[]) => void
   onExpand: (id: string) => void
 }
 
@@ -129,11 +144,11 @@ function PermissionItem({
 }: PermissionItemProps) {
   const isExpanded = expandedIds.includes(item.id)
   const isSelected = selectedIds.includes(item.id)
-  const hasChildren = item.children.length > 0
+  const hasChildren = item.children && item.children.length > 0
 
   return (
     <div className='ml-4'>
-      <div className='flex items-center gap-2 py-1'>
+      <div className='flex items-center gap-2 py-2'>
         {hasChildren ? (
           <Button
             variant='ghost'
@@ -157,14 +172,14 @@ function PermissionItem({
         />
         <label
           htmlFor={item.id}
-          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
+          className='cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
         >
           {item.description || item.name}
         </label>
-        <span className='text-xs text-muted-foreground'>({item.name})</span>
+        <span className='text-muted-foreground text-xs'>({item.name})</span>
       </div>
-      {hasChildren && isExpanded && (
-        <div className='border-l ml-3 pl-2'>
+      {hasChildren && isExpanded && item.children && (
+        <div className='ml-3 border-l pl-2'>
           {item.children.map((child: PermissionTreeItem) => (
             <PermissionItem
               key={child.id}

@@ -1,4 +1,4 @@
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import { type Plan } from '@/types'
@@ -56,6 +56,9 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             onClick={() => {
               navigate({
                 to: `/admin/plans/${plans.id}/permissions`,
+                search: {
+                  planName: plans.name,
+                } as Record<string, unknown>,
               })
             }}
           >
