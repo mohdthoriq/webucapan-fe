@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import {
-  type CreateAccountCategoryFormData,
-  type UpdateAccountCategoryFormData,
+  type CreateAccountCategoryRequest,
+  type UpdateAccountCategoryRequest,
   type DeleteAccountCategoryFormData,
 } from '@/features/admin/account-categories/types/account-categories.schema'
 import { useAccountCategories } from '../components/account-categories-provider'
@@ -14,7 +14,7 @@ export function useCreateAccountCategoryMutation() {
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: CreateAccountCategoryFormData) => {
+    mutationFn: async (credentials: CreateAccountCategoryRequest) => {
       const response = await apiClient.post(`account-categories`, credentials)
       return response.data
     },
@@ -41,7 +41,7 @@ export function useUpdateAccountCategoryMutation() {
 
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (credentials: UpdateAccountCategoryFormData) => {
+    mutationFn: async (credentials: UpdateAccountCategoryRequest) => {
       const response = await apiClient.patch(
         `account-categories/${credentials.id}`,
         credentials
