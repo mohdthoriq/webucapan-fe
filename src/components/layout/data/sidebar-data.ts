@@ -1,6 +1,8 @@
 import {
-  Bot,
+  // Bot,
   Briefcase,
+  Building2,
+  Calendar,
   ChartLine,
   ChartPie,
   ContactRound,
@@ -9,13 +11,19 @@ import {
   DollarSign,
   FileText,
   GalleryHorizontalEnd,
-  Globe,
+  // Globe,
+  HandCoins,
   LayoutDashboard,
-  Settings,
+  ReceiptText,
+  Ruler,
+  // Settings,
   SettingsIcon,
+  Shield,
   ShoppingBasket,
   ShoppingCart,
   Store,
+  Tag,
+  Users,
   WalletCards,
   Workflow,
 } from 'lucide-react'
@@ -129,39 +137,113 @@ export const sidebarData: SidebarData = {
     {
       title: 'Pengaturan',
       items: [
+        // {
+        //   title: 'Pengaturan',
+        //   icon: Settings,
+        //   items: [
+        //     {
+        //       title: 'Perusahaan',
+        //       url: '/settings?tab=company',
+        //       icon: Briefcase,
+        //     },
+        //     {
+        //       title: 'Alur Bisnis',
+        //       url: '/settings?tab=business_flow',
+        //       icon: Workflow,
+        //     },
+        //     {
+        //       title: 'Layout & Template',
+        //       url: '/settings?tab=layout_template',
+        //       icon: Bot,
+        //     },
+        //     {
+        //       title: 'Akun & Pengguna',
+        //       url: '/settings?tab=user_account',
+        //       icon: SettingsIcon,
+        //     },
+        //     {
+        //       title: 'Data Master',
+        //       url: '/settings?tab=master_data',
+        //       icon: Database,
+        //     },
+        //     {
+        //       title: 'Integrasi',
+        //       url: '/settings?tab=integration',
+        //       icon: Globe,
+        //     },
+        //   ],
+        // },
         {
-          title: 'Pengaturan',
-          icon: Settings,
+          title: 'Perusahaan',
+          icon: Briefcase,
           items: [
             {
-              title: 'Perusahaan',
-              url: '/settings?tab=company',
-              icon: Briefcase,
+              title: 'Profil Perusahaan',
+              url: '/settings/company',
+              icon: Building2,
             },
             {
-              title: 'Alur Bisnis',
-              url: '/settings?tab=business_flow',
-              icon: Workflow,
+              title: 'Billing',
+              url: '/settings/subscription',
+              icon: ReceiptText,
+            },
+          ],
+        },
+        {
+          title: 'Alur Bisnis',
+          icon: Workflow,
+          items: [
+            {
+              title: 'Penomoran Otomatis',
+              url: '/settings/auto-sequencing',
+              icon: FileText,
+            },
+          ],
+        },
+        {
+          title: 'Akun & Pengguna',
+          icon: SettingsIcon,
+          items: [
+            {
+              title: 'Pengguna',
+              icon: Users,
+              url: '/settings/users',
             },
             {
-              title: 'Layout & Template',
-              url: '/settings?tab=layout_template',
-              icon: Bot,
+              title: 'Peran',
+              url: '/settings/company-roles',
+              icon: Shield,
             },
             {
-              title: 'Akun & Pengguna',
-              url: '/settings?tab=user_account',
+              title: 'Profil',
+              url: '/settings/profile',
               icon: SettingsIcon,
             },
+          ],
+        },
+        {
+          title: 'Data Master',
+          icon: Database,
+          items: [
             {
-              title: 'Data Master',
-              url: '/settings?tab=master_data',
-              icon: Database,
+              title: 'Satuan',
+              url: '/settings/units',
+              icon: Ruler,
             },
             {
-              title: 'Integrasi',
-              url: '/settings?tab=integration',
-              icon: Globe,
+              title: 'Pajak',
+              url: '/settings/taxes',
+              icon: HandCoins,
+            },
+            {
+              title: 'Termin',
+              url: '/settings/payment-terms',
+              icon: Calendar,
+            },
+            {
+              title: 'Tags',
+              url: '/settings/tags',
+              icon: Tag,
             },
           ],
         },
