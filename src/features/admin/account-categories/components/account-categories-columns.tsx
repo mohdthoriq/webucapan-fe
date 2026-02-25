@@ -45,6 +45,31 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     },
   },
   {
+    accessorKey: 'is_system',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Sistem' />
+    ),
+    cell: ({ row }) => {
+      const isSystem = row.original.is_system
+      return (
+        <div className='flex justify-center'>
+          {isSystem ? (
+            <div className='bg-primary/10 text-primary rounded px-2 py-0.5 text-xs font-medium'>
+              Ya
+            </div>
+          ) : (
+            <div className='bg-muted text-muted-foreground rounded px-2 py-0.5 text-xs font-medium'>
+              Tidak
+            </div>
+          )}
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-24',
+    },
+  },
+  {
     id: 'actions',
     cell: DataTableRowActions,
     meta: { className: 'w-10' },
