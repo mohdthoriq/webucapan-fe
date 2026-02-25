@@ -68,7 +68,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
       <CardContent>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
           <div className='flex flex-col justify-center gap-6 md:col-span-1'>
-            <div className='flex flex-col'>
+            {/* <div className='flex flex-col'>
               <span
                 className={cn(
                   'text-xl font-semibold',
@@ -80,7 +80,7 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
               <span className='text-muted-foreground mt-1 text-sm'>
                 Saldo di bank
               </span>
-            </div>
+            </div> */}
             <div className='flex flex-col'>
               <span
                 className={cn(

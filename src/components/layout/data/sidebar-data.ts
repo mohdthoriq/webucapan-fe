@@ -1,17 +1,23 @@
 import {
+  Bot,
+  Briefcase,
   ChartLine,
   ChartPie,
   ContactRound,
   CreditCardIcon,
+  Database,
   DollarSign,
   FileText,
   GalleryHorizontalEnd,
+  Globe,
   LayoutDashboard,
   Settings,
+  SettingsIcon,
   ShoppingBasket,
   ShoppingCart,
   Store,
   WalletCards,
+  Workflow,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -121,12 +127,43 @@ export const sidebarData: SidebarData = {
       ],
     },
     {
-      title: 'Sistem',
+      title: 'Pengaturan',
       items: [
         {
           title: 'Pengaturan',
-          url: '/settings',
           icon: Settings,
+          items: [
+            {
+              title: 'Perusahaan',
+              url: '/settings?tab=company',
+              icon: Briefcase,
+            },
+            {
+              title: 'Alur Bisnis',
+              url: '/settings?tab=business_flow',
+              icon: Workflow,
+            },
+            {
+              title: 'Layout & Template',
+              url: '/settings?tab=layout_template',
+              icon: Bot,
+            },
+            {
+              title: 'Akun & Pengguna',
+              url: '/settings?tab=user_account',
+              icon: SettingsIcon,
+            },
+            {
+              title: 'Data Master',
+              url: '/settings?tab=master_data',
+              icon: Database,
+            },
+            {
+              title: 'Integrasi',
+              url: '/settings?tab=integration',
+              icon: Globe,
+            },
+          ],
         },
       ],
     },
