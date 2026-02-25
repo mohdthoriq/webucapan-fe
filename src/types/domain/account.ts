@@ -7,6 +7,7 @@ export interface Account extends GlobalResponse {
   name: string
   allow_transaction: boolean
   is_active: boolean
+  is_deletable: boolean
   description: string
   category: AccountCategory
   parent: Account | null

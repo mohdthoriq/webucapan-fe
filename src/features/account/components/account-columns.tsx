@@ -11,7 +11,9 @@ import {
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { useAccounts } from './account-provider'
+import { Checkbox } from '@/components/ui/checkbox'
 
+// eslint-disable-next-line
 const NameCell = ({ row }: { row: Row<Account> }) => {
   const account = row.original
   const { setOpen, setCurrentRow } = useAccounts()
@@ -60,6 +62,7 @@ const NameCell = ({ row }: { row: Row<Account> }) => {
   )
 }
 
+// eslint-disable-next-line
 const SaldoCell = ({ row }: { row: Row<Account> }) => {
   const account = row.original
   const { setOpen, setCurrentRow } = useAccounts()
@@ -72,14 +75,36 @@ const SaldoCell = ({ row }: { row: Row<Account> }) => {
         setOpen('ledger')
       }}
     >
-      <LongText className='truncate'>
-        {formatNumber(account.balance)}
-      </LongText>
+      <LongText className='truncate'>{formatNumber(account.balance)}</LongText>
     </div>
   )
 }
 
 export const accountsColumns: ColumnDef<Account>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'Kode',
     header: ({ column }) => (
@@ -131,10 +156,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
   {
     accessorKey: 'Saldo',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Saldo'
-      />
+      <DataTableColumnHeader column={column} title='Saldo' />
     ),
     cell: SaldoCell,
     meta: {
