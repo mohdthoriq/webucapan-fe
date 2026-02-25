@@ -146,10 +146,16 @@ export function useProductsForm({
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
-  const mutationError = createMutation.error || updateMutation.error
+  const mutationError = (createMutation.error ||
+    updateMutation.error) as ApiResponse<{
+    available?: boolean
+    message?: string
+  }> | null
   const errorMessage =
     (mutationError
-      ? (mutationError as AxiosError<ApiResponse>).response?.data?.message ||
+      ? mutationError.data?.message ||
+        (mutationError as unknown as AxiosError<ApiResponse>).response?.data
+          ?.message ||
         mutationError.message
       : undefined) ||
     (firstError && 'message' in firstError
@@ -208,8 +214,21 @@ export function useProductsForm({
           history.back()
         }
       }
-    } catch (_error) {
-      // Error handling is managed by mutation hooks (toast)
+    } catch (error: unknown) {
+      const apiError = error as ApiResponse<{
+        available?: boolean
+        message?: string
+        type?: string
+      }>
+      if (
+        apiError?.data?.type === 'product_sku' &&
+        apiError?.data?.available === false
+      ) {
+        form.setError('sku', {
+          type: 'manual',
+          message: apiError.data.message || 'Nomor SKU sudah digunakan.',
+        })
+      }
     }
   }
 
