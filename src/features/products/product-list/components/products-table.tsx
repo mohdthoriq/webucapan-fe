@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type SortingState,
   type VisibilityState,
@@ -159,7 +160,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={productsColumns.length} />
+              <TableEmpty colSpan={table.getVisibleFlatColumns().length} />
             )}
           </TableBody>
         </Table>
@@ -266,17 +267,32 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<Product> }) {
+  const { setCurrentRow } = useProducts()
+  const navigate = useNavigate()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer hover:bg-muted/50'
+          onClick={() => {
+            setCurrentRow(row.original)
+            navigate({
+              to: '/products/edit',
+              search: {},
+              state: { currentRowId: row.original.id } as Record<string, unknown>,
+            })
+          }}
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
               key={cell.id}
+              onClick={(e) => {
+                if (cell.column.id === 'select') {
+                  e.stopPropagation()
+                }
+              }}
               className={cn(
                 'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                 cell.column.columnDef.meta?.className,

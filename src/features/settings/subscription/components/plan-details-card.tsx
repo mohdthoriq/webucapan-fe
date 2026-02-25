@@ -91,7 +91,7 @@ export function PlanDetailsCard({ plan }: PlanDetailsCardProps) {
                 <p className='text-muted-foreground text-xs font-medium'>
                   Tahunan
                 </p>
-                {plan.yearly_price < plan.monthly_price * 12 && (
+                {/* {plan.yearly_price < plan.monthly_price * 12 && (
                   <span className='rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600'>
                     Hemat{' '}
                     {Math.round(
@@ -101,7 +101,7 @@ export function PlanDetailsCard({ plan }: PlanDetailsCardProps) {
                     )}
                     %
                   </span>
-                )}
+                )} */}
               </div>
               <p className='text-xl font-bold'>
                 {formatCurrency(plan.yearly_price)}

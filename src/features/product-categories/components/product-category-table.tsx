@@ -159,7 +159,7 @@ export function ProductCategoryTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={productCategoriesColumns.length} />
+              <TableEmpty colSpan={table.getVisibleFlatColumns().length} />
             )}
           </TableBody>
         </Table>
@@ -222,17 +222,27 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<ProductCategory> }) {
+  const { setOpen, setCurrentRow } = useProductCategories()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer hover:bg-muted/50'
+          onClick={() => {
+            setCurrentRow(row.original)
+            setOpen('edit')
+          }}
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
               key={cell.id}
+              onClick={(e) => {
+                if (cell.column.id === 'select') {
+                  e.stopPropagation()
+                }
+              }}
               className={cn(
                 'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                 cell.column.columnDef.meta?.className,

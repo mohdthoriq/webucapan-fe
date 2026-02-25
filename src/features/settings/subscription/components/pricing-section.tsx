@@ -67,9 +67,6 @@ export function PricingSection({
           }`}
         >
           Tahunan
-          <span className='ml-1.5 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-600'>
-            Hemat ~17%
-          </span>
         </Label>
       </div>
 
@@ -79,32 +76,34 @@ export function PricingSection({
         </div>
       ) : (
         <div className='grid gap-6 md:grid-cols-2 lg:gap-8'>
-          {plans.map((plan) => {
-            // Map API Plan to PricingPlan UI structure on the fly
-            const pricingPlan: PricingPlan = {
-              id: plan.id,
-              name: plan.name,
-              description: plan.description,
-              monthlyPrice: plan.monthly_price,
-              yearlyPrice: plan.yearly_price,
-              features: plan.features,
-              // Auto-detect popular plan? Or just basic logic
-              isPopular: plan.monthly_price > 0 && plan.monthly_price < 100000,
-              buttonText: `Pilih ${plan.name}`,
-              isDefault: plan.code === 'default-plan',
-            }
+          {plans
+            .sort((a, b) => a.monthly_price - b.monthly_price)
+            .map((plan) => {
+              // Map API Plan to PricingPlan UI structure on the fly
+              const pricingPlan: PricingPlan = {
+                id: plan.id,
+                name: plan.name,
+                description: plan.description,
+                monthlyPrice: plan.monthly_price,
+                yearlyPrice: plan.yearly_price,
+                features: plan.features,
+                // Auto-detect popular plan? Or just basic logic
+                isPopular: plan.monthly_price > 0 && plan.monthly_price < 100000,
+                buttonText: `Pilih ${plan.name}`,
+                isDefault: plan.code === 'default-plan',
+              }
 
-            return (
-              <PricingCard
-                key={plan.id}
-                plan={pricingPlan}
-                period={period}
-                isCurrentPlan={plan.name === currentPlanName}
-                onSelect={() => handleSelectPlan(plan)}
-                isDefault={pricingPlan.isDefault}
-              />
-            )
-          })}
+              return (
+                <PricingCard
+                  key={plan.id}
+                  plan={pricingPlan}
+                  period={period}
+                  isCurrentPlan={plan.name === currentPlanName}
+                  onSelect={() => handleSelectPlan(plan)}
+                  isDefault={pricingPlan.isDefault}
+                />
+              )
+            })}
         </div>
       )}
 
