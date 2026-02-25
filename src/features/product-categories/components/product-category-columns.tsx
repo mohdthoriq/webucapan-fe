@@ -3,7 +3,6 @@ import { type ProductCategory } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './product-category-row-actions'
 import { Checkbox } from '@/components/ui/checkbox'
 
 export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
@@ -68,10 +67,5 @@ export const productCategoriesColumns: ColumnDef<ProductCategory>[] = [
     meta: {
       className: cn('w-full min-w-[150px]'),
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

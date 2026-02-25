@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './products-row-actions'
 
 export const productsColumns: ColumnDef<Product>[] = [
   {
@@ -102,10 +101,5 @@ export const productsColumns: ColumnDef<Product>[] = [
     meta: {
       className: 'w-full min-w-[150px]',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]
