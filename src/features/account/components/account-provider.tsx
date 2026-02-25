@@ -13,7 +13,7 @@ import {
   useAccountsQuery,
 } from '../hooks/use-account-query'
 
-type AccountsDialogType = 'view' | 'edit' | 'add' | 'delete' | 'ledger'
+type AccountsDialogType = 'edit' | 'add' | 'ledger'
 
 type AccountsContextType = {
   open: AccountsDialogType | null
