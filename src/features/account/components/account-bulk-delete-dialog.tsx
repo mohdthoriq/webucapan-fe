@@ -52,7 +52,7 @@ export function AccountBulkDeleteDialog({
       }}
       title={selectedRows.length > 1 ? 'Hapus Akun' : 'Hapus Multiple Akun'}
       destructive
-      disabled={confirmValue !== 'DELETE'}
+      disabled={confirmValue !== 'DELETE' || summary.deletableCount === 0}
       isLoading={isLoading}
       handleConfirm={handleConfirm}
       desc={
