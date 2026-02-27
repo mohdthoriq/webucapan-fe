@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
 import { Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PermissionGuard } from '@/components/permission-guard'
 import { Overdue } from './components/overdue'
 import { PaidRatioCard } from './components/paid-ratio-card'
 import { PaymentChartCard } from './components/payment-chart-card'
@@ -10,6 +12,7 @@ import { PaymentsReceived } from './components/payments-sent'
 import { PurchaseOverviewPrint } from './components/print/purchase-overview-print'
 import { ProductPurchasesCard } from './components/product-purchases-card'
 import { SalesChartCard } from './components/purchases-chart-card'
+import { PurchasesOverviewFallback } from './components/purchases-overview-fallback'
 import { TotalPurchases } from './components/total-purchases'
 import { VendorPurchasesCard } from './components/vendor-purchases-card'
 import { WaitingPayments } from './components/waiting-payments'
@@ -33,7 +36,10 @@ export function PurchaseOverview() {
   })
 
   return (
-    <>
+    <PermissionGuard
+      permission={PERMISSION_KEY.PURCHASE_OVERVIEW_VIEW}
+      fallback={<PurchasesOverviewFallback />}
+    >
       <div className='flex w-full flex-col items-center justify-between space-y-8'>
         <div className='flex w-full items-center justify-between'>
           <h1 className='text-4xl font-medium'>Overview Pembelian</h1>
@@ -92,6 +98,6 @@ export function PurchaseOverview() {
       >
         <PurchaseOverviewPrint ref={printRef} />
       </div>
-    </>
+    </PermissionGuard>
   )
 }

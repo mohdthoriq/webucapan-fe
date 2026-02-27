@@ -1,6 +1,7 @@
 'use client'
 
 import { useLocation } from '@tanstack/react-router'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -9,7 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
 import { ProductsFormContent } from './components/products-form-page'
+import { ProductFormPageFallback } from './components/products-form-page-fallback'
 import { useProductsByIdQuery } from './hooks/use-product-query'
 
 export function ProductsForm() {
@@ -23,23 +26,30 @@ export function ProductsForm() {
   const currentRow = response.data
 
   return (
-    <Card>
-      <CardHeader className='flex flex-row justify-between'>
-        <div className='flex flex-col gap-3'>
-          <CardTitle>
-            {currentRow ? 'Edit Produk' : 'Tambah Produk Baru'}
-          </CardTitle>
-          <CardDescription>
-            Isi form dibawah ini untuk menambahkan produk baru
-          </CardDescription>
-        </div>
-        <Button variant={'link'} onClick={() => history.back()}>
-          Kembali
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <ProductsFormContent currentRow={currentRow} />
-      </CardContent>
-    </Card>
+    <PermissionGuard
+      permission={
+        currentRow ? PERMISSION_KEY.PRODUCT_EDIT : PERMISSION_KEY.PRODUCT_ADD
+      }
+      fallback={<ProductFormPageFallback currentRow={currentRow} />}
+    >
+      <Card>
+        <CardHeader className='flex flex-row justify-between'>
+          <div className='flex flex-col gap-3'>
+            <CardTitle>
+              {currentRow ? 'Edit Produk' : 'Tambah Produk Baru'}
+            </CardTitle>
+            <CardDescription>
+              Isi form dibawah ini untuk menambahkan produk baru
+            </CardDescription>
+          </div>
+          <Button variant={'link'} onClick={() => history.back()}>
+            Kembali
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <ProductsFormContent currentRow={currentRow} />
+        </CardContent>
+      </Card>
+    </PermissionGuard>
   )
 }

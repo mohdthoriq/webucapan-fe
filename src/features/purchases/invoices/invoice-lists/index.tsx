@@ -2,8 +2,11 @@ import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
 import { ArrowLeft, Loader2, Plus, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
+import { PurchaseInvoiceListFallback } from './components/invoice-list-fallback'
 import { InvoiceListsProvider } from './components/invoice-list-provider'
 import { InvoiceListsTable } from './components/invoice-list-table'
 import { PurchaseInvoicesTablePrint } from './components/print/purchase-invoices-list-print'
@@ -32,47 +35,56 @@ function InvoiceListsContent() {
   })
 
   return (
-    <Card>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <div className='mb-2 grid'>
-            <h2 className='text-2xl font-bold tracking-tight'>
-              Tagihan Pembelian
-            </h2>
-            <p className='text-muted-foreground'>Kelola Tagihan Pembelian.</p>
+    <PermissionGuard
+      permission={PERMISSION_KEY.PURCHASE_INVOICE}
+      fallback={
+        <PurchaseInvoiceListFallback search={search} navigate={navigate} />
+      }
+    >
+      <Card>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <div className='mb-2 grid'>
+              <h2 className='text-2xl font-bold tracking-tight'>
+                Tagihan Pembelian
+              </h2>
+              <p className='text-muted-foreground'>Kelola Tagihan Pembelian.</p>
+            </div>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
+              <Button variant={'outline'} onClick={() => history.go(-1)}>
+                <ArrowLeft className='h-4 w-4' />
+                Kembali
+              </Button>
+              <Button
+                onClick={() => navigate({ to: '/purchases/invoices/add' })}
+              >
+                <Plus className='h-4 w-4' />
+                Tambah Tagihan
+              </Button>
+              <Button variant={'outline'} onClick={() => handlePrint()}>
+                {isPrinting ? (
+                  <Loader2 className='h-4 w-4 animate-spin' />
+                ) : (
+                  <Printer className='h-4 w-4' />
+                )}{' '}
+                {isPrinting ? 'Memproses...' : 'Cetak'}
+              </Button>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'outline'} onClick={() => history.go(-1)}>
-              <ArrowLeft className='h-4 w-4' />
-              Kembali
-            </Button>
-            <Button onClick={() => navigate({ to: '/purchases/invoices/add' })}>
-              <Plus className='h-4 w-4' />
-              Tambah Tagihan
-            </Button>
-            <Button variant={'outline'} onClick={() => handlePrint()}>
-              {isPrinting ? (
-                <Loader2 className='h-4 w-4 animate-spin' />
-              ) : (
-                <Printer className='h-4 w-4' />
-              )}{' '}
-              {isPrinting ? 'Memproses...' : 'Cetak'}
-            </Button>
-          </div>
+          <hr />
+        </CardHeader>
+        <CardContent>
+          <InvoiceListsTable search={search} navigate={navigate} />
+        </CardContent>
+        <div
+          className={
+            isPrinting ? 'absolute top-0 left-0 z-[-1] m-0 w-fit p-0' : 'hidden'
+          }
+        >
+          <PurchaseInvoicesTablePrint ref={printRef} />
         </div>
-        <hr />
-      </CardHeader>
-      <CardContent>
-        <InvoiceListsTable search={search} navigate={navigate} />
-      </CardContent>
-      <div
-        className={
-          isPrinting ? 'absolute top-0 left-0 z-[-1] m-0 w-fit p-0' : 'hidden'
-        }
-      >
-        <PurchaseInvoicesTablePrint ref={printRef} />
-      </div>
-    </Card>
+      </Card>
+    </PermissionGuard>
   )
 }
 

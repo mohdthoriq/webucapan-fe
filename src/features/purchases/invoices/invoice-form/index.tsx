@@ -1,8 +1,11 @@
 import { useLocation } from '@tanstack/react-router'
 import { FinanceNumberType } from '@/types'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
+import { PermissionGuard } from '@/components/permission-guard'
+import { InvoiceFormFallback } from './components/invoice-form-fallback'
 import { useInvoiceForm } from './hooks/use-invoice-form'
 import {
   useDefaultNumberingQuery,
@@ -44,36 +47,47 @@ export function InvoiceFormPage() {
   }
 
   return (
-    <Card className='mb-8'>
-      <CardHeader>
-        <CardTitle>
-          <div className='flex items-center justify-between'>
-            {invoiceForm.isEdit ? 'Ubah Tagihan Pembelian' : 'Tambah Tagihan Pembelian'}
-            <Button variant='link' onClick={() => history.back()}>
-              Kembali
-            </Button>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...invoiceForm.form}>
-          <form
-            onSubmit={invoiceForm.form.handleSubmit(invoiceForm.onSubmit)}
-            className='space-y-8'
-            id='invoice-form'
-          >
-            <InvoiceFormHeader />
-            <div className='bg-border h-px' />
-            <InvoiceFormItems />
-            <InvoiceFormSummary />
-            <InvoiceFormActions
-              isEdit={invoiceForm.isEdit}
-              isSubmitting={invoiceForm.isSubmitting}
-              errorMessage={invoiceForm.errorMessage}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+    <PermissionGuard
+      permission={
+        invoiceForm.isEdit
+          ? PERMISSION_KEY.PURCHASE_INVOICE_EDIT
+          : PERMISSION_KEY.PURCHASE_INVOICE_ADD
+      }
+      fallback={<InvoiceFormFallback invoiceForm={invoiceForm} />}
+    >
+      <Card className='mb-8'>
+        <CardHeader>
+          <CardTitle>
+            <div className='flex items-center justify-between'>
+              {invoiceForm.isEdit
+                ? 'Ubah Tagihan Pembelian'
+                : 'Tambah Tagihan Pembelian'}
+              <Button variant='link' onClick={() => history.back()}>
+                Kembali
+              </Button>
+            </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...invoiceForm.form}>
+            <form
+              onSubmit={invoiceForm.form.handleSubmit(invoiceForm.onSubmit)}
+              className='space-y-8'
+              id='invoice-form'
+            >
+              <InvoiceFormHeader />
+              <div className='bg-border h-px' />
+              <InvoiceFormItems />
+              <InvoiceFormSummary />
+              <InvoiceFormActions
+                isEdit={invoiceForm.isEdit}
+                isSubmitting={invoiceForm.isSubmitting}
+                errorMessage={invoiceForm.errorMessage}
+              />
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </PermissionGuard>
   )
 }

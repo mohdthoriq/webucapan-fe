@@ -2,6 +2,9 @@
 
 import type { ProductCategory } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,6 +25,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useProductCategoryForm } from '../hooks/use-product-category-form'
 
 type ProductCategoryActionDialogProps = {
@@ -35,7 +39,7 @@ export function ProductCategoryActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess,  
+  onSuccess,
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
@@ -46,6 +50,12 @@ export function ProductCategoryActionDialog({
     }
   )
 
+  const hasPermission = useHasPermission(
+    isEdit
+      ? PERMISSION_KEY.PRODUCT_CATEGORY_EDIT
+      : PERMISSION_KEY.PRODUCT_CATEGORY_ADD
+  )
+
   return (
     <Dialog
       open={open}
@@ -54,8 +64,17 @@ export function ProductCategoryActionDialog({
         form.reset()
       }}
     >
-      <DialogContent className='flex flex-col sm:max-w-lg'>
-        <DialogHeader className='text-start'>
+      <DialogContent
+        className={cn(
+          'flex flex-col sm:max-w-lg',
+        )}
+      >
+        <DialogHeader
+          className={cn(
+            'text-start',
+            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+          )}
+        >
           <DialogTitle>
             {isEdit ? 'Update Kategori Produk' : 'Tambah Kategori Produk'}
           </DialogTitle>
@@ -65,7 +84,12 @@ export function ProductCategoryActionDialog({
               : 'Tambah kategori produk baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div
+          className={cn(
+            'py-4',
+            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+          )}
+        >
           <Form {...form}>
             <form
               id='account-form'
@@ -111,17 +135,30 @@ export function ProductCategoryActionDialog({
           </Form>
         </div>
         {errorMessage && (
-          <Alert variant='destructive' className='w-full'>
+          <Alert
+            variant='destructive'
+            className={cn(
+              'w-full',
+              !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+            )}
+          >
             <CheckCircle2Icon />
             <AlertTitle>Perhatian!</AlertTitle>
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
-        <DialogFooter>
+        <DialogFooter
+          className={cn(
+            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+          )}
+        >
           <Button type='submit' form='account-form' disabled={isSubmitting}>
             {isEdit ? 'Update Kategori' : 'Tambah Kategori'}
           </Button>
         </DialogFooter>
+        <UpgradePlanCard
+          feature={isEdit ? 'Update Kategori' : 'Tambah Kategori'}
+        />
       </DialogContent>
     </Dialog>
   )

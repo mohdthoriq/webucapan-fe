@@ -3,6 +3,8 @@ import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import type { Expense } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeleteExpensesMutation } from '../hooks/use-expenses-payments.mutation'
 import { ExpenseDeleteDialog } from './expenses-delete-dialog'
 
@@ -22,7 +25,10 @@ export function ExpenseDetailRowActions({
 }: ExpenseDetailRowActionsProps) {
   const navigate = useNavigate()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
   const deleteMutation = useDeleteExpensesMutation()
+
+  const canDelete = useHasPermission(PERMISSION_KEY.EXPENSE_DELETE)
 
   return (
     <>
@@ -48,7 +54,15 @@ export function ExpenseDetailRowActions({
             <PencilIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)}>
+          <DropdownMenuItem
+            onClick={() => {
+              if (canDelete) {
+                setDeleteDialogOpen(true)
+              } else {
+                setLockFeatureDialog(true)
+              }
+            }}
+          >
             <Trash2Icon className='h-4 w-4' />
             Hapus
           </DropdownMenuItem>
@@ -77,6 +91,11 @@ export function ExpenseDetailRowActions({
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockFeatureDialog}
+        onOpenChange={setLockFeatureDialog}
+        feature='Hapus Biaya'
       />
     </>
   )

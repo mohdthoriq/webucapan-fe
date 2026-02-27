@@ -15,6 +15,8 @@ import {
 import type { PurchaseInvoice } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -37,6 +39,7 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeletePurchasesInvoiceMutation } from '../../invoice-detail/hooks/use-invoice-payments.mutation'
 import { PurchaseInvoiceBulkDeleteDialog } from './invoice-bulk-delete-dialog'
 import { invoiceListsColumns } from './invoice-list-columns'
@@ -61,6 +64,9 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [lockDialogOpen, setLockDialogOpen] = useState(false)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.PURCHASE_INVOICE_DELETE)
 
   const deleteMutation = useDeletePurchasesInvoiceMutation()
 
@@ -240,7 +246,13 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
             <Button
               variant='destructive'
               size='icon'
-              onClick={() => setBulkDeleteDialogOpen(true)}
+              onClick={() => {
+                if (!hasPermission) {
+                  setLockDialogOpen(true)
+                } else {
+                  setBulkDeleteDialogOpen(true)
+                }
+              }}
               className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
             >
               <Trash2 className='size-4' />
@@ -268,6 +280,11 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockDialogOpen}
+        onOpenChange={setLockDialogOpen}
+        feature='Hapus Tagihan Pembelian'
       />
     </div>
   )

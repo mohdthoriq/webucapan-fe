@@ -43,7 +43,9 @@ export const PERMISSION_KEY = {
 
   // Reports
   REPORTS: 'reports',
+  REPORTS_BALANCE_SHEET: 'reports.balance.sheet',
   REPORTS_BALANCE_SHEET_VIEW: 'reports.balance.sheet.view',
+  REPORTS_PROFIT_LOSS: 'reports.profit.loss',
   REPORTS_PROFIT_LOSS_VIEW: 'reports.profit.loss.view',
 
   // Cash & Bank

@@ -5,6 +5,7 @@ import { id } from 'date-fns/locale'
 import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent } from '@/components/ui/card'
@@ -14,7 +15,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PermissionGuard } from '@/components/permission-guard'
 import { BalanceSheetAccountDetailDialog } from './components/balance-sheet-account-detail-dialog'
+import { BalanceSheetFallback } from './components/balance-sheet-fallback'
 import { BalanceSheetOverview } from './components/balance-sheet-overview'
 import {
   BalanceSheetOverviewProvider,
@@ -30,7 +33,7 @@ import { ReportSectionView } from './components/report-section-view'
 
 const route = getRouteApi('/_authenticated/reports/balance-sheet/')
 
-function BalanceSheetPageContent() {
+export function BalanceSheetPageContent() {
   const { date, setDate, data: rawData, isLoading } = useBalanceSheetContext()
   const navigate = route.useNavigate()
   const [isPrinting, setIsPrinting] = useState(false)
@@ -171,7 +174,7 @@ function BalanceSheetPageContent() {
   )
 }
 
-function BalanceSheetOverviewWithFilters() {
+export function BalanceSheetOverviewWithFilters() {
   const { date, setDate, period, setPeriod } = useBalanceSheetOverviewContext()
   return (
     <div className='flex flex-col gap-10'>
@@ -226,26 +229,31 @@ export default function BalanceSheetPage() {
     : new Date()
 
   return (
-    <div className='flex flex-col gap-10'>
-      <div className='flex items-center justify-between'>
-        <div>
-          <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
+    <PermissionGuard
+      permission={PERMISSION_KEY.REPORTS_BALANCE_SHEET_VIEW}
+      fallback={<BalanceSheetFallback />}
+    >
+      <div className='flex flex-col gap-10'>
+        <div className='flex items-center justify-between'>
+          <div>
+            <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
+          </div>
+          <div className='flex items-center gap-3'>
+            <Button variant={'outline'} onClick={() => history.back()}>
+              <ArrowLeft className='h-4 w-4' />
+              Kembali
+            </Button>
+          </div>
         </div>
-        <div className='flex items-center gap-3'>
-          <Button variant={'outline'} onClick={() => history.back()}>
-            <ArrowLeft className='h-4 w-4' />
-            Kembali
-          </Button>
-        </div>
+
+        <BalanceSheetOverviewProvider defaultDate={defaultDate}>
+          <BalanceSheetOverviewWithFilters />
+        </BalanceSheetOverviewProvider>
+
+        <BalanceSheetProvider defaultDate={defaultDate}>
+          <BalanceSheetPageContent />
+        </BalanceSheetProvider>
       </div>
-
-      <BalanceSheetOverviewProvider defaultDate={defaultDate}>
-        <BalanceSheetOverviewWithFilters />
-      </BalanceSheetOverviewProvider>
-
-      <BalanceSheetProvider defaultDate={defaultDate}>
-        <BalanceSheetPageContent />
-      </BalanceSheetProvider>
-    </div>
+    </PermissionGuard>
   )
 }

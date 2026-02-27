@@ -2,8 +2,11 @@ import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
 import { ArrowLeft, Plus, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
+import { ExpensesListFallback } from './components/expenses-list-fallback'
 import { ExpensesListsProvider } from './components/expenses-list-provider'
 import { ExpensesListsTable } from './components/expenses-list-table'
 import { ExpenseListsTablePrint } from './components/print/expense-list-print'
@@ -31,7 +34,10 @@ function ExpensesListsContent() {
   })
 
   return (
-    <>
+    <PermissionGuard
+      permission={PERMISSION_KEY.EXPENSE}
+      fallback={<ExpensesListFallback search={search} navigate={navigate} />}
+    >
       <Card>
         <CardHeader>
           <div className='flex justify-between'>
@@ -69,7 +75,7 @@ function ExpensesListsContent() {
       >
         <ExpenseListsTablePrint ref={printRef} />
       </div>
-    </>
+    </PermissionGuard>
   )
 }
 

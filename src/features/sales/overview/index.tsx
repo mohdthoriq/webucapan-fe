@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
 import { Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PermissionGuard } from '@/components/permission-guard'
 import { CustomerSalesCard } from './components/customer-sales-card'
 import { Overdue } from './components/overdue'
 import { PaidRatioCard } from './components/paid-ratio-card'
@@ -11,6 +13,7 @@ import { PaymentsReceived } from './components/payments-received'
 import { SalesOverviewPrint } from './components/print/sales-overview-print'
 import { ProductSalesCard } from './components/product-sales-card'
 import { SalesChartCard } from './components/sales-chart-card'
+import { SalesOverviewFallback } from './components/sales-overview-fallback'
 import { TotalSales } from './components/total-sales'
 import { WaitingPayments } from './components/waiting-payments'
 
@@ -33,7 +36,10 @@ export function SalesOverview() {
   })
 
   return (
-    <>
+    <PermissionGuard
+      permission={PERMISSION_KEY.SALES_OVERVIEW_VIEW}
+      fallback={<SalesOverviewFallback />}
+    >
       <div className='flex w-full flex-col items-center justify-between space-y-8'>
         <div className='flex w-full items-center justify-between'>
           <h1 className='text-4xl font-medium'>Overview Penjualan</h1>
@@ -92,6 +98,6 @@ export function SalesOverview() {
       >
         <SalesOverviewPrint ref={printRef} />
       </div>
-    </>
+    </PermissionGuard>
   )
 }
