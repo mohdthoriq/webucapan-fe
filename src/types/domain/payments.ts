@@ -18,6 +18,7 @@ export interface TransactionType {
   id: string
   name: string
   code: string
+  description?: string
 }
 
 export interface Reference {

@@ -180,7 +180,7 @@ export function AccountCategoriesActionDialog({
                                         </SelectTrigger>
                                       </FormControl>
                                       <SelectContent>
-                                        {transactionTypes?.map((t) => (
+                                        {transactionTypes?.data?.map((t) => (
                                           <SelectItem key={t.id} value={t.id}>
                                             {t.name} ({t.code})
                                           </SelectItem>
