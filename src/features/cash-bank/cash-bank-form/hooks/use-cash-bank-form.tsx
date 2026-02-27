@@ -52,8 +52,6 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
     defaultValues,
   })
 
-  console.log('FORM ERRORS:', form.formState.errors)
-
   const {
     fields: itemFields,
     append: appendItem,
