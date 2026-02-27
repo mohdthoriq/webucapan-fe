@@ -43,7 +43,7 @@ export function ProductCategoryActionDialog({
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting, errorMessage } = useProductCategoryForm(
+  const { form, onSubmit, errorMessage } = useProductCategoryForm(
     {
       currentRow,
       onSuccess,
@@ -64,17 +64,8 @@ export function ProductCategoryActionDialog({
         form.reset()
       }}
     >
-      <DialogContent
-        className={cn(
-          'flex flex-col sm:max-w-lg',
-        )}
-      >
-        <DialogHeader
-          className={cn(
-            'text-start',
-            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
-          )}
-        >
+      <DialogContent className={cn('flex flex-col sm:max-w-lg')}>
+        <DialogHeader className={cn('text-start')}>
           <DialogTitle>
             {isEdit ? 'Update Kategori Produk' : 'Tambah Kategori Produk'}
           </DialogTitle>
@@ -84,17 +75,15 @@ export function ProductCategoryActionDialog({
               : 'Tambah kategori produk baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div
-          className={cn(
-            'py-4',
-            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
-          )}
-        >
+        <div className={cn('relative py-4')}>
           <Form {...form}>
             <form
               id='account-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -108,6 +97,7 @@ export function ProductCategoryActionDialog({
                         autoComplete='off'
                         type='text'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -125,6 +115,7 @@ export function ProductCategoryActionDialog({
                         placeholder='Masukkan deskripsi...'
                         {...field}
                         className='min-h-[100px] resize-none'
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -133,6 +124,7 @@ export function ProductCategoryActionDialog({
               />
             </form>
           </Form>
+          <UpgradePlanCard feature='Tambah Kategori' type='dialog' />
         </div>
         {errorMessage && (
           <Alert
@@ -147,18 +139,11 @@ export function ProductCategoryActionDialog({
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
-        <DialogFooter
-          className={cn(
-            !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
-          )}
-        >
-          <Button type='submit' form='account-form' disabled={isSubmitting}>
+        <DialogFooter>
+          <Button type='submit' form='account-form'>
             {isEdit ? 'Update Kategori' : 'Tambah Kategori'}
           </Button>
         </DialogFooter>
-        <UpgradePlanCard
-          feature={isEdit ? 'Update Kategori' : 'Tambah Kategori'}
-        />
       </DialogContent>
     </Dialog>
   )

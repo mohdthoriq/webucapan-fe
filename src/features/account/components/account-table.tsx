@@ -17,6 +17,8 @@ import {
 import type { Account } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -38,6 +40,7 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useBulkDeleteAccountMutation } from '../hooks/use-account-mutation'
 import { AccountBulkDeleteDialog } from './account-bulk-delete-dialog'
 import { accountsColumns } from './account-columns'
@@ -60,6 +63,9 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [expanded, setExpanded] = useState<ExpandedState>({})
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.ACCOUNT_DELETE)
 
   const deleteBulkMutation = useBulkDeleteAccountMutation()
 
@@ -180,7 +186,13 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
             <Button
               variant='destructive'
               size='icon'
-              onClick={() => setBulkDeleteDialogOpen(true)}
+              onClick={() => {
+                if (hasPermission) {
+                  setBulkDeleteDialogOpen(true)
+                } else {
+                  setLockFeatureDialog(true)
+                }
+              }}
               className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
             >
               <Trash2 className='size-4' />
@@ -208,6 +220,11 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockFeatureDialog}
+        onOpenChange={setLockFeatureDialog}
+        feature='Hapus Akun'
       />
     </div>
   )

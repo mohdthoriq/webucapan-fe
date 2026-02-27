@@ -2,6 +2,9 @@
 
 import { type Contact } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,6 +24,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useContactsForm } from '../hooks/use-contacts-form'
 import { ContactsCombobox } from './contacts-combobox'
 
@@ -44,6 +48,10 @@ export function ContactsActionDialog({
     onSuccess,
   })
 
+  const hasPermission = useHasPermission(
+    isEdit ? PERMISSION_KEY.CONTACT_EDIT : PERMISSION_KEY.CONTACT_ADD
+  )
+
   return (
     <Dialog
       open={open}
@@ -63,12 +71,15 @@ export function ContactsActionDialog({
               : 'Tambah kontak baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
               id='contact-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -81,6 +92,7 @@ export function ContactsActionDialog({
                         placeholder='Masukkan nama kontak...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -99,6 +111,7 @@ export function ContactsActionDialog({
                         onValueChange={field.onChange}
                         placeholder='Pilih tipe kontak...'
                         companyId={currentRow?.company?.id}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -116,6 +129,7 @@ export function ContactsActionDialog({
                         placeholder='08123456789'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -133,6 +147,7 @@ export function ContactsActionDialog({
                         placeholder='email@example.com'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -150,6 +165,7 @@ export function ContactsActionDialog({
                         placeholder='Jl. Contoh No. 1'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -158,6 +174,10 @@ export function ContactsActionDialog({
               />
             </form>
           </Form>
+          <UpgradePlanCard
+            type='dialog'
+            feature={isEdit ? 'Edit Kontak' : 'Tambah Kontak'}
+          />
         </div>
         {errorMessage && (
           <Alert variant='destructive' className='w-full'>
