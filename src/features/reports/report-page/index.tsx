@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Search } from 'lucide-react'
 import { useReportsStore } from '@/stores/reports-store'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PermissionGuard } from '@/components/permission-guard'
 import { ReportItem } from './components/report-items'
+import { ReportPageFallback } from './components/report-page-fallback'
 import { reportData } from './data/report-data'
 
 function ReportContents() {
@@ -24,63 +27,70 @@ function ReportContents() {
     .filter((report) => favorites.includes(report.id))
 
   return (
-    <div className='flex flex-col space-y-8'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-3xl font-bold'>Laporan</h1>
-      </div>
-
-      {favoriteReports && favoriteReports.length > 0 && (
-        <div className='flex flex-col space-y-4'>
-          <h2 className='text-foreground/90 text-sm font-semibold'>Favorit</h2>
-          <Card className='bg-card text-card-foreground p-0'>
-            <div className='divide-border divide-y'>
-              {favoriteReports.map((report) => (
-                <ReportItem
-                  key={report.url}
-                  report={report}
-                  isFavorite={true}
-                  toggleFavorite={toggleFavorite}
-                />
-              ))}
-            </div>
-          </Card>
+    <PermissionGuard
+      permission={PERMISSION_KEY.REPORTS}
+      fallback={<ReportPageFallback />}
+    >
+      <div className='flex flex-col space-y-8'>
+        <div className='flex items-center justify-between'>
+          <h1 className='text-3xl font-bold'>Laporan</h1>
         </div>
-      )}
 
-      <div className='flex justify-end'>
-        <div className='relative w-full max-w-xs'>
-          <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
-          <Input
-            placeholder='Cari'
-            className='pl-9'
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
-        {filteredData?.map((category) => (
-          <div key={category.category} className='flex flex-col space-y-4'>
+        {favoriteReports && favoriteReports.length > 0 && (
+          <div className='flex flex-col space-y-4'>
             <h2 className='text-foreground/90 text-sm font-semibold'>
-              {category.category}
+              Favorit
             </h2>
             <Card className='bg-card text-card-foreground p-0'>
               <div className='divide-border divide-y'>
-                {category.reports.map((report) => (
+                {favoriteReports.map((report) => (
                   <ReportItem
                     key={report.url}
                     report={report}
-                    isFavorite={favorites.includes(report.id)}
+                    isFavorite={true}
                     toggleFavorite={toggleFavorite}
                   />
                 ))}
               </div>
             </Card>
           </div>
-        ))}
+        )}
+
+        <div className='flex justify-end'>
+          <div className='relative w-full max-w-xs'>
+            <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
+            <Input
+              placeholder='Cari'
+              className='pl-9'
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+          {filteredData?.map((category) => (
+            <div key={category.category} className='flex flex-col space-y-4'>
+              <h2 className='text-foreground/90 text-sm font-semibold'>
+                {category.category}
+              </h2>
+              <Card className='bg-card text-card-foreground p-0'>
+                <div className='divide-border divide-y'>
+                  {category.reports.map((report) => (
+                    <ReportItem
+                      key={report.url}
+                      report={report}
+                      isFavorite={favorites.includes(report.id)}
+                      toggleFavorite={toggleFavorite}
+                    />
+                  ))}
+                </div>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </PermissionGuard>
   )
 }
 

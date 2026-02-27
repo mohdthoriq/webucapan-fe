@@ -166,6 +166,7 @@ export function ExpensesListFilter({
       <PopoverContent
         className='w-[calc(100vw-2rem)] p-0 md:w-[700px]'
         align='start'
+        side='right'
         collisionPadding={16}
       >
         <div className='flex h-full flex-col'>

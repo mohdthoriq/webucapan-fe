@@ -16,6 +16,8 @@ import {
 import type { Expense } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -38,6 +40,7 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeleteExpensesMutation } from '../../expenses-detail/hooks/use-expenses-payments.mutation'
 import { ExpensesBulkDeleteDialog } from './expenses-bulk-delete-dialog'
 import { expensesListsColumns } from './expenses-list-columns'
@@ -61,6 +64,9 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [lockDialogOpen, setLockDialogOpen] = useState(false)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.EXPENSE_DELETE)
 
   const deleteMutation = useDeleteExpensesMutation()
 
@@ -242,7 +248,13 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
             <Button
               variant='destructive'
               size='icon'
-              onClick={() => setBulkDeleteDialogOpen(true)}
+              onClick={() => {
+                if (!hasPermission) {
+                  setLockDialogOpen(true)
+                } else {
+                  setBulkDeleteDialogOpen(true)
+                }
+              }}
               className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
             >
               <Trash2 className='size-4' />
@@ -270,6 +282,11 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockDialogOpen}
+        onOpenChange={setLockDialogOpen}
+        feature='Hapus Biaya'
       />
     </div>
   )

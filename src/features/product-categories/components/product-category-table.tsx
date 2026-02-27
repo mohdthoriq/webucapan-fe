@@ -15,6 +15,8 @@ import {
 import type { ProductCategory } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -36,6 +38,7 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useBulkDeleteProductCategoryMutation } from '../hooks/use-product-category-mutation'
 import { ProductCategoryBulkDeleteDialog } from './product-category-bulk-delete-dialog'
 import { productCategoriesColumns } from './product-category-columns'
@@ -57,6 +60,9 @@ export function ProductCategoryTable({ search, navigate }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.PRODUCT_CATEGORY_DELETE)
 
   const deleteMutation = useBulkDeleteProductCategoryMutation()
 
@@ -172,7 +178,13 @@ export function ProductCategoryTable({ search, navigate }: DataTableProps) {
             <Button
               variant='destructive'
               size='icon'
-              onClick={() => setBulkDeleteDialogOpen(true)}
+              onClick={() => {
+                if (hasPermission) {
+                  setBulkDeleteDialogOpen(true)
+                } else {
+                  setLockFeatureDialog(true)
+                }
+              }}
               className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
             >
               <Trash2 className='size-4' />
@@ -200,6 +212,11 @@ export function ProductCategoryTable({ search, navigate }: DataTableProps) {
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockFeatureDialog}
+        onOpenChange={setLockFeatureDialog}
+        feature='Hapus Kategori'
       />
     </div>
   )
@@ -229,7 +246,7 @@ function TableRows({ table }: { table: TanstackTable<ProductCategory> }) {
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row cursor-pointer hover:bg-muted/50'
+          className='group/row hover:bg-muted/50 cursor-pointer'
           onClick={() => {
             setCurrentRow(row.original)
             setOpen('edit')

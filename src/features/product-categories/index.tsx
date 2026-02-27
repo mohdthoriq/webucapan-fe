@@ -1,8 +1,11 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
 import { ProductCategoryDialogs } from './components/product-category-dialogs'
+import { ProductCategoryFallback } from './components/product-category-fallback'
 import {
   ProductCategoryProvider,
   useProductCategories,
@@ -17,34 +20,39 @@ function ProductCategoryContent() {
   const { setOpen } = useProductCategories()
 
   return (
-    <Card>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <div className='mb-2 grid'>
-            <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Kategori Produk
-            </h2>
-            <p className='text-muted-foreground'>
-              Kelola Kategori Produk di Perusahaan Anda.
-            </p>
+    <PermissionGuard
+      permission={PERMISSION_KEY.PRODUCT_CATEGORY}
+      fallback={<ProductCategoryFallback search={search} navigate={navigate} />}
+    >
+      <Card>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <div className='mb-2 grid'>
+              <h2 className='text-2xl font-bold tracking-tight'>
+                Pengaturan Kategori Produk
+              </h2>
+              <p className='text-muted-foreground'>
+                Kelola Kategori Produk di Perusahaan Anda.
+              </p>
+            </div>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
+              <Button variant={'link'} onClick={() => history.go(-1)}>
+                Kembali
+              </Button>
+              <Button onClick={() => setOpen('add')}>
+                <Plus className='mr-2 h-4 w-4' />
+                Tambah Kategori
+              </Button>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'link'} onClick={() => history.go(-1)}>
-              Kembali
-            </Button>
-            <Button onClick={() => setOpen('add')}>
-              <Plus className='mr-2 h-4 w-4' />
-              Tambah Kategori
-            </Button>
-          </div>
-        </div>
-        <hr />
-      </CardHeader>
-      <CardContent>
-        <ProductCategoryTable search={search} navigate={navigate} />
-        <ProductCategoryDialogs />
-      </CardContent>
-    </Card>
+          <hr />
+        </CardHeader>
+        <CardContent>
+          <ProductCategoryTable search={search} navigate={navigate} />
+          <ProductCategoryDialogs />
+        </CardContent>
+      </Card>
+    </PermissionGuard>
   )
 }
 

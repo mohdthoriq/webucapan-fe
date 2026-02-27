@@ -43,7 +43,9 @@ export const PERMISSION_KEY = {
 
   // Reports
   REPORTS: 'reports',
+  REPORTS_BALANCE_SHEET: 'reports.balance.sheet',
   REPORTS_BALANCE_SHEET_VIEW: 'reports.balance.sheet.view',
+  REPORTS_PROFIT_LOSS: 'reports.profit.loss',
   REPORTS_PROFIT_LOSS_VIEW: 'reports.profit.loss.view',
 
   // Cash & Bank
@@ -72,11 +74,16 @@ export const PERMISSION_KEY = {
 
   // Settings
   SETTINGS: 'settings',
-  SETTINGS_COMPANY_PROFILE_VIEW: 'settings.company.profile.view',
-  SETTINGS_COMPANY_PROFILE_EDIT: 'settings.company.profile.edit',
+  SETTINGS_COMPANY: 'settings.company',
+  SETTINGS_COMPANY_VIEW: 'settings.company.view',
+  SETTINGS_COMPANY_EDIT: 'settings.company.edit',
+  SETTINGS_BILLING: 'settings.billing',
   SETTINGS_BILLING_VIEW: 'settings.billing.view',
+  SETTINGS_BILLING_UPGRADE: 'settings.billing.upgrade',
+  SETTINGS_AUTO_SEQUENCING: 'settings.auto.sequencing',
   SETTINGS_AUTO_SEQUENCING_VIEW: 'settings.auto.sequencing.view',
   SETTINGS_AUTO_SEQUENCING_EDIT: 'settings.auto.sequencing.edit',
+  SETTINGS_USER: 'settings.user',
   SETTINGS_USER_VIEW: 'settings.user.view',
   SETTINGS_USER_ADD: 'settings.user.add',
   SETTINGS_COMPANY_ROLE: 'settings.company.role',
@@ -99,11 +106,14 @@ export const PERMISSION_KEY = {
   SETTINGS_PAYMENT_TERM_ADD: 'settings.payment.term.add',
   SETTINGS_PAYMENT_TERM_EDIT: 'settings.payment.term.edit',
   SETTINGS_PAYMENT_TERM_DELETE: 'settings.payment.term.delete',
-  SETTINGS_TAGS: 'settings.tags',
-  SETTINGS_TAGS_VIEW: 'settings.tags.view',
-  SETTINGS_TAGS_ADD: 'settings.tags.add',
-  SETTINGS_TAGS_EDIT: 'settings.tags.edit',
-  SETTINGS_TAGS_DELETE: 'settings.tags.delete',
+  SETTINGS_TAG: 'settings.tag',
+  SETTINGS_TAG_VIEW: 'settings.tag.view',
+  SETTINGS_TAG_ADD: 'settings.tag.add',
+  SETTINGS_TAG_EDIT: 'settings.tag.edit',
+  SETTINGS_TAG_DELETE: 'settings.tag.delete',
+  SETTINGS_PROFILE: 'settings.profile',
+  SETTINGS_PROFILE_VIEW: 'settings.profile.view',
+  SETTINGS_PROFILE_EDIT: 'settings.profile.edit',
 } as const
 
 export type PermissionKey = (typeof PERMISSION_KEY)[keyof typeof PERMISSION_KEY]

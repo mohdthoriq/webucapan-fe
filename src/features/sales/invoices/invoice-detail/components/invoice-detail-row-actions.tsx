@@ -3,6 +3,8 @@ import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import type { SalesInvoice } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
 import { InvoiceDeleteDialog } from './invoice-delete-dialog'
 
@@ -22,7 +25,10 @@ export function InvoiceDetailRowActions({
 }: InvoiceDetailRowActionsProps) {
   const navigate = useNavigate()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [featureLockDialogOpen, setFeatureLockDialogOpen] = useState(false)
   const deleteMutation = useDeleteSalesInvoiceMutation()
+
+  const canDelete = useHasPermission(PERMISSION_KEY.SALES_INVOICE_DELETE)
 
   return (
     <>
@@ -48,7 +54,15 @@ export function InvoiceDetailRowActions({
             <PencilIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)}>
+          <DropdownMenuItem
+            onClick={() => {
+              if (canDelete) {
+                setDeleteDialogOpen(true)
+              } else {
+                setFeatureLockDialogOpen(true)
+              }
+            }}
+          >
             <Trash2Icon className='h-4 w-4' />
             Hapus
           </DropdownMenuItem>
@@ -66,10 +80,6 @@ export function InvoiceDetailRowActions({
             {
               onSuccess: () => {
                 setDeleteDialogOpen(false)
-                // If we are on the detail page, we might want to navigate back to the list
-                // However, the mutation success handler already invalidates queries.
-                // The requirement says "navigate({ search: {} })" in the code I saw earlier,
-                // but let's just close the dialog for now. Actually, if we are in detail, we should go back.
                 if (window.location.pathname.includes('/detail')) {
                   navigate({ to: '/sales/invoices' })
                 }
@@ -77,6 +87,11 @@ export function InvoiceDetailRowActions({
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={featureLockDialogOpen}
+        onOpenChange={setFeatureLockDialogOpen}
+        feature='Hapus Tagihan Penjualan'
       />
     </>
   )

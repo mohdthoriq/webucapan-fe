@@ -27,6 +27,7 @@ interface PermissionComboboxProps {
   placeholder?: string
   companyId?: string
   limit?: number
+  disabled?: boolean
 }
 
 export function ContactsCombobox({
@@ -35,6 +36,7 @@ export function ContactsCombobox({
   placeholder = 'Select contact types...',
   companyId,
   limit = 20,
+  disabled = false,
 }: PermissionComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -129,6 +131,7 @@ export function ContactsCombobox({
           role='combobox'
           aria-expanded={open}
           className='w-full min-w-[300px] justify-between'
+          disabled={disabled}
         >
           {selectedContactType ? selectedContactType.name : placeholder}
           <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />

@@ -14,6 +14,7 @@ interface CashBankListComboboxProps {
   excludeIds?: Set<string>
   action?: ReactNode
   contactTypeId?: string
+  disabled?: boolean
 }
 
 export function CashBankListCombobox({
@@ -33,6 +34,7 @@ function ContactCombobox({
   limit = 20,
   action,
   contactTypeId,
+  disabled,
 }: Omit<CashBankListComboboxProps, 'type'>) {
   const {
     allItems,
@@ -73,6 +75,7 @@ function ContactCombobox({
       onLoadMore={loadMore}
       onRetry={refetch}
       action={action}
+      disabled={disabled}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
@@ -95,6 +98,7 @@ function AccountCombobox({
   limit = 20,
   excludeIds,
   action,
+  disabled,
 }: Omit<CashBankListComboboxProps, 'type'>) {
   const {
     allItems,
@@ -140,6 +144,7 @@ function AccountCombobox({
       onLoadMore={loadMore}
       onRetry={refetch}
       action={action}
+      disabled={disabled}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <>

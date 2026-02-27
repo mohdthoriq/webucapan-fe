@@ -40,6 +40,9 @@ import { useBulkDeleteContactMutation } from '../hooks/use-contacts-mutation'
 import { ContactsBulkDeleteDialog } from './contacts-bulk-delete-dialog'
 import { contactsColumns } from './contacts-columns'
 import { useContacts } from './contacts-provider'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -58,6 +61,9 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.CONTACT_DELETE)
 
   const deleteMutation = useBulkDeleteContactMutation()
 
@@ -177,7 +183,13 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
             <Button
               variant='destructive'
               size='icon'
-              onClick={() => setBulkDeleteDialogOpen(true)}
+              onClick={() => {
+                if (hasPermission) {
+                  setBulkDeleteDialogOpen(true)
+                } else {
+                  setLockFeatureDialog(true)
+                }
+              }}
               className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
             >
               <Trash2 className='size-4' />
@@ -205,6 +217,11 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
             }
           )
         }}
+      />
+      <FeatureLockDialog
+        open={lockFeatureDialog}
+        onOpenChange={setLockFeatureDialog}
+        feature='Hapus Kontak'
       />
     </div>
   )

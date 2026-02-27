@@ -13,6 +13,7 @@ interface AccountCategoryComboboxProps {
   placeholder?: string
   limit?: number
   action?: ReactNode
+  disabled?: boolean
 }
 
 export function AccountCategoryCombobox({
@@ -21,6 +22,7 @@ export function AccountCategoryCombobox({
   placeholder = 'Pilih Kategori',
   limit = 20,
   action,
+  disabled,
 }: AccountCategoryComboboxProps) {
   const {
     allItems,
@@ -63,6 +65,7 @@ export function AccountCategoryCombobox({
           </span>
         </div>
       )}
+      disabled={disabled}
       action={action}
     />
   )

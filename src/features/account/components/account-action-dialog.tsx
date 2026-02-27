@@ -3,6 +3,9 @@
 import { useEffect, useRef } from 'react'
 import { type Account } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,6 +34,7 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import {
   useAccountsForm,
   type UseAccountsFormProps,
@@ -62,6 +66,10 @@ export function AccountsActionDialog({
 
   const prevCategoryId = useRef(categoryId)
 
+  const hasPermission = useHasPermission(
+    isEdit ? PERMISSION_KEY.ACCOUNT_EDIT : PERMISSION_KEY.ACCOUNT_ADD
+  )
+
   useEffect(() => {
     if (prevCategoryId.current !== categoryId) {
       form.setValue('parent_id', undefined)
@@ -87,12 +95,15 @@ export function AccountsActionDialog({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[50vh] w-full'>
-          <div className='py-4 pr-4 pl-2'>
+          <div className={cn('py-4 pr-4 pl-2', !hasPermission && 'relative')}>
             <Form {...form}>
               <form
                 id='account-form'
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-4'
+                className={cn(
+                  'space-y-4',
+                  !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+                )}
               >
                 <FormField
                   control={form.control}
@@ -105,6 +116,7 @@ export function AccountsActionDialog({
                           placeholder='Masukkan kode akun...'
                           autoComplete='off'
                           {...field}
+                          disabled={!hasPermission}
                         />
                       </FormControl>
                       <FormMessage />
@@ -122,6 +134,7 @@ export function AccountsActionDialog({
                           placeholder='Masukkan nama akun...'
                           autoComplete='off'
                           {...field}
+                          disabled={!hasPermission}
                         />
                       </FormControl>
                       <FormMessage />
@@ -140,6 +153,7 @@ export function AccountsActionDialog({
                           onValueChange={(value) => {
                             field.onChange(value)
                           }}
+                          disabled={!hasPermission}
                         />
                       </FormControl>
                       <FormMessage />
@@ -158,7 +172,7 @@ export function AccountsActionDialog({
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                           categoryId={categoryId}
-                          disabled={!categoryId}
+                          disabled={!categoryId || !hasPermission}
                         />
                       </FormControl>
                       <FormMessage />
@@ -177,6 +191,7 @@ export function AccountsActionDialog({
                             field.onChange(value === 'true')
                           }
                           value={field.value ? 'true' : 'false'}
+                          disabled={!hasPermission}
                         >
                           <SelectTrigger className='w-full'>
                             <SelectValue placeholder='Pilih opsi...' />
@@ -203,6 +218,7 @@ export function AccountsActionDialog({
                             field.onChange(value === 'true')
                           }
                           value={field.value ? 'true' : 'false'}
+                          disabled={!hasPermission}
                         >
                           <SelectTrigger className='w-full'>
                             <SelectValue placeholder='Pilih opsi...' />
@@ -228,6 +244,7 @@ export function AccountsActionDialog({
                           placeholder='Masukkan deskripsi...'
                           className='min-h-[100px] resize-none'
                           {...field}
+                          disabled={!hasPermission}
                         />
                       </FormControl>
                       <FormMessage />
@@ -236,6 +253,12 @@ export function AccountsActionDialog({
                 />
               </form>
             </Form>
+            {!hasPermission && (
+              <UpgradePlanCard
+                type='dialog'
+                feature={isEdit ? 'Edit Akun' : 'Tambah Akun'}
+              />
+            )}
           </div>
         </ScrollArea>
         {errorMessage && (

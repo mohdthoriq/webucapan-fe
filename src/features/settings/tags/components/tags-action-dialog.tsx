@@ -1,6 +1,11 @@
 'use client'
 
 import type { Tag } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,9 +25,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useTagsForm } from '../hooks/use-tags-form'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type TagsActionDialogProps = {
   currentRow?: Tag
@@ -35,11 +39,18 @@ export function TagsActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess
+  onSuccess,
 }: TagsActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting, errorMessage } = useTagsForm({ currentRow, onSuccess })
+  const { form, onSubmit, isSubmitting, errorMessage } = useTagsForm({
+    currentRow,
+    onSuccess,
+  })
+
+  const hasPermission = useHasPermission(
+    isEdit ? PERMISSION_KEY.SETTINGS_TAG_EDIT : PERMISSION_KEY.SETTINGS_TAG_ADD
+  )
 
   return (
     <Dialog
@@ -51,21 +62,22 @@ export function TagsActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>
-            {isEdit ? 'Update Satuan' : 'Tambah Satuan'}
-          </DialogTitle>
+          <DialogTitle>{isEdit ? 'Update Tag' : 'Tambah Tag'}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Update satuan disini.'
-              : 'Tambah satuan baru untuk Perusahaan Anda.'}
+              ? 'Update tag disini.'
+              : 'Tambah tag baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
               id='tag-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -78,6 +90,7 @@ export function TagsActionDialog({
                         placeholder='Masukkan nama tag...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -96,6 +109,7 @@ export function TagsActionDialog({
                         autoComplete='off'
                         className='min-h-[100px] resize-none'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -104,6 +118,12 @@ export function TagsActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Tag' : 'Tambah Tag'}
+            />
+          )}
         </div>
 
         {errorMessage && (

@@ -24,3 +24,11 @@ export const deletePermissionSchema = z.object({
 })
 
 export type DeletePermissionFormData = z.infer<typeof deletePermissionSchema>
+
+export const bulkDeletePermissionSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeletePermissionFormData = z.infer<
+  typeof bulkDeletePermissionSchema
+>

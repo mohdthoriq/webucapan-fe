@@ -2,7 +2,12 @@
 
 import { useEffect } from 'react'
 import { type User } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,10 +26,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useUsersForm } from '../hooks/use-users-form'
 import { RolesCombobox } from './users-role-combobox'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type UsersActionDialogProps = {
   currentRow?: User
@@ -49,6 +53,8 @@ export function UsersActionDialog({
     }
   }, [company?.id, isEdit, form])
 
+  const hasPermission = useHasPermission(PERMISSION_KEY.SETTINGS_USER_ADD)
+
   return (
     <Dialog
       open={open}
@@ -68,12 +74,15 @@ export function UsersActionDialog({
               : 'Undang pengguna baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
               id='user-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -86,6 +95,7 @@ export function UsersActionDialog({
                         placeholder='Masukkan nama lengkap...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -104,6 +114,7 @@ export function UsersActionDialog({
                         autoComplete='off'
                         type='email'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -121,6 +132,7 @@ export function UsersActionDialog({
                         placeholder='Masukkan nomor telepon...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -138,6 +150,7 @@ export function UsersActionDialog({
                         placeholder='Pilih peran...'
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,6 +159,12 @@ export function UsersActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Pengguna' : 'Tambah Pengguna'}
+            />
+          )}
         </div>
 
         {errorMessage && (

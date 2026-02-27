@@ -27,6 +27,7 @@ interface RolesComboboxProps {
   placeholder?: string
   companyId?: string
   limit?: number
+  disabled?: boolean
 }
 
 export function RolesCombobox({
@@ -35,6 +36,7 @@ export function RolesCombobox({
   placeholder = 'Pilih peran...',
   companyId,
   limit = 20,
+  disabled = false,
 }: RolesComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -121,12 +123,17 @@ export function RolesCombobox({
           role='combobox'
           aria-expanded={open}
           className='w-full justify-between'
+          disabled={disabled}
         >
           {selectedRole ? selectedRole.name : placeholder}
           <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[var(--radix-popover-trigger-width)] p-0' align='start' side='bottom'>
+      <PopoverContent
+        className='w-[var(--radix-popover-trigger-width)] p-0'
+        align='start'
+        side='bottom'
+      >
         <Command shouldFilter={false}>
           <CommandInput
             placeholder='Cari peran...'

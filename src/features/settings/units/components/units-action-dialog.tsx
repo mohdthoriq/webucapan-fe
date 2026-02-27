@@ -1,6 +1,11 @@
 'use client'
 
 import { type Unit } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,9 +24,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useUnitsForm } from '../hooks/use-units-form'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type UnitsActionDialogProps = {
   currentRow?: Unit
@@ -40,8 +44,14 @@ export function UnitsActionDialog({
 
   const { form, onSubmit, isSubmitting, errorMessage } = useUnitsForm({
     currentRow,
-    onSuccess
+    onSuccess,
   })
+
+  const hasPermission = useHasPermission(
+    isEdit
+      ? PERMISSION_KEY.SETTINGS_UNIT_EDIT
+      : PERMISSION_KEY.SETTINGS_UNIT_ADD
+  )
 
   return (
     <Dialog
@@ -62,12 +72,15 @@ export function UnitsActionDialog({
               : 'Tambah satuan baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
               id='unit-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -80,6 +93,7 @@ export function UnitsActionDialog({
                         placeholder='Masukkan nama satuan...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -97,6 +111,7 @@ export function UnitsActionDialog({
                         placeholder='contoh:Pcs, Ft, Kg, Ltr, '
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -105,6 +120,12 @@ export function UnitsActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Satuan' : 'Tambah Satuan'}
+            />
+          )}
         </div>
 
         {errorMessage && (

@@ -1,9 +1,12 @@
 import { useRef, useState } from 'react'
 import { Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
+import { PermissionGuard } from '@/components/permission-guard'
 import { BillsOverview } from './components/bills-overview'
 import { CashOverview } from './components/cash-overview'
+import { DashboardFallback } from './components/dashboard-fallback'
 import { ExpenseOverview } from './components/expense-overview'
 import { DashboardPrint } from './components/print/dashboard-print'
 import { SalesDashboardOverview } from './components/sales-overview'
@@ -26,7 +29,10 @@ export function Dashboard() {
   })
 
   return (
-    <>
+    <PermissionGuard
+      permission={PERMISSION_KEY.DASHBOARD_VIEW}
+      fallback={<DashboardFallback />}
+    >
       <div>
         <div className='mb-10 flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
@@ -62,6 +68,6 @@ export function Dashboard() {
       >
         <DashboardPrint ref={printRef} />
       </div>
-    </>
+    </PermissionGuard>
   )
 }

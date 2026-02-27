@@ -1,7 +1,10 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
+import { ProductListFallback } from './components/product-list-fallback'
 import { ProductsDialogs } from './components/products-dialogs'
 import { ProductsProvider } from './components/products-provider'
 import { ProductsTable } from './components/products-table'
@@ -13,34 +16,39 @@ function ProductsContent() {
   const navigate = route.useNavigate()
 
   return (
-    <Card>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <div className='mb-2 grid'>
-            <h2 className='text-2xl font-bold tracking-tight'>
-              Pengaturan Produk
-            </h2>
-            <p className='text-muted-foreground'>
-              Kelola Produk di Perusahaan Anda.
-            </p>
+    <PermissionGuard
+      permission={PERMISSION_KEY.PRODUCT}
+      fallback={<ProductListFallback search={search} navigate={navigate} />}
+    >
+      <Card>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <div className='mb-2 grid'>
+              <h2 className='text-2xl font-bold tracking-tight'>
+                Pengaturan Produk
+              </h2>
+              <p className='text-muted-foreground'>
+                Kelola Produk di Perusahaan Anda.
+              </p>
+            </div>
+            <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
+              <Button variant={'link'} onClick={() => history.go(-1)}>
+                Kembali
+              </Button>
+              <Button onClick={() => navigate({ to: '/products/add' })}>
+                <Plus className='mr-2 h-4 w-4' />
+                Tambah Produk
+              </Button>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-            <Button variant={'link'} onClick={() => history.go(-1)}>
-              Kembali
-            </Button>
-            <Button onClick={() => navigate({ to: '/products/add' })}>
-              <Plus className='mr-2 h-4 w-4' />
-              Tambah Produk
-            </Button>
-          </div>
-        </div>
-        <hr />
-      </CardHeader>
-      <CardContent>
-        <ProductsTable search={search} navigate={navigate} />
-        <ProductsDialogs />
-      </CardContent>
-    </Card>
+          <hr />
+        </CardHeader>
+        <CardContent>
+          <ProductsTable search={search} navigate={navigate} />
+          <ProductsDialogs />
+        </CardContent>
+      </Card>
+    </PermissionGuard>
   )
 }
 

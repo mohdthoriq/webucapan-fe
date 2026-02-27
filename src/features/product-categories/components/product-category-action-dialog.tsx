@@ -2,6 +2,9 @@
 
 import type { ProductCategory } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,6 +25,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useProductCategoryForm } from '../hooks/use-product-category-form'
 
 type ProductCategoryActionDialogProps = {
@@ -35,15 +39,19 @@ export function ProductCategoryActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess,  
+  onSuccess,
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, isSubmitting, errorMessage } = useProductCategoryForm(
-    {
-      currentRow,
-      onSuccess,
-    }
+  const { form, onSubmit, errorMessage } = useProductCategoryForm({
+    currentRow,
+    onSuccess,
+  })
+
+  const hasPermission = useHasPermission(
+    isEdit
+      ? PERMISSION_KEY.PRODUCT_CATEGORY_EDIT
+      : PERMISSION_KEY.PRODUCT_CATEGORY_ADD
   )
 
   return (
@@ -54,8 +62,8 @@ export function ProductCategoryActionDialog({
         form.reset()
       }}
     >
-      <DialogContent className='flex flex-col sm:max-w-lg'>
-        <DialogHeader className='text-start'>
+      <DialogContent className={cn('flex flex-col sm:max-w-lg')}>
+        <DialogHeader className={cn('text-start')}>
           <DialogTitle>
             {isEdit ? 'Update Kategori Produk' : 'Tambah Kategori Produk'}
           </DialogTitle>
@@ -65,12 +73,15 @@ export function ProductCategoryActionDialog({
               : 'Tambah kategori produk baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('relative py-4')}>
           <Form {...form}>
             <form
               id='account-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -84,6 +95,7 @@ export function ProductCategoryActionDialog({
                         autoComplete='off'
                         type='text'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -101,6 +113,7 @@ export function ProductCategoryActionDialog({
                         placeholder='Masukkan deskripsi...'
                         {...field}
                         className='min-h-[100px] resize-none'
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -109,16 +122,25 @@ export function ProductCategoryActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard feature='Tambah Kategori' type='dialog' />
+          )}
         </div>
         {errorMessage && (
-          <Alert variant='destructive' className='w-full'>
+          <Alert
+            variant='destructive'
+            className={cn(
+              'w-full',
+              !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+            )}
+          >
             <CheckCircle2Icon />
             <AlertTitle>Perhatian!</AlertTitle>
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
         <DialogFooter>
-          <Button type='submit' form='account-form' disabled={isSubmitting}>
+          <Button type='submit' form='account-form'>
             {isEdit ? 'Update Kategori' : 'Tambah Kategori'}
           </Button>
         </DialogFooter>

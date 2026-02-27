@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button'
 type CashBankFormActionsProps = {
   isSubmitting: boolean
   errorMessage?: string
+  disabled?: boolean
 }
 
 export function CashBankFormActions({
   isSubmitting,
   errorMessage,
+  disabled,
 }: CashBankFormActionsProps) {
   return (
     <div className='flex flex-col gap-4'>
@@ -25,7 +27,7 @@ export function CashBankFormActions({
         >
           Batal
         </Button>
-        <Button type='submit' disabled={isSubmitting}>
+        <Button type='submit' disabled={isSubmitting || disabled}>
           {isSubmitting ? 'Menyimpan...' : 'Simpan'}
         </Button>
       </div>

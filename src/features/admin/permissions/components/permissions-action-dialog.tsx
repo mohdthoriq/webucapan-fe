@@ -77,6 +77,8 @@ export function PermissionsActionDialog({
                         placeholder='Masukkan nama permission...'
                         autoComplete='off'
                         {...field}
+                        disabled={isEdit}
+                        readOnly={isEdit}
                       />
                     </FormControl>
                     <FormMessage />
