@@ -15,6 +15,7 @@ interface CashBankListComboboxProps {
   action?: ReactNode
   contactTypeId?: string
   disabled?: boolean
+  codePrefix?: string[]
 }
 
 export function CashBankListCombobox({
@@ -99,6 +100,7 @@ function AccountCombobox({
   excludeIds,
   action,
   disabled,
+  codePrefix = [],
 }: Omit<CashBankListComboboxProps, 'type'>) {
   const {
     allItems,
@@ -110,11 +112,14 @@ function AccountCombobox({
     setSearchTerm,
   } = useComboboxQuery<
     Account,
-    { page?: number; limit?: number; name?: string }
+    { page?: number; limit?: number; name?: string; code_prefix?: string[] }
   >({
     queryHook: useAccountsQuery,
     limit,
     searchKey: 'search',
+    extraParams: {
+      code_prefix: codePrefix,
+    },
   })
 
   const selectedItem = useMemo(

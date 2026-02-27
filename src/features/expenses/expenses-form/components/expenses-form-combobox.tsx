@@ -117,7 +117,10 @@ function AccountCombobox({
     queryHook: useAccountsQuery,
     limit,
     searchKey: 'search',
-    extraParams: extraParams,
+    extraParams: {
+      code_prefix: ['5-500', '6-600', '8-800', '9-900'],
+      ...extraParams,
+    } as AccountQueryParams,
   })
 
   const selectedItem = useMemo(

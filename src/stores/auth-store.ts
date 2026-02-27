@@ -27,15 +27,17 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()((set) => {
-  const cookieState = getCookie(ACCESS_TOKEN)
-  const initToken =
-    cookieState && cookieState !== 'undefined' ? JSON.parse(cookieState) : ''
+  const safeParseCookie = (cookie: string | undefined): string => {
+    if (!cookie || cookie === 'undefined') return ''
+    try {
+      return JSON.parse(cookie)
+    } catch {
+      return cookie
+    }
+  }
 
-  const refreshCookieState = getCookie(REFRESH_TOKEN)
-  const initRefreshToken =
-    refreshCookieState && refreshCookieState !== 'undefined'
-      ? JSON.parse(refreshCookieState)
-      : ''
+  const initToken = safeParseCookie(getCookie(ACCESS_TOKEN))
+  const initRefreshToken = safeParseCookie(getCookie(REFRESH_TOKEN))
 
   // Get user data from localStorage (avoid cookie size limits)
   const getUserFromStorage = (): AuthMe | null => {

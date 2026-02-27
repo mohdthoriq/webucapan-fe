@@ -16,4 +16,4 @@
  *      --font-roboto: 'Roboto', var(--font-sans);
  *   }
  */
-export const fonts = ['inter'] as const
+export const fonts = ['geist', 'inter', 'manrope'] as const

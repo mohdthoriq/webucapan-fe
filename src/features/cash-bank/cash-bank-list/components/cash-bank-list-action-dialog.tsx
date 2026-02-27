@@ -143,6 +143,7 @@ export function CashBankListActionDialog({
                           placeholder='Pilih akun asal'
                           excludeIds={excludeFromIds}
                           disabled={!hasPermission}
+                          codePrefix={['1-100']}
                           action={
                             <FormShortcutButton
                               title='Tambah Akun Baru'
@@ -178,6 +179,7 @@ export function CashBankListActionDialog({
                           placeholder='Pilih akun tujuan'
                           excludeIds={excludeToIds}
                           disabled={!hasPermission}
+                          codePrefix={['1-100']}
                           action={
                             <FormShortcutButton
                               title='Tambah Akun Baru'

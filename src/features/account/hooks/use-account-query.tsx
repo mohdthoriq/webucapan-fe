@@ -38,17 +38,23 @@ export function useAccountsQuery(params?: AccountQueryParams) {
         limit: '1000',
         ...(params?.search ? { search: params.search } : {}),
         ...(params?.category_id ? { category_id: params.category_id } : {}),
-        ...(params?.is_active
+        ...(params?.is_active !== undefined
           ? { is_active: params.is_active.toString() }
           : {}),
-        ...(params?.transaction_types
-          ? { transaction_types: params.transaction_types.join(',') }
-          : {}),
         ...(params?.order ? { order: params.order } : {}),
-        ...(params?.code_prefix
-          ? { code_prefix: params.code_prefix.join(',') }
-          : {}),
       })
+
+      if (params?.transaction_types) {
+        params.transaction_types.forEach((type) =>
+          queryParams.append('transaction_types', type)
+        )
+      }
+
+      if (params?.code_prefix) {
+        params.code_prefix.forEach((prefix) =>
+          queryParams.append('code_prefix', prefix)
+        )
+      }
 
       const url = queryParams.toString()
         ? `/accounts?${queryParams.toString()}`
