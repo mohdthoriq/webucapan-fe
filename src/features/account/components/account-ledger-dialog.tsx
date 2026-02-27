@@ -58,7 +58,8 @@ export function AccountsLedgerDialog({
     currentRow?.id,
     date?.from ? format(date.from, 'yyyy-MM-dd') : undefined,
     date?.to ? format(date.to, 'yyyy-MM-dd') : undefined,
-    debouncedSearch
+    debouncedSearch,
+    'asc'
   )
 
   return (

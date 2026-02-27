@@ -72,15 +72,17 @@ export function useAccountLedgerQuery(
   accountId: string,
   from?: string,
   to?: string,
-  search?: string
+  search?: string,
+  order?: 'asc' | 'desc'
 ) {
   return useQuery({
-    queryKey: ['account-ledger', accountId, from, to, search],
+    queryKey: ['account-ledger', accountId, from, to, search, order],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(from ? { date_from: from } : {}),
         ...(to ? { date_to: to } : {}),
         ...(search ? { search } : {}),
+        ...(order ? { order } : {}),
       })
       const url = `/accounts/${accountId}/ledger${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
       const response = await apiClient.get<ApiResponse<LedgerData>>(url)

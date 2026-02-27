@@ -28,18 +28,19 @@ export function UnderDevelopmentDialog({
             <Construction className='size-8' />
           </div>
           <DialogTitle className='text-lg font-semibold'>
-            Fitur Dalam Pengembangan
+            Fitur ini sedang dalam proses perbaikan
           </DialogTitle>
           <DialogDescription className='text-muted-foreground text-sm'>
             {featureName ? (
               <>
+                Fitur{' '}
                 <span className='text-foreground font-medium'>
                   {featureName}
                 </span>{' '}
-                sedang dalam proses pengembangan dan akan segera tersedia.
+                sedang dalam proses perbaikan dan akan segera tersedia.
               </>
             ) : (
-              'Fitur ini sedang dalam proses pengembangan dan akan segera tersedia.'
+              'Fitur ini sedang dalam proses perbaikan dan akan segera tersedia.'
             )}
           </DialogDescription>
         </DialogHeader>

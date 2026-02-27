@@ -42,11 +42,11 @@ export const PERMISSION_KEY = {
   PRODUCT_DELETE: 'product.delete',
 
   // Reports
-  REPORTS: 'reports',
-  REPORTS_BALANCE_SHEET: 'reports.balance.sheet',
-  REPORTS_BALANCE_SHEET_VIEW: 'reports.balance.sheet.view',
-  REPORTS_PROFIT_LOSS: 'reports.profit.loss',
-  REPORTS_PROFIT_LOSS_VIEW: 'reports.profit.loss.view',
+  REPORTS: 'report',
+  REPORTS_BALANCE_SHEET: 'report.balance.sheet',
+  REPORTS_BALANCE_SHEET_VIEW: 'report.balance.sheet.view',
+  REPORTS_PROFIT_LOSS: 'report.profit.loss',
+  REPORTS_PROFIT_LOSS_VIEW: 'report.profit.loss.view',
 
   // Cash & Bank
   CASH_BANK: 'cash.bank',
