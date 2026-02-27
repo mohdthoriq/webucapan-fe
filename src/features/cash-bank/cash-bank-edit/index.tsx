@@ -1,6 +1,10 @@
 import { ArrowLeft } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import type { CashBankTransactionDetail } from '../cash-bank-detail/types/cash-bank-detail.types'
 import { CashBankPaymentsCard } from './components/cash-bank-payments-card'
 
@@ -9,30 +13,35 @@ interface CashBankEditProps {
 }
 
 export function CashBankEdit({ transaction }: CashBankEditProps) {
+  const hasPermission = useHasPermission(PERMISSION_KEY.CASH_BANK_EDIT)
+
   return (
     <div className='space-y-6'>
-      <Card>
-        <CardHeader>
-          <div className='mb-2 flex items-center justify-between'>
-            <div>
-              <h1 className='text-4xl font-semibold tracking-tight'>
-                Ubah Transaksi {transaction?.reference?.number}
-              </h1>
+      <Card className='relative overflow-hidden'>
+        <div className={cn(!hasPermission && 'pointer-events-none blur-[2px]')}>
+          <CardHeader>
+            <div className='mb-2 flex items-center justify-between'>
+              <div>
+                <h1 className='text-4xl font-semibold tracking-tight'>
+                  Ubah Transaksi {transaction?.reference?.number}
+                </h1>
+              </div>
+              <div className='mr-4 flex gap-2'>
+                <Button
+                  variant='outline'
+                  onClick={() => history.back()}
+                  className='gap-2'
+                >
+                  <ArrowLeft className='h-4 w-4' /> Kembali
+                </Button>
+              </div>
             </div>
-            <div className='mr-4 flex gap-2'>
-              <Button
-                variant='outline'
-                onClick={() => history.back()}
-                className='gap-2'
-              >
-                <ArrowLeft className='h-4 w-4' /> Kembali
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className='space-y-6'>
-          <CashBankPaymentsCard transaction={transaction} />
-        </CardContent>
+          </CardHeader>
+          <CardContent className='space-y-6'>
+            <CashBankPaymentsCard transaction={transaction} />
+          </CardContent>
+        </div>
+        {!hasPermission && <UpgradePlanCard feature='Ubah Transaksi' />}
       </Card>
     </div>
   )

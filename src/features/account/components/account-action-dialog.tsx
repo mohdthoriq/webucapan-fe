@@ -253,10 +253,12 @@ export function AccountsActionDialog({
                 />
               </form>
             </Form>
-            <UpgradePlanCard
-              type='dialog'
-              feature={isEdit ? 'Edit Akun' : 'Tambah Akun'}
-            />
+            {!hasPermission && (
+              <UpgradePlanCard
+                type='dialog'
+                feature={isEdit ? 'Edit Akun' : 'Tambah Akun'}
+              />
+            )}
           </div>
         </ScrollArea>
         {errorMessage && (

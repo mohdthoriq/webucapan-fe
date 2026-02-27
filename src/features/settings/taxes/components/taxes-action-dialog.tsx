@@ -2,6 +2,9 @@
 
 import type { Tax } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,6 +25,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useTaxesForm } from '../hooks/use-taxes-form'
 
 type TaxesActionDialogProps = {
@@ -35,14 +39,18 @@ export function TaxesActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess
+  onSuccess,
 }: TaxesActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = useTaxesForm({
     currentRow,
-    onSuccess
+    onSuccess,
   })
+
+  const hasPermission = useHasPermission(
+    isEdit ? PERMISSION_KEY.SETTINGS_TAX_EDIT : PERMISSION_KEY.SETTINGS_TAX_ADD
+  )
 
   return (
     <Dialog
@@ -62,12 +70,15 @@ export function TaxesActionDialog({
             Klik simpan setelah selesai.
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
               id='tax-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -80,6 +91,7 @@ export function TaxesActionDialog({
                         placeholder='Masukkan nama pajak...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -109,6 +121,7 @@ export function TaxesActionDialog({
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -127,6 +140,7 @@ export function TaxesActionDialog({
                         placeholder='Deskripsikan pajak ini...'
                         className='min-h-[80px]'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -135,6 +149,12 @@ export function TaxesActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Pajak' : 'Tambah Pajak'}
+            />
+          )}
         </div>
 
         {errorMessage && (

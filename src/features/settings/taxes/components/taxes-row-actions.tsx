@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
 import type { Tax } from '@/types'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useTaxes } from './taxes-provider'
 
 type DataTableRowActionsProps = {
@@ -16,6 +20,8 @@ type DataTableRowActionsProps = {
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
+  const hasPermission = useHasPermission(PERMISSION_KEY.SETTINGS_TAX_DELETE)
   const tax = row.original
   const { setOpen, setCurrentRow } = useTaxes()
 
@@ -53,8 +59,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(tax)
-              setOpen('delete')
+              if (!hasPermission) {
+                setLockFeatureDialog(true)
+              } else {
+                setCurrentRow(tax)
+                setOpen('delete')
+              }
             }}
             className='text-red-500!'
           >
@@ -62,6 +72,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <FeatureLockDialog
+        open={lockFeatureDialog}
+        onOpenChange={setLockFeatureDialog}
+        feature='Hapus Pajak'
+      />
     </>
   )
 }

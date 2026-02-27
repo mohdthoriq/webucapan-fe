@@ -1,6 +1,11 @@
 'use client'
 
 import type { PaymentTerm } from '@/types'
+import { CheckCircle2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,9 +25,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { usePaymentTermsForm } from '../hooks/use-payment-terms-form'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CheckCircle2Icon } from 'lucide-react'
 
 type PaymentTermsActionDialogProps = {
   currentRow?: PaymentTerm
@@ -35,14 +39,20 @@ export function PaymentTermsActionDialog({
   currentRow,
   open,
   onOpenChange,
-  onSuccess
+  onSuccess,
 }: PaymentTermsActionDialogProps) {
   const isEdit = !!currentRow
 
   const { form, onSubmit, isSubmitting, errorMessage } = usePaymentTermsForm({
     currentRow,
-    onSuccess
+    onSuccess,
   })
+
+  const hasPermission = useHasPermission(
+    isEdit
+      ? PERMISSION_KEY.SETTINGS_PAYMENT_TERM_EDIT
+      : PERMISSION_KEY.SETTINGS_PAYMENT_TERM_ADD
+  )
 
   return (
     <Dialog
@@ -64,12 +74,15 @@ export function PaymentTermsActionDialog({
             Klik simpan setelah selesai.
           </DialogDescription>
         </DialogHeader>
-        <div className='py-4'>
+        <div className={cn('py-4', !hasPermission && 'relative')}>
           <Form {...form}>
             <form
-              id='tax-form'
+              id='payment-term-form'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4'
+              className={cn(
+                'space-y-4',
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
             >
               <FormField
                 control={form.control}
@@ -82,6 +95,7 @@ export function PaymentTermsActionDialog({
                         placeholder='Masukkan nama termin...'
                         autoComplete='off'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -112,6 +126,7 @@ export function PaymentTermsActionDialog({
                         name={field.name}
                         ref={field.ref}
                         endAdornment={'Days'}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -130,6 +145,7 @@ export function PaymentTermsActionDialog({
                         placeholder='Deskripsikan termin ini...'
                         className='min-h-[80px]'
                         {...field}
+                        disabled={!hasPermission}
                       />
                     </FormControl>
                     <FormMessage />
@@ -138,6 +154,12 @@ export function PaymentTermsActionDialog({
               />
             </form>
           </Form>
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Termin' : 'Tambah Termin'}
+            />
+          )}
         </div>
         {errorMessage && (
           <Alert variant='destructive' className='w-full'>
@@ -147,7 +169,11 @@ export function PaymentTermsActionDialog({
           </Alert>
         )}
         <DialogFooter>
-          <Button type='submit' form='tax-form' disabled={isSubmitting}>
+          <Button
+            type='submit'
+            form='payment-term-form'
+            disabled={isSubmitting}
+          >
             {isEdit ? 'Update Termin' : 'Tambah Termin'}
           </Button>
         </DialogFooter>

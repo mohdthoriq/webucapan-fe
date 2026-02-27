@@ -10,8 +10,8 @@ export function ReportItem({
   toggleFavorite,
 }: {
   report: Report
-  isFavorite: boolean
-  toggleFavorite: (id: number) => void
+  isFavorite?: boolean
+  toggleFavorite?: (id: number) => void
 }) {
   const [underDevDialog, setUnderDevDialog] = useState<{
     open: boolean
@@ -25,7 +25,7 @@ export function ReportItem({
     >
       <div className='p-4 pr-0'>
         <button
-          onClick={() => toggleFavorite(report.id)}
+          onClick={() => toggleFavorite?.(report.id)}
           className='focus:outline-none'
         >
           <Star

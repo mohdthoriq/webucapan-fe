@@ -278,7 +278,6 @@ export function ExpensesFormHeader() {
                 selected={field.value || []}
                 onChange={field.onChange}
                 placeholder='Pilih tag'
-                disabled={tags?.data.length === 0}
                 action={
                   <FormShortcutButton
                     title='Tambah Tag Baru'

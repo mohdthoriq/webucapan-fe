@@ -43,12 +43,10 @@ export function ProductCategoryActionDialog({
 }: ProductCategoryActionDialogProps) {
   const isEdit = !!currentRow
 
-  const { form, onSubmit, errorMessage } = useProductCategoryForm(
-    {
-      currentRow,
-      onSuccess,
-    }
-  )
+  const { form, onSubmit, errorMessage } = useProductCategoryForm({
+    currentRow,
+    onSuccess,
+  })
 
   const hasPermission = useHasPermission(
     isEdit
@@ -124,7 +122,9 @@ export function ProductCategoryActionDialog({
               />
             </form>
           </Form>
-          <UpgradePlanCard feature='Tambah Kategori' type='dialog' />
+          {!hasPermission && (
+            <UpgradePlanCard feature='Tambah Kategori' type='dialog' />
+          )}
         </div>
         {errorMessage && (
           <Alert

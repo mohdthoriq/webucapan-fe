@@ -1,4 +1,8 @@
 import { CheckCircle2Icon, Loader2, Save } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,12 +15,16 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useCompanySettingsForm } from '../hooks/use-company-settings-form'
 import { CompanySettingsSkeleton } from './company-settings-skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export function CompanySettingsForm() {
-  const { form, onSubmit, isLoading, isLoadingData, errorMessage } = useCompanySettingsForm()
+  const { form, onSubmit, isLoading, isLoadingData, errorMessage } =
+    useCompanySettingsForm()
+
+  const canEdit = useHasPermission(PERMISSION_KEY.SETTINGS_COMPANY_EDIT)
+  const canView = useHasPermission(PERMISSION_KEY.SETTINGS_COMPANY_VIEW)
 
   // Show loading skeleton while fetching data
   if (isLoadingData) {
@@ -24,151 +32,165 @@ export function CompanySettingsForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <div className='space-y-4'>
-          <FormField
-            control={form.control}
-            name='name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nama Perusahaan</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder='Masukkan nama perusahaan'
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                </FormControl>
-                <FormDescription>Nama resmi perusahaan Anda</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div className={cn(!canView && 'relative')}>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={cn(
+            'space-y-6',
+            !canView && 'pointer-events-none blur-[4px]'
+          )}
+        >
+          <div className='space-y-4'>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama Perusahaan</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Masukkan nama perusahaan'
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                      disabled={!canEdit}
+                    />
+                  </FormControl>
+                  <FormDescription>Nama resmi perusahaan Anda</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email Perusahaan</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder='Masukkan email perusahaan'
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Email resmi yang digunakan untuk korespondensi
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email Perusahaan</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Masukkan email perusahaan'
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                      disabled={!canEdit}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Email resmi yang digunakan untuk korespondensi
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='phone'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nomor Telepon</FormLabel>
-                <FormControl>
-                  <Input
-                    type='tel'
-                    placeholder='Masukkan nomor telepon perusahaan'
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Nomor telepon resmi perusahaan Anda
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name='phone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nomor Telepon</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='tel'
+                      placeholder='Masukkan nomor telepon perusahaan'
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                      disabled={!canEdit}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Nomor telepon resmi perusahaan Anda
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='address'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Alamat</FormLabel>
-                <FormControl>
-                  <div className='space-y-2'>
-                    <div className='relative'>
-                      <Textarea
-                        placeholder='Masukkan alamat lengkap perusahaan'
-                        className='min-h-[100px] resize-none'
-                        value={field.value || ''}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                      />
+            <FormField
+              control={form.control}
+              name='address'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Alamat</FormLabel>
+                  <FormControl>
+                    <div className='space-y-2'>
+                      <div className='relative'>
+                        <Textarea
+                          placeholder='Masukkan alamat lengkap perusahaan'
+                          className='min-h-[100px] resize-none'
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                          disabled={!canEdit}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </FormControl>
-                <FormDescription>
-                  Alamat lengkap kantor atau lokasi perusahaan
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  </FormControl>
+                  <FormDescription>
+                    Alamat lengkap kantor atau lokasi perusahaan
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='npwp'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>NPWP</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder='Masukkan NPWP perusahaan'
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                </FormControl>
-                <FormDescription>NPWP perusahaan Anda</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+            <FormField
+              control={form.control}
+              name='npwp'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>NPWP</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Masukkan NPWP perusahaan'
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                      disabled={!canEdit}
+                    />
+                  </FormControl>
+                  <FormDescription>NPWP perusahaan Anda</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        {errorMessage && (
-          <Alert variant='destructive' className='w-full'>
-            <CheckCircle2Icon />
-            <AlertTitle>Perhatian!</AlertTitle>
-            <AlertDescription>{errorMessage}</AlertDescription>
-          </Alert>
-        )}
+          {errorMessage && (
+            <Alert variant='destructive' className='w-full'>
+              <CheckCircle2Icon />
+              <AlertTitle>Perhatian!</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className='flex justify-end pt-4'>
-          <Button type='submit' disabled={isLoading}>
-            {isLoading ? (
-              <Loader2 className='h-4 w-4 animate-spin' />
-            ) : (
-              <Save className='h-4 w-4' />
-            )}
-            Simpan Perubahan
-          </Button>
-        </div>
-      </form>
-    </Form>
+          <div className='flex justify-end pt-4'>
+            <Button type='submit' disabled={isLoading || !canEdit}>
+              {isLoading ? (
+                <Loader2 className='h-4 w-4 animate-spin' />
+              ) : (
+                <Save className='h-4 w-4' />
+              )}
+              Simpan Perubahan
+            </Button>
+          </div>
+        </form>
+      </Form>
+      {!canView && <UpgradePlanCard feature='Edit Data Perusahaan' />}
+    </div>
   )
 }

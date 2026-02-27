@@ -16,6 +16,7 @@ type DatePickerProps = {
   className?: string
   startMonth?: Date
   endMonth?: Date
+  disabled?: boolean
 }
 
 export function DatePicker({
@@ -25,12 +26,14 @@ export function DatePicker({
   className,
   startMonth = new Date(new Date().getFullYear() - 10, 0),
   endMonth = new Date(new Date().getFullYear() + 10, 11),
+  disabled,
 }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant='outline'
+          disabled={disabled}
           data-empty={!selected}
           className={cn(
             'data-[empty=true]:text-muted-foreground w-[240px] justify-start text-start font-normal',

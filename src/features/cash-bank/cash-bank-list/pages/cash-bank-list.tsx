@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { getRouteApi, useLocation } from '@tanstack/react-router'
 import { ArrowLeft, Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
 import { CashBankListDialogs } from '../components/cash-bank-list-dialogs'
+import { CashBankListFallback } from '../components/cash-bank-list-fallback'
 import { CashBankListsProvider } from '../components/cash-bank-list-provider'
 import { CashBankListsTable } from '../components/cash-bank-list-table'
 import { CashBankPrimaryButton } from '../components/cash-bank-primary-button'
@@ -38,7 +41,10 @@ function CashBankListsContent() {
   const { accountName } = route.useParams()
 
   return (
-    <>
+    <PermissionGuard
+      permission={PERMISSION_KEY.CASH_BANK_VIEW}
+      fallback={<CashBankListFallback />}
+    >
       <Card>
         <CardHeader>
           <div className='flex justify-between'>
@@ -80,7 +86,7 @@ function CashBankListsContent() {
       >
         <CashBankListsTablePrint ref={printRef} />
       </div>
-    </>
+    </PermissionGuard>
   )
 }
 

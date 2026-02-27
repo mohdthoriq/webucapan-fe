@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import { TransactionCode } from '@/types'
@@ -6,6 +7,8 @@ import { PencilIcon, Trash2Icon } from 'lucide-react'
 // import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
 
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 
 type CashBankRowActionsProps = {
@@ -22,8 +26,15 @@ type CashBankRowActionsProps = {
 export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
   const navigate = useNavigate()
   const { openDialog } = useGlobalDialogStore()
+  const [showLockDialog, setShowLockDialog] = useState(false)
+  const canEdit = useHasPermission(PERMISSION_KEY.CASH_BANK_EDIT)
 
   const handleEdit = () => {
+    if (!canEdit) {
+      setShowLockDialog(true)
+      return
+    }
+
     if (transaction.transaction_type?.code === TransactionCode.BankTransfer) {
       openDialog('transfer', {
         data: transaction,
@@ -64,29 +75,11 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* <InvoiceDeleteDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        invoice={invoice}
-        isLoading={deleteMutation.isPending}
-        onConfirm={() => {
-          deleteMutation.mutate(
-            { ids: [invoice.id] },
-            {
-              onSuccess: () => {
-                setDeleteDialogOpen(false)
-                // If we are on the detail page, we might want to navigate back to the list
-                // However, the mutation success handler already invalidates queries.
-                // The requirement says "navigate({ search: {} })" in the code I saw earlier,
-                // but let's just close the dialog for now. Actually, if we are in detail, we should go back.
-                if (window.location.pathname.includes('/detail')) {
-                  navigate({ to: '/sales/invoices' })
-                }
-              },
-            }
-          )
-        }}
-      /> */}
+      <FeatureLockDialog
+        open={showLockDialog}
+        onOpenChange={setShowLockDialog}
+        feature='Ubah Transaksi'
+      />
     </>
   )
 }

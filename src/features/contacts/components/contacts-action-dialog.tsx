@@ -174,10 +174,12 @@ export function ContactsActionDialog({
               />
             </form>
           </Form>
-          <UpgradePlanCard
-            type='dialog'
-            feature={isEdit ? 'Edit Kontak' : 'Tambah Kontak'}
-          />
+          {!hasPermission && (
+            <UpgradePlanCard
+              type='dialog'
+              feature={isEdit ? 'Edit Kontak' : 'Tambah Kontak'}
+            />
+          )}
         </div>
         {errorMessage && (
           <Alert variant='destructive' className='w-full'>
