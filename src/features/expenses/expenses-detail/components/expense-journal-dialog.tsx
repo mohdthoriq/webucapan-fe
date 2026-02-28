@@ -46,7 +46,7 @@ export function ExpenseJournalDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-w-3xl'>
+      <DialogContent className='sm:max-h-[90vh] sm:max-w-4xl'>
         <DialogHeader>
           <p className='text-muted-foreground text-sm'>Laporan Jurnal</p>
           <DialogTitle className='text-2xl font-bold'>
