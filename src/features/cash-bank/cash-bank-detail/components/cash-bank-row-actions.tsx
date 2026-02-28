@@ -30,7 +30,7 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
   const canEdit = useHasPermission(PERMISSION_KEY.CASH_BANK_EDIT)
 
   const handleEdit = () => {
-    if (!canEdit) {
+    if (!canEdit && transaction.transaction_type?.code === TransactionCode.BankTransfer) {
       setShowLockDialog(true)
       return
     }

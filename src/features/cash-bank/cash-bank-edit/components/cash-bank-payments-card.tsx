@@ -36,9 +36,13 @@ import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cas
 
 interface CashBankPaymentsCardProps {
   transaction: CashBankTransactionDetail
+  hasPermission?: boolean
 }
 
-function ExpensePaymentForm({ transaction }: CashBankPaymentsCardProps) {
+function ExpensePaymentForm({
+  transaction,
+  hasPermission,
+}: CashBankPaymentsCardProps) {
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
   const { form, onSubmit, isSubmitting } = useExpensesPaymentsForm({
@@ -62,11 +66,15 @@ function ExpensePaymentForm({ transaction }: CashBankPaymentsCardProps) {
       isSubmitting={isSubmitting}
       tags={tags}
       showReferenceNo={false}
+      hasPermission={hasPermission}
     />
   )
 }
 
-function SalesInvoicePaymentForm({ transaction }: CashBankPaymentsCardProps) {
+function SalesInvoicePaymentForm({
+  transaction,
+  hasPermission,
+}: CashBankPaymentsCardProps) {
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
   const { form, onSubmit, isSubmitting } = useSalesInvoicePaymentsForm({
@@ -91,12 +99,14 @@ function SalesInvoicePaymentForm({ transaction }: CashBankPaymentsCardProps) {
       isSubmitting={isSubmitting}
       tags={tags}
       showReferenceNo
+      hasPermission={hasPermission}
     />
   )
 }
 
 function PurchaseInvoicePaymentForm({
   transaction,
+  hasPermission,
 }: CashBankPaymentsCardProps) {
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
 
@@ -122,6 +132,7 @@ function PurchaseInvoicePaymentForm({
       isSubmitting={isSubmitting}
       tags={tags}
       showReferenceNo
+      hasPermission={hasPermission}
     />
   )
 }
@@ -134,6 +145,7 @@ interface PaymentFormProps {
   isSubmitting: boolean
   tags: { data: { id: string; name: string }[] } | undefined
   showReferenceNo?: boolean
+  hasPermission?: boolean
 }
 
 function PaymentForm({
@@ -142,6 +154,7 @@ function PaymentForm({
   isSubmitting,
   tags,
   showReferenceNo = false,
+  hasPermission,
 }: PaymentFormProps) {
   return (
     <Form {...form}>
@@ -161,6 +174,7 @@ function PaymentForm({
                     placeholder='0'
                     prefix='Rp'
                     className='min-w-[100px]'
+                    disabled={!hasPermission}
                   />
                 </FormControl>
                 <FormMessage />
@@ -184,6 +198,7 @@ function PaymentForm({
                           'w-full pl-3 text-left font-normal',
                           !field.value && 'text-muted-foreground'
                         )}
+                        disabled={!hasPermission}
                       >
                         {field.value ? (
                           format(field.value, 'PPP')
@@ -222,6 +237,7 @@ function PaymentForm({
                   value={field.value}
                   onValueChange={field.onChange}
                   placeholder='Pilih akun'
+                  disabled={!hasPermission}
                 />
                 <FormMessage />
               </FormItem>
@@ -246,7 +262,7 @@ function PaymentForm({
                     selected={field.value ?? []}
                     onChange={field.onChange}
                     placeholder='Pilih tag'
-                    disabled={!tags?.data.length}
+                    disabled={!hasPermission}
                   />
                 </FormControl>
                 <FormMessage />
@@ -263,7 +279,11 @@ function PaymentForm({
                 <FormItem>
                   <FormLabel>Nomor</FormLabel>
                   <FormControl>
-                    <Input placeholder='Contoh: REF-001' {...field} />
+                    <Input
+                      placeholder='Contoh: REF-001'
+                      {...field}
+                      disabled={!hasPermission}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -297,7 +317,11 @@ function PaymentForm({
                   </Tooltip>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder='Catatan pembayaran...' {...field} />
+                  <Input
+                    placeholder='Catatan pembayaran...'
+                    {...field}
+                    disabled={!hasPermission}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -306,7 +330,7 @@ function PaymentForm({
         </div>
 
         <div className='flex justify-end'>
-          <Button type='submit' disabled={isSubmitting}>
+          <Button type='submit' disabled={!hasPermission || isSubmitting}>
             {isSubmitting ? 'Memproses...' : 'Simpan Perubahan'}
           </Button>
         </div>
@@ -317,15 +341,31 @@ function PaymentForm({
 
 export function CashBankPaymentsCard({
   transaction,
+  hasPermission,
 }: CashBankPaymentsCardProps) {
   const renderForm = () => {
     switch (transaction.transaction_type?.code) {
       case TransactionCode.SalesInvoice:
-        return <SalesInvoicePaymentForm transaction={transaction} />
+        return (
+          <SalesInvoicePaymentForm
+            transaction={transaction}
+            hasPermission={hasPermission}
+          />
+        )
       case TransactionCode.PurchaseInvoice:
-        return <PurchaseInvoicePaymentForm transaction={transaction} />
+        return (
+          <PurchaseInvoicePaymentForm
+            transaction={transaction}
+            hasPermission={hasPermission}
+          />
+        )
       case TransactionCode.Expense:
-        return <ExpensePaymentForm transaction={transaction} />
+        return (
+          <ExpensePaymentForm
+            transaction={transaction}
+            hasPermission={hasPermission}
+          />
+        )
       default:
         return (
           <p className='text-muted-foreground py-4 text-sm'>

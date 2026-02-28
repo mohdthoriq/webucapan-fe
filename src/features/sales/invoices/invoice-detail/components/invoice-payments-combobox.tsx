@@ -13,6 +13,7 @@ interface InvoicePaymentsComboboxProps {
   placeholder?: string
   limit?: number
   action?: ReactNode
+  disabled?: boolean
 }
 
 export function InvoicePaymentsCombobox({
@@ -21,6 +22,7 @@ export function InvoicePaymentsCombobox({
   placeholder = 'Pilih Akun',
   limit = 20,
   action,
+  disabled,
 }: InvoicePaymentsComboboxProps) {
   const {
     allItems,
@@ -70,6 +72,7 @@ export function InvoicePaymentsCombobox({
         </div>
       )}
       action={action}
+      disabled={disabled}
     />
   )
 }

@@ -1,7 +1,7 @@
 import { useSearch, createFileRoute } from '@tanstack/react-router'
 import { TransactionCode } from '@/types'
-import { CashBankEdit } from '@/features/cash-bank/cash-bank-detail/components/cash-bank-edit-source-view'
 import { useCashBankDetailQuery } from '@/features/cash-bank/cash-bank-detail/hooks/use-cash-bank-detail-query'
+import { CashBankEdit } from '@/features/cash-bank/cash-bank-edit'
 import { CashBankFormPage } from '@/features/cash-bank/cash-bank-form'
 
 export const Route = createFileRoute('/_authenticated/cash-bank/edit')({

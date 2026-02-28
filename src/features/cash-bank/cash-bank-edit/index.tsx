@@ -38,7 +38,7 @@ export function CashBankEdit({ transaction }: CashBankEditProps) {
             </div>
           </CardHeader>
           <CardContent className='space-y-6'>
-            <CashBankPaymentsCard transaction={transaction} />
+            <CashBankPaymentsCard transaction={transaction} hasPermission={hasPermission}/>
           </CardContent>
         </div>
         {!hasPermission && <UpgradePlanCard feature='Ubah Transaksi' />}
