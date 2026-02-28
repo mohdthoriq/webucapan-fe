@@ -45,6 +45,7 @@ export const QUERY_KEY = {
   DASHBOARD_UNPAID_PURCHASES: 'dashboard_unpaid_purchases',
   CHECK_FINANCE_NUMBER: 'check_finance_number',
   COMPANY_ROLE_PERMISSIONS: 'company_role_permissions',
+  JOURNAL: 'journal',
 }
 
 export const QUERY_KEY_ADMIN = {

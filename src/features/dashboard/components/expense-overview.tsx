@@ -32,7 +32,7 @@ export function ExpenseOverview() {
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-        <CardTitle className='text-base font-semibold'>PENGELUARAN</CardTitle>
+        <CardTitle className='text-base font-semibold'>BIAYA</CardTitle>
         <CardAction
           period={period}
           dateRange={dateRange}

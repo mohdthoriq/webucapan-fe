@@ -197,7 +197,17 @@ export function CashBankDetailReceipt({
                     {isNavigate ? (
                       <TableCell className='p-4'>
                         {item.desc ? (
-                          <span className='text-md text-primary cursor-pointer font-medium hover:underline'>
+                          <span
+                            onClick={() =>
+                              navigate({
+                                to: url,
+                                state: {
+                                  currentRowId: item?.id,
+                                } as Record<string, unknown>,
+                              })
+                            }
+                            className='text-md text-primary cursor-pointer font-medium hover:underline'
+                          >
                             {item.desc}
                           </span>
                         ) : (

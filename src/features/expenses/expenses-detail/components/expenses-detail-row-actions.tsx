@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import type { Expense } from '@/types'
-import { PencilIcon, Trash2Icon } from 'lucide-react'
+import { EyeIcon, PencilLineIcon, Trash2Icon } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeleteExpensesMutation } from '../hooks/use-expenses-payments.mutation'
+import { ExpenseJournalDialog } from './expense-journal-dialog'
 import { ExpenseDeleteDialog } from './expenses-delete-dialog'
 
 type ExpenseDetailRowActionsProps = {
@@ -26,6 +27,7 @@ export function ExpenseDetailRowActions({
   const navigate = useNavigate()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
+  const [journalDialogOpen, setJournalDialogOpen] = useState(false)
   const deleteMutation = useDeleteExpensesMutation()
 
   const canDelete = useHasPermission(PERMISSION_KEY.EXPENSE_DELETE)
@@ -43,6 +45,10 @@ export function ExpenseDetailRowActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
+          <DropdownMenuItem onClick={() => setJournalDialogOpen(true)}>
+            <EyeIcon className='h-4 w-4' />
+            Entri Jurnal
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
               navigate({
@@ -51,7 +57,7 @@ export function ExpenseDetailRowActions({
               })
             }}
           >
-            <PencilIcon className='h-4 w-4' />
+            <PencilLineIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -96,6 +102,12 @@ export function ExpenseDetailRowActions({
         open={lockFeatureDialog}
         onOpenChange={setLockFeatureDialog}
         feature='Hapus Biaya'
+      />
+      <ExpenseJournalDialog
+        open={journalDialogOpen}
+        onOpenChange={setJournalDialogOpen}
+        expenseId={expense.id}
+        expenseNumber={expense.expense_number || expense.id}
       />
     </>
   )

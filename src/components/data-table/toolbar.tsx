@@ -62,13 +62,9 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className='flex items-center justify-between'>
-      <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
-        <Input
-          placeholder={searchPlaceholder}
-          value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
-          className='h-8 w-[150px] lg:w-[250px]'
-        />
+      <div className='flex flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
+        {children}
+        <DataTableViewOptions table={table} />
         <div className='flex gap-x-2'>
           {filters.map((filter) => {
             const column = table.getColumn(filter.columnId)
@@ -97,9 +93,13 @@ export function DataTableToolbar<TData>({
             <Cross2Icon className='ms-2 h-4 w-4' />
           </Button>
         )}
-        {children}
       </div>
-      <DataTableViewOptions table={table} />
+      <Input
+        placeholder={searchPlaceholder}
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+        className='h-8 w-[150px] lg:w-[250px]'
+      />
     </div>
   )
 }

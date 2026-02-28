@@ -37,7 +37,6 @@ import {
 } from '@/components/ui/tooltip'
 import {
   DataTableBulkActions,
-  DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
@@ -177,8 +176,6 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-
-      <DataTablePagination table={table} className='mt-auto' />
 
       <DataTableBulkActions table={table} entityName='Akun'>
         <Tooltip>
