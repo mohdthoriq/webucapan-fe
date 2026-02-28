@@ -1,5 +1,7 @@
 import { Loader2 } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import {
   Dialog,
   DialogContent,
@@ -15,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { usePurchaseJournalsQuery } from '../hooks/use-purchase-journals-query'
 
 interface PurchaseJournalDialogProps {
@@ -33,6 +36,10 @@ export function PurchaseJournalDialog({
   const { data: journalResponse, isLoading } =
     usePurchaseJournalsQuery(invoiceId)
 
+  const hasPermission = useHasPermission(
+    PERMISSION_KEY.PURCHASE_INVOICE_JOURNAL
+  )
+
   const journal = journalResponse?.data?.[0]
   const lines = journal?.journal_lines || []
 
@@ -41,7 +48,7 @@ export function PurchaseJournalDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-w-3xl'>
+      <DialogContent>
         <DialogHeader>
           <p className='text-muted-foreground text-sm'>Laporan Jurnal</p>
           <DialogTitle className='text-2xl font-bold'>
@@ -58,8 +65,17 @@ export function PurchaseJournalDialog({
             Tidak ada data jurnal ditemukan.
           </div>
         ) : (
-          <div className='rounded-md border overflow-auto'>
-            <Table>
+          <div
+            className={cn(
+              'overflow-auto rounded-md border',
+              !hasPermission && 'relative'
+            )}
+          >
+            <Table
+              className={cn(
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
+            >
               <TableHeader className='bg-muted/50'>
                 <TableRow>
                   <TableHead className='p-2'>Akun</TableHead>
@@ -101,6 +117,9 @@ export function PurchaseJournalDialog({
                 </TableRow>
               </TableFooter>
             </Table>
+            {!hasPermission && (
+              <UpgradePlanCard type='dialog' feature='Laporan Jurnal' />
+            )}
           </div>
         )}
       </DialogContent>

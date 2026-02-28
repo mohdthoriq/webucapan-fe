@@ -1,5 +1,7 @@
 import { Loader2 } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import {
   Dialog,
   DialogContent,
@@ -15,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useInvoiceJournalsQuery } from '../hooks/use-invoice-journals-query'
 
 interface InvoiceJournalDialogProps {
@@ -32,6 +35,8 @@ export function InvoiceJournalDialog({
 }: InvoiceJournalDialogProps) {
   const { data: journalResponse, isLoading } =
     useInvoiceJournalsQuery(invoiceId)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.SALES_INVOICE_JOURNAL)
 
   const journal = journalResponse?.data?.[0]
   const lines = journal?.journal_lines || []
@@ -58,8 +63,17 @@ export function InvoiceJournalDialog({
             Tidak ada data jurnal ditemukan.
           </div>
         ) : (
-          <div className='rounded-md border overflow-auto'>
-            <Table>
+          <div
+            className={cn(
+              'overflow-auto rounded-md border',
+              !hasPermission && 'relative'
+            )}
+          >
+            <Table
+              className={cn(
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
+            >
               <TableHeader className='bg-muted/50'>
                 <TableRow>
                   <TableHead className='p-2'>Akun</TableHead>
@@ -101,6 +115,9 @@ export function InvoiceJournalDialog({
                 </TableRow>
               </TableFooter>
             </Table>
+            {!hasPermission && (
+              <UpgradePlanCard type='dialog' feature='Laporan Jurnal' />
+            )}
           </div>
         )}
       </DialogContent>
