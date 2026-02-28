@@ -1,14 +1,13 @@
 import { Link } from '@tanstack/react-router'
+import IconLogo from '@/assets/manajerku-logo.png'
+import FullLogo from '@/assets/manajerku-office.png'
+import { cn } from '@/lib/utils'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-
-import FullLogo from '@/assets/manajerku-office.png'
-import IconLogo from '@/assets/manajerku-logo.png'
-import { cn } from '@/lib/utils'
 
 export function AppTitle() {
   const { setOpenMobile, state } = useSidebar()
@@ -21,22 +20,22 @@ export function AppTitle() {
           size='lg'
           asChild
           className={cn(
-            "hover:bg-transparent active:bg-transparent transition-all duration-200",
-            "w-full h-auto", 
-            "group-data-[collapsible=icon]:size-auto! group-data-[collapsible=icon]:p-0!"
+            'transition-all duration-200 hover:bg-transparent active:bg-transparent',
+            'h-auto w-full',
+            'group-data-[collapsible=icon]:size-auto! group-data-[collapsible=icon]:p-0!'
           )}
         >
           <Link
             to='/'
             onClick={() => setOpenMobile(false)}
-            className='flex w-full items-center justify-center '
+            className='flex w-full items-center justify-center'
           >
-            <img 
-              src={isExpanded ? FullLogo : IconLogo} 
-              alt="Manajerku"
+            <img
+              src={isExpanded ? FullLogo : IconLogo}
+              alt='Manajerku'
               className={cn(
-                "object-contain transition-all duration-200 rounded-md",
-                isExpanded ? "h-10 w-full bg-[#f7f9fa]" : "h-8 w-8 rounded-md"
+                'rounded-md object-contain transition-all duration-200 dark:brightness-0 dark:invert',
+                isExpanded ? 'h-10 w-full' : 'h-8 w-8 rounded-md'
               )}
             />
           </Link>
