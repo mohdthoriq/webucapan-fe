@@ -1,5 +1,7 @@
 import { Loader2 } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import {
   Dialog,
   DialogContent,
@@ -15,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useExpenseJournalsQuery } from '../hooks/use-expense-journals-query'
 
 interface ExpenseJournalDialogProps {
@@ -32,6 +35,8 @@ export function ExpenseJournalDialog({
 }: ExpenseJournalDialogProps) {
   const { data: journalResponse, isLoading } =
     useExpenseJournalsQuery(expenseId)
+
+  const hasPermission = useHasPermission(PERMISSION_KEY.EXPENSE_JOURNAL)
 
   const journal = journalResponse?.data?.[0]
   const lines = journal?.journal_lines || []
@@ -58,8 +63,17 @@ export function ExpenseJournalDialog({
             Tidak ada data jurnal ditemukan.
           </div>
         ) : (
-          <div className='overflow-auto rounded-md border'>
-            <Table>
+          <div
+            className={cn(
+              'overflow-auto rounded-md border',
+              !hasPermission && 'relative'
+            )}
+          >
+            <Table
+              className={cn(
+                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
+              )}
+            >
               <TableHeader className='bg-muted/50'>
                 <TableRow>
                   <TableHead className='p-2'>Akun</TableHead>
@@ -101,6 +115,10 @@ export function ExpenseJournalDialog({
                 </TableRow>
               </TableFooter>
             </Table>
+
+            {!hasPermission && (
+              <UpgradePlanCard type='dialog' feature='Laporan Jurnal' />
+            )}
           </div>
         )}
       </DialogContent>
