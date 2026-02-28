@@ -1,17 +1,15 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
-import { PERMISSION_KEY } from '@/constants/permissions'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Tabs } from '@/components/ui/tabs'
-import { PermissionGuard } from '@/components/permission-guard'
-import { SettingsHeader } from './components/settings-header'
-import { SettingsPageFallback } from './components/settings-page-fallback'
-import { SettingsTabContent } from './components/settings-tab-content'
-import { SettingsTabsList } from './components/settings-tabs-list'
-import { settingsTabs } from './constants/settings-constants'
-import { useSettingsScroll } from './hooks/use-settings-scroll'
+import { UpgradePlanCard } from '@/components/upgrade-plan-card'
+import { settingsTabs } from '../constants/settings-constants'
+import { useSettingsScroll } from '../hooks/use-settings-scroll'
+import { SettingsHeader } from './settings-header'
+import { SettingsTabContent } from './settings-tab-content'
+import { SettingsTabsList } from './settings-tabs-list'
 
-function Settings() {
+export function SettingsPageFallback() {
   const navigate = useNavigate()
   const search = useSearch({ strict: false }) as { tab?: string }
   const currentTab = search.tab || settingsTabs[0].value
@@ -23,11 +21,8 @@ function Settings() {
   })
 
   return (
-    <PermissionGuard
-      permission={PERMISSION_KEY.SETTINGS}
-      fallback={<SettingsPageFallback />}
-    >
-      <div className='w-full flex-1 space-y-3 overflow-hidden'>
+    <div className='relative'>
+      <div className='pointer-events-none w-full flex-1 space-y-3 overflow-hidden opacity-100 blur-[2px]'>
         <SettingsHeader />
 
         <hr />
@@ -55,8 +50,7 @@ function Settings() {
           <SettingsTabContent />
         </Tabs>
       </div>
-    </PermissionGuard>
+      <UpgradePlanCard feature='Setting' />
+    </div>
   )
 }
-
-export { Settings }
