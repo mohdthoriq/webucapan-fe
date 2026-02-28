@@ -134,7 +134,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         searchPlaceholder='Cari tagihan...'
         searchKey='invoice_number'
       >
-        <div className='flex items-center gap-2'>
+        <div className='gap-2'>
           <InvoiceListFilter search={search} navigate={navigate} />
         </div>
       </DataTableToolbar>

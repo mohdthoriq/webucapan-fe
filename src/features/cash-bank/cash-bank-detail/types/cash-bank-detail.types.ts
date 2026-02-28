@@ -31,7 +31,7 @@ export interface CashBankTransactionDetail {
   amount_after_tax: number
   memo: string
   desc: string
-  // trans_type_id: string
+  trans_type_id: string
   transaction_type?: TransactionType
   valid: boolean
   items: CashBankTransactionItem[]

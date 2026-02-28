@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import type { PurchaseInvoice } from '@/types'
-import { PencilIcon, Trash2Icon } from 'lucide-react'
+import { EyeIcon, PencilLineIcon, Trash2Icon } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,7 @@ import {
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useDeletePurchasesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
 import { InvoiceDeleteDialog } from './invoice-delete-dialog'
+import { PurchaseJournalDialog } from './purchase-journal-dialog'
 
 type InvoiceDetailRowActionsProps = {
   invoice: PurchaseInvoice
@@ -26,6 +27,7 @@ export function InvoiceDetailRowActions({
   const navigate = useNavigate()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [featureLockDialogOpen, setFeatureLockDialogOpen] = useState(false)
+  const [journalDialogOpen, setJournalDialogOpen] = useState(false)
   const deleteMutation = useDeletePurchasesInvoiceMutation()
 
   const canDelete = useHasPermission(PERMISSION_KEY.PURCHASE_INVOICE_DELETE)
@@ -43,6 +45,10 @@ export function InvoiceDetailRowActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
+          <DropdownMenuItem onClick={() => setJournalDialogOpen(true)}>
+            <EyeIcon className='h-4 w-4' />
+            Entri Jurnal
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
               navigate({
@@ -51,7 +57,7 @@ export function InvoiceDetailRowActions({
               })
             }}
           >
-            <PencilIcon className='h-4 w-4' />
+            <PencilLineIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -92,6 +98,12 @@ export function InvoiceDetailRowActions({
         open={featureLockDialogOpen}
         onOpenChange={setFeatureLockDialogOpen}
         feature='Hapus Tagihan Pembelian'
+      />
+      <PurchaseJournalDialog
+        open={journalDialogOpen}
+        onOpenChange={setJournalDialogOpen}
+        invoiceId={invoice.id}
+        invoiceNumber={invoice.invoice_number}
       />
     </>
   )
