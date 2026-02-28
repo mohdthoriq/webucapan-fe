@@ -13,9 +13,11 @@ import {
 export function DatePickerWithRange({
   date,
   setDate,
+  disabled,
 }: {
   date: DateRange | undefined
   setDate: (date: DateRange | undefined) => void
+  disabled?: boolean
 }) {
   return (
     <Popover>
@@ -27,6 +29,7 @@ export function DatePickerWithRange({
             'h-9 w-full justify-start px-3 text-left font-normal',
             !date && 'text-muted-foreground'
           )}
+          disabled={disabled}
         >
           <CalendarIcon className='h-4 w-4 shrink-0' />
           <span className='truncate'>

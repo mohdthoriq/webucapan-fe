@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
@@ -35,6 +36,45 @@ export function AppSidebar() {
 
   const data =
     user?.role?.name === 'superadmin' ? sidebarDataAdmin : sidebarData
+
+  const isAdministrator = user?.role?.name === 'Administrator'
+
+  const filteredNavGroups = useMemo(() => {
+    if (user?.role?.name === 'superadmin' || isAdministrator) {
+      return data.navGroups
+    }
+
+    const permissions = user?.permissions || []
+
+    return data.navGroups
+      .map((group) => ({
+        ...group,
+        items: group.items
+          .map((item) => {
+            if (item.items) {
+              return {
+                ...item,
+                items: item.items.filter(
+                  (subItem) =>
+                    !subItem.permission ||
+                    permissions.includes(subItem.permission)
+                ),
+              }
+            }
+            return item
+          })
+          .filter((item) => {
+            // If it's a link (no sub-items), check its permission
+            if (!item.items) {
+              return !item.permission || permissions.includes(item.permission)
+            }
+            // If it's a collapsible, only show if it has at least one visible sub-item
+            return item.items.length > 0
+          }),
+      }))
+      .filter((group) => group.items.length > 0)
+  }, [data, user, isAdministrator])
+  
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
@@ -48,7 +88,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {data?.navGroups?.map((group) => (
+        {filteredNavGroups.map((group) => (
           <NavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>

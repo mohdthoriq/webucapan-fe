@@ -87,12 +87,17 @@ export function AccountsLedgerDialog({
                   placeholder='Cari...'
                   className='pl-10'
                   value={search}
+                  disabled={!hasPermission}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
 
               <div className='ml-auto shrink-0'>
-                <DatePickerWithRange date={date} setDate={setDate} />
+                <DatePickerWithRange
+                  date={date}
+                  setDate={setDate}
+                  disabled={!hasPermission}
+                />
               </div>
             </div>
 
