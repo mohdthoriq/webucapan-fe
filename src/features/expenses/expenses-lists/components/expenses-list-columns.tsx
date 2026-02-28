@@ -19,7 +19,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'
-        className='translate-y-[2px]'
+        className='translate-y-[2px] border-[#a8a8a8] dark:border-[#5c5c5c]'
       />
     ),
     cell: ({ row }) => (
@@ -28,7 +28,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         onClick={(e) => e.stopPropagation()}
         aria-label='Select row'
-        className='translate-y-[2px]'
+        className='translate-y-[2px] border-[#a8a8a8] dark:border-[#5c5c5c]'
       />
     ),
     enableSorting: false,
