@@ -61,8 +61,8 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'Nomor', searchKey: 'search', type: 'string' },
+      { columnId: 'Deskripsi', searchKey: 'search', type: 'string' },
     ],
   })
 
@@ -78,6 +78,7 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -108,8 +109,8 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
-        searchKey='name'
+        searchPlaceholder='Cari nomor atau deskripsi...'
+        searchKey='Deskripsi'
       >
         <CashBankListFilter search={search} navigate={navigate} />
       </DataTableToolbar>
