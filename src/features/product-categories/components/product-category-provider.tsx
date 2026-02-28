@@ -1,7 +1,7 @@
 import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
 import type { PaginationMeta, ProductCategory } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useProductCategoryQuery } from '../hooks/use-product-category-query'
+import { type ProductCategoryQueryParams, useProductCategoryQuery } from '../hooks/use-product-category-query'
 
 type ProductCategoryDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -14,7 +14,7 @@ type ProductCategoryContextType = {
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: ProductCategoryQueryParams
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -27,7 +27,7 @@ export function ProductCategoryProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: ProductCategoryQueryParams
 }) {
   const [open, setOpen] = useDialogState<ProductCategoryDialogType>(null)
   const [currentRow, setCurrentRow] = useState<ProductCategory | null>(null)

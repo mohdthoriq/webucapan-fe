@@ -11,6 +11,7 @@ import {
   PaymentTermsProvider,
 } from './components/payment-terms-provider'
 import { PaymentTermsTable } from './components/payment-terms-table'
+import { type PaymentTermsQueryParams } from './hooks/use-payment-terms-query'
 
 const route = getRouteApi('/_authenticated/settings/payment-terms/')
 
@@ -63,13 +64,14 @@ function PaymentTermsContent() {
 export function PaymentTerms() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: PaymentTermsQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <PaymentTermsProvider paginationParams={{ page, limit, name }}>
+    <PaymentTermsProvider paginationParams={queryParams}>
       <PaymentTermsContent />
     </PaymentTermsProvider>
   )

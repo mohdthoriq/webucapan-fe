@@ -3,7 +3,7 @@ import type { PaginationApiResponse, ProductCategory } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
-interface ProductCategoryQueryParams {
+export interface ProductCategoryQueryParams {
   page?: number
   limit?: number
   company_id?: string

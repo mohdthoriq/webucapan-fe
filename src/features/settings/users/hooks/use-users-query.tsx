@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
-interface UsersQueryParams {
+export interface UsersQueryParams {
   page?: number
   limit?: number
   company_id?: string

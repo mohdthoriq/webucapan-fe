@@ -59,7 +59,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'Nama', searchKey: 'name', type: 'string' },
     ],
   })
 
@@ -75,6 +75,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -106,7 +107,7 @@ export function CompanyRolesTable({ search, navigate }: DataTableProps) {
       <DataTableToolbar
         table={table}
         searchPlaceholder='Cari peran...'
-        searchKey='name'
+        searchKey='Nama'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>

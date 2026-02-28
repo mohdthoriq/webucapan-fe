@@ -3,7 +3,7 @@ import type { PaymentTerm, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
-interface PaymentTermsQueryParams {
+export interface PaymentTermsQueryParams {
   page?: number
   limit?: number
   name?: string

@@ -18,7 +18,7 @@ type ExpensesListsContextType = {
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: ExpenseListQueryParams & { name?: string }
+  paginationParams?: ExpenseListQueryParams
   columnVisibility: VisibilityState
   setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
 }
@@ -32,17 +32,14 @@ export function ExpensesListsProvider({
   paginationParams,
 }: {
   children: ReactNode
-  paginationParams?: ExpenseListQueryParams & { name?: string }
+  paginationParams?: ExpenseListQueryParams
 }) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const {
     data: expensesListsData,
     isLoading: isLoadingExpensesLists,
     isError: isErrorExpensesLists,
-  } = useExpensesListQuery({
-    ...paginationParams,
-    expense_number: paginationParams?.name || paginationParams?.expense_number,
-  })
+  } = useExpensesListQuery(paginationParams)
 
   const expensesListsProviderValues = {
     expensesListsData: expensesListsData?.data ?? [],

@@ -8,6 +8,7 @@ import { ContactsDialogs } from './components/contacts-dialogs'
 import { ContactsFallback } from './components/contacts-fallback'
 import { ContactsProvider, useContacts } from './components/contacts-provider'
 import { ContactsTable } from './components/contacts-table'
+import type { ContactQueryParams } from './hooks/use-contacts-query'
 
 const route = getRouteApi('/_authenticated/contacts/')
 
@@ -56,13 +57,14 @@ function ContactsContent() {
 function Contacts() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: ContactQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <ContactsProvider paginationParams={{ page, limit, name }}>
+    <ContactsProvider paginationParams={queryParams}>
       <ContactsContent />
     </ContactsProvider>
   )

@@ -1,7 +1,17 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  type ReactNode,
+} from 'react'
 import type { PaymentTerm, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { usePaymentTermsQuery } from '../hooks/use-payment-terms-query'
+import {
+  type PaymentTermsQueryParams,
+  usePaymentTermsQuery,
+} from '../hooks/use-payment-terms-query'
 
 type PaymentTermsDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -9,25 +19,24 @@ type PaymentTermsContextType = {
   open: PaymentTermsDialogType | null
   setOpen: (str: PaymentTermsDialogType | null) => void
   currentRow: PaymentTerm | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<PaymentTerm | null>>
+  setCurrentRow: Dispatch<SetStateAction<PaymentTerm | null>>
   paymentTermsData: PaymentTerm[]
   isLoading: boolean
   isError: boolean
   pagination: PaginationMeta
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: PaymentTermsQueryParams
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const PaymentTermsContext = createContext<PaymentTermsContextType | null>(
-  null
-)
+export const PaymentTermsContext =
+  createContext<PaymentTermsContextType | null>(null)
 
 export function PaymentTermsProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: PaymentTermsQueryParams
 }) {
   const [open, setOpen] = useDialogState<PaymentTermsDialogType>(null)
   const [currentRow, setCurrentRow] = useState<PaymentTerm | null>(null)

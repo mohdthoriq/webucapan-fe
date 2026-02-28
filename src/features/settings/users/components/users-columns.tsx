@@ -7,7 +7,7 @@ import { DataTableRowActions } from './users-row-actions'
 
 export const usersColumns: ColumnDef<User>[] = [
   {
-    accessorKey: 'Nama Lengkap',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Lengkap' />
     ),

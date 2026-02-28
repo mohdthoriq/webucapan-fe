@@ -1,4 +1,11 @@
-import { createContext, type ReactNode, useContext, useState } from 'react'
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import type { PaginationMeta, Unit } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type UnitsQueryParams, useUnitsQuery } from '../hooks/use-units-query'
@@ -9,7 +16,7 @@ type UnitsContextType = {
   open: UnitsDialogType | null
   setOpen: (str: UnitsDialogType | null) => void
   currentRow: Unit | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<Unit | null>>
+  setCurrentRow: Dispatch<SetStateAction<Unit | null>>
   unitsData: Unit[]
   pagination: PaginationMeta
   isLoading: boolean

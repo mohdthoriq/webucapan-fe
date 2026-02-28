@@ -81,7 +81,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       // invoice_number per-column text filter
-      { columnId: 'invoice_number', searchKey: 'name', type: 'string' },
+      { columnId: 'Nomor', searchKey: 'invoice_number', type: 'string' },
     ],
   })
 
@@ -97,6 +97,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -131,8 +132,8 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari tagihan...'
-        searchKey='invoice_number'
+        searchPlaceholder='Cari nomor tagihan...'
+        searchKey='Nomor'
       >
         <div className='gap-2'>
           <InvoiceListFilter search={search} navigate={navigate} />

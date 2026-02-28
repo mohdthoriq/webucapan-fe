@@ -1,7 +1,14 @@
-import React, { useState } from 'react'
+import {
+  useState,
+  createContext,
+  useContext,
+  type Dispatch,
+  type SetStateAction,
+  type ReactNode,
+} from 'react'
 import type { Tax, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useTaxesQuery } from '../hooks/use-taxes-query'
+import { type TaxesQueryParams, useTaxesQuery } from '../hooks/use-taxes-query'
 
 type TaxesDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -9,23 +16,23 @@ type TaxesContextType = {
   open: TaxesDialogType | null
   setOpen: (str: TaxesDialogType | null) => void
   currentRow: Tax | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<Tax | null>>
+  setCurrentRow: Dispatch<SetStateAction<Tax | null>>
   taxesData: Tax[]
   isLoading: boolean
   isError: boolean
   pagination: PaginationMeta
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: TaxesQueryParams
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const TaxesContext = React.createContext<TaxesContextType | null>(null)
+export const TaxesContext = createContext<TaxesContextType | null>(null)
 
 export function TaxesProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: TaxesQueryParams
 }) {
   const [open, setOpen] = useDialogState<TaxesDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Tax | null>(null)
@@ -58,7 +65,7 @@ export function TaxesProvider({
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useTaxes = () => {
-  const taxesContext = React.useContext(TaxesContext)
+  const taxesContext = useContext(TaxesContext)
 
   if (!taxesContext) {
     throw new Error('useTaxes has to be used within <TaxesContext>')

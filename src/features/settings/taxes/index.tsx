@@ -8,6 +8,7 @@ import { TaxesDialogs } from './components/taxes-dialogs'
 import { TaxesFallback } from './components/taxes-fallback'
 import { useTaxes, TaxesProvider } from './components/taxes-provider'
 import { TaxesTable } from './components/taxes-table'
+import { type TaxesQueryParams } from './hooks/use-taxes-query'
 
 const route = getRouteApi('/_authenticated/settings/taxes/')
 
@@ -60,13 +61,14 @@ function TaxesContent() {
 export function Taxes() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: TaxesQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <TaxesProvider paginationParams={{ page, limit, name }}>
+    <TaxesProvider paginationParams={queryParams}>
       <TaxesContent />
     </TaxesProvider>
   )

@@ -1,7 +1,14 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  type ReactNode,
+} from 'react'
 import type { PaginationMeta, User } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useUsersQuery } from '../hooks/use-users-query'
+import { type UsersQueryParams, useUsersQuery } from '../hooks/use-users-query'
 
 type UsersDialogType = 'view' | 'edit' | 'add' | 'delete'
 
@@ -9,12 +16,12 @@ type UsersContextType = {
   open: UsersDialogType | null
   setOpen: (str: UsersDialogType | null) => void
   currentRow: User | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<User | null>>
+  setCurrentRow: Dispatch<SetStateAction<User | null>>
   usersData: User[]
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: UsersQueryParams
 }
 
 const UsersContext = createContext<UsersContextType | null>(null)
@@ -23,8 +30,8 @@ export function UsersProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  children: ReactNode
+  paginationParams?: UsersQueryParams
 }) {
   const [open, setOpen] = useDialogState<UsersDialogType>(null)
   const [currentRow, setCurrentRow] = useState<User | null>(null)

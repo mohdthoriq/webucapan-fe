@@ -72,7 +72,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'name', searchKey: 'search', type: 'string' }],
+    columnFilters: [{ columnId: 'Nama', searchKey: 'search', type: 'string' }],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -87,6 +87,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -122,7 +123,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
       <DataTableToolbar
         table={table}
         searchPlaceholder='Cari produk...'
-        searchKey='name'
+        searchKey='Nama'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>

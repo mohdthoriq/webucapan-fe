@@ -8,6 +8,7 @@ import { UnitsDialogs } from './components/units-dialogs'
 import { UnitsFallback } from './components/units-fallback'
 import { UnitsProvider, useUnits } from './components/units-provider'
 import { UnitsTable } from './components/units-table'
+import { type UnitsQueryParams } from './hooks/use-units-query'
 
 const route = getRouteApi('/_authenticated/settings/units/')
 
@@ -56,13 +57,14 @@ function UnitsContent() {
 function Units() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: UnitsQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <UnitsProvider paginationParams={{ page, limit, name }}>
+    <UnitsProvider paginationParams={queryParams}>
       <UnitsContent />
     </UnitsProvider>
   )

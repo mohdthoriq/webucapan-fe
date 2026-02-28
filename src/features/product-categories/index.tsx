@@ -11,6 +11,7 @@ import {
   useProductCategories,
 } from './components/product-category-provider'
 import { ProductCategoryTable } from './components/product-category-table'
+import type { ProductCategoryQueryParams } from './hooks/use-product-category-query'
 
 const route = getRouteApi('/_authenticated/product-categories/')
 
@@ -59,13 +60,14 @@ function ProductCategoryContent() {
 function ProductCategory() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: ProductCategoryQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <ProductCategoryProvider paginationParams={{ page, limit, name }}>
+    <ProductCategoryProvider paginationParams={queryParams}>
       <ProductCategoryContent />
     </ProductCategoryProvider>
   )

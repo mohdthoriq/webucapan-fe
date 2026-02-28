@@ -7,7 +7,7 @@ import { DataTableRowActions } from './units-row-actions'
 
 export const unitsColumns: ColumnDef<Unit>[] = [
   {
-    accessorKey: 'Nama Satuan',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Satuan' />
     ),

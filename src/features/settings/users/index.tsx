@@ -8,6 +8,7 @@ import { UsersDialogs } from './components/users-dialogs'
 import { UsersFallback } from './components/users-fallback'
 import { UsersProvider, useUsers } from './components/users-provider'
 import { UsersTable } from './components/users-table'
+import type { UsersQueryParams } from './hooks/use-users-query'
 
 const route = getRouteApi('/_authenticated/settings/users/')
 
@@ -56,12 +57,14 @@ function UsersContent() {
 function Users() {
   const search = route.useSearch() as Record<string, string>
 
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: UsersQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <UsersProvider paginationParams={{ page, limit, name }}>
+    <UsersProvider paginationParams={queryParams}>
       <UsersContent />
     </UsersProvider>
   )

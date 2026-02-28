@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
-interface TaxesQueryParams {
+export interface TaxesQueryParams {
   page?: number
   limit?: number
   name?: string

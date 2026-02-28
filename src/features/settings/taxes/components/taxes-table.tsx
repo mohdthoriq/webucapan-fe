@@ -55,7 +55,7 @@ export function TaxesTable({ search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'Nama', searchKey: 'name', type: 'string' },
     ],
   })
 
@@ -71,6 +71,7 @@ export function TaxesTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -101,8 +102,8 @@ export function TaxesTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari peran...'
-        searchKey='name'
+        searchPlaceholder='Cari pajak...'
+        searchKey='Nama'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>

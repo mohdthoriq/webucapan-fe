@@ -3,14 +3,14 @@ import type { PaginationApiResponse, Tag } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
-interface RoleSettingsQueryParams {
+export interface TagsQueryParams {
   page?: number
   limit?: number
   order?: string
   name?: string
 }
 
-export function useTagsQuery(params?: RoleSettingsQueryParams) {
+export function useTagsQuery(params?: TagsQueryParams) {
   return useQuery({
     queryKey: [
       QUERY_KEY.TAGS,

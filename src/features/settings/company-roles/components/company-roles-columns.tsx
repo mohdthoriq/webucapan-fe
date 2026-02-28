@@ -7,7 +7,7 @@ import { DataTableRowActions } from './company-roles-row-actions'
 
 export const rolesColumns: ColumnDef<CompanyRole>[] = [
   {
-    accessorKey: 'Nama Peran',
+    accessorKey: 'Nama',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nama Peran' />
     ),

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import type { CompanyRole, PaginationMeta } from '@/types';
-import useDialogState from '@/hooks/use-dialog-state';
-import { useCompanyRoleSettingsQuery } from '../hooks/use-company-roles-query';
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
+import type { CompanyRole, PaginationMeta } from '@/types'
+import useDialogState from '@/hooks/use-dialog-state'
+import {
+  type RoleSettingsQueryParams,
+  useCompanyRoleSettingsQuery,
+} from '../hooks/use-company-roles-query'
 
 type RolesDialogType = 'view' | 'delete'
 
@@ -9,23 +12,23 @@ type RolesContextType = {
   open: RolesDialogType | null
   setOpen: (str: RolesDialogType | null) => void
   currentRow: CompanyRole | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<CompanyRole | null>>
+  setCurrentRow: Dispatch<SetStateAction<CompanyRole | null>>
   rolesData: CompanyRole[]
   isLoading: boolean
   isError: boolean
   pagination: PaginationMeta
-  paginationParams?: { page?: number; limit?: number }
+  paginationParams?: RoleSettingsQueryParams
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const RolesContext = React.createContext<RolesContextType | null>(null)
+export const RolesContext = createContext<RolesContextType | null>(null)
 
 export function CompanyRolesProvider({
   children,
   paginationParams,
 }: {
-  children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number }
+  children: ReactNode
+  paginationParams?: RoleSettingsQueryParams
 }) {
   const [open, setOpen] = useDialogState<RolesDialogType>(null)
   const [currentRow, setCurrentRow] = useState<CompanyRole | null>(null)
@@ -58,7 +61,7 @@ export function CompanyRolesProvider({
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useCompanyRoles = () => {
-  const rolesContext = React.useContext(RolesContext)
+  const rolesContext = useContext(RolesContext)
 
   if (!rolesContext) {
     throw new Error('useCompanyRoles has to be used within <RolesContext>')

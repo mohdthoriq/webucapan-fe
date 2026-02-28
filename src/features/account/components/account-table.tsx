@@ -95,6 +95,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
       expanded,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,

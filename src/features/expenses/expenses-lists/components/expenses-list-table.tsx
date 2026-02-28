@@ -84,7 +84,7 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       // name per-column text filter
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'Nomor', searchKey: 'expense_number', type: 'string' },
     ],
   })
 
@@ -100,6 +100,7 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -134,8 +135,8 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari...'
-        searchKey='name'
+        searchPlaceholder='Cari nomor biaya...'
+        searchKey='Nomor'
       >
         <ExpensesListFilter search={search} navigate={navigate} />
       </DataTableToolbar>

@@ -8,6 +8,7 @@ import { CompanyRolesDialogs } from './components/company-roles-dialogs'
 import { CompanyRolesFallback } from './components/company-roles-fallback'
 import { CompanyRolesProvider } from './components/company-roles-provider'
 import { CompanyRolesTable } from './components/company-roles-table'
+import { type RoleSettingsQueryParams } from './hooks/use-company-roles-query'
 
 const route = getRouteApi('/_authenticated/settings/company-roles/')
 
@@ -63,12 +64,14 @@ function CompanyRolesContent() {
 export function CompanyRoles() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
+  const queryParams: RoleSettingsQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <CompanyRolesProvider paginationParams={{ page, limit }}>
+    <CompanyRolesProvider paginationParams={queryParams}>
       <CompanyRolesContent />
     </CompanyRolesProvider>
   )

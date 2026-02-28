@@ -8,6 +8,7 @@ import { TagsDialogs } from './components/tags-dialogs'
 import { TagsFallback } from './components/tags-fallback'
 import { TagsProvider, useTags } from './components/tags-provider'
 import { TagsTable } from './components/tags-table'
+import { type TagsQueryParams } from './hooks/use-tags-query'
 
 const route = getRouteApi('/_authenticated/settings/tags/')
 
@@ -56,13 +57,14 @@ function TagsContent() {
 function Tags() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const name = search?.name ? search.name : undefined
+  const queryParams: TagsQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    name: search?.name ? search.name : undefined,
+  }
 
   return (
-    <TagsProvider paginationParams={{ page, limit, name }}>
+    <TagsProvider paginationParams={queryParams}>
       <TagsContent />
     </TagsProvider>
   )
