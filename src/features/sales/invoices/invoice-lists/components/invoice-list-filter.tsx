@@ -245,6 +245,8 @@ export function InvoiceListFilter({
               <div className='space-y-2'>
                 <label className='text-xs font-medium'>Pelanggan</label>
                 <InvoiceFormCombobox
+                  type='contact'
+                  placeholder='Pilih Pelanggan'
                   value={selectedCustomerId}
                   onValueChange={setSelectedCustomerId}
                   action={
@@ -264,8 +266,8 @@ export function InvoiceListFilter({
                   placeholder='Pilih tag...'
                   action={
                     <FormShortcutButton
-                      title='Tambah Kategori Baru'
-                      onClick={() => openDialog('product-category')}
+                      title='Tambah Tag'
+                      onClick={() => openDialog('tag')}
                     />
                   }
                 />

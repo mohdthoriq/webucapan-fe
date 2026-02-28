@@ -245,6 +245,7 @@ export function InvoiceListFilter({
               <div className='space-y-2'>
                 <label className='text-xs font-medium'>Vendor</label>
                 <InvoiceFormCombobox
+                  placeholder='Pilih Vendor'
                   type='contact'
                   onValueChange={setSelectedCustomerId}
                   action={
