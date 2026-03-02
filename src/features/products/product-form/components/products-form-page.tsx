@@ -1,8 +1,14 @@
 'use client'
 
 import { useWatch } from 'react-hook-form'
-import { FinanceNumberType, type Unit, type Product, type ProductCategory } from '@/types'
-import { CheckCircle2Icon, Trash2, Upload } from 'lucide-react'
+import {
+  FinanceNumberType,
+  type Unit,
+  type Product,
+  type ProductCategory,
+} from '@/types'
+import { CheckCircle2Icon, Loader2, Trash2, Upload } from 'lucide-react'
+import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -25,6 +31,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
 import {
@@ -33,8 +40,6 @@ import {
 } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
-import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
-import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 
 type ProductsFormContentProps = {
   currentRow?: Product | null
@@ -50,7 +55,7 @@ export function ProductsFormContent({
   const { data: productsAutoNumbering } = useDefaultNumberingQuery({
     type: FinanceNumberType.product_sku,
   })
-  const {openDialog} = useGlobalDialogStore()
+  const { openDialog } = useGlobalDialogStore()
 
   const {
     form,
@@ -308,7 +313,7 @@ export function ProductsFormContent({
               <span className='text-primary hover:text-primary/90 font-medium'>
                 klik untuk browse
               </span>{' '}
-              (4MB max)
+              (10MB max)
             </p>
             <p className='text-muted-foreground mt-1 text-sm'>
               (type: JPG, JPEG, GIF, WEBP)
@@ -393,7 +398,12 @@ export function ProductsFormContent({
             Batal
           </Button>
           <Button type='submit' disabled={isSubmitting}>
-            {currentRow ? 'Update Produk' : 'Simpan Produk'}
+            {isSubmitting && <Loader2 className='h-4 w-4 animate-spin' />}
+            {isSubmitting
+              ? 'Menyimpan...'
+              : currentRow
+                ? 'Update Produk'
+                : 'Simpan Produk'}
           </Button>
         </div>
       </form>

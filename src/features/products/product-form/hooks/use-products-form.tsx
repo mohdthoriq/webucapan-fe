@@ -8,6 +8,7 @@ import {
   type FinanceNumber,
   type Product,
 } from '@/types'
+import { toast } from 'sonner'
 import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
 import {
   type CreateProductFormData,
@@ -165,6 +166,11 @@ export function useProductsForm({
   const onSubmit = async (data: CreateProductFormData) => {
     try {
       let newImageUrls: string[] = []
+
+      if (uploadedFiles.length > 10) {
+        toast.error('Maksimal 10 gambar')
+        return
+      }
 
       // 1. Upload images if there are any new files
       if (uploadedFiles.length > 0) {
