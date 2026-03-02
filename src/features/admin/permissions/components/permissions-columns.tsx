@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './permissions-row-actions'
+
 
 export const permissionsColumns: ColumnDef<Permission>[] = [
   {
@@ -102,10 +102,5 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     meta: {
       className: 'w-full px-8',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

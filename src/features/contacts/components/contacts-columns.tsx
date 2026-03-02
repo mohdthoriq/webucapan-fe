@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './contacts-row-actions'
 
 export const contactsColumns: ColumnDef<Contact>[] = [
   {
@@ -136,10 +135,5 @@ export const contactsColumns: ColumnDef<Contact>[] = [
     meta: {
       className: 'w-full',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]
