@@ -13,8 +13,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { AccountCategory } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -24,7 +26,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useBulkDeleteAccountCategoryMutation } from '../hooks/use-account-categories-mutation'
+import { AccountCategoriesBulkDeleteDialog } from './account-categories-bulk-delete-dialog'
 import { accountCategoriesColumns } from './account-categories-columns'
 import { useAccountCategories } from './account-categories-provider'
 
@@ -44,6 +57,9 @@ export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteBulkMutation = useBulkDeleteAccountCategoryMutation()
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
@@ -72,6 +88,7 @@ export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -93,6 +110,10 @@ export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
     }
   }, [serverPagination.total_pages, ensurePageInRange])
 
+  const selectedRows = table
+    .getSelectedRowModel()
+    .flatRows.map((row) => row.original)
+
   return (
     <div
       className={cn(
@@ -102,9 +123,10 @@ export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari kontak...'
+        searchPlaceholder='Cari kategori akun...'
         searchKey='name'
       />
+
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
@@ -147,6 +169,41 @@ export function AccountCategoriesTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='Kategori Akun'>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <AccountCategoriesBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteBulkMutation.isPending}
+        onConfirm={(ids) => {
+          deleteBulkMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }

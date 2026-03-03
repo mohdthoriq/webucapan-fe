@@ -8,7 +8,9 @@ export const createAccountCategorySchema = z.object({
   report_group: z.string().optional(),
   code_prefix: z.string().optional(),
   allowed_transactions: z
-    .array(z.object({ transaction_type_id: z.string().min(1, 'Pilih transaksi') }))
+    .array(
+      z.object({ transaction_type_id: z.string().min(1, 'Pilih transaksi') })
+    )
     .min(1, 'Minimal satu transaksi diizinkan'),
 })
 
@@ -45,3 +47,11 @@ export type UpdateAccountCategoryRequest = Omit<
 > & {
   allowed_transactions: string[]
 }
+
+export const bulkDeleteAccountCategorySchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteAccountCategoryFormData = z.infer<
+  typeof bulkDeleteAccountCategorySchema
+>

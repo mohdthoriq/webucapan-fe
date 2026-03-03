@@ -7,3 +7,19 @@ export const transactionTypeSchema = z.object({
 })
 
 export type TransactionTypeFormValues = z.infer<typeof transactionTypeSchema>
+
+export const deleteTransactionTypeSchema = z.object({
+  id: z.uuid(),
+})
+
+export type DeleteTransactionTypeFormData = z.infer<
+  typeof deleteTransactionTypeSchema
+>
+
+export const bulkDeleteTransactionTypeSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteTransactionTypeFormData = z.infer<
+  typeof bulkDeleteTransactionTypeSchema
+>

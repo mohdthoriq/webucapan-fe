@@ -7,6 +7,7 @@ import {
   type CreatePlanFormData,
   type UpdatePlanFormData,
   type DeletePlanFormData,
+  type BulkDeletePlanFormData,
 } from '../types/plans.schema'
 
 export function useCreatePlanMutation() {
@@ -23,7 +24,9 @@ export function useCreatePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLANS],
+      })
       toast.success('Plan berhasil ditambahkan.')
       setOpen(null)
     },
@@ -51,7 +54,9 @@ export function useUpdatePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLANS],
+      })
       toast.success('Plan berhasil diubah.')
       setOpen(null)
     },
@@ -79,9 +84,39 @@ export function useDeletePlanMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('plans-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.PLANS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLANS],
+      })
       toast.success('Plan berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('plans-toast')
+      toast.error('Plan gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeletePlanMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeletePlanFormData) => {
+      const response = await apiClient.post(
+        `/subscriptions/plans/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'plans-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('plans-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.PLANS],
+      })
+      toast.success('Plan berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('plans-toast')

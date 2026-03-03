@@ -36,3 +36,9 @@ export const deleteMenusSchema = z.object({
 })
 
 export type DeleteMenusFormData = z.infer<typeof deleteMenusSchema>
+
+export const bulkDeleteMenusSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteMenusFormData = z.infer<typeof bulkDeleteMenusSchema>
