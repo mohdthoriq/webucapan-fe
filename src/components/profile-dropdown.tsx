@@ -1,12 +1,18 @@
-import { useNavigate } from '@tanstack/react-router';
-import { CreditCard, LogOut, User } from 'lucide-react';
-import { useAuthStore } from '@/stores/auth-store';
-import useDialogState from '@/hooks/use-dialog-state';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { LogoutDialog } from '@/components/dialog/logout.dialog';
-
+import { useNavigate } from '@tanstack/react-router'
+import { CreditCard, LogOut, User } from 'lucide-react'
+import { useAuthStore } from '@/stores/auth-store'
+import useDialogState from '@/hooks/use-dialog-state'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { LogoutDialog } from '@/components/dialog/logout.dialog'
 
 // eslint-disable-next-line
 export const getInitials = (fullName: string): string => {

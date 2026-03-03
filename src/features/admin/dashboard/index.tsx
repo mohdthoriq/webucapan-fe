@@ -3,19 +3,19 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Loader2, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
 import { Button } from '@/components/ui/button'
-import { useAdminDashboardQuery } from './hooks/use-admin-dashboard-query'
-import { SummaryCards } from './components/summary-cards'
 import { AdminDashboardChart } from './components/admin-dashboard-chart'
-import { SubscriptionOverview } from './components/subscription-overview'
 import { AdminDashboardPrint } from './components/print/admin-dashboard-print'
+import { SubscriptionOverview } from './components/subscription-overview'
+import { SummaryCards } from './components/summary-cards'
+import { useAdminDashboardQuery } from './hooks/use-admin-dashboard-query'
 
 export function AdminDashboard() {
   const currentYear = new Date().getFullYear()
-  const navigate = useNavigate({ from: '/admin' })
-  const search = useSearch({ from: '/_authenticated/admin/' })
-  
+  const navigate = useNavigate({ from: '/admin/dashboard' })
+  const search = useSearch({ from: '/_authenticated/admin/dashboard/' })
+
   const { period, year, month } = search
-  
+
   const [isPrinting, setIsPrinting] = useState(false)
   const printRef = useRef<HTMLDivElement>(null)
 
@@ -62,8 +62,18 @@ export function AdminDashboard() {
     if (!data?.chart_data) return []
 
     const months: Record<string, number> = {
-      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
     }
 
     return [...data.chart_data].sort((a, b) => {
@@ -81,7 +91,7 @@ export function AdminDashboard() {
     <div className='flex flex-col space-y-6'>
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-        
+
         <div className='flex items-center gap-2'>
           <Button
             variant='outline'
@@ -95,7 +105,9 @@ export function AdminDashboard() {
             ) : (
               <Printer className='h-3.5 w-3.5' />
             )}
-            <span className='hidden sm:inline'>{isPrinting ? 'Memproses...' : 'Cetak'}</span>
+            <span className='hidden sm:inline'>
+              {isPrinting ? 'Memproses...' : 'Cetak'}
+            </span>
           </Button>
         </div>
       </div>
@@ -103,9 +115,9 @@ export function AdminDashboard() {
       <SummaryCards summary={data?.summary} isLoading={isLoading} />
 
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-5'>
-        <AdminDashboardChart 
-          chartData={chartData} 
-          isLoading={isLoading} 
+        <AdminDashboardChart
+          chartData={chartData}
+          isLoading={isLoading}
           period={period}
           year={year}
           onFilterChange={updateFilters}

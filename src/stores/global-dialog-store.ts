@@ -14,15 +14,18 @@ export type GlobalDialogType =
 interface DialogInstance {
   id: string
   view: GlobalDialogType
-  data?: unknown
-  onSuccess?: (result?: unknown) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSuccess?: (result?: any) => void
 }
 
 interface GlobalDialogStore {
   stack: DialogInstance[]
   openDialog: (
     view: GlobalDialogType,
-    options?: { data?: unknown; onSuccess?: (result?: unknown) => void }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options?: { data?: any; onSuccess?: (result: any) => void }
   ) => void
   closeDialog: (id?: string) => void
 }

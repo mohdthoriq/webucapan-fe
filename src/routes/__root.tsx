@@ -16,8 +16,6 @@ function RootComponent() {
     return <OfflineError />
   }
 
-  
-
   return (
     <>
       <NavigationProgress />

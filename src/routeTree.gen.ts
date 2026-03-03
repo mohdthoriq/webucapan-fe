@@ -29,7 +29,6 @@ import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './route
 import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedCashBankIndexRouteImport } from './routes/_authenticated/cash-bank/index'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedCashBankSpendRouteImport } from './routes/_authenticated/cash-bank/spend'
 import { Route as AuthenticatedCashBankReceiveRouteImport } from './routes/_authenticated/cash-bank/receive'
@@ -63,6 +62,7 @@ import { Route as AuthenticatedAdminPlansIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminPermissionsIndexRouteImport } from './routes/_authenticated/admin/permissions/index'
 import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin/menus/index'
 import { Route as AuthenticatedAdminMenuCategoriesIndexRouteImport } from './routes/_authenticated/admin/menu-categories/index'
+import { Route as AuthenticatedAdminDashboardIndexRouteImport } from './routes/_authenticated/admin/dashboard/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
 import { Route as AuthenticatedSettingsCompanyRolesEditIndexRouteImport } from './routes/_authenticated/settings/company-roles/edit/index'
 import { Route as AuthenticatedSettingsCompanyRolesAddIndexRouteImport } from './routes/_authenticated/settings/company-roles/add/index'
@@ -180,11 +180,6 @@ const AuthenticatedCashBankIndexRoute =
     path: '/cash-bank/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRouteRoute,
-} as any)
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: '/account/',
@@ -383,6 +378,12 @@ const AuthenticatedAdminMenuCategoriesIndexRoute =
     path: '/menu-categories/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminDashboardIndexRoute =
+  AuthenticatedAdminDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminAccountCategoriesIndexRoute =
   AuthenticatedAdminAccountCategoriesIndexRouteImport.update({
     id: '/account-categories/',
@@ -463,7 +464,6 @@ export interface FileRoutesByFullPath {
   '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -472,6 +472,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
   '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -510,6 +511,7 @@ export interface FileRoutesByFullPath {
   '/admin/plans/$planId/permissions': typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -527,7 +529,6 @@ export interface FileRoutesByTo {
   '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -536,6 +537,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
   '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
   '/admin/permissions': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -594,7 +596,6 @@ export interface FileRoutesById {
   '/_authenticated/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/_authenticated/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/cash-bank/': typeof AuthenticatedCashBankIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
   '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
@@ -603,6 +604,7 @@ export interface FileRoutesById {
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  '/_authenticated/admin/dashboard/': typeof AuthenticatedAdminDashboardIndexRoute
   '/_authenticated/admin/menu-categories/': typeof AuthenticatedAdminMenuCategoriesIndexRoute
   '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
   '/_authenticated/admin/permissions/': typeof AuthenticatedAdminPermissionsIndexRoute
@@ -661,7 +663,6 @@ export interface FileRouteTypes {
     | '/cash-bank/receive'
     | '/cash-bank/spend'
     | '/account'
-    | '/admin/'
     | '/cash-bank'
     | '/contacts'
     | '/expenses'
@@ -670,6 +671,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/admin/account-categories'
+    | '/admin/dashboard'
     | '/admin/menu-categories'
     | '/admin/menus'
     | '/admin/permissions'
@@ -708,6 +710,7 @@ export interface FileRouteTypes {
     | '/admin/plans/$planId/permissions'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -725,7 +728,6 @@ export interface FileRouteTypes {
     | '/cash-bank/receive'
     | '/cash-bank/spend'
     | '/account'
-    | '/admin'
     | '/cash-bank'
     | '/contacts'
     | '/expenses'
@@ -734,6 +736,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/admin/account-categories'
+    | '/admin/dashboard'
     | '/admin/menu-categories'
     | '/admin/menus'
     | '/admin/permissions'
@@ -791,7 +794,6 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-bank/receive'
     | '/_authenticated/cash-bank/spend'
     | '/_authenticated/account/'
-    | '/_authenticated/admin/'
     | '/_authenticated/cash-bank/'
     | '/_authenticated/contacts/'
     | '/_authenticated/expenses/'
@@ -800,6 +802,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports/'
     | '/_authenticated/settings/'
     | '/_authenticated/admin/account-categories/'
+    | '/_authenticated/admin/dashboard/'
     | '/_authenticated/admin/menu-categories/'
     | '/_authenticated/admin/menus/'
     | '/_authenticated/admin/permissions/'
@@ -993,13 +996,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/cash-bank'
       preLoaderRoute: typeof AuthenticatedCashBankIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/account/': {
       id: '/_authenticated/account/'
@@ -1232,6 +1228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMenuCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/dashboard/': {
+      id: '/_authenticated/admin/dashboard/'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AuthenticatedAdminDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/account-categories/': {
       id: '/_authenticated/admin/account-categories/'
       path: '/account-categories'
@@ -1306,8 +1309,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminAccountCategoriesIndexRoute: typeof AuthenticatedAdminAccountCategoriesIndexRoute
+  AuthenticatedAdminDashboardIndexRoute: typeof AuthenticatedAdminDashboardIndexRoute
   AuthenticatedAdminMenuCategoriesIndexRoute: typeof AuthenticatedAdminMenuCategoriesIndexRoute
   AuthenticatedAdminMenusIndexRoute: typeof AuthenticatedAdminMenusIndexRoute
   AuthenticatedAdminPermissionsIndexRoute: typeof AuthenticatedAdminPermissionsIndexRoute
@@ -1319,9 +1322,10 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
-    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminAccountCategoriesIndexRoute:
       AuthenticatedAdminAccountCategoriesIndexRoute,
+    AuthenticatedAdminDashboardIndexRoute:
+      AuthenticatedAdminDashboardIndexRoute,
     AuthenticatedAdminMenuCategoriesIndexRoute:
       AuthenticatedAdminMenuCategoriesIndexRoute,
     AuthenticatedAdminMenusIndexRoute: AuthenticatedAdminMenusIndexRoute,

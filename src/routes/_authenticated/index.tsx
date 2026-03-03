@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authenticated/')({
     const roleName = user?.role?.name?.toLowerCase()
     if (roleName === 'superadmin' || roleName === 'super administrator') {
       throw redirect({
-        to: '/admin',
+        to: '/admin/dashboard',
         search: {
           period: 'month',
           year: new Date().getFullYear(),

@@ -10,7 +10,7 @@ const dashboardSearchSchema = z.object({
 
 export type DashboardSearch = z.infer<typeof dashboardSearchSchema>
 
-export const Route = createFileRoute('/_authenticated/admin/')({
+export const Route = createFileRoute('/_authenticated/admin/dashboard/')({
   validateSearch: (search) => dashboardSearchSchema.parse(search),
   component: AdminDashboard,
 })
