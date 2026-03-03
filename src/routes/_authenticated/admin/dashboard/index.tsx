@@ -5,7 +5,7 @@ import { AdminDashboard } from '@/features/admin/dashboard'
 const dashboardSearchSchema = z.object({
   period: z.enum(['month', 'year']).optional().default('month'),
   year: z.number().optional().default(new Date().getFullYear()),
-  month: z.number().min(1).max(12).optional().default(new Date().getMonth() + 1),
+  month: z.number().min(0).max(12).optional(),
 })
 
 export type DashboardSearch = z.infer<typeof dashboardSearchSchema>

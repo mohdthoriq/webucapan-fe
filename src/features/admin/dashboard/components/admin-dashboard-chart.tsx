@@ -8,14 +8,20 @@ interface AdminDashboardChartProps {
   isLoading: boolean
   period: AdminDashboardPeriod
   year: number
-  onFilterChange: (updates: { period?: AdminDashboardPeriod; year?: number; month?: number }) => void
+  month?: number
+  onFilterChange: (updates: {
+    period?: AdminDashboardPeriod
+    year?: number
+    month?: number
+  }) => void
 }
 
-export function AdminDashboardChart({ 
-  chartData, 
+export function AdminDashboardChart({
+  chartData,
   isLoading,
   period,
   year,
+  month,
   onFilterChange,
 }: AdminDashboardChartProps) {
   if (isLoading) {
@@ -37,9 +43,10 @@ export function AdminDashboardChart({
         <CardTitle className='text-base font-semibold uppercase'>
           Pertumbuhan
         </CardTitle>
-        <AdminDashboardCardAction 
+        <AdminDashboardCardAction
           period={period}
           year={year}
+          month={month}
           onChange={onFilterChange}
         />
       </CardHeader>
