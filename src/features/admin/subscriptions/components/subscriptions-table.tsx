@@ -13,8 +13,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { Subscription } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -24,7 +26,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useBulkDeleteSubscriptionMutation } from '../hooks/use-subscriptions-mutation'
+import { SubscriptionsBulkDeleteDialog } from './subscriptions-bulk-delete-dialog'
 import { subscriptionsColumns } from './subscriptions-columns'
 import { useSubscriptions } from './subscriptions-provider'
 
@@ -44,6 +57,9 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteBulkMutation = useBulkDeleteSubscriptionMutation()
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
@@ -75,6 +91,7 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -96,6 +113,10 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
     }
   }, [serverPagination.total_pages, ensurePageInRange])
 
+  const selectedRows = table
+    .getSelectedRowModel()
+    .flatRows.map((row) => row.original)
+
   return (
     <div
       className={cn(
@@ -105,7 +126,7 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari satuan...'
+        searchPlaceholder='Cari perusahaan berlangganan...'
         searchKey='company'
       />
       <div className='overflow-hidden rounded-md border'>
@@ -150,6 +171,41 @@ export function SubscriptionsTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='Subscription'>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <SubscriptionsBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteBulkMutation.isPending}
+        onConfirm={(ids) => {
+          deleteBulkMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }

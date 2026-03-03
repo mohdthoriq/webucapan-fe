@@ -7,6 +7,7 @@ import {
   type CreateSubscriptionFormData,
   type UpdateSubscriptionFormData,
   type DeleteSubscriptionFormData,
+  type BulkDeleteSubscriptionFormData,
 } from '../types/subscriptions.schema'
 
 export function useCreateSubscriptionMutation() {
@@ -89,6 +90,34 @@ export function useDeleteSubscriptionMutation() {
       })
       toast.success('Subscription berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('subscriptions-toast')
+      toast.error('Subscription gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteSubscriptionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteSubscriptionFormData) => {
+      const response = await apiClient.post(
+        `/subscriptions/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'subscriptions-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('subscriptions-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.SUBSCRIPTIONS],
+      })
+      toast.success('Subscription berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('subscriptions-toast')

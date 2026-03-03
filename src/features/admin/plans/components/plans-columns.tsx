@@ -2,11 +2,36 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { type Plan } from '@/types'
 import { cn, formatNumber } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './plans-row-actions'
 
 export const plansColumns: ColumnDef<Plan>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'code',
     header: ({ column }) => (
@@ -15,7 +40,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
     cell: ({ row }) => {
       const { code } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText>{code}</LongText>
         </div>
       )
@@ -36,7 +61,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText>{name}</LongText>
         </div>
       )
@@ -57,7 +82,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText
             className='max-w-xs truncate'
             contentClassName='w-xs text-sm'
@@ -80,7 +105,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
       const { monthly_price } = row.original
       const formattedPrice = formatNumber(monthly_price)
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedPrice}</LongText>
         </div>
       )
@@ -98,7 +123,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
       const { yearly_price } = row.original
       const formattedPrice = formatNumber(yearly_price)
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedPrice}</LongText>
         </div>
       )
@@ -115,7 +140,7 @@ export const plansColumns: ColumnDef<Plan>[] = [
     cell: ({ row }) => {
       const { is_active } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <Badge
             variant='outline'
             className={cn(

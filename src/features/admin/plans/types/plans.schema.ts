@@ -30,3 +30,9 @@ export const deletePlanSchema = z.object({
 })
 
 export type DeletePlanFormData = z.infer<typeof deletePlanSchema>
+
+export const bulkDeletePlanSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeletePlanFormData = z.infer<typeof bulkDeletePlanSchema>

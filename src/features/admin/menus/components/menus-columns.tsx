@@ -1,12 +1,36 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Menu } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './menus-row-actions';
-
+import { type ColumnDef } from '@tanstack/react-table'
+import { type Menu } from '@/types'
+import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './menus-row-actions'
 
 export const menusColumns: ColumnDef<Menu>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -15,7 +39,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -36,7 +60,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { title } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{title}</LongText>
         </div>
       )
@@ -53,7 +77,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { position } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{position}</LongText>
         </div>
       )
@@ -70,7 +94,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { parent } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{parent?.name || '-'}</LongText>
         </div>
       )
@@ -87,7 +111,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { category } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{category?.name || '-'}</LongText>
         </div>
       )
@@ -104,7 +128,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { permission } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{permission?.name}</LongText>
         </div>
       )

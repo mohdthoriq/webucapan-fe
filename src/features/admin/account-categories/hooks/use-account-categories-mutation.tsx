@@ -6,6 +6,7 @@ import {
   type CreateAccountCategoryRequest,
   type UpdateAccountCategoryRequest,
   type DeleteAccountCategoryFormData,
+  type BulkDeleteAccountCategoryFormData,
 } from '@/features/admin/account-categories/types/account-categories.schema'
 import { useAccountCategories } from '../components/account-categories-provider'
 
@@ -88,6 +89,34 @@ export function useDeleteAccountCategoryMutation() {
       })
       toast.success('Kategori akun berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('account-categories-toast')
+      toast.error('Kategori akun gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteAccountCategoryMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteAccountCategoryFormData) => {
+      const response = await apiClient.post(
+        `/account-categories/bulk-delete`,
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'account-categories-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('account-categories-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.ACCOUNT_CATEGORIES],
+      })
+      toast.success('Kategori akun berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('account-categories-toast')

@@ -3,9 +3,34 @@ import { type AccountCategory } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
+import { Checkbox } from '@/components/ui/checkbox'
 
 
 export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -14,7 +39,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
@@ -35,7 +60,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )

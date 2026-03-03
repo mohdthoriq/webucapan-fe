@@ -39,7 +39,7 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     cell: ({ row }) => {
       const { parent } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{parent?.name}</LongText>
         </div>
       )
@@ -77,7 +77,7 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     cell: ({ row }) => {
       const { position } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{position}</LongText>
         </div>
       )
@@ -94,7 +94,7 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )

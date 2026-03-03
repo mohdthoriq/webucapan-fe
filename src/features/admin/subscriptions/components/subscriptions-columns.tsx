@@ -1,12 +1,36 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type Subscription } from '@/types';
-import { cn, formatDate } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './subscriptions-row-actions';
-
+import { type ColumnDef } from '@tanstack/react-table'
+import { type Subscription } from '@/types'
+import { cn, formatDate } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { DataTableRowActions } from './subscriptions-row-actions'
 
 export const subscriptionsColumns: ColumnDef<Subscription>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'company',
     header: ({ column }) => (
@@ -15,7 +39,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { company } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText>{company?.name}</LongText>
         </div>
       )
@@ -36,7 +60,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { plan_name } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{plan_name}</LongText>
         </div>
       )
@@ -54,7 +78,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
       const { start_date } = row.original
       const formattedDate = formatDate(start_date)
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -72,7 +96,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
       const { end_date } = row.original
       const formattedDate = end_date ? formatDate(end_date) : '-'
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -89,7 +113,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { Subscriptions_status } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{Subscriptions_status}</LongText>
         </div>
       )

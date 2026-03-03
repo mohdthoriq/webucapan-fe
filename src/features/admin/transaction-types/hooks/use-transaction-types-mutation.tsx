@@ -3,7 +3,10 @@ import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 import { useTransactionTypes } from '../components/transaction-types-provider'
-import type { TransactionTypeFormValues } from '../types/transaction-types.schema'
+import {
+  type TransactionTypeFormValues,
+  type BulkDeleteTransactionTypeFormData,
+} from '../types/transaction-types.schema'
 
 export function useCreateTransactionTypeMutation() {
   const { setOpen } = useTransactionTypes()
@@ -84,6 +87,34 @@ export function useDeleteTransactionTypeMutation() {
       })
       toast.success('Tipe Transaksi berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('transaction-types-toast')
+      toast.error('Tipe Transaksi gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteTransactionTypeMutation() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: BulkDeleteTransactionTypeFormData) => {
+      const response = await apiClient.post(
+        '/transaction-types/bulk-delete',
+        data
+      )
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'transaction-types-toast' })
+    },
+    onSuccess: async () => {
+      toast.dismiss('transaction-types-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.TRANSACTION_TYPES],
+      })
+      toast.success('Tipe Transaksi berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('transaction-types-toast')

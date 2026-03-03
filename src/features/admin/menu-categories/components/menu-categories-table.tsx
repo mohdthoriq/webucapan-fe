@@ -13,8 +13,10 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { MenuCategory } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -24,7 +26,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { useBulkDeleteMenuCategoryMutation } from '../hooks/use-menu-categories-mutation'
+import { MenuCategoriesBulkDeleteDialog } from './menu-categories-bulk-delete-dialog'
 import { menuCategoriesColumns } from './menu-categories-columns'
 import { useMenuCategories } from './menu-categories-provider'
 
@@ -34,11 +47,18 @@ type DataTableProps = {
 }
 
 export function MenuCategoriesTable({ search, navigate }: DataTableProps) {
-  const { menuCategoriesData: data, pagination: serverPagination, isLoading } = useMenuCategories()
+  const {
+    menuCategoriesData: data,
+    pagination: serverPagination,
+    isLoading,
+  } = useMenuCategories()
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+
+  const deleteBulkMutation = useBulkDeleteMenuCategoryMutation()
 
   const {
     columnFilters,
@@ -51,11 +71,10 @@ export function MenuCategoriesTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
-    ],
+    columnFilters: [{ columnId: 'name', searchKey: 'name', type: 'string' }],
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns: menuCategoriesColumns,
@@ -67,6 +86,7 @@ export function MenuCategoriesTable({ search, navigate }: DataTableProps) {
       columnVisibility,
     },
     manualPagination: true,
+    manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
@@ -87,6 +107,10 @@ export function MenuCategoriesTable({ search, navigate }: DataTableProps) {
       ensurePageInRange(serverPagination.total_pages)
     }
   }, [serverPagination.total_pages, ensurePageInRange])
+
+  const selectedRows = table
+    .getSelectedRowModel()
+    .flatRows.map((row) => row.original)
 
   return (
     <div
@@ -142,6 +166,41 @@ export function MenuCategoriesTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='Kategori Menu'>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <MenuCategoriesBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        isLoading={deleteBulkMutation.isPending}
+        onConfirm={(ids) => {
+          deleteBulkMutation.mutate(
+            { ids },
+            {
+              onSuccess: () => {
+                setBulkDeleteDialogOpen(false)
+                table.resetRowSelection()
+              },
+            }
+          )
+        }}
+      />
     </div>
   )
 }

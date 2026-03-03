@@ -7,6 +7,7 @@ import {
   type CreateMenusFormData,
   type UpdateMenusFormData,
   type DeleteMenusFormData,
+  type BulkDeleteMenusFormData,
 } from '../types/menus.schema'
 
 export function useCreateMenuMutation() {
@@ -23,7 +24,9 @@ export function useCreateMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.MENUS],
+      })
       toast.success('Menu berhasil ditambahkan.')
       setOpen(null)
     },
@@ -51,7 +54,9 @@ export function useUpdateMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.MENUS],
+      })
       toast.success('Menu berhasil diubah.')
       setOpen(null)
     },
@@ -77,9 +82,36 @@ export function useDeleteMenuMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('menus-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY_ADMIN.MENUS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.MENUS],
+      })
       toast.success('Menu berhasil dihapus.')
       setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('menus-toast')
+      toast.error('Menu gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteMenuMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteMenusFormData) => {
+      const response = await apiClient.post(`/menus/bulk-delete`, credentials)
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'menus-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('menus-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_ADMIN.MENUS],
+      })
+      toast.success('Menu berhasil dihapus.')
     },
     onError: () => {
       toast.dismiss('menus-toast')

@@ -1,5 +1,4 @@
-import { z } from 'zod';
-
+import { z } from 'zod'
 
 export enum StatusSubscriptions {
   Active = 'active',
@@ -36,4 +35,12 @@ export const deleteSubscriptionSchema = z.object({
 
 export type DeleteSubscriptionFormData = z.infer<
   typeof deleteSubscriptionSchema
+>
+
+export const bulkDeleteSubscriptionSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteSubscriptionFormData = z.infer<
+  typeof bulkDeleteSubscriptionSchema
 >
