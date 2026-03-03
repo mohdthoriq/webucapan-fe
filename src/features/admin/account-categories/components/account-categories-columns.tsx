@@ -1,10 +1,9 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { type AccountCategory } from '@/types';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { DataTableRowActions } from './account-categories-row-actions';
-import { Checkbox } from '@/components/ui/checkbox';
+import { type ColumnDef } from '@tanstack/react-table'
+import { type AccountCategory } from '@/types'
+import { cn } from '@/lib/utils'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { Checkbox } from '@/components/ui/checkbox'
 
 
 export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
@@ -94,10 +93,5 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     meta: {
       className: 'w-24',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]
