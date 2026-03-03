@@ -29,6 +29,7 @@ import { Route as AuthenticatedProductCategoriesIndexRouteImport } from './route
 import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedContactsIndexRouteImport } from './routes/_authenticated/contacts/index'
 import { Route as AuthenticatedCashBankIndexRouteImport } from './routes/_authenticated/cash-bank/index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account/index'
 import { Route as AuthenticatedCashBankSpendRouteImport } from './routes/_authenticated/cash-bank/spend'
 import { Route as AuthenticatedCashBankReceiveRouteImport } from './routes/_authenticated/cash-bank/receive'
@@ -179,6 +180,11 @@ const AuthenticatedCashBankIndexRoute =
     path: '/cash-bank/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: '/account/',
@@ -457,6 +463,7 @@ export interface FileRoutesByFullPath {
   '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -503,7 +510,6 @@ export interface FileRoutesByFullPath {
   '/admin/plans/$planId/permissions': typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -521,6 +527,7 @@ export interface FileRoutesByTo {
   '/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/cash-bank': typeof AuthenticatedCashBankIndexRoute
   '/contacts': typeof AuthenticatedContactsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -587,6 +594,7 @@ export interface FileRoutesById {
   '/_authenticated/cash-bank/receive': typeof AuthenticatedCashBankReceiveRoute
   '/_authenticated/cash-bank/spend': typeof AuthenticatedCashBankSpendRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/cash-bank/': typeof AuthenticatedCashBankIndexRoute
   '/_authenticated/contacts/': typeof AuthenticatedContactsIndexRoute
   '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
@@ -653,6 +661,7 @@ export interface FileRouteTypes {
     | '/cash-bank/receive'
     | '/cash-bank/spend'
     | '/account'
+    | '/admin/'
     | '/cash-bank'
     | '/contacts'
     | '/expenses'
@@ -699,7 +708,6 @@ export interface FileRouteTypes {
     | '/admin/plans/$planId/permissions'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -717,6 +725,7 @@ export interface FileRouteTypes {
     | '/cash-bank/receive'
     | '/cash-bank/spend'
     | '/account'
+    | '/admin'
     | '/cash-bank'
     | '/contacts'
     | '/expenses'
@@ -782,6 +791,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-bank/receive'
     | '/_authenticated/cash-bank/spend'
     | '/_authenticated/account/'
+    | '/_authenticated/admin/'
     | '/_authenticated/cash-bank/'
     | '/_authenticated/contacts/'
     | '/_authenticated/expenses/'
@@ -983,6 +993,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/cash-bank'
       preLoaderRoute: typeof AuthenticatedCashBankIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/account/': {
       id: '/_authenticated/account/'
@@ -1289,6 +1306,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminAccountCategoriesIndexRoute: typeof AuthenticatedAdminAccountCategoriesIndexRoute
   AuthenticatedAdminMenuCategoriesIndexRoute: typeof AuthenticatedAdminMenuCategoriesIndexRoute
   AuthenticatedAdminMenusIndexRoute: typeof AuthenticatedAdminMenusIndexRoute
@@ -1301,6 +1319,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminAccountCategoriesIndexRoute:
       AuthenticatedAdminAccountCategoriesIndexRoute,
     AuthenticatedAdminMenuCategoriesIndexRoute:

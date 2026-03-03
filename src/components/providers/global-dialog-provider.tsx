@@ -1,4 +1,15 @@
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
+import type {
+  Account,
+  Contact,
+  PaymentTerm,
+  Product,
+  ProductCategory,
+  Tag,
+  Tax,
+  Unit,
+} from '@/types'
+import type { CashBankTransactionDetail } from '@/features/cash-bank/cash-bank-detail/types/cash-bank-detail.types'
 import { AccountsActionDialog } from '@/features/account/components/account-action-dialog'
 import { CashBankListActionDialog } from '@/features/cash-bank/cash-bank-list/components/cash-bank-list-action-dialog'
 import { ContactsActionDialog } from '@/features/contacts/components/contacts-action-dialog'
@@ -22,9 +33,7 @@ export function GlobalDialogProvider() {
         const commonProps = {
           open: true,
           onOpenChange: (open: boolean) => !open && closeDialog(id),
-          currentRow: data,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onSuccess: (result?: any) => {
+          onSuccess: (result?: unknown) => {
             onSuccess?.(result)
             closeDialog(id)
           },
@@ -32,23 +41,77 @@ export function GlobalDialogProvider() {
 
         switch (view) {
           case 'contact':
-            return <ContactsActionDialog key={id} {...commonProps} />
+            return (
+              <ContactsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Contact}
+              />
+            )
           case 'product':
-            return <ProductActionDialog key={id} {...commonProps} />
+            return (
+              <ProductActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Product}
+              />
+            )
           case 'payment-term':
-            return <PaymentTermsActionDialog key={id} {...commonProps} />
+            return (
+              <PaymentTermsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as PaymentTerm}
+              />
+            )
           case 'tag':
-            return <TagsActionDialog key={id} {...commonProps} />
+            return (
+              <TagsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Tag}
+              />
+            )
           case 'tax':
-            return <TaxesActionDialog key={id} {...commonProps} />
+            return (
+              <TaxesActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Tax}
+              />
+            )
           case 'unit':
-            return <UnitsActionDialog key={id} {...commonProps} />
+            return (
+              <UnitsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Unit}
+              />
+            )
           case 'product-category':
-            return <ProductCategoryActionDialog key={id} {...commonProps} />
+            return (
+              <ProductCategoryActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as ProductCategory}
+              />
+            )
           case 'account':
-            return <AccountsActionDialog key={id} {...commonProps} />
+            return (
+              <AccountsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as (Partial<Account> & { category_id?: string }) | null}
+              />
+            )
           case 'transfer':
-            return <CashBankListActionDialog key={id} {...commonProps} />
+            return (
+              <CashBankListActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as CashBankTransactionDetail}
+              />
+            )
           default:
             return null
         }

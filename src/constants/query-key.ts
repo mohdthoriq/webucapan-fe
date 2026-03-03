@@ -58,4 +58,5 @@ export const QUERY_KEY_ADMIN = {
   TRANSACTION_TYPES: 'transaction_types',
   PERMISSIONS_TREE: 'permissions_tree',
   PLAN_PERMISSIONS: 'plan_permissions',
+  DASHBOARD: 'admin_dashboard',
 }

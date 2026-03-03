@@ -34,13 +34,14 @@ export function AppSidebar() {
   //   }
   // }, [user])
 
-  const data =
-    user?.role?.name === 'superadmin' ? sidebarDataAdmin : sidebarData
+  const roleName = user?.role?.name?.toLowerCase()
+  const isSuperAdmin = roleName === 'superadmin' || roleName === 'super administrator'
+  const isAdministrator = roleName === 'administrator'
 
-  const isAdministrator = user?.role?.name === 'Administrator'
+  const data = isSuperAdmin ? sidebarDataAdmin : sidebarData
 
   const filteredNavGroups = useMemo(() => {
-    if (user?.role?.name === 'superadmin' || isAdministrator) {
+    if (isSuperAdmin || isAdministrator) {
       return data.navGroups
     }
 
@@ -73,7 +74,7 @@ export function AppSidebar() {
           }),
       }))
       .filter((group) => group.items.length > 0)
-  }, [data, user, isAdministrator])
+  }, [data, user, isAdministrator, isSuperAdmin])
   
   return (
     <Sidebar collapsible={collapsible} variant={variant}>

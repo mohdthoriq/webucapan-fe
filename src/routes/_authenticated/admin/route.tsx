@@ -6,7 +6,8 @@ export const Route = createFileRoute('/_authenticated/admin')({
     const {
       auth: { isAuthenticated, resetAccessToken, user },
     } = useAuthStore.getState()
-    if (!isAuthenticated || user?.role?.name !== 'superadmin') {
+    const roleName = user?.role?.name?.toLowerCase()
+    if (!isAuthenticated || (roleName !== 'superadmin' && roleName !== 'super administrator')) {
       resetAccessToken()
       throw redirect({
         to: '/login',
