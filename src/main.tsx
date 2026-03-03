@@ -49,7 +49,7 @@ const queryClient = new QueryClient({
     onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
-          toast.error('Session expired!')
+          toast.error('Session expired!', { id: 'session-expired' })
 
           useAuthStore.getState().auth.reset()
 

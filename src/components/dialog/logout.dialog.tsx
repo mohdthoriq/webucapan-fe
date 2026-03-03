@@ -15,16 +15,20 @@ export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
   const queryClient = useQueryClient()
 
   const handleSignOut = async () => {
-    await apiClient.post('/auth/logout')
-
     queryClient.cancelQueries()
     queryClient.clear()
 
-    auth.reset()
-    navigate({
-      to: '/login',
-      replace: true,
-    })
+    try {
+      await apiClient.post('/auth/logout').catch(() => {})
+    } catch {
+      //
+    } finally {
+      auth.reset()
+      navigate({
+        to: '/login',
+        replace: true,
+      })
+    }
   }
 
   return (
