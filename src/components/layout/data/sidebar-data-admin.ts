@@ -9,7 +9,7 @@ export const sidebarDataAdmin: SidebarData = {
       items: [
         {
           title: 'Dashboard',
-          url: '/',
+          url: '/admin',
           icon: LayoutDashboard,
         },
       ],

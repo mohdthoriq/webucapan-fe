@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import type { FieldValues, UseFormReturn, Path } from 'react-hook-form'
 import { TransactionCode } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -137,25 +138,23 @@ function PurchaseInvoicePaymentForm({
   )
 }
 
-interface PaymentFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onSubmit: (data: any) => Promise<void>
+interface PaymentFormProps<T extends FieldValues> {
+  form: UseFormReturn<T>
+  onSubmit: (data: T) => Promise<void>
   isSubmitting: boolean
   tags: { data: { id: string; name: string }[] } | undefined
   showReferenceNo?: boolean
   hasPermission?: boolean
 }
 
-function PaymentForm({
+function PaymentForm<T extends FieldValues>({
   form,
   onSubmit,
   isSubmitting,
   tags,
   showReferenceNo = false,
   hasPermission,
-}: PaymentFormProps) {
+}: PaymentFormProps<T>) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
@@ -163,7 +162,7 @@ function PaymentForm({
           {/* Amount */}
           <FormField
             control={form.control}
-            name='amount'
+            name={'amount' as Path<T>}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Total Pembayaran</FormLabel>
@@ -185,7 +184,7 @@ function PaymentForm({
           {/* Payment Date */}
           <FormField
             control={form.control}
-            name='payment_date'
+            name={'payment_date' as Path<T>}
             render={({ field }) => (
               <FormItem className='flex flex-col'>
                 <FormLabel>Tanggal Pembayaran</FormLabel>
@@ -229,7 +228,7 @@ function PaymentForm({
           {/* Account */}
           <FormField
             control={form.control}
-            name='account_id'
+            name={'account_id' as Path<T>}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Dibayar dari</FormLabel>
@@ -247,7 +246,7 @@ function PaymentForm({
           {/* Tags */}
           <FormField
             control={form.control}
-            name='tags'
+            name={'tags' as Path<T>}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tag</FormLabel>
@@ -274,7 +273,7 @@ function PaymentForm({
           {showReferenceNo && (
             <FormField
               control={form.control}
-              name='reference_no'
+              name={'reference_no' as Path<T>}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nomor</FormLabel>
@@ -294,7 +293,7 @@ function PaymentForm({
           {/* Note */}
           <FormField
             control={form.control}
-            name='note'
+            name={'note' as Path<T>}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
