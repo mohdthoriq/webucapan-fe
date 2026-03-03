@@ -39,7 +39,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { company } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText>{company?.name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { plan_name } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{plan_name}</LongText>
         </div>
       )
@@ -78,7 +78,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
       const { start_date } = row.original
       const formattedDate = formatDate(start_date)
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -96,7 +96,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
       const { end_date } = row.original
       const formattedDate = end_date ? formatDate(end_date) : '-'
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{formattedDate}</LongText>
         </div>
       )
@@ -113,7 +113,7 @@ export const subscriptionsColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const { Subscriptions_status } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText className='truncate'>{Subscriptions_status}</LongText>
         </div>
       )

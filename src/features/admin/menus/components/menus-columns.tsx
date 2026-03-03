@@ -39,7 +39,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { title } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{title}</LongText>
         </div>
       )
@@ -77,7 +77,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { position } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{position}</LongText>
         </div>
       )
@@ -94,7 +94,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { parent } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{parent?.name || '-'}</LongText>
         </div>
       )
@@ -111,7 +111,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { category } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{category?.name || '-'}</LongText>
         </div>
       )
@@ -128,7 +128,7 @@ export const menusColumns: ColumnDef<Menu>[] = [
     cell: ({ row }) => {
       const { permission } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{permission?.name}</LongText>
         </div>
       )

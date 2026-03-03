@@ -39,7 +39,7 @@ export const menuCategoriesColumns: ColumnDef<MenuCategory>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className=''>{name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const menuCategoriesColumns: ColumnDef<MenuCategory>[] = [
     cell: ({ row }) => {
       const { type } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{type}</LongText>
         </div>
       )
@@ -77,7 +77,7 @@ export const menuCategoriesColumns: ColumnDef<MenuCategory>[] = [
     cell: ({ row }) => {
       const { position } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{position}</LongText>
         </div>
       )

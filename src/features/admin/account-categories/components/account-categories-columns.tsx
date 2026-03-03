@@ -39,7 +39,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText className='min-w-sm'>{name}</LongText>
         </div>
       )
@@ -60,7 +60,7 @@ export const accountCategoriesColumns: ColumnDef<AccountCategory>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='w-full min-w-48 overflow-hidden px-2'>
+        <div className='w-full min-w-48 overflow-hidden p-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )

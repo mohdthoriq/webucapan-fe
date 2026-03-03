@@ -39,8 +39,8 @@ export const transactionTypesColumns: ColumnDef<TransactionType>[] = [
     cell: ({ row }) => {
       const { code } = row.original
       return (
-        <div className='px-2'>
-          <LongText>{code}</LongText>
+        <div className='p-2'>
+          <LongText className='truncate'>{code}</LongText>
         </div>
       )
     },
@@ -60,7 +60,7 @@ export const transactionTypesColumns: ColumnDef<TransactionType>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
+        <div className='p-2'>
           <LongText>{name}</LongText>
         </div>
       )
@@ -81,7 +81,7 @@ export const transactionTypesColumns: ColumnDef<TransactionType>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='overflow-hidden px-2'>
+        <div className='overflow-hidden p-2'>
           <LongText
             className='max-w-xs truncate'
             contentClassName='w-xs text-sm'
