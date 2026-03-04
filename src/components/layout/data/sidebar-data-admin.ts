@@ -1,6 +1,13 @@
-import { Library, Package, CreditCard, ShieldCheck, Menu, LayoutDashboard, Layers } from 'lucide-react';
-import { type SidebarData } from '../types';
-
+import {
+  Library,
+  Package,
+  CreditCard,
+  ShieldCheck,
+  Menu,
+  LayoutDashboard,
+  Layers,
+} from 'lucide-react'
+import { type SidebarData } from '../types'
 
 export const sidebarDataAdmin: SidebarData = {
   navGroups: [
@@ -12,11 +19,6 @@ export const sidebarDataAdmin: SidebarData = {
           url: '/admin/dashboard',
           icon: LayoutDashboard,
         },
-      ],
-    },
-    {
-      title: 'Accounting',
-      items: [
         {
           title: 'Account Categories',
           icon: Library,
@@ -27,11 +29,6 @@ export const sidebarDataAdmin: SidebarData = {
           icon: Layers,
           url: '/admin/transaction-types',
         },
-      ],
-    },
-    {
-      title: 'Billing & Subscriptions',
-      items: [
         {
           title: 'Plan',
           icon: Package,
@@ -42,21 +39,11 @@ export const sidebarDataAdmin: SidebarData = {
           icon: CreditCard,
           url: '/admin/subscriptions',
         },
-      ],
-    },
-    {
-      title: 'Access Control',
-      items: [
         {
           title: 'Permissions',
           url: '/admin/permissions',
           icon: ShieldCheck,
         },
-      ],
-    },
-    {
-      title: 'Settings',
-      items: [
         {
           title: 'Menus',
           url: '/admin/menus',
@@ -71,3 +58,73 @@ export const sidebarDataAdmin: SidebarData = {
     },
   ],
 }
+
+// export const sidebarDataAdmin: SidebarData = {
+//   navGroups: [
+//     {
+//       title: 'Overview',
+//       items: [
+//         {
+//           title: 'Dashboard',
+//           url: '/admin/dashboard',
+//           icon: LayoutDashboard,
+//         },
+//       ],
+//     },
+//     {
+//       title: 'Accounting',
+//       items: [
+//         {
+//           title: 'Account Categories',
+//           icon: Library,
+//           url: '/admin/account-categories',
+//         },
+//         {
+//           title: 'Transaction Types',
+//           icon: Layers,
+//           url: '/admin/transaction-types',
+//         },
+//       ],
+//     },
+//     {
+//       title: 'Billing & Subscriptions',
+//       items: [
+//         {
+//           title: 'Plan',
+//           icon: Package,
+//           url: '/admin/plans',
+//         },
+//         {
+//           title: 'Subscriptions',
+//           icon: CreditCard,
+//           url: '/admin/subscriptions',
+//         },
+//       ],
+//     },
+//     {
+//       title: 'Access Control',
+//       items: [
+//         {
+//           title: 'Permissions',
+//           url: '/admin/permissions',
+//           icon: ShieldCheck,
+//         },
+//       ],
+//     },
+//     {
+//       title: 'Settings',
+//       items: [
+//         {
+//           title: 'Menus',
+//           url: '/admin/menus',
+//           icon: Menu,
+//         },
+//         {
+//           title: 'Menu Categories',
+//           url: '/admin/menu-categories',
+//           icon: Library,
+//         },
+//       ],
+//     },
+//   ],
+// }

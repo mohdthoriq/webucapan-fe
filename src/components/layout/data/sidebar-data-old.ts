@@ -27,6 +27,11 @@ export const sidebarData: SidebarData = {
           icon: LayoutDashboard,
           permission: PERMISSION_KEY.DASHBOARD_VIEW,
         },
+      ],
+    },
+    {
+      title: 'Transaksi',
+      items: [
         {
           title: 'Penjualan',
           icon: ShoppingBasket,
@@ -71,6 +76,11 @@ export const sidebarData: SidebarData = {
           icon: CreditCardIcon,
           permission: PERMISSION_KEY.EXPENSE_VIEW,
         },
+      ],
+    },
+    {
+      title: 'Inventori',
+      items: [
         {
           title: 'Produk',
           icon: Store,
@@ -90,6 +100,11 @@ export const sidebarData: SidebarData = {
             },
           ],
         },
+      ],
+    },
+    {
+      title: 'Keuangan',
+      items: [
         {
           title: 'Laporan',
           icon: ChartLine,
@@ -108,12 +123,22 @@ export const sidebarData: SidebarData = {
           url: '/account',
           permission: PERMISSION_KEY.ACCOUNT_VIEW,
         },
+      ],
+    },
+    {
+      title: 'Relasi',
+      items: [
         {
           title: 'Kontak',
           url: '/contacts',
           icon: ContactRound,
           permission: PERMISSION_KEY.CONTACT_VIEW,
         },
+      ],
+    },
+    {
+      title: 'Sistem',
+      items: [
         {
           title: 'Pengaturan',
           url: '/settings',

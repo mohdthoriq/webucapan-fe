@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/collapsible'
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -33,12 +32,12 @@ import {
   type NavGroup as NavGroupProps,
 } from './types'
 
-export function NavGroup({ title, items }: NavGroupProps) {
+export function NavGroup({ items }: NavGroupProps) {
   const { state, isMobile } = useSidebar()
   const href = useLocation({ select: (location) => location.href })
   return (
     <SidebarGroup className='space-y-0'>
-      <SidebarGroupLabel className='h-6'>{title}</SidebarGroupLabel>
+      {/* <SidebarGroupLabel className='h-6'>{title}</SidebarGroupLabel> */}
       <SidebarMenu>
         {items.map((item) => {
           const key = `${item.title}-${item.url}`
