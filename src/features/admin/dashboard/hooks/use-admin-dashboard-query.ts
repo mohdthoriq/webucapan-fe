@@ -21,7 +21,7 @@ export function useAdminDashboardQuery(params?: AdminDashboardQueryParams) {
       const queryParams = new URLSearchParams()
       if (params?.period) queryParams.append('period', params.period)
       if (params?.year) queryParams.append('year', params.year.toString())
-      if (params?.month) queryParams.append('month', params.month.toString())
+      if (params?.month && params.month > 0) queryParams.append('month', params.month.toString())
 
       const url = queryParams.toString()
         ? `/admin/dashboard?${queryParams.toString()}`

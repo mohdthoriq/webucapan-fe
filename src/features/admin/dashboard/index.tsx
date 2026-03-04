@@ -10,7 +10,6 @@ import { SummaryCards } from './components/summary-cards'
 import { useAdminDashboardQuery } from './hooks/use-admin-dashboard-query'
 
 export function AdminDashboard() {
-  const currentYear = new Date().getFullYear()
   const navigate = useNavigate({ from: '/admin/dashboard' })
   const search = useSearch({ from: '/_authenticated/admin/dashboard/' })
 
@@ -39,27 +38,32 @@ export function AdminDashboard() {
   })
 
   const updateFilters = (updates: Partial<typeof search>) => {
-    // If switching to month (6 months view), reset year and month to current
-    if (updates.period === 'month') {
-      navigate({
-        search: (prev) => ({
-          ...prev,
-          ...updates,
-          year: currentYear,
-          month: new Date().getMonth() + 1,
-        }),
-        replace: true,
-      })
-    } else {
-      navigate({
-        search: (prev) => ({ ...prev, ...updates }),
-        replace: true,
-      })
-    }
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        ...updates,
+      }),
+      replace: true,
+    })
   }
 
   const chartData = useMemo(() => {
     if (!data?.chart_data) return []
+
+    const monthShortLabels = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
 
     const months: Record<string, number> = {
       Jan: 0,
@@ -76,7 +80,16 @@ export function AdminDashboard() {
       Dec: 11,
     }
 
-    return [...data.chart_data].sort((a, b) => {
+    let result = [...data.chart_data]
+
+    // KRITIKAL: Hanya filter jadi 1 bar JIKA user memilih bulan spesifik (month > 0).
+    // Jika user pilih '6 Bulan Terakhir' (month === 0), maka jangan di-filter (tampilkan semua).
+    if (period === 'month' && month !== undefined && month !== null && Number(month) > 0) {
+      const targetLabel = `${monthShortLabels[Number(month) - 1]} ${year}`
+      result = result.filter((item) => item.label === targetLabel)
+    }
+
+    return result.sort((a, b) => {
       const [monthA, yearA] = a.label.split(' ')
       const [monthB, yearB] = b.label.split(' ')
 
@@ -85,7 +98,7 @@ export function AdminDashboard() {
 
       return dateA.getTime() - dateB.getTime()
     })
-  }, [data])
+  }, [data, period, month, year])
 
   return (
     <div className='flex flex-col space-y-6'>
@@ -120,6 +133,7 @@ export function AdminDashboard() {
           isLoading={isLoading}
           period={period}
           year={year}
+          month={month}
           onFilterChange={updateFilters}
         />
         <SubscriptionOverview
@@ -142,6 +156,7 @@ export function AdminDashboard() {
           isLoading={isLoading}
           period={period}
           year={year}
+          month={month}
         />
       </div>
     </div>

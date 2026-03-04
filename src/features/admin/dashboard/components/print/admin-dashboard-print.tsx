@@ -12,11 +12,12 @@ interface AdminDashboardPrintProps {
   isLoading: boolean
   period: AdminDashboardPeriod
   year: number
+  month?: number
   className?: string
 }
 
 export const AdminDashboardPrint = forwardRef<HTMLDivElement, AdminDashboardPrintProps>(
-  ({ data, chartData, isLoading, period, year, className }, ref) => {
+  ({ data, chartData, isLoading, period, year, month, className }, ref) => {
     const { auth } = useAuthStore()
     const user = auth.user
 
@@ -64,11 +65,12 @@ export const AdminDashboardPrint = forwardRef<HTMLDivElement, AdminDashboardPrin
               2. Grafik Pertumbuhan
             </h4>
             <div className='h-[400px]'>
-              <AdminDashboardChart 
-                chartData={chartData} 
-                isLoading={isLoading} 
+              <AdminDashboardChart
+                chartData={chartData}
+                isLoading={isLoading}
                 period={period}
                 year={year}
+                month={month}
                 onFilterChange={() => {}}
               />
             </div>
