@@ -85,6 +85,7 @@ export function SubscriptionsActionDialog({
                         value={field.value || ''}
                         onValueChange={field.onChange}
                         placeholder='Pilih perusahaan...'
+                        initialLabel={currentRow?.company?.name}
                       />
                     </FormControl>
                     <FormMessage />
@@ -104,6 +105,7 @@ export function SubscriptionsActionDialog({
                         value={field.value || ''}
                         onValueChange={field.onChange}
                         placeholder='Pilih plan...'
+                        initialLabel={currentRow?.plan?.name}
                       />
                     </FormControl>
                     <FormMessage />

@@ -20,6 +20,7 @@ interface SubscriptionsComboboxProps {
   excludeIds?: string[]
   action?: ReactNode
   contactTypeId?: string
+  initialLabel?: string
 }
 
 export function SubscriptionsCombobox({
@@ -38,6 +39,7 @@ function CompanyCombobox({
   placeholder = 'Pilih Perusahaan',
   limit = 20,
   action,
+  initialLabel,
 }: Omit<SubscriptionsComboboxProps, 'type'>) {
   const {
     allItems,
@@ -83,6 +85,7 @@ function CompanyCombobox({
         </div>
       )}
       action={action}
+      initialLabel={initialLabel}
     />
   )
 }
@@ -93,6 +96,7 @@ function PlanCombobox({
   placeholder = 'Pilih Plan',
   limit = 20,
   action,
+  initialLabel,
 }: Omit<SubscriptionsComboboxProps, 'type'>) {
   const {
     allItems,
@@ -136,6 +140,7 @@ function PlanCombobox({
         </div>
       )}
       action={action}
+      initialLabel={initialLabel}
     />
   )
 }

@@ -37,6 +37,7 @@ interface ComboboxBaseProps<T extends { id: string }> {
   noItemsMessage?: string
   disabled?: boolean
   action?: ReactNode
+  initialLabel?: string
 }
 
 export function ComboboxBase<T extends { id: string }>({
@@ -58,6 +59,7 @@ export function ComboboxBase<T extends { id: string }>({
   noItemsMessage = 'No items found.',
   disabled,
   action,
+  initialLabel,
 }: ComboboxBaseProps<T>) {
   const [open, setOpen] = useState(false)
 
@@ -81,7 +83,11 @@ export function ComboboxBase<T extends { id: string }>({
           className='w-full justify-between'
         >
           <span className='truncate'>
-            {selectedItem ? getLabel(selectedItem) : placeholder}
+            {selectedItem
+              ? getLabel(selectedItem)
+              : value && initialLabel
+                ? initialLabel
+                : placeholder}
           </span>
           <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
