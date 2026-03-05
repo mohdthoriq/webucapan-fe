@@ -105,7 +105,7 @@ export function SubscriptionsActionDialog({
                         value={field.value || ''}
                         onValueChange={field.onChange}
                         placeholder='Pilih plan...'
-                        initialLabel={currentRow?.plan?.name}
+                        initialLabel={currentRow?.plan?.name || currentRow?.plan_name}
                       />
                     </FormControl>
                     <FormMessage />
