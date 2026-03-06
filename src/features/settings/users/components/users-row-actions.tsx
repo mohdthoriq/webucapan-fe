@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
 import { type User } from '@/types'
@@ -9,6 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ConfirmDialog } from '@/components/dialog/confirm.dialog'
+import { useDeleteUserMutation } from '../hooks/use-users-mutation'
 import { useUsers } from './users-provider'
 
 type DataTableRowActionsProps = {
@@ -18,6 +21,16 @@ type DataTableRowActionsProps = {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const user = row.original
   const { setOpen, setCurrentRow } = useUsers()
+
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const deleteMutation = useDeleteUserMutation()
+
+  const handleDelete = () => {
+    deleteMutation.mutate(
+      { id: user.id },
+      { onSuccess: () => setDeleteOpen(false) }
+    )
+  }
 
   return (
     <>
@@ -44,16 +57,23 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(user)
-              setOpen('delete')
-            }}
+            onClick={() => setDeleteOpen(true)}
             className='text-red-500!'
           >
             Hapus
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <ConfirmDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title='Hapus Pengguna'
+        desc={`Anda yakin ingin menghapus pengguna ${user.full_name}? Tindakan ini tidak dapat dibatalkan.`}
+        handleConfirm={handleDelete}
+        isLoading={deleteMutation.isPending}
+        destructive
+      />
     </>
   )
 }
