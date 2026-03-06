@@ -15,7 +15,7 @@ export const usersColumns: ColumnDef<User>[] = [
       const { full_name } = row.original
       return (
         <div className='px-2'>
-          <LongText className='min-w-sm'>{full_name}</LongText>
+          <LongText>{full_name}</LongText>
         </div>
       )
     },
@@ -41,7 +41,7 @@ export const usersColumns: ColumnDef<User>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[150px]',
+      className: 'w-full',
     },
   },
   {
@@ -58,7 +58,26 @@ export const usersColumns: ColumnDef<User>[] = [
       )
     },
     meta: {
-      className: 'w-full min-w-[250px] px-12',
+      className: 'w-full px-12',
+    },
+  },
+  {
+    accessorKey: 'Status',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ row }) => {
+      const { is_active } = row.original
+      return (
+        <div className='w-full min-w-48 overflow-hidden px-2'>
+          <LongText className='truncate'>
+            {is_active ? 'Aktif' : 'Tidak Aktif'}
+          </LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full px-12',
     },
   },
   {

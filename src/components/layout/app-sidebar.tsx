@@ -35,7 +35,8 @@ export function AppSidebar() {
   // }, [user])
 
   const roleName = user?.role?.name?.toLowerCase()
-  const isSuperAdmin = roleName === 'superadmin' || roleName === 'super administrator'
+  const isSuperAdmin =
+    roleName === 'superadmin' || roleName === 'super administrator'
   const isAdministrator = roleName === 'administrator'
 
   const data = isSuperAdmin ? sidebarDataAdmin : sidebarData
@@ -75,7 +76,7 @@ export function AppSidebar() {
       }))
       .filter((group) => group.items.length > 0)
   }, [data, user, isAdministrator, isSuperAdmin])
-  
+
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>

@@ -42,6 +42,16 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           >
             Detail
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(user)
+              setOpen('delete')
+            }}
+            className='text-red-500!'
+          >
+            Hapus
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
