@@ -6,6 +6,7 @@ import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 import { TaxesContext, useTaxes } from '../components/taxes-provider'
 import {
+  type BulkDeleteTaxesFormData,
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
   type DeleteTaxesFormData,
@@ -88,6 +89,32 @@ export function useDeleteTaxMutation() {
     onError: () => {
       toast.dismiss('taxes-toast')
       toast.error('Pajak gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteTaxMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteTaxesFormData) => {
+      const response = await apiClient.post(
+        '/taxes/bulk-delete',
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menghapus data...', { id: 'bulk-delete-taxes-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('bulk-delete-taxes-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
+      toast.success('Data pajak berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('bulk-delete-taxes-toast')
+      toast.error('Gagal menghapus data pajak.')
     },
   })
 }

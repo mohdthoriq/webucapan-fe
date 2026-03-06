@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   type SortingState,
   type VisibilityState,
@@ -13,6 +13,7 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { User } from '@/types'
+import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,7 +26,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { usersColumns } from './users-columns'
+import { getUsersColumns } from './users-columns'
 import { useUsers } from './users-provider'
 
 type DataTableProps = {
@@ -35,6 +36,11 @@ type DataTableProps = {
 
 export function UsersTable({ search, navigate }: DataTableProps) {
   const { usersData, pagination: serverPagination, isLoading } = useUsers()
+
+  const currentUser = useAuthStore((state) => state.auth.user)
+  const isAdmin = currentUser?.role.name === 'Administrator'
+
+  const columns = useMemo(() => getUsersColumns(isAdmin), [isAdmin])
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -57,7 +63,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: usersData,
-    columns: usersColumns,
+    columns,
     state: {
       sorting,
       pagination,
@@ -136,7 +142,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={usersColumns.length} />
+              <TableEmpty colSpan={columns.length} />
             )}
           </TableBody>
         </Table>

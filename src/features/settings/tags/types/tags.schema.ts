@@ -20,3 +20,9 @@ export const deleteTagSchema = z.object({
 })
 
 export type DeleteTagFormData = z.infer<typeof deleteTagSchema>
+
+export const bulkDeleteTagSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteTagFormData = z.infer<typeof bulkDeleteTagSchema>

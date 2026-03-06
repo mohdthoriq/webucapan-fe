@@ -58,6 +58,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
+            disabled={tax.is_deletable === false}
             onClick={() => {
               if (!hasPermission) {
                 setLockFeatureDialog(true)

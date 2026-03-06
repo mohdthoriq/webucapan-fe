@@ -13,4 +13,6 @@ export interface CompanyRole extends Role {
   system_role: boolean
   is_pos: boolean
   position: number
+  users_count: number
+  is_deletable: boolean
 }

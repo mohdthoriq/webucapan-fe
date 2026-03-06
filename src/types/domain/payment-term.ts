@@ -6,4 +6,5 @@ export interface PaymentTerm extends GlobalResponse {
   days: number
   description?: string
   company: Company
+  is_deletable: boolean
 }
