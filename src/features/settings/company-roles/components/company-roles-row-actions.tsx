@@ -75,7 +75,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
               }
             }}
             className='text-red-500!'
-            disabled={role?.is_default}
+            disabled={role?.is_default || role?.is_deletable === false}
           >
             Delete
           </DropdownMenuItem>

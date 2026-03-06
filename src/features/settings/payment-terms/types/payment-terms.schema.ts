@@ -29,3 +29,11 @@ export const deletePaymentTermsSchema = z.object({
 export type DeletePaymentTermsFormData = z.infer<
   typeof deletePaymentTermsSchema
 >
+
+export const bulkDeletePaymentTermsSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeletePaymentTermsFormData = z.infer<
+  typeof bulkDeletePaymentTermsSchema
+>

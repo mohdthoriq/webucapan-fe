@@ -9,6 +9,7 @@ import {
   usePaymentTerms,
 } from '../components/payment-terms-provider'
 import {
+  type BulkDeletePaymentTermsFormData,
   type CreatePaymentTermsFormData,
   type UpdatePaymentTermsFormData,
   type DeletePaymentTermsFormData,
@@ -92,13 +93,45 @@ export function useDeletePaymentTermMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('payment-terms-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PAYMENT_TERMS] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PAYMENT_TERMS],
+      })
       toast.success('Termin Pembayaran berhasil dihapus.')
       setOpen(null)
     },
     onError: () => {
       toast.dismiss('payment-terms-toast')
       toast.error('Termin Pembayaran gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeletePaymentTermMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeletePaymentTermsFormData) => {
+      const response = await apiClient.post(
+        '/payment-terms/bulk-delete',
+        credentials
+      )
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menghapus data...', {
+        id: 'bulk-delete-payment-terms-toast',
+      })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('bulk-delete-payment-terms-toast')
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.PAYMENT_TERMS],
+      })
+      toast.success('Data termin pembayaran berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('bulk-delete-payment-terms-toast')
+      toast.error('Gagal menghapus data termin pembayaran.')
     },
   })
 }

@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 import {
+  type BulkDeleteUnitFormData,
   type CreateUnitFormData,
   type UpdateUnitFormData,
   type DeleteUnitFormData,
@@ -87,6 +88,29 @@ export function useDeleteUnitMutation() {
     onError: () => {
       toast.dismiss('units-toast')
       toast.error('Satuan gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteUnitMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteUnitFormData) => {
+      const response = await apiClient.post('/units/bulk-delete', credentials)
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menghapus data...', { id: 'bulk-delete-units-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('bulk-delete-units-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.UNITS] })
+      toast.success('Data satuan berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('bulk-delete-units-toast')
+      toast.error('Gagal menghapus data satuan.')
     },
   })
 }

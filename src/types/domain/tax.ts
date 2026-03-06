@@ -9,4 +9,5 @@ export interface Tax extends GlobalResponse {
   description: string
   sell_account: Account
   buy_account: Account
+  is_deletable: boolean
 }

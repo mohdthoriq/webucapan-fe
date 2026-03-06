@@ -5,4 +5,5 @@ export interface Unit extends GlobalResponse {
   company: Company
   name: string
   code: string
+  is_deletable: boolean
 }

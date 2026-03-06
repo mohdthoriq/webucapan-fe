@@ -6,6 +6,7 @@ import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 import { TagsContext, useTags } from '../components/tags-provider'
 import type {
+  BulkDeleteTagFormData,
   CreateTagFormData,
   DeleteTagFormData,
   UpdateTagFormData,
@@ -53,7 +54,7 @@ export function useUpdateTagMutation(onSuccess?: (data: Tag) => void) {
     },
     onSuccess: async (data) => {
       toast.dismiss('tags-toast')
-      await queryClient.invalidateQueries({ queryKey: ['tags'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAGS] })
       toast.success('Tag berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -80,13 +81,36 @@ export function useDeleteTagMutation() {
     },
     onSuccess: async (_) => {
       toast.dismiss('tags-toast')
-      await queryClient.invalidateQueries({ queryKey: ['tags'] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAGS] })
       toast.success('Tag berhasil dihapus.')
       setOpen(null)
     },
     onError: () => {
       toast.dismiss('tags-toast')
       toast.error('Tag gagal dihapus.')
+    },
+  })
+}
+
+export function useBulkDeleteTagMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (credentials: BulkDeleteTagFormData) => {
+      const response = await apiClient.post('/tags/bulk-delete', credentials)
+
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Menghapus data...', { id: 'bulk-delete-tags-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('bulk-delete-tags-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAGS] })
+      toast.success('Data tag berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('bulk-delete-tags-toast')
+      toast.error('Gagal menghapus data tag.')
     },
   })
 }

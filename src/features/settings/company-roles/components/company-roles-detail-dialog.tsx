@@ -42,6 +42,12 @@ export function CompanyRolesDetailDialog({
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
+              Jumlah Pengguna
+            </h4>
+            <p className='text-sm'>{currentRow.users_count || '-'}</p>
+          </div>
+          <div>
+            <h4 className='text-muted-foreground text-sm font-medium'>
               Nama Perusahaan
             </h4>
             <p className='text-sm'>{currentRow.company?.name || '-'}</p>

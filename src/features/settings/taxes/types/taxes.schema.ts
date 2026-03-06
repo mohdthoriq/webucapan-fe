@@ -23,3 +23,9 @@ export const deleteTaxesSchema = z.object({
 })
 
 export type DeleteTaxesFormData = z.infer<typeof deleteTaxesSchema>
+
+export const bulkDeleteTaxesSchema = z.object({
+  ids: z.array(z.uuid()),
+})
+
+export type BulkDeleteTaxesFormData = z.infer<typeof bulkDeleteTaxesSchema>

@@ -8,9 +8,10 @@ export interface Role extends GlobalResponse {
 
 export interface CompanyRole extends Role {
   company: Company
-  company_id: string
   is_default: boolean
   system_role: boolean
   is_pos: boolean
   position: number
+  users_count: number
+  is_deletable: boolean
 }
