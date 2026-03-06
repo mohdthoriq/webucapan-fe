@@ -1,7 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Tax } from '@/types'
 import { cn } from '@/lib/utils'
-import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { DataTableRowActions } from './taxes-row-actions'
