@@ -29,12 +29,10 @@ export function usePaymentTermsForm({ currentRow, onSuccess }: usePaymentTermsFo
           company_id: currentRow?.company?.id ?? company?.id ?? '',
           name: currentRow?.name || '',
           days: currentRow?.days || 0,
-          description: currentRow?.description || '',
         }
       : {
           company_id: company?.id ?? '',
           name: '',
-          description: '',
         },
   })
 
@@ -57,7 +55,6 @@ export function usePaymentTermsForm({ currentRow, onSuccess }: usePaymentTermsFo
         id: currentRow.id,
         name: data.name,
         days: data.days,
-        description: data.description,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()
