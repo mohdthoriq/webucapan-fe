@@ -39,7 +39,7 @@ export function ProductActionDialog({
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
-          <ProductsFormContent currentRow={currentRow} onSuccess={onSuccess} />
+          <ProductsFormContent currentRow={currentRow} onSuccess={onSuccess} isModal />
         </div>
       </DialogContent>
     </Dialog>
