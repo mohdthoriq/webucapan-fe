@@ -1,26 +1,47 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
 import { useSalesOverviewQuery } from '../hooks/use-sales-overview-query'
 
-export function SalesDashboardOverview() {
+interface SalesDashboardOverviewProps {
+  externalPeriod?: Period
+  externalDateFrom?: string
+  externalDateTo?: string
+}
+
+export function SalesDashboardOverview({
+  externalPeriod,
+  externalDateFrom,
+  externalDateTo,
+}: SalesDashboardOverviewProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
-  const date_from = dateRange?.from
-    ? format(dateRange.from, 'yyyy-MM-dd')
-    : undefined
-  const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
+  // Use external props if provided, otherwise use local state
+  const periodToUse = externalPeriod ?? period
+  const dateFromToUse =
+    externalDateFrom ??
+    (dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined)
+  const dateToToUse =
+    externalDateTo ??
+    (dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined)
 
   const { data } = useSalesOverviewQuery({
-    period,
-    date_from: date_from as string,
-    date_to: date_to as string,
+    period: periodToUse,
+    date_from: dateFromToUse as string,
+    date_to: dateToToUse as string,
   })
 
   const chartData = data?.chart_data ?? []
@@ -32,9 +53,7 @@ export function SalesDashboardOverview() {
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0'>
-        <CardTitle className='text-base font-semibold'>
-          PENJUALAN
-        </CardTitle>
+        <CardTitle className='text-base font-semibold'>PENJUALAN</CardTitle>
         <CardAction
           period={period}
           dateRange={dateRange}
@@ -46,9 +65,7 @@ export function SalesDashboardOverview() {
       <CardContent>
         <div className='mb-4 flex-1'>
           <div className='flex items-center justify-end gap-2'>
-            <span className='text-muted-foreground text-sm'>
-              Penjualan 
-            </span> 
+            <span className='text-muted-foreground text-sm'>Penjualan</span>
             <span className='text-sm font-semibold'>
               {formatCurrency(data?.value ?? 0)}
             </span>
