@@ -4,7 +4,7 @@ export const expenseItemSchema = z.object({
   account_id: z.string().min(1),
   description: z.string().optional(),
   tax_id: z.string().optional(),
-  amount: z.number().positive(),
+  amount: z.number().min(0, 'Total tidak boleh negatif'),
 })
 
 export type ExpenseItemFormData = z.infer<typeof expenseItemSchema>
@@ -14,7 +14,7 @@ export const expenseItemUpdateSchema = z.object({
   account_id: z.string().min(1),
   description: z.string().optional(),
   tax_id: z.string().optional(),
-  amount: z.number().positive(),
+  amount: z.number().min(0, 'Total tidak boleh negatif'),
 })
 
 export type ExpenseItemUpdateFormData = z.infer<typeof expenseItemUpdateSchema>
@@ -29,7 +29,7 @@ export const CreateExpenseSchema = z
     date: z.date(),
     due_date: z.date(),
 
-    currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
+    currency: z.string().optional(),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
@@ -58,7 +58,7 @@ export const UpdateExpenseSchema = z
     date: z.date(),
     due_date: z.date(),
 
-    currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
+    currency: z.string().optional(),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
