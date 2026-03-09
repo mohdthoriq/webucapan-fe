@@ -16,15 +16,43 @@ const apiClient = axios.create({
 // Function to get auth token from cookie
 function getAuthToken(): string | null {
   const tokenCookie = getCookie(ACCESS_TOKEN)
+
+  // If token cookie is undefined, logout the user
+  if (tokenCookie === undefined) {
+    handleLogout()
+    return null
+  }
+
   if (tokenCookie && tokenCookie !== 'undefined') {
     try {
-      return JSON.parse(tokenCookie)
+      const token = JSON.parse(tokenCookie)
+      // Return token even if expired - let the server handle expiration
+      return token
     } catch {
-      alert('cookie not found')
+      // If parsing fails, still try to logout and return null
+      handleLogout()
       return null
     }
   }
+
+  // If tokenCookie is null or 'undefined' string, logout the user
+  handleLogout()
   return null
+}
+
+// Function to handle logout
+async function handleLogout() {
+  try {
+    const { useAuthStore } = await import('@/stores/auth-store')
+    useAuthStore.getState().auth.reset()
+
+    // Redirect to login page using window location
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login'
+    }
+  } catch {
+    // Silent fail - user will be redirected on next navigation
+  }
 }
 
 // Request interceptor to add auth token
