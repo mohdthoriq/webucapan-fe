@@ -8,19 +8,33 @@ import { CardAction } from '@/features/purchases/overview/components/card-action
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
 import { useExpenseOverviewQuery } from '../hooks/use-expense-overview-query'
 
-export function ExpenseOverview() {
+interface ExpenseOverviewProps {
+  externalPeriod?: Period
+  externalDateFrom?: string
+  externalDateTo?: string
+}
+
+export function ExpenseOverview({
+  externalPeriod,
+  externalDateFrom,
+  externalDateTo,
+}: ExpenseOverviewProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
-  const date_from = dateRange?.from
-    ? format(dateRange.from, 'yyyy-MM-dd')
-    : undefined
-  const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
+  // Use external props if provided, otherwise use local state
+  const periodToUse = externalPeriod ?? period
+  const dateFromToUse =
+    externalDateFrom ??
+    (dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined)
+  const dateToToUse =
+    externalDateTo ??
+    (dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined)
 
   const { data } = useExpenseOverviewQuery({
-    period,
-    date_from: date_from as string,
-    date_to: date_to as string,
+    period: periodToUse,
+    date_from: dateFromToUse as string,
+    date_to: dateToToUse as string,
   })
 
   const chartData = data?.chart_data ?? []

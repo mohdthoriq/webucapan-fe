@@ -24,7 +24,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { usePaymentTermsForm } from '../hooks/use-payment-terms-form'
 
@@ -126,25 +125,6 @@ export function PaymentTermsActionDialog({
                         name={field.name}
                         ref={field.ref}
                         endAdornment={'Days'}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Deskripsi</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder='Deskripsikan termin ini...'
-                        className='min-h-[80px]'
-                        {...field}
                         disabled={!hasPermission}
                       />
                     </FormControl>

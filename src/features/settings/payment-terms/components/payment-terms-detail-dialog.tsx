@@ -40,12 +40,6 @@ export function PaymentTermsDetailDialog({
           </div>
           <div>
             <h4 className='text-muted-foreground text-sm font-medium'>
-              Deskripsi
-            </h4>
-            <p className='text-sm'>{currentRow.description || '-'}</p>
-          </div>
-          <div>
-            <h4 className='text-muted-foreground text-sm font-medium'>
               Nama Perusahaan
             </h4>
             <p className='text-sm'>{currentRow.company?.name || '-'}</p>

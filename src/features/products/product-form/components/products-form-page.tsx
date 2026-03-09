@@ -44,16 +44,19 @@ import { useProductsForm } from '../hooks/use-products-form'
 type ProductsFormContentProps = {
   currentRow?: Product | null
   onSuccess?: (data: Product) => void
+  isModal?: boolean
 }
 
 export function ProductsFormContent({
   currentRow,
   onSuccess,
+  isModal,
 }: ProductsFormContentProps) {
   const { data: units } = useUnitsQuery()
   const { data: categories } = useProductCategoryQuery()
   const { data: productsAutoNumbering } = useDefaultNumberingQuery({
     type: FinanceNumberType.product_sku,
+    enabled: !currentRow,
   })
   const { openDialog } = useGlobalDialogStore()
 
@@ -150,10 +153,7 @@ export function ProductsFormContent({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Satuan</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className='w-full'>
                       <SelectValue placeholder='Pilih satuan' />
@@ -190,10 +190,7 @@ export function ProductsFormContent({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategori</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className='w-full'>
                       <SelectValue placeholder='Pilih kategori' />
@@ -390,13 +387,15 @@ export function ProductsFormContent({
         )}
 
         <div className='flex justify-end space-x-2'>
-          <Button
-            type='button'
-            variant='outline'
-            onClick={() => history.back()}
-          >
-            Batal
-          </Button>
+          {!isModal && (
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => history.back()}
+            >
+              Batal
+            </Button>
+          )}
           <Button type='submit' disabled={isSubmitting}>
             {isSubmitting && <Loader2 className='h-4 w-4 animate-spin' />}
             {isSubmitting

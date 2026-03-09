@@ -33,7 +33,7 @@ export function useContactsForm({
           type_id: currentRow?.type?.id ?? undefined,
           phone: currentRow?.phone ?? undefined,
           email: currentRow?.email ?? undefined,
-          address: currentRow?.company?.address ?? undefined,
+          address: currentRow?.address ?? undefined,
           company_id: currentRow?.company?.id ?? company?.id ?? undefined,
         }
       : {

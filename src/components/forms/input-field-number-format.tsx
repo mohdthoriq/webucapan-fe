@@ -27,6 +27,7 @@ export const InputFieldNumberFormat = forwardRef<
   // Sync display value when prop value changes from outside (e.g. form reset)
   useEffect(() => {
     const formatted = formatNumber(value)
+
     if (formatted !== displayValue) {
       setDisplayValue(formatted)
     }
@@ -42,7 +43,7 @@ export const InputFieldNumberFormat = forwardRef<
 
     if (rawValue === '') {
       setDisplayValue('')
-      onValueChange?.(undefined)
+      onValueChange?.(0)
       return
     }
 

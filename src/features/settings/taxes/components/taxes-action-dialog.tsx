@@ -111,9 +111,7 @@ export function TaxesActionDialog({
                         autoComplete='off'
                         onChange={(e) => {
                           field.onChange(
-                            e.target.value === ''
-                              ? undefined
-                              : Number(e.target.value)
+                            e.target.value === '' ? 0 : Number(e.target.value)
                           )
                         }}
                         type='number'

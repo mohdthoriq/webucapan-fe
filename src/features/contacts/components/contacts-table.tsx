@@ -15,6 +15,8 @@ import {
 import type { Contact } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PERMISSION_KEY } from '@/constants/permissions'
+import { useHasPermission } from '@/hooks/use-has-permission'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -26,6 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Tooltip,
   TooltipContent,
@@ -36,13 +39,12 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
+import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useBulkDeleteContactMutation } from '../hooks/use-contacts-mutation'
+import { useContactTypesQuery } from '../hooks/use-contacts-query'
 import { ContactsBulkDeleteDialog } from './contacts-bulk-delete-dialog'
 import { contactsColumns } from './contacts-columns'
 import { useContacts } from './contacts-provider'
-import { useHasPermission } from '@/hooks/use-has-permission'
-import { PERMISSION_KEY } from '@/constants/permissions'
-import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 
 type DataTableProps = {
   search: Record<string, unknown>
@@ -66,6 +68,8 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
   const hasPermission = useHasPermission(PERMISSION_KEY.CONTACT_DELETE)
 
   const deleteMutation = useBulkDeleteContactMutation()
+
+  const { data: contactTypesData } = useContactTypesQuery({ limit: 100 })
 
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
@@ -135,6 +139,22 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
         searchPlaceholder='Cari kontak...'
         searchKey='Nama'
       />
+      <Tabs
+        defaultValue=''
+        value={(search.type_id as string) || ''}
+        onValueChange={(value) =>
+          navigate({ search: { ...search, type_id: value } })
+        }
+      >
+        <TabsList className='h-10'>
+          <TabsTrigger value=''>Semua</TabsTrigger>
+          {contactTypesData?.data?.map((contactType) => (
+            <TabsTrigger key={contactType.id} value={contactType.id}>
+              {contactType.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
@@ -252,7 +272,7 @@ function TableRows({ table }: { table: TanstackTable<Contact> }) {
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row cursor-pointer hover:bg-muted/50'
+          className='group/row hover:bg-muted/50 cursor-pointer'
           onClick={() => {
             setCurrentRow(row.original)
             setOpen('edit')

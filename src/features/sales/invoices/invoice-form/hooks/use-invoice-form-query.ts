@@ -29,6 +29,7 @@ export function useInvoiceFormQuery(params?: InvoiceFormQueryParams) {
 
 interface AutoNumberingQueryParams {
   type: FinanceNumberType
+  enabled?: boolean
 }
 
 export function useDefaultNumberingQuery(params: AutoNumberingQueryParams) {
@@ -42,6 +43,7 @@ export function useDefaultNumberingQuery(params: AutoNumberingQueryParams) {
     },
     staleTime: 1 * 30 * 1000, // 30 seconds
     retry: 1, // optional: retry once only
+    enabled: params.enabled !== undefined ? params.enabled : true,
   })
 }
 

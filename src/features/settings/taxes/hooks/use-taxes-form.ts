@@ -27,13 +27,14 @@ export function useTaxesForm({ currentRow, onSuccess }: useTaxesFormProps) {
     defaultValues: isEdit
       ? {
           name: currentRow?.name || '',
-          rate: currentRow?.rate || 0,
+          rate: currentRow?.rate ?? 0,
           company_id: currentRow?.company?.id ?? company?.id ?? '',
           description: currentRow?.description || '',
         }
       : {
           company_id: company?.id ?? '',
           name: '',
+          rate: 0,
           description: '',
         },
   })

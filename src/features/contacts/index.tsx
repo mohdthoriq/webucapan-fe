@@ -61,6 +61,7 @@ function Contacts() {
     page: search?.page ? parseInt(search.page) : undefined,
     limit: search?.limit ? parseInt(search.limit) : undefined,
     name: search?.name ? search.name : undefined,
+    type_id: search?.type_id ? search.type_id : undefined,
   }
 
   return (
