@@ -86,7 +86,7 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
   {
     accessorKey: 'Tanggal',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tanggal Expense' />
+      <DataTableColumnHeader column={column} title='Tanggal Biaya' />
     ),
     cell: ({ row }) => {
       const { date } = row.original
