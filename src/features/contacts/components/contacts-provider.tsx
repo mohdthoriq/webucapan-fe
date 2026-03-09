@@ -14,7 +14,12 @@ type ContactsContextType = {
   pagination: PaginationMeta
   isLoading: boolean
   isError: boolean
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: {
+    page?: number
+    limit?: number
+    name?: string
+    type_id?: string
+  }
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -25,7 +30,12 @@ export function ContactsProvider({
   paginationParams,
 }: {
   children: React.ReactNode
-  paginationParams?: { page?: number; limit?: number; name?: string }
+  paginationParams?: {
+    page?: number
+    limit?: number
+    name?: string
+    type_id?: string
+  }
 }) {
   const [open, setOpen] = useDialogState<ContactsDialogType>(null)
   const [currentRow, setCurrentRow] = useState<Contact | null>(null)

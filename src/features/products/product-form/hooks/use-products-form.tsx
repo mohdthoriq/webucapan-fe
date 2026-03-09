@@ -80,12 +80,12 @@ export function useProductsForm({
         setExistingImages(imgs)
         form.setValue('images', [])
       }
-      if (autoNumbering !== null) {
-        form.setValue('sku', autoNumbering?.format ?? '')
+      if (!isEdit && autoNumbering) {
+        form.setValue('sku', autoNumbering.format ?? '')
       }
     }
     updateForm()
-  }, [currentRow, form, defaultValues, autoNumbering])
+  }, [currentRow, form, defaultValues, autoNumbering, isEdit])
 
   const handleBoxClick = () => {
     fileInputRef.current?.click()

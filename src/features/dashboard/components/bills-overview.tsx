@@ -1,26 +1,47 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
 import { useUnpaidPurchaseOverviewQuery } from '../hooks/use-unpaid-purchase-overview-query'
 
-export function BillsOverview() {
+interface BillsOverviewProps {
+  externalPeriod?: Period
+  externalDateFrom?: string
+  externalDateTo?: string
+}
+
+export function BillsOverview({
+  externalPeriod,
+  externalDateFrom,
+  externalDateTo,
+}: BillsOverviewProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
-  const date_from = dateRange?.from
-    ? format(dateRange.from, 'yyyy-MM-dd')
-    : undefined
-  const date_to = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
+  // Use external props if provided, otherwise use local state
+  const periodToUse = externalPeriod ?? period
+  const dateFromToUse =
+    externalDateFrom ??
+    (dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined)
+  const dateToToUse =
+    externalDateTo ??
+    (dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined)
 
   const { data } = useUnpaidPurchaseOverviewQuery({
-    period,
-    date_from: date_from as string,
-    date_to: date_to as string,
+    period: periodToUse,
+    date_from: dateFromToUse as string,
+    date_to: dateToToUse as string,
   })
 
   const chartData = data?.chart_data ?? []
