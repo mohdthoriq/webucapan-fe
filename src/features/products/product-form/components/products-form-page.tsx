@@ -56,6 +56,7 @@ export function ProductsFormContent({
   const { data: categories } = useProductCategoryQuery()
   const { data: productsAutoNumbering } = useDefaultNumberingQuery({
     type: FinanceNumberType.product_sku,
+    enabled: !currentRow,
   })
   const { openDialog } = useGlobalDialogStore()
 
@@ -152,10 +153,7 @@ export function ProductsFormContent({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Satuan</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className='w-full'>
                       <SelectValue placeholder='Pilih satuan' />
@@ -192,10 +190,7 @@ export function ProductsFormContent({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategori</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className='w-full'>
                       <SelectValue placeholder='Pilih kategori' />

@@ -45,11 +45,6 @@ async function handleLogout() {
   try {
     const { useAuthStore } = await import('@/stores/auth-store')
     useAuthStore.getState().auth.reset()
-
-    // Redirect to login page using window location
-    if (typeof window !== 'undefined') {
-      window.location.href = '/login'
-    }
   } catch {
     // Silent fail - user will be redirected on next navigation
   }
