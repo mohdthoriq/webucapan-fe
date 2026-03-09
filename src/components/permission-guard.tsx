@@ -15,8 +15,6 @@ export function PermissionGuard({
 }: PermissionGuardProps) {
   const isAllowed = useHasPermission(permission)
 
-  console.log(permission, isAllowed)
-
   if (isAllowed) return children
   return fallback
 }

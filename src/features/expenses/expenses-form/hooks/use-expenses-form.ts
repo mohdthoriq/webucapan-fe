@@ -39,12 +39,14 @@ export function useExpensesForm({
         ? {
             id: currentRow.id,
             expense_number: currentRow.expense_number,
+            contact_id: currentRow.contact?.id ?? '',
             account_id: currentRow.account?.id ?? '',
             payment_term_id: currentRow.payment_term?.id ?? undefined,
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
             total: Number(currentRow.total),
+            is_paylater: currentRow.is_paylater ?? false,
             date: currentRow.date ? new Date(currentRow.date) : new Date(),
             due_date: currentRow.due_date
               ? new Date(currentRow.due_date)
@@ -64,12 +66,14 @@ export function useExpensesForm({
           }
         : {
             expense_number: autoNumbering?.format ?? '',
+            contact_id: '',
             account_id: '',
             payment_term_id: undefined,
             currency: 'IDR',
             subtotal: 0,
             tax_total: 0,
             total: 0,
+            is_paylater: false,
             date: new Date(),
             due_date: new Date(),
             expense_items: [
@@ -117,7 +121,9 @@ export function useExpensesForm({
       : null) ||
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
-  const onSubmit = async (data: CreateExpenseFormData) => {
+  const onSubmit = async (
+    data: CreateExpenseFormData | UpdateExpenseFormData
+  ) => {
     if (isEdit && currentRow) {
       const updateData: UpdateExpenseFormData = {
         ...data,
@@ -130,7 +136,9 @@ export function useExpensesForm({
         state: { currentRowId: response.data.id } as Record<string, unknown>,
       })
     } else {
-      const response = await createMutation.mutateAsync(data)
+      const response = await createMutation.mutateAsync(
+        data as CreateExpenseFormData
+      )
       await generateNextNumber.mutateAsync(FinanceNumberType.expense)
       form.reset()
       navigate({

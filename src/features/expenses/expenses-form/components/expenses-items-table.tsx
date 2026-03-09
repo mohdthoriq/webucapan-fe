@@ -17,7 +17,7 @@ import type {
 import { ExpensesItemRow } from './expenses-item-row'
 
 type ExpensesItemsTableProps = {
-  fields: ExpenseItemFormData[]
+  fields: (ExpenseItemFormData & { id: string })[]
   form: ReturnType<
     typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>
   >
@@ -47,7 +47,7 @@ export function ExpensesItemsTable({
         </TableHeader>
         <TableBody>
           {fields.map((field, index) => (
-            <Fragment key={`${field.account_id}-${index}`}>
+            <Fragment key={field.id}>
               <ExpensesItemRow
                 index={index}
                 form={form}
