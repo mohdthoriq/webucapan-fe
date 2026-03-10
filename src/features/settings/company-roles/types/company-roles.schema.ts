@@ -31,14 +31,6 @@ export type UpdateCompanyRoleSettingsFormData = z.infer<
   typeof updateCompanyRoleSettingsSchema
 >
 
-export const deleteCompanyRoleSettingsSchema = z.object({
-  id: z.uuid(),
-})
-
-export type DeleteCompanyRoleSettingsFormData = z.infer<
-  typeof deleteCompanyRoleSettingsSchema
->
-
 export const bulkDeleteCompanyRoleSettingsSchema = z.object({
   ids: z.array(z.uuid()),
 })

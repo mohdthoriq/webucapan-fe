@@ -16,12 +16,6 @@ export const updateUnitSchema = z.object({
 
 export type UpdateUnitFormData = z.infer<typeof updateUnitSchema>
 
-export const deleteUnitSchema = z.object({
-  id: z.uuid(),
-})
-
-export type DeleteUnitFormData = z.infer<typeof deleteUnitSchema>
-
 export const bulkDeleteUnitSchema = z.object({
   ids: z.array(z.uuid()),
 })

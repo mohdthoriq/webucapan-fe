@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type SortingState,
   type VisibilityState,
@@ -215,13 +216,16 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<CompanyRole> }) {
+  const navigate = useNavigate()
+  const { setCurrentRow } = useCompanyRoles()
+
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row hover:cursor-pointer'
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
@@ -231,6 +235,17 @@ function TableRows({ table }: { table: TanstackTable<CompanyRole> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={() => {
+                if (cell.column.id === 'select') return
+                setCurrentRow(row.original)
+                navigate({
+                  to: '/settings/company-roles/edit',
+                  state: { currentRowId: row.original.id } as Record<
+                    string,
+                    unknown
+                  >,
+                })
+              }}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

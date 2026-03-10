@@ -10,7 +10,7 @@ import type { PaginationMeta, Tag } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useTagsQuery, type TagsQueryParams } from '../hooks/use-tags-query'
 
-type TagsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type TagsDialogType = 'edit' | 'add'
 
 type TagsContextType = {
   open: TagsDialogType | null

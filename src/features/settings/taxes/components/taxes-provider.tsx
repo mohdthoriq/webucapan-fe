@@ -10,7 +10,7 @@ import type { Tax, PaginationMeta } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type TaxesQueryParams, useTaxesQuery } from '../hooks/use-taxes-query'
 
-type TaxesDialogType = 'view' | 'edit' | 'add' | 'delete'
+type TaxesDialogType = 'edit' | 'add'
 
 type TaxesContextType = {
   open: TaxesDialogType | null

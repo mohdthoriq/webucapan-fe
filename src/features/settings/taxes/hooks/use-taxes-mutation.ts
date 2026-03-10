@@ -4,12 +4,11 @@ import type { Tax } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
-import { TaxesContext, useTaxes } from '../components/taxes-provider'
+import { TaxesContext } from '../components/taxes-provider'
 import {
   type BulkDeleteTaxesFormData,
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
-  type DeleteTaxesFormData,
 } from '../types/taxes.schema'
 
 export function useCreateTaxMutation(onSuccess?: (data: Tax) => void) {
@@ -63,32 +62,6 @@ export function useUpdateTaxMutation(onSuccess?: (data: Tax) => void) {
     onError: () => {
       toast.dismiss('taxes-toast')
       toast.error('Pajak gagal diubah.')
-    },
-  })
-}
-
-export function useDeleteTaxMutation() {
-  const { setOpen } = useTaxes()
-
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (credentials: DeleteTaxesFormData) => {
-      const response = await apiClient.delete(`taxes/${credentials.id}`)
-
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Loading...', { id: 'taxes-toast' })
-    },
-    onSuccess: async (_) => {
-      toast.dismiss('taxes-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
-      toast.success('Pajak berhasil dihapus.')
-      setOpen(null)
-    },
-    onError: () => {
-      toast.dismiss('taxes-toast')
-      toast.error('Pajak gagal dihapus.')
     },
   })
 }

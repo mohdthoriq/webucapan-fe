@@ -211,13 +211,14 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<Unit> }) {
+  const { setCurrentRow, setOpen } = useUnits()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row hover:cursor-pointer'
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
@@ -227,6 +228,11 @@ function TableRows({ table }: { table: TanstackTable<Unit> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={() => {
+                if (cell.column.id === 'select') return
+                setCurrentRow(row.original)
+                setOpen('edit')
+              }}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

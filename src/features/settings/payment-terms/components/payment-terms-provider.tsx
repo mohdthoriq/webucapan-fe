@@ -13,7 +13,7 @@ import {
   usePaymentTermsQuery,
 } from '../hooks/use-payment-terms-query'
 
-type PaymentTermsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type PaymentTermsDialogType = 'edit' | 'add'
 
 type PaymentTermsContextType = {
   open: PaymentTermsDialogType | null

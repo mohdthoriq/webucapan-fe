@@ -4,7 +4,6 @@ import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { PermissionGuard } from '@/components/permission-guard'
-import { CompanyRolesDialogs } from './components/company-roles-dialogs'
 import { CompanyRolesFallback } from './components/company-roles-fallback'
 import { CompanyRolesProvider } from './components/company-roles-provider'
 import { CompanyRolesTable } from './components/company-roles-table'
@@ -61,7 +60,6 @@ function CompanyRolesContent() {
         <CardContent>
           <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
             <CompanyRolesTable search={search} navigate={navigate} />
-            <CompanyRolesDialogs />
           </div>
         </CardContent>
       </Card>

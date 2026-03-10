@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './company-roles-row-actions'
 
 export const rolesColumns: ColumnDef<CompanyRole>[] = [
   {
@@ -25,13 +24,13 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label='Select row'
-        className='translate-y-[2px]'
+        className='translate-y-[2px] z-9999'
       />
     ),
     enableSorting: false,
     enableHiding: false,
     meta: {
-      className: 'w-[40px]',
+      className: 'w-[40px] z-9999',
     },
   },
   {
@@ -42,8 +41,8 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     cell: ({ row }) => {
       const { name } = row.original
       return (
-        <div className='px-2'>
-          <LongText className=''>{name}</LongText>
+        <div className='p-2'>
+          <LongText>{name}</LongText>
         </div>
       )
     },
@@ -63,8 +62,8 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     cell: ({ row }) => {
       const { users_count } = row.original
       return (
-        <div className='px-2'>
-          <LongText className=''>{users_count}</LongText>
+        <div className='p-2'>
+          <LongText>{users_count}</LongText>
         </div>
       )
     },
@@ -83,7 +82,7 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     cell: ({ row }) => {
       const { description } = row.original
       return (
-        <div className='w-full overflow-hidden px-2'>
+        <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{description}</LongText>
         </div>
       )
@@ -91,10 +90,5 @@ export const rolesColumns: ColumnDef<CompanyRole>[] = [
     meta: {
       className: 'w-full',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

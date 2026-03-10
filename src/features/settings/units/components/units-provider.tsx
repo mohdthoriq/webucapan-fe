@@ -10,7 +10,7 @@ import type { PaginationMeta, Unit } from '@/types'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type UnitsQueryParams, useUnitsQuery } from '../hooks/use-units-query'
 
-type UnitsDialogType = 'view' | 'edit' | 'add' | 'delete'
+type UnitsDialogType = 'edit' | 'add'
 
 type UnitsContextType = {
   open: UnitsDialogType | null
