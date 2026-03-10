@@ -24,7 +24,7 @@ export function CompanySettings() {
                 onClick={() =>
                   navigate({
                     to: '/settings',
-                    search: { tab: 'business_flow' },
+                    search: { tab: 'company' },
                   })
                 }
               >
