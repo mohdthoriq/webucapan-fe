@@ -224,6 +224,8 @@ export function BalanceSheetOverviewWithFilters() {
 
 export default function BalanceSheetPage() {
   const search = route.useSearch() as { date?: string }
+  const navigate = route.useNavigate()
+
   const defaultDate = search.date
     ? parse(search.date, 'yyyy-MM-dd', new Date())
     : new Date()
@@ -239,7 +241,10 @@ export default function BalanceSheetPage() {
             <h1 className='text-3xl font-semibold tracking-tight'>Neraca</h1>
           </div>
           <div className='flex items-center gap-3'>
-            <Button variant={'outline'} onClick={() => history.back()}>
+            <Button
+              variant={'outline'}
+              onClick={() => navigate({ to: '/reports' })}
+            >
               <ArrowLeft className='h-4 w-4' />
               Kembali
             </Button>

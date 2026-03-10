@@ -1,11 +1,13 @@
+import { useNavigate } from '@tanstack/react-router'
+import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader } from '@/components/ui/card'
+import { PermissionGuard } from '@/components/permission-guard'
 import { SubscriptionContent } from './components/subscription-content'
 import { SubscriptionFallback } from './components/subscription-fallback'
-import { PermissionGuard } from '@/components/permission-guard'
-import { PERMISSION_KEY } from '@/constants/permissions'
 
 export function SubscriptionPage() {
+  const navigate = useNavigate()
   return (
     <PermissionGuard
       permission={PERMISSION_KEY.SETTINGS_BILLING}
@@ -23,7 +25,15 @@ export function SubscriptionPage() {
               </p>
             </div>
             <div>
-              <Button variant={'link'} onClick={() => history.back()}>
+              <Button
+                variant={'link'}
+                onClick={() =>
+                  navigate({
+                    to: '/settings',
+                    search: { tab: 'company' },
+                  })
+                }
+              >
                 Kembali
               </Button>
             </div>

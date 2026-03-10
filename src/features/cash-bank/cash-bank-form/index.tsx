@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { useHasPermission } from '@/hooks/use-has-permission'
@@ -22,6 +23,7 @@ export function CashBankFormPage({ type, currentRow }: CashBankFormPageProps) {
     type,
     currentRow,
   })
+  const navigate = useNavigate()
 
   const hasPermission = useHasPermission(
     type === 'spend'
@@ -38,7 +40,16 @@ export function CashBankFormPage({ type, currentRow }: CashBankFormPageProps) {
         <CardTitle>
           <div className='flex items-center justify-between'>
             {currentRow ? EditTitle : title}
-            <Button variant='link' onClick={() => history.back()}>
+            <Button
+              variant='link'
+              onClick={() => {
+                if (currentRow) {
+                  history.back()
+                } else {
+                  navigate({ to: '/cash-bank' })
+                }
+              }}
+            >
               Kembali
             </Button>
           </div>

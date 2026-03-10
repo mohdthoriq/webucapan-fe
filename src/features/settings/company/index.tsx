@@ -1,10 +1,10 @@
-import { useRouter } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CompanySettingsForm } from './components/company-settings-form'
 
 export function CompanySettings() {
-  const { history } = useRouter()
+  const navigate = useNavigate()
   return (
     <>
       <Card>
@@ -19,7 +19,15 @@ export function CompanySettings() {
               </p>
             </div>
             <div>
-              <Button variant={'link'} onClick={() => history.go(-1)}>
+              <Button
+                variant={'link'}
+                onClick={() =>
+                  navigate({
+                    to: '/settings',
+                    search: { tab: 'business_flow' },
+                  })
+                }
+              >
                 Kembali
               </Button>
             </div>

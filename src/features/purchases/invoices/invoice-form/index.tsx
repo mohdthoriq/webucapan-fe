@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { FinanceNumberType } from '@/types'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,7 @@ import { InvoiceFormSummary } from './sections/form-summary'
 
 export function InvoiceFormPage() {
   const location = useLocation()
+  const navigate = useNavigate()
 
   const currentRowId = (location.state as { currentRowId?: string })
     ?.currentRowId
@@ -62,7 +63,16 @@ export function InvoiceFormPage() {
               {invoiceForm.isEdit
                 ? 'Ubah Tagihan Pembelian'
                 : 'Tambah Tagihan Pembelian'}
-              <Button variant='link' onClick={() => history.back()}>
+              <Button
+                variant='link'
+                onClick={() => {
+                  if (invoiceForm.isEdit) {
+                    history.back()
+                  } else {
+                    navigate({ to: '/purchases/invoices' })
+                  }
+                }}
+              >
                 Kembali
               </Button>
             </div>

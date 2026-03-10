@@ -34,7 +34,15 @@ function UsersContent() {
               </p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-              <Button variant={'link'} onClick={() => history.go(-1)}>
+              <Button
+                variant={'link'}
+                onClick={() =>
+                  navigate({
+                    to: '/settings',
+                    search: { tab: 'user_account' },
+                  })
+                }
+              >
                 Kembali
               </Button>
               <Button onClick={() => setOpen('add')}>

@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -9,6 +9,8 @@ import { TransactionTable } from './components/transaction-table'
 
 export function InvoiceDetail() {
   const location = useLocation()
+  const navigate = useNavigate()
+
   const currentRowId = (location.state as { currentRowId?: string })
     ?.currentRowId
 
@@ -52,7 +54,7 @@ export function InvoiceDetail() {
             <div className='mr-4 flex gap-2'>
               <Button
                 variant='outline'
-                onClick={() => history.back()}
+                onClick={() => navigate({ to: '/sales/invoices' })}
                 className='gap-2'
               >
                 <ArrowLeft className='h-4 w-4' /> Kembali

@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { FinanceNumberType } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -20,6 +20,7 @@ import { ExpensesFormSummary } from './sections/form-summary'
 
 export function ExpensesFormPage() {
   const location = useLocation()
+  const navigate = useNavigate()
 
   const currentRowId = (location.state as { currentRowId?: string })
     ?.currentRowId
@@ -62,7 +63,16 @@ export function ExpensesFormPage() {
           <CardTitle>
             <div className='flex items-center justify-between'>
               {expensesForm.isEdit ? 'Edit Biaya' : 'Tambah Biaya'}
-              <Button variant='link' onClick={() => history.back()}>
+              <Button
+                variant='link'
+                onClick={() => {
+                  if (expensesForm.isEdit) {
+                    history.back()
+                  } else {
+                    navigate({ to: '/expenses' })
+                  }
+                }}
+              >
                 Kembali
               </Button>
             </div>

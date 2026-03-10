@@ -1,6 +1,6 @@
 'use client'
 
-import { useLocation } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,6 +17,8 @@ import { useProductsByIdQuery } from './hooks/use-product-query'
 
 export function ProductsForm() {
   const location = useLocation()
+  const navigate = useNavigate()
+
   const state = location.state as { currentRowId?: string } | undefined
   const currentRowId = state?.currentRowId
 
@@ -42,7 +44,10 @@ export function ProductsForm() {
               Isi form dibawah ini untuk menambahkan produk baru
             </CardDescription>
           </div>
-          <Button variant={'link'} onClick={() => history.back()}>
+          <Button
+            variant={'link'}
+            onClick={() => navigate({ to: '/products' })}
+          >
             Kembali
           </Button>
         </CardHeader>
