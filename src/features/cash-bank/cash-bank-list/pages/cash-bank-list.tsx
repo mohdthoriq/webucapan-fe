@@ -57,7 +57,10 @@ function CashBankListsContent() {
               </p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-              <Button variant={'outline'} onClick={() => window.history.back()}>
+              <Button
+                variant={'outline'}
+                onClick={() => navigate({ to: '/cash-bank' })}
+              >
                 <ArrowLeft className='h-4 w-4' />
                 Kembali
               </Button>

@@ -15,12 +15,6 @@ export const updateTagSchema = z.object({
 
 export type UpdateTagFormData = z.infer<typeof updateTagSchema>
 
-export const deleteTagSchema = z.object({
-  id: z.uuid().min(1, 'ID tag tidak boleh kosong'),
-})
-
-export type DeleteTagFormData = z.infer<typeof deleteTagSchema>
-
 export const bulkDeleteTagSchema = z.object({
   ids: z.array(z.uuid()),
 })

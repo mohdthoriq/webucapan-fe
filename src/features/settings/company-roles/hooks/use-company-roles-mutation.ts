@@ -8,7 +8,6 @@ import {
   type BulkDeleteCompanyRoleSettingsFormData,
   type CreateCompanyRoleSettingsFormData,
   type UpdateCompanyRoleSettingsFormData,
-  type DeleteCompanyRoleSettingsFormData,
 } from '../types/company-roles.schema'
 
 export function useCreateCompanyRoleMutation() {
@@ -62,34 +61,6 @@ export function useUpdateCompanyRoleMutation() {
     onError: () => {
       toast.dismiss('company-roles-toast')
       toast.error('Peran gagal diubah.')
-    },
-  })
-}
-
-export function useDeleteCompanyRoleMutation() {
-  const rolesContext = React.useContext(RolesContext)
-
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (credentials: DeleteCompanyRoleSettingsFormData) => {
-      const response = await apiClient.delete(`roles/${credentials.id}`)
-
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Loading...', { id: 'company-roles-toast' })
-    },
-    onSuccess: async (_) => {
-      toast.dismiss('company-roles-toast')
-      await queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.COMPANY_ROLES],
-      })
-      toast.success('Peran berhasil dihapus.')
-      rolesContext?.setOpen(null)
-    },
-    onError: () => {
-      toast.dismiss('company-roles-toast')
-      toast.error('Peran gagal dihapus.')
     },
   })
 }

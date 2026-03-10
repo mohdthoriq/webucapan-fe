@@ -38,7 +38,15 @@ function PaymentTermsContent() {
             </div>
             <div>
               <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-                <Button variant={'link'} onClick={() => history.go(-1)}>
+                <Button
+                  variant={'link'}
+                  onClick={() =>
+                    navigate({
+                      to: '/settings',
+                      search: { tab: 'master_data' },
+                    })
+                  }
+                >
                   Kembali
                 </Button>
                 <Button onClick={() => setOpen('add')}>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import type { FinanceNumber } from '@/types/domain/auto-numbering'
 import { ArrowLeft } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -13,6 +14,7 @@ import { useAutoNumberingQuery } from './hooks/use-auto-numbering-query'
 export function AutoSequencing() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedItem, setSelectedItem] = useState<FinanceNumber | null>(null)
+  const navigate = useNavigate()
 
   const { data: autoNumberingData, isLoading } = useAutoNumberingQuery()
 
@@ -40,7 +42,12 @@ export function AutoSequencing() {
             <h1 className='text-3xl font-bold tracking-wide'>
               Penomoran Otomatis
             </h1>
-            <Button variant='link' onClick={() => history.back()}>
+            <Button
+              variant='link'
+              onClick={() =>
+                navigate({ to: '/settings', search: { tab: 'business_flow' } })
+              }
+            >
               <ArrowLeft className='mr-2 h-4 w-4' />
               Kembali
             </Button>

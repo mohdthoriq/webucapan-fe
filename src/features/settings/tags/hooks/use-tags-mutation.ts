@@ -4,11 +4,10 @@ import type { Tag } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
-import { TagsContext, useTags } from '../components/tags-provider'
+import { TagsContext } from '../components/tags-provider'
 import type {
   BulkDeleteTagFormData,
   CreateTagFormData,
-  DeleteTagFormData,
   UpdateTagFormData,
 } from '../types/tags.schema'
 
@@ -62,32 +61,6 @@ export function useUpdateTagMutation(onSuccess?: (data: Tag) => void) {
     onError: () => {
       toast.dismiss('tags-toast')
       toast.error('Tag gagal diubah.')
-    },
-  })
-}
-
-export function useDeleteTagMutation() {
-  const { setOpen } = useTags()
-
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (credentials: DeleteTagFormData) => {
-      const response = await apiClient.delete(`tags/${credentials.id}`)
-
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Loading...', { id: 'tags-toast' })
-    },
-    onSuccess: async (_) => {
-      toast.dismiss('tags-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAGS] })
-      toast.success('Tag berhasil dihapus.')
-      setOpen(null)
-    },
-    onError: () => {
-      toast.dismiss('tags-toast')
-      toast.error('Tag gagal dihapus.')
     },
   })
 }

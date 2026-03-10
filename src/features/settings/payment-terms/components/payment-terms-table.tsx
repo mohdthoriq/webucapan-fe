@@ -215,16 +215,22 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<PaymentTerm> }) {
+  const { setOpen, setCurrentRow } = usePaymentTerms()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row hover:cursor-pointer'
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
+              onClick={() => {
+                if (cell.column.id === 'select') return
+                setOpen('edit')
+                setCurrentRow(row.original)
+              }}
               key={cell.id}
               className={cn(
                 'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',

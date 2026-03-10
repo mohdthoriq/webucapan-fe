@@ -87,7 +87,10 @@ export function CompanyRolesForm() {
         <CardTitle>
           <div className='flex items-center justify-between'>
             {isEdit ? 'Edit Peran' : 'Tambah Peran Baru'}
-            <Button variant='link' onClick={() => history.back()}>
+            <Button
+              variant='link'
+              onClick={() => navigate({ to: '/settings/company-roles' })}
+            >
               Kembali
             </Button>
           </div>

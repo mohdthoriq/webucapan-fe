@@ -3,9 +3,36 @@ import { type Tax } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './taxes-row-actions'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export const taxesColumns: ColumnDef<Tax>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label='Select row'
+        className='translate-y-[2px]'
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    meta: {
+      className: 'w-[40px]',
+    },
+  },
   {
     accessorKey: 'Nama',
     header: ({ column }) => (
@@ -60,10 +87,5 @@ export const taxesColumns: ColumnDef<Tax>[] = [
     meta: {
       className: 'w-full min-w-64',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]

@@ -8,9 +8,8 @@ import {
   type BulkDeleteUnitFormData,
   type CreateUnitFormData,
   type UpdateUnitFormData,
-  type DeleteUnitFormData,
 } from '@/features/settings/units/types/units.schema'
-import { UnitsContext, useUnits } from '../components/units-provider'
+import { UnitsContext } from '../components/units-provider'
 
 export function useCreateUnitMutation(onSuccess?: (data: Unit) => void) {
   const context = useContext(UnitsContext)
@@ -62,32 +61,6 @@ export function useUpdateUnitMutation(onSuccess?: (data: Unit) => void) {
     onError: () => {
       toast.dismiss('units-toast')
       toast.error('Satuan gagal diubah.')
-    },
-  })
-}
-
-export function useDeleteUnitMutation() {
-  const { setOpen } = useUnits()
-
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (credentials: DeleteUnitFormData) => {
-      const response = await apiClient.delete(`units/${credentials.id}`)
-
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Loading...', { id: 'units-toast' })
-    },
-    onSuccess: async (_) => {
-      toast.dismiss('units-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.UNITS] })
-      toast.success('Satuan berhasil dihapus.')
-      setOpen(null)
-    },
-    onError: () => {
-      toast.dismiss('units-toast')
-      toast.error('Satuan gagal dihapus.')
     },
   })
 }

@@ -95,7 +95,10 @@ function ProfitLossPageContent() {
               )}
               {isPrinting ? 'Memproses...' : 'Cetak'}
             </Button>
-            <Button variant={'outline'} onClick={() => history.back()}>
+            <Button
+              variant={'outline'}
+              onClick={() => navigate({ to: '/reports' })}
+            >
               <ArrowLeft className='h-4 w-4' />
               Kembali
             </Button>
