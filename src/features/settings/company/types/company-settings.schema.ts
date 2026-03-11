@@ -45,6 +45,7 @@ export const companySettingsSchema = z.object({
   logo_url: z
     .union([
       z.url({ message: 'URL logo tidak valid' }),
+      z.literal('pending-upload'),
       z.literal(''),
       z.null(),
       z.undefined(),

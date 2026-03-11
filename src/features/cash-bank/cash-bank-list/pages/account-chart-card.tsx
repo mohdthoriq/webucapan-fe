@@ -35,9 +35,6 @@ export function AccountChartCard({ data }: AccountChartCardProps) {
       state: {
         accountId: data.id,
         accountName: data.name,
-        accountCode: data.code,
-        statementBalance: data.statement_balance,
-        closingBalance: data.closing_balance,
       } as unknown as Record<string, unknown>,
     })
   }

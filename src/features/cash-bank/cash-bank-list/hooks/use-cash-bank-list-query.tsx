@@ -63,7 +63,6 @@ export function useCashBankListQuery(params?: CashBankListQueryParams) {
         ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
 
         ...(params?.order ? { order: params.order } : {}),
-        ...(params?.id ? { id: params.id } : {}),
 
         ...(params?.tag ? { tag: params.tag } : {}),
         ...(params?.reference_type
