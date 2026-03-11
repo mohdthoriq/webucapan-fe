@@ -1,8 +1,9 @@
-import { CheckCircle2Icon, Loader2, Save } from 'lucide-react'
+import { CheckCircle2Icon, Loader2, Save, UploadCloud, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { useHasPermission } from '@/hooks/use-has-permission'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -20,8 +21,16 @@ import { useCompanySettingsForm } from '../hooks/use-company-settings-form'
 import { CompanySettingsSkeleton } from './company-settings-skeleton'
 
 export function CompanySettingsForm() {
-  const { form, onSubmit, isLoading, isLoadingData, errorMessage } =
-    useCompanySettingsForm()
+  const {
+    form,
+    onSubmit,
+    isLoading,
+    isLoadingData,
+    errorMessage,
+    previewUrl,
+    handleLogoChange,
+    removeLogo,
+  } = useCompanySettingsForm()
 
   const canEdit = useHasPermission(PERMISSION_KEY.SETTINGS_COMPANY_EDIT)
   const canView = useHasPermission(PERMISSION_KEY.SETTINGS_COMPANY_VIEW)
@@ -164,6 +173,75 @@ export function CompanySettingsForm() {
                     />
                   </FormControl>
                   <FormDescription>NPWP perusahaan Anda</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='logo_url'
+              render={() => (
+                <FormItem>
+                  <FormLabel>Logo Perusahaan</FormLabel>
+                  <FormControl>
+                    <div className='flex items-center gap-6'>
+                      <Avatar className='border-muted-foreground/25 h-24 w-24 rounded-lg border-2 border-dashed'>
+                        <AvatarImage
+                          src={previewUrl || ''}
+                          alt='Logo Perusahaan'
+                          className='object-cover'
+                        />
+                        <AvatarFallback className='bg-muted text-muted-foreground rounded-lg'>
+                          {isLoading ? (
+                            <Loader2 className='h-6 w-6 animate-spin' />
+                          ) : (
+                            <UploadCloud className='h-8 w-8 opacity-50' />
+                          )}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className='space-y-2'>
+                        <div className='flex gap-2'>
+                          <label
+                            htmlFor='logo-upload'
+                            className={cn(
+                              'bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring relative flex h-9 cursor-pointer items-center justify-center rounded-md px-3 text-xs font-medium transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                              isLoading && 'pointer-events-none opacity-50'
+                            )}
+                          >
+                            <UploadCloud className='mr-2 h-4 w-4' />
+                            Pilih Logo
+                            <input
+                              id='logo-upload'
+                              type='file'
+                              className='sr-only'
+                              accept='image/*'
+                              onChange={handleLogoChange}
+                              disabled={!canEdit || isLoading}
+                            />
+                          </label>
+
+                          {previewUrl && (
+                            <Button
+                              type='button'
+                              variant='outline'
+                              size='sm'
+                              className='text-destructive hover:bg-destructive/10 hover:text-destructive h-9'
+                              onClick={removeLogo}
+                              disabled={!canEdit || isLoading}
+                            >
+                              <X className='mr-2 h-4 w-4' />
+                              Hapus
+                            </Button>
+                          )}
+                        </div>
+                        <p className='text-muted-foreground text-[0.8rem]'>
+                          Maksimal 5MB. Format: JPG, PNG, atau WEBP.
+                        </p>
+                      </div>
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

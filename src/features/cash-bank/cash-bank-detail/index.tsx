@@ -1,12 +1,13 @@
-import { useSearch } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CashBankDetailReceipt } from './components/cash-bank-receipt'
 import { useCashBankDetailQuery } from './hooks/use-cash-bank-detail-query'
+import { useSearch } from '@tanstack/react-router'
 
 export function CashBankDetail() {
   const search = useSearch({ strict: false }) as Record<string, string>
+  // const navigate = useNavigate()
 
   const transactionId = search.transactionId || search.currentRowId
   const accountId = search.accountId

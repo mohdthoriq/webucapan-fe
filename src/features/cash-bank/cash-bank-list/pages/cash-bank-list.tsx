@@ -121,23 +121,19 @@ function CashBankLists() {
   // Effect to persist accountId and accountCode in search params if they exist in state but not in search
   useEffect(() => {
     if (
-      (accountData?.accountId && !search.id) ||
-      (accountData?.accountCode && !search.code)
+      (accountData?.accountId && !search.id)
     ) {
       navigate({
         search: (prev: Record<string, unknown>) => ({
           ...prev,
           id: search.id || accountData?.accountId,
-          code: search.code || accountData?.accountCode,
         }),
         replace: true,
       })
     }
   }, [
     accountData?.accountId,
-    accountData?.accountCode,
     search.id,
-    search.code,
     navigate,
   ])
 

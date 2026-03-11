@@ -3,8 +3,9 @@ import type { ApiResponse, AuthMe } from '@/types'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import apiClient from '@/lib/api-client'
-import { type CompanySettingsFormData } from '../types/company-settings.schema'
+import apiClientFormData from '@/lib/api-client-form-data'
 import { QUERY_KEY } from '@/constants/query-key'
+import { type CompanySettingsFormData } from '../types/company-settings.schema'
 
 export function useCompanySettingsMutation(companyId: string) {
   const queryClient = useQueryClient()
@@ -22,7 +23,9 @@ export function useCompanySettingsMutation(companyId: string) {
     },
     onSuccess: async (_) => {
       toast.dismiss('company-settings-toast')
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.COMPANY, companyId] })
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.COMPANY, companyId],
+      })
 
       try {
         const response = await apiClient.get<ApiResponse<AuthMe>>(`auth/me`)
@@ -35,6 +38,18 @@ export function useCompanySettingsMutation(companyId: string) {
     onError: () => {
       toast.dismiss('company-settings-toast')
       toast.error('Pengaturan perusahaan gagal diubah.')
+    },
+  })
+}
+
+export function useUploadCompanyLogo() {
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const response = await apiClientFormData.post('companies/logo', formData)
+      return response.data
+    },
+    onError: () => {
+      toast.error('Gagal mengunggah logo.')
     },
   })
 }
