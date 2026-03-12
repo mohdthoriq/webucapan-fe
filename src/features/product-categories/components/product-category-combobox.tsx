@@ -1,33 +1,29 @@
 import { type ReactNode, useMemo } from 'react'
-import type { Account } from '@/types'
+import type { ProductCategory } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
 import {
-  type AccountQueryParams,
-  useAccountsQuery,
-} from '../hooks/use-account-query'
+  type ProductCategoryQueryParams,
+  useProductCategoryQuery,
+} from '../hooks/use-product-category-query'
 
-interface AccountsComboboxProps {
-  value?: string | undefined
+interface ProductCategoryComboboxProps {
+  value?: string
   onValueChange?: (value: string | undefined) => void
   placeholder?: string
   limit?: number
   action?: ReactNode
-  categoryId?: string
-  codePrefixes?: string[]
   disabled?: boolean
 }
 
-export function AccountsCombobox({
+export function ProductCategoryCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Akun',
+  placeholder = 'Pilih Kategori',
   limit = 20,
   action,
-  categoryId,
-  codePrefixes,
   disabled,
-}: AccountsComboboxProps) {
+}: ProductCategoryComboboxProps) {
   const {
     allItems,
     isLoading,
@@ -36,11 +32,10 @@ export function AccountsCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<Account, AccountQueryParams>({
-    queryHook: useAccountsQuery,
+  } = useComboboxQuery<ProductCategory, ProductCategoryQueryParams>({
+    queryHook: useProductCategoryQuery,
     limit,
-    extraParams: { category_id: categoryId, code_prefix: codePrefixes },
-    searchKey: 'search',
+    searchKey: 'name',
   })
 
   const selectedItem = useMemo(
@@ -50,10 +45,10 @@ export function AccountsCombobox({
 
   return (
     <ComboboxBase
-      value={value || undefined}
+      value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari parent akun...'
+      searchPlaceholder='Cari kategori...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -66,13 +61,10 @@ export function AccountsCombobox({
       renderItem={(item) => (
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
-          <span className='text-muted-foreground text-xs'>
-            {item.description}
-          </span>
         </div>
       )}
-      action={action}
       disabled={disabled}
+      action={action}
     />
   )
 }

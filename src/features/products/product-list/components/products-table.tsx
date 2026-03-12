@@ -38,6 +38,7 @@ import {
   DataTableToolbar,
 } from '@/components/data-table'
 import { useBulkDeleteProductMutation } from '../hooks/use-product-list-mutation'
+import { ProductListFilter } from './product-list-filter'
 import { ProductsBulkDeleteDialog } from './products-bulk-delete-dialog'
 import { productsColumns } from './products-columns'
 import { useProducts } from './products-provider'
@@ -124,7 +125,9 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
         table={table}
         searchPlaceholder='Cari produk...'
         searchKey='Nama'
-      />
+      >
+        <ProductListFilter search={search} navigate={navigate} />
+      </DataTableToolbar>
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
@@ -276,13 +279,16 @@ function TableRows({ table }: { table: TanstackTable<Product> }) {
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row cursor-pointer hover:bg-muted/50'
+          className='group/row hover:bg-muted/50 cursor-pointer'
           onClick={() => {
             setCurrentRow(row.original)
             navigate({
               to: '/products/edit',
               search: {},
-              state: { currentRowId: row.original.id } as Record<string, unknown>,
+              state: { currentRowId: row.original.id } as Record<
+                string,
+                unknown
+              >,
             })
           }}
         >

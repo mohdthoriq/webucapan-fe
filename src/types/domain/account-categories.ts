@@ -8,6 +8,7 @@ export interface AccountCategory extends GlobalResponse {
   report_group: string
   code_prefix: string
   is_system: boolean
+  is_cash_bank: boolean
   allowed_transactions: {
     id: string
     name: string

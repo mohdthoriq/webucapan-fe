@@ -9,6 +9,7 @@ export interface AccountCategoryQueryParams {
   name?: string
   type_id?: string
   order?: 'asc' | 'desc'
+  is_cash_bank?: boolean
 }
 
 export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
@@ -20,6 +21,7 @@ export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
       params?.name,
       params?.type_id,
       params?.order,
+      params?.is_cash_bank,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -28,6 +30,9 @@ export function useAccountCategoriesQuery(params?: AccountCategoryQueryParams) {
         ...(params?.name ? { name: params.name } : {}),
         ...(params?.type_id ? { type_id: params.type_id } : {}),
         ...(params?.order ? { order: params.order } : {}),
+        ...(params?.is_cash_bank
+          ? { is_cash_bank: params.is_cash_bank.toString() }
+          : {}),
       })
 
       const url = queryParams.toString()

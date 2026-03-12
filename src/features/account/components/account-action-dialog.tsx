@@ -41,6 +41,7 @@ import {
 } from '../hooks/use-account-form'
 import { AccountCategoryCombobox } from './account-category-combobox'
 import { AccountsCombobox } from './account-combobox'
+import { useAccountCategoriesQuery } from '@/features/admin/account-categories/hooks/use-account-categories-query'
 
 type AccountsActionDialogProps = {
   currentRow?: UseAccountsFormProps['currentRow']
@@ -69,6 +70,24 @@ export function AccountsActionDialog({
   const hasPermission = useHasPermission(
     isEdit ? PERMISSION_KEY.ACCOUNT_EDIT : PERMISSION_KEY.ACCOUNT_ADD
   )
+
+  const { data: categories } = useAccountCategoriesQuery({
+    is_cash_bank: currentRow?.is_cash_bank,
+  })
+
+  useEffect(() => {
+    if (
+      !isEdit &&
+      currentRow?.is_cash_bank &&
+      categories?.data.length &&
+      !form.getValues('category_id')
+    ) {
+      const cashBankCategory = categories.data.find((c) => c.is_cash_bank)
+      if (cashBankCategory) {
+        form.setValue('category_id', cashBankCategory.id)
+      }
+    }
+  }, [categories, currentRow?.is_cash_bank, form, isEdit])
 
   useEffect(() => {
     if (prevCategoryId.current !== categoryId) {
@@ -172,6 +191,9 @@ export function AccountsActionDialog({
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                           categoryId={categoryId}
+                          codePrefixes={
+                            currentRow?.is_cash_bank ? ['1-100'] : undefined
+                          }
                           disabled={!categoryId || !hasPermission}
                         />
                       </FormControl>

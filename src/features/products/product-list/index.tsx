@@ -8,6 +8,7 @@ import { ProductListFallback } from './components/product-list-fallback'
 import { ProductsDialogs } from './components/products-dialogs'
 import { ProductsProvider } from './components/products-provider'
 import { ProductsTable } from './components/products-table'
+import type { ProductsQueryParams } from './hooks/use-product-list-query'
 
 const route = getRouteApi('/_authenticated/products/')
 
@@ -55,13 +56,15 @@ function ProductsContent() {
 function Products() {
   const search = route.useSearch() as Record<string, string>
 
-  // Extract pagination parameters from URL search
-  const page = search?.page ? parseInt(search.page) : undefined
-  const limit = search?.limit ? parseInt(search.limit) : undefined
-  const searchProduct = search?.search ? search.search : undefined
+  const queryParams: ProductsQueryParams = {
+    page: search?.page ? parseInt(search.page) : undefined,
+    limit: search?.limit ? parseInt(search.limit) : undefined,
+    search: search?.search ? search.search : undefined,
+    category_id: search?.category_id ? search.category_id : undefined,
+  }
 
   return (
-    <ProductsProvider paginationParams={{ page, limit, search: searchProduct }}>
+    <ProductsProvider paginationParams={queryParams}>
       <ProductsContent />
     </ProductsProvider>
   )

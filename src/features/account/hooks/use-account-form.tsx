@@ -13,7 +13,7 @@ import {
 } from './use-account-mutation'
 
 export type UseAccountsFormProps = {
-  currentRow?: (Partial<Account> & { category_id?: string }) | null
+  currentRow?: (Partial<Account> & { category_id?: string; is_cash_bank?: boolean }) | null
   onSuccess?: (data: Account) => void
 }
 

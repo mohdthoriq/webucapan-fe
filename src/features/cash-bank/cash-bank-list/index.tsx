@@ -46,7 +46,7 @@ export default function CashBankOverviewPage() {
             className='flex items-center gap-2'
             onClick={() =>
               openDialog('account', {
-                data: { category_id: 'cfb43d3d-60cd-4c4e-ae97-060bfa005a03' },
+                data: { is_cash_bank: true },
               })
             }
           >
@@ -111,7 +111,7 @@ export default function CashBankOverviewPage() {
                     onClick={() =>
                       openDialog('account', {
                         data: {
-                          category_id: 'cfb43d3d-60cd-4c4e-ae97-060bfa005a03',
+                          is_cash_bank: true,
                         },
                       })
                     }
