@@ -1,9 +1,7 @@
-import { useRef, useState } from 'react'
 import { format, parse } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { id } from 'date-fns/locale'
 import { ArrowLeft, CalendarIcon, Loader2, Printer } from 'lucide-react'
-import { useReactToPrint } from 'react-to-print'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
@@ -27,33 +25,27 @@ import {
   BalanceSheetProvider,
   useBalanceSheetContext,
 } from './components/balance-sheet-provider'
-import { BalanceSheetPrint } from './components/print/balance-sheet-print'
 import { ReportSectionSkeleton } from './components/report-section-skeleton'
 import { ReportSectionView } from './components/report-section-view'
+import { usePrintBalanceSheetQuery } from './hooks/use-print-balance-sheet-query'
 
 const route = getRouteApi('/_authenticated/reports/balance-sheet/')
 
 export function BalanceSheetPageContent() {
   const { date, setDate, data: rawData, isLoading } = useBalanceSheetContext()
   const navigate = route.useNavigate()
-  const [isPrinting, setIsPrinting] = useState(false)
-  const printRef = useRef<HTMLDivElement>(null)
-
   const reportDate = format(date, 'yyyy-MM-dd')
   const data = rawData?.[reportDate]
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    onBeforePrint: async () => {
-      setIsPrinting(true)
-      return new Promise((resolve) => {
-        setTimeout(resolve, 2000)
-      })
-    },
-    onAfterPrint: () => {
-      setIsPrinting(false)
-    },
-  })
+  const { refetch, isFetching: isPrinting } =
+    usePrintBalanceSheetQuery(reportDate)
+
+  const handlePrint = async () => {
+    const { data: url } = await refetch()
+    if (url) {
+      window.open(url, '_blank')
+    }
+  }
 
   const handleSelectDate = (d: Date) => {
     setDate(d)
@@ -157,19 +149,6 @@ export function BalanceSheetPageContent() {
         </CardContent>
       </Card>
       <BalanceSheetAccountDetailDialog />
-
-      {/* Hidden Print Content */}
-      {data && typeof data !== 'string' && (
-        <div
-          className={
-            isPrinting
-              ? 'absolute top-0 left-0 z-[-1] m-0 w-[210mm] min-w-[210mm] p-0'
-              : 'hidden'
-          }
-        >
-          <BalanceSheetPrint ref={printRef} data={data} date={date} />
-        </div>
-      )}
     </div>
   )
 }

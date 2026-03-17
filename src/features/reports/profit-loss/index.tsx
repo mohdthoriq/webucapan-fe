@@ -1,9 +1,7 @@
-import { useRef, useState } from 'react'
 import { format, parse, startOfMonth, endOfMonth } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
 import { CalendarIcon, Printer, ArrowLeft, Loader2 } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
-import { useReactToPrint } from 'react-to-print'
 import { cn, formatCurrency } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
@@ -16,9 +14,9 @@ import {
 } from '@/components/ui/popover'
 import { PermissionGuard } from '@/components/permission-guard'
 import { ReportSectionSkeleton } from '../balance-sheet/components/report-section-skeleton'
-import { ProfitLossPrint } from './components/print/profit-loss-print'
 import { ProfitLossAccountDetailDialog } from './components/profit-loss-account-detail-dialog'
 import { ProfitLossFallback } from './components/profit-loss-fallback'
+import { usePrintProfitLossQuery } from './hooks/use-print-profit-loss-query'
 // import { ProfitLossOverview } from './components/profit-loss-overview' // Placeholder if not implemented yet
 import {
   ProfitLossProvider,
@@ -55,21 +53,17 @@ function ProfitLossPageContent() {
   //   }
   // }
 
-  const [isPrinting, setIsPrinting] = useState(false)
-  const printRef = useRef<HTMLDivElement>(null)
+  const { refetch, isFetching: isPrinting } = usePrintProfitLossQuery(
+    format(dateFrom, 'yyyy-MM-dd'),
+    format(dateTo, 'yyyy-MM-dd')
+  )
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    onBeforePrint: async () => {
-      setIsPrinting(true)
-      return new Promise((resolve) => {
-        setTimeout(resolve, 2000)
-      })
-    },
-    onAfterPrint: () => {
-      setIsPrinting(false)
-    },
-  })
+  const handlePrint = async () => {
+    const { data: url } = await refetch()
+    if (url) {
+      window.open(url, '_blank')
+    }
+  }
 
   return (
     <PermissionGuard
@@ -199,24 +193,6 @@ function ProfitLossPageContent() {
           </CardContent>
         </Card>
         <ProfitLossAccountDetailDialog />
-
-        {/* Hidden Print Content */}
-        {data && (
-          <div
-            className={
-              isPrinting
-                ? 'absolute top-0 left-0 z-[-1] m-0 w-[210mm] min-w-[210mm] p-0'
-                : 'hidden'
-            }
-          >
-            <ProfitLossPrint
-              ref={printRef}
-              data={data}
-              dateFrom={dateFrom}
-              dateTo={dateTo}
-            />
-          </div>
-        )}
       </div>
     </PermissionGuard>
   )
