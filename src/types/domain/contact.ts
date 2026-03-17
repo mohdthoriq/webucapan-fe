@@ -6,6 +6,7 @@ export interface Contact extends GlobalResponse {
   name: string
   type: ContactType
   company: Company
+  company_name: string
   email?: string
   phone?: string
   address?: string

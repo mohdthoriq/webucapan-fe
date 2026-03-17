@@ -120,6 +120,24 @@ export function ContactsActionDialog({
               />
               <FormField
                 control={form.control}
+                name='company_name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Perusahaan</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Masukkan nama perusahaan...'
+                        autoComplete='off'
+                        {...field}
+                        disabled={!hasPermission}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name='phone'
                 render={({ field }) => (
                   <FormItem>

@@ -74,10 +74,10 @@ export const contactsColumns: ColumnDef<Contact>[] = [
       <DataTableColumnHeader column={column} title='Perusahaan' />
     ),
     cell: ({ row }) => {
-      const { company } = row.original
+      const { company_name } = row.original
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{company.name || '-'}</LongText>
+          <LongText className='truncate'>{company_name || '-'}</LongText>
         </div>
       )
     },
