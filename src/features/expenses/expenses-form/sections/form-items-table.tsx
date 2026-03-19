@@ -47,6 +47,7 @@ export function ExpensesFormItems() {
           type='button'
           variant='outline'
           size='sm'
+          className='h-8'
           onClick={handleAddItems}
         >
           <Plus className='mr-2 h-4 w-4' /> Tambah{' '}
@@ -58,7 +59,7 @@ export function ExpensesFormItems() {
           max={100}
           value={itemsAmount}
           onChange={(e) => setItemsAmount(e.target.valueAsNumber)}
-          className='w-16 text-sm'
+          className='h-8 w-16 text-sm'
         />
       </div>
     </div>

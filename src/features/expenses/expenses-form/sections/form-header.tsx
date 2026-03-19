@@ -93,7 +93,7 @@ export function ExpensesFormHeader() {
 
   return (
     <div className='grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3'>
-      <div className='col-span-1 flex gap-6 md:col-span-2 lg:col-span-3'>
+      <div className='col-span-1 flex items-end gap-6 md:col-span-2 lg:col-span-3'>
         <FormField
           control={control}
           name='account_id'
@@ -133,7 +133,7 @@ export function ExpensesFormHeader() {
           control={control}
           name='is_paylater'
           render={({ field }) => (
-            <FormItem className='flex flex-col justify-end'>
+            <FormItem className='flex flex-col pb-1'>
               <div className='flex items-center space-x-2'>
                 <FormControl>
                   <Switch
@@ -203,7 +203,7 @@ export function ExpensesFormHeader() {
                   <Button
                     variant={'outline'}
                     className={cn(
-                      'w-full pl-3 text-left font-normal',
+                      'h-8 w-full pl-3 text-left text-sm font-normal',
                       !field.value && 'text-muted-foreground'
                     )}
                   >
@@ -212,7 +212,7 @@ export function ExpensesFormHeader() {
                     ) : (
                       <span>Pilih tanggal</span>
                     )}
-                    <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                    <CalendarIcon className='ml-auto h-3.5 w-3.5 opacity-50' />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
@@ -239,7 +239,11 @@ export function ExpensesFormHeader() {
             <FormLabel className='text-xs'>Nomor</FormLabel>
             <FormControl>
               <div className='relative'>
-                <Input placeholder='EXP-001' {...field} />
+                <Input
+                  className='h-8 text-sm'
+                  placeholder='EXP-001'
+                  {...field}
+                />
                 {isCheckingNumber && (
                   <div className='absolute top-1/2 right-2 -translate-y-1/2'>
                     <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
@@ -248,7 +252,7 @@ export function ExpensesFormHeader() {
               </div>
             </FormControl>
             {numberIsTaken || hasCheckError ? (
-              <p className='text-destructive text-[0.8rem] font-medium'>
+              <p className='text-destructive text-[0.7rem] font-medium'>
                 {checkResult?.message ||
                   (hasCheckError
                     ? 'Gagal memeriksa nomor'
@@ -312,7 +316,7 @@ export function ExpensesFormHeader() {
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-full pl-3 text-left font-normal',
+                        'h-8 w-full pl-3 text-left text-sm font-normal',
                         !field.value && 'text-muted-foreground'
                       )}
                     >
@@ -321,7 +325,7 @@ export function ExpensesFormHeader() {
                       ) : (
                         <span>Pilih tanggal</span>
                       )}
-                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                      <CalendarIcon className='ml-auto h-3.5 w-3.5 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -350,7 +354,7 @@ export function ExpensesFormHeader() {
               <FormLabel className='text-xs'>Termin Pembayaran</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className='w-full'>
+                  <SelectTrigger className='h-8 w-full text-sm font-normal'>
                     <SelectValue placeholder='Pilih termin pembayaran' />
                   </SelectTrigger>
                 </FormControl>

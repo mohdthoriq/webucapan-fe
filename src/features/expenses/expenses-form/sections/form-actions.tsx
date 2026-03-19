@@ -13,11 +13,22 @@ export function ExpensesFormActions({
   // However, we need to handle the back button.
 
   return (
-    <div className='flex justify-end gap-4'>
-      <Button type='button' variant='outline' onClick={() => history.back()}>
+    <div className='flex justify-end gap-2'>
+      <Button
+        type='button'
+        variant='outline'
+        size='sm'
+        className='h-8 px-4 text-xs'
+        onClick={() => history.back()}
+      >
         Batal
       </Button>
-      <Button type='submit' disabled={isSubmitting}>
+      <Button
+        type='submit'
+        size='sm'
+        className='h-8 px-4 text-xs'
+        disabled={isSubmitting}
+      >
         {isSubmitting
           ? 'Menyimpan...'
           : isEdit

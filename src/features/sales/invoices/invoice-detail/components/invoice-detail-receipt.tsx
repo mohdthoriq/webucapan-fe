@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { useNavigate } from '@tanstack/react-router'
 import type { SalesInvoice } from '@/types'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/table'
 import { usePrintSalesInvoiceQuery } from '../hooks/use-print-sales-invoice-query'
 import { InvoiceDetailRowActions } from './invoice-detail-row-actions'
-import { useNavigate } from '@tanstack/react-router'
 
 interface InvoiceDetailReceiptProps {
   invoice: SalesInvoice
@@ -38,120 +38,121 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
   const navigate = useNavigate()
 
   return (
-    <Card className='gap-3 overflow-hidden py-4 shadow-md'>
-      <CardHeader className='py-0'>
+    <Card className='border-border gap-1 overflow-hidden shadow-none'>
+      <CardHeader className=''>
         <div className='flex items-center justify-between'>
-          <CardTitle className='flex items-center gap-4 text-2xl font-bold tracking-tight'>
+          <CardTitle className='flex items-center gap-2 text-lg font-bold tracking-tight'>
             # {invoice.invoice_number}
             <Badge
               variant='outline'
               className={cn(
-                'text-[12 px] w-fit px-2 py-1 font-bold tracking-wider uppercase',
+                'h-5 px-1.5 text-[10px] font-bold tracking-wider uppercase',
                 getStatusStyles(invoice.payment_status)
               )}
             >
               {invoiceLabel[invoice.payment_status] || invoice.payment_status}
             </Badge>
           </CardTitle>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1.5'>
             <Button
               variant='outline'
-              className='gap-2 shadow-sm'
+              size='sm'
+              className='h-7 gap-2 text-xs shadow-sm'
               onClick={handlePrint}
               disabled={isPrinting}
             >
               {isPrinting ? (
-                <Loader2 className='h-4 w-4 animate-spin' />
+                <Loader2 className='h-3 w-3 animate-spin' />
               ) : (
-                <Printer className='h-4 w-4' />
+                <Printer className='h-3 w-3' />
               )}
-              {isPrinting ? 'Memproses...' : 'Cetak Struk'}
+              {isPrinting ? 'Memproses...' : 'Cetak'}
             </Button>
             <InvoiceDetailRowActions invoice={invoice} />
           </div>
         </div>
       </CardHeader>
-      <hr />
-      <CardContent>
-        <div className='mb-10 grid grid-cols-1 gap-10 px-2 py-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className='space-y-4'>
-            <p className='mb-3 text-sm font-bold tracking-widest'>
-              Pelanggan :
+      <Separator />
+      <CardContent className='px-4 pt-4'>
+        <div className='mb-6 grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2 lg:grid-cols-3'>
+          <div className=''>
+            <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+              Pelanggan:
             </p>
-            <div className='space-y-4'>
+            <div className=''>
               <div>
-                <p className='text-primary mb-2 text-lg font-bold'>
+                <p className='text-md text-primary font-bold'>
                   {invoice.customer?.name}
                 </p>
-                <div className='flex items-center gap-2'>
-                  <Building2 className='text-muted-foreground h-4 w-4' />
-                  <p className='text-muted-foreground text-sm'>
-                    {invoice.company?.name || '-'}
+                <div className='mt-1 flex items-center gap-2'>
+                  <Building2 className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-xs'>
+                    {invoice?.customer?.company_name || '-'}
                   </p>
                 </div>
               </div>
 
-              <div className='space-y-3'>
+              <div className='space-y-1.5'>
                 <div className='flex items-center gap-2'>
-                  <Mail className='text-muted-foreground h-4 w-4' />
-                  <p className='text-muted-foreground text-sm'>
+                  <Mail className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-xs'>
                     {invoice.customer?.email || '-'}
                   </p>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Phone className='text-muted-foreground h-4 w-4' />
-                  <p className='text-muted-foreground text-sm'>
+                  <Phone className='text-muted-foreground h-3.5 w-3.5' />
+                  <p className='text-muted-foreground text-xs'>
                     {invoice.customer?.phone || '-'}
                   </p>
                 </div>
-                <div className='flex items-start gap-2 pt-1'>
-                  <MapPin className='text-muted-foreground mt-0.5 h-4 w-4 flex-shrink-0' />
-                  <p className='text-muted-foreground max-w-xs text-sm leading-relaxed'>
+                <div className='flex items-start gap-2 pt-0.5'>
+                  <MapPin className='text-muted-foreground mt-0.5 h-3.5 w-3.5 flex-shrink-0' />
+                  <p className='text-muted-foreground max-w-xs text-xs leading-relaxed'>
                     {invoice.customer?.address || '-'}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <div className='space-y-4'>
+          <div className=''>
             <div>
-              <p className='mb-3 text-sm font-bold tracking-widest'>
-                Nomor Invoice :
+              <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+                Nomor Invoice:
               </p>
-              <p className='text-primary text-md font-semibold'>
+              <p className='text-primary text-sm font-semibold'>
                 {invoice.invoice_number || '-'}
               </p>
             </div>
-            <div>
-              <p className='mb-3 text-sm font-bold tracking-widest'>
-                Detail Waktu :
+            <div className='mt-5'>
+              <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+                Detail Waktu:
               </p>
-              <div className='space-y-3'>
-                <div className='flex items-baseline gap-3'>
-                  <span className='text-muted-foreground w-32 text-sm'>
+              <div className='mt-1.5 space-y-1.5'>
+                <div className='flex items-baseline gap-2'>
+                  <span className='text-muted-foreground w-28 text-xs'>
                     Tanggal Invoice:
                   </span>
-                  <span className='text-primary text-sm font-semibold'>
-                    {format(new Date(invoice.invoice_date), 'dd MMMM yyyy', {
+                  <span className='text-primary text-xs font-semibold'>
+                    {format(new Date(invoice.invoice_date), 'dd MMM yyyy', {
                       locale: id,
                     })}
                   </span>
                 </div>
-                <div className='flex items-baseline gap-3'>
-                  <span className='text-muted-foreground w-32 text-sm'>
+                <div className='flex items-baseline gap-2'>
+                  <span className='text-muted-foreground w-28 text-xs'>
                     Jatuh Tempo:
                   </span>
-                  <span className='text-primary text-sm font-semibold'>
-                    {format(new Date(invoice.due_date), 'dd MMMM yyyy', {
+                  <span className='text-primary text-xs font-semibold'>
+                    {format(new Date(invoice.due_date), 'dd MMM yyyy', {
                       locale: id,
                     })}
                   </span>
                 </div>
-                <div className='flex items-baseline gap-3'>
-                  <span className='text-muted-foreground w-32 text-sm'>
+                <div className='flex items-baseline gap-2'>
+                  <span className='text-muted-foreground w-28 text-xs'>
                     Termin Pembayaran:
                   </span>
-                  <span className='text-primary text-sm font-semibold'>
+                  <span className='text-primary text-xs font-semibold'>
                     {invoice.payment_term?.name || '-'}
                   </span>
                 </div>
@@ -160,53 +161,55 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
           </div>
           <div className='space-y-1'>
             <div>
-              <p className='mb-3 text-sm font-bold tracking-widest'>Tag</p>
-              <div className='flex flex-wrap gap-2'>
+              <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+                Tag
+              </p>
+              <div className='mt-1.5 flex flex-wrap gap-1.5'>
                 {invoice.tags && invoice.tags.length > 0 ? (
                   invoice.tags.map((tag, idx) => (
                     <Badge
                       key={idx}
-                      variant='outline'
-                      className='px-2 py-1 text-[12px] font-semibold uppercase'
+                      variant='secondary'
+                      className='h-5 px-1.5 text-[10px] font-medium uppercase'
                     >
                       {typeof tag === 'object' ? tag.name : tag}
                     </Badge>
                   ))
                 ) : (
-                  <span className='text-muted-foreground text-sm'>-</span>
+                  <span className='text-muted-foreground text-xs'>-</span>
                 )}
               </div>
             </div>
           </div>
         </div>
 
-        <Separator className='mb-8' />
+        <Separator className='mb-4' />
 
         {/* Invoice Items */}
-        <div className='rounded-md border'>
+        <div className='overflow-hidden rounded-md border'>
           <Table>
             <TableHeader>
-              <TableRow className='bg-muted hover:bg-transparent'>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+              <TableRow className='bg-muted/50 hover:bg-transparent'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-[10px] font-bold tracking-wider uppercase'>
                   Item
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-[10px] font-bold tracking-wider uppercase'>
                   Deskripsi
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-[10px] font-bold tracking-wider uppercase'>
                   Harga
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 text-center font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-center text-[10px] font-bold tracking-wider uppercase'>
                   Qty
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-[10px] font-bold tracking-wider uppercase'>
                   Discount
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 font-semibold tracking-wider uppercase'>
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-[10px] font-bold tracking-wider uppercase'>
                   Pajak
                 </TableHead>
-                <TableHead className='text-muted-foreground h-10 p-4 text-right font-semibold tracking-wider uppercase'>
-                  Total Harga
+                <TableHead className='text-muted-foreground h-8 px-2 py-1 text-right text-[10px] font-bold tracking-wider uppercase'>
+                  Total
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -214,41 +217,41 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               {invoice.sales_invoice_items.map((item, idx) => (
                 <TableRow
                   key={idx}
-                  className='hover:bg-muted/80 transition-colors'
+                  className='hover:bg-muted/40 transition-colors'
                 >
-                  <TableCell className='p-4 align-top'>
-                    <p className='text-primary cursor-pointer font-semibold hover:underline'>
+                  <TableCell className='px-2 py-1.5 align-top'>
+                    <p className='text-primary text-[13px] font-semibold'>
                       {item.product?.name || '-'}
                     </p>
                   </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='font-semibold'>{item.description || '-'}</p>
+                  <TableCell className='px-2 py-1.5 align-top'>
+                    <p className='text-[13px]'>{item.description || '-'}</p>
                   </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='text-sm font-medium'>
+                  <TableCell className='px-2 py-1.5 align-top'>
+                    <p className='text-[13px] font-medium'>
                       {formatCurrency(
                         Number(item.unit_price),
                         invoice.currency
                       )}
                     </p>
                   </TableCell>
-                  <TableCell className='p-4 text-center align-top'>
-                    <p className='text-sm font-medium'>
+                  <TableCell className='px-2 py-1.5 text-center align-top'>
+                    <p className='text-[13px] font-medium'>
                       {item.quantity || '-'}
                     </p>
                   </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='text-sm font-medium'>
+                  <TableCell className='px-2 py-1.5 align-top'>
+                    <p className='text-[13px] font-medium'>
                       {item.discount ? item.discount + '%' : '-'}
                     </p>
                   </TableCell>
-                  <TableCell className='p-4 align-top'>
-                    <p className='text-sm font-medium'>
+                  <TableCell className='px-2 py-1.5 align-top'>
+                    <p className='text-muted-foreground text-[13px] font-medium'>
                       {item.tax?.name ?? '-'}
                     </p>
                   </TableCell>
-                  <TableCell className='p-4 text-right align-top'>
-                    <p className='text-sm font-bold'>
+                  <TableCell className='px-2 py-1.5 text-right align-top'>
+                    <p className='text-[13px] font-bold'>
                       {formatCurrency(
                         Number(item.line_total),
                         invoice.currency
@@ -261,13 +264,13 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
           </Table>
         </div>
 
-        <div className='mt-10 flex flex-col items-start justify-between gap-8 md:flex-row'>
+        <div className='mt-6 flex flex-col items-start justify-between gap-6 md:flex-row'>
           <div className='hidden flex-1 md:block'>
             {/* Space for notes or signatures if needed */}
           </div>
 
-          <div className='bg-muted/30 w-full space-y-3 rounded-lg p-6 md:w-120'>
-            <div className='flex justify-between border-b pb-2 text-sm'>
+          <div className='bg-muted/20 w-full space-y-1.5 rounded-lg p-4 md:w-96'>
+            <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
               <span className='text-muted-foreground'>Subtotal</span>
               <span className='font-medium'>
                 {formatCurrency(Number(invoice.subtotal), invoice.currency)}
@@ -294,7 +297,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             ).map(([name, amount]) => (
               <div
                 key={name}
-                className='flex justify-between border-b pb-2 text-sm'
+                className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
               >
                 <span className='text-muted-foreground'>{name}</span>
                 <span className='font-medium'>
@@ -306,7 +309,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             {/* Fallback if no specific tax items but a total exists */}
             {invoice.sales_invoice_items.every((item) => !item.tax) &&
               Number(invoice.tax_total) > 0 && (
-                <div className='flex justify-between border-b pb-2 text-sm font-medium'>
+                <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>
                   <span>
                     {formatCurrency(
@@ -317,9 +320,9 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 </div>
               )}
 
-            <div className='flex justify-between border-b pb-2 text-sm'>
-              <span className='text-lg font-medium'>Total</span>
-              <span className='text-lg font-medium'>
+            <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
+              <span className='text-muted-foreground font-medium'>Total</span>
+              <span className='text-lg font-bold'>
                 {formatCurrency(Number(invoice.total), invoice.currency)}
               </span>
             </div>
@@ -327,24 +330,28 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
             {invoice.payments?.map((payment) => (
               <div
                 key={payment.id}
-                className='text-primary flex cursor-pointer justify-between border-b pb-2 text-sm font-medium hover:underline'
-                onClick={() => navigate({
-                  to: '/cash-bank/detail',
-                  search: {
-                    accountId: payment.account.id,
-                    transactionId: payment.id
-                  }
-                })}
+                className='border-muted-foreground/10 hover:text-primary flex cursor-pointer justify-between border-b pb-1 text-sm font-medium transition-colors hover:underline'
+                onClick={() =>
+                  navigate({
+                    to: '/cash-bank/detail',
+                    search: {
+                      accountId: payment.account.id,
+                      transactionId: payment.id,
+                    },
+                  })
+                }
               >
-                <span>Pembayaran {payment.account.name}</span>
-                <span>
+                <span className='text-muted-foreground text-xs'>
+                  Pembayaran {payment.account.name}
+                </span>
+                <span className='text-xs'>
                   {formatCurrency(Number(payment.amount), invoice.currency)}
                 </span>
               </div>
             ))}
-            <div className='flex items-center justify-between'>
-              <span className='text-lg font-bold'>Sisa Tagihan</span>
-              <span className='text-primary text-2xl font-black'>
+            <div className='flex items-center justify-between pt-1'>
+              <span className='text-sm font-bold'>Sisa Tagihan</span>
+              <span className='text-primary text-lg font-black'>
                 {formatCurrency(Number(invoice.outstanding), invoice.currency)}
               </span>
             </div>

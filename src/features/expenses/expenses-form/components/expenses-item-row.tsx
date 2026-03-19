@@ -100,7 +100,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
                 defaultValue={field.value ?? undefined}
               >
                 <FormControl>
-                  <SelectTrigger className='h-8 w-full text-xs'>
+                  <SelectTrigger className='h-8 w-full text-sm font-normal'>
                     <SelectValue placeholder='Pajak' />
                   </SelectTrigger>
                 </FormControl>

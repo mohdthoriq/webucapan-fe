@@ -36,7 +36,7 @@ export function InvoiceFormCombobox({
 function ContactCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Pelanggan',
+  placeholder = 'Pilih Vendor',
   limit = 20,
   action,
   contactTypeId,
@@ -67,7 +67,7 @@ function ContactCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari kontak...'
+      searchPlaceholder='Cari vendor...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
@@ -76,6 +76,7 @@ function ContactCombobox({
       onSearch={setSearchTerm}
       onLoadMore={loadMore}
       onRetry={refetch}
+      action={action}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
@@ -87,7 +88,6 @@ function ContactCombobox({
           )}
         </div>
       )}
-      action={action}
     />
   )
 }
@@ -132,17 +132,17 @@ function ProductCombobox({
       onSearch={setSearchTerm}
       onLoadMore={loadMore}
       onRetry={refetch}
+      action={action}
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
           <span className='text-muted-foreground text-xs'>
             SKU: {item.sku} • Rp{' '}
-            {Number(item.sale_price).toLocaleString('id-ID')}
+            {Number(item.purchase_price).toLocaleString('id-ID')}
           </span>
         </div>
       )}
-      action={action}
     />
   )
 }

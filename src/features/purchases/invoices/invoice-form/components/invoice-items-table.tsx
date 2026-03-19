@@ -44,14 +44,14 @@ export function InvoiceItemsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='h-10 px-2 text-xs'>Produk</TableHead>
-            <TableHead className='h-10 px-2 text-xs'>Deskripsi</TableHead>
-            <TableHead className='h-10 px-2 text-xs'>Qty</TableHead>
-            <TableHead className='h-10 px-2 text-xs'>Harga</TableHead>
-            <TableHead className='h-10 px-2 text-xs'>Disc</TableHead>
-            <TableHead className='h-10 px-2 text-xs'>Pajak</TableHead>
-            <TableHead className='h-10 px-2 text-right text-xs'>Total</TableHead>
-            <TableHead className='h-10 px-2'></TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Produk</TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Deskripsi</TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Qty</TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Harga</TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Disc</TableHead>
+            <TableHead className='h-8 px-2 text-xs'>Pajak</TableHead>
+            <TableHead className='h-8 px-2 text-right text-xs'>Total</TableHead>
+            <TableHead className='h-8 px-2'></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -26,23 +26,32 @@ export function TransactionTable({
   if (!payments || payments.length === 0) return null
 
   return (
-    <Card className='overflow-hidden'>
-      <CardHeader>
-        <CardTitle className='text-lg font-semibold'>
+    <Card className='border-border gap-0 shadow-none'>
+      <CardHeader className='pb-3'>
+        <CardTitle className='text-base font-semibold'>
           Riwayat Transaksi
         </CardTitle>
       </CardHeader>
-      <hr />
-      <CardContent className='pt-2'>
-        <div className='rounded-xl border'>
+      <CardContent className='gap-0'>
+        <div className='border-border rounded-md border'>
           <Table>
             <TableHeader>
-              <TableRow className='bg-muted/50 hover:transparent'>
-                <TableHead className='w-[100px] p-4'>Tanggal</TableHead>
-                <TableHead className='p-4'>Nomor</TableHead>
-                <TableHead className='p-4'>Referensi</TableHead>
-                <TableHead className='p-4'>Akun</TableHead>
-                <TableHead className='p-4 text-right'>Jumlah</TableHead>
+              <TableRow className='bg-muted/50 hover:bg-transparent'>
+                <TableHead className='text-muted-foreground h-8 px-4 py-1 text-[10px] font-bold tracking-wider uppercase'>
+                  Tanggal
+                </TableHead>
+                <TableHead className='text-muted-foreground h-8 px-4 py-1 text-[10px] font-bold tracking-wider uppercase'>
+                  Nomor
+                </TableHead>
+                <TableHead className='text-muted-foreground h-8 px-4 py-1 text-[10px] font-bold tracking-wider uppercase'>
+                  Referensi
+                </TableHead>
+                <TableHead className='text-muted-foreground h-8 px-4 py-1 text-[10px] font-bold tracking-wider uppercase'>
+                  Akun
+                </TableHead>
+                <TableHead className='text-muted-foreground h-8 px-4 py-1 text-right text-[10px] font-bold tracking-wider uppercase'>
+                  Jumlah
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -51,8 +60,8 @@ export function TransactionTable({
                   key={payment.id}
                   className='hover:bg-muted/30 transition-colors'
                 >
-                  <TableCell className='p-4 font-medium'>
-                    {format(new Date(payment.payment_date), 'dd MMMM yyyy', {
+                  <TableCell className='px-4 py-2 text-[13px] font-medium'>
+                    {format(new Date(payment.payment_date), 'dd MMM yyyy', {
                       locale: id,
                     })}
                   </TableCell>
@@ -66,7 +75,7 @@ export function TransactionTable({
                         },
                       })
                     }
-                    className='text-primary cursor-pointer p-4 hover:underline'
+                    className='text-primary cursor-pointer px-4 py-2 text-[13px] hover:underline'
                   >
                     {payment.reference_no || '-'}
                   </TableCell>
@@ -80,16 +89,16 @@ export function TransactionTable({
                         },
                       })
                     }
-                    className='text-primary cursor-pointer p-4 hover:underline'
+                    className='text-primary cursor-pointer px-4 py-2 text-[13px] hover:underline'
                   >
                     {payment.note || '-'}
                   </TableCell>
-                  <TableCell className='p-4'>
+                  <TableCell className='px-4 py-2 text-[13px]'>
                     <span className='font-medium'>
                       {payment.account.name.replace('_', ' ')}
                     </span>
                   </TableCell>
-                  <TableCell className='p-4 text-right font-semibold'>
+                  <TableCell className='px-4 py-2 text-right text-[13px] font-semibold'>
                     {formatCurrency(payment.amount, currency)}
                   </TableCell>
                 </TableRow>

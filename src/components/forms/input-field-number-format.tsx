@@ -91,7 +91,7 @@ export const InputFieldNumberFormat = forwardRef<
       type='text'
       value={displayValue}
       onChange={handleChange}
-      className={cn('text-right font-medium', className)}
+      className={cn('text-right font-medium w-full', className)}
       startAdornment={
         prefix && (
           <span className='text-muted-foreground font-semibold'>{prefix}</span>

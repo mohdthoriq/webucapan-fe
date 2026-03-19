@@ -42,27 +42,27 @@ export function InvoiceDetail() {
     invoice.payment_status === 'partially_paid'
 
   return (
-    <div className='space-y-6'>
-      <Card>
-        <CardHeader>
-          <div className='mb-2 flex items-center justify-between'>
+    <div className='space-y-4 font-sans'>
+      <Card className='gap-1'>
+        <CardHeader className='py-3'>
+          <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-4xl font-semibold tracking-tight'>
-                Detail Tagihan Pembelian {invoice.invoice_number}
+              <h1 className='text-xl font-semibold'>
+                Detail Tagihan Pembelian {/* invoice.invoice_number */}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>
               <Button
                 variant='outline'
                 onClick={() => navigate({ to: '/purchases/invoices' })}
-                className='gap-2'
+                className='h-8 gap-2 px-3 text-xs'
               >
-                <ArrowLeft className='h-4 w-4' /> Kembali
+                <ArrowLeft className='h-3.5 w-3.5' /> Kembali
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent className='space-y-6'>
+        <CardContent className='space-y-4'>
           <InvoiceDetailReceipt invoice={invoice} />
           <InvoicePaymentsCard invoice={invoice} />
 

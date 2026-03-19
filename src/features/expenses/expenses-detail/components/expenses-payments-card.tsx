@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Form,
   FormControl,
@@ -46,32 +47,31 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
   if (expense.payment_status === 'paid') return null
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Terima Pembayaran</CardTitle>
+    <Card className='border-border gap-0 shadow-none'>
+      <CardHeader className='pb-3 border-none'>
+        <CardTitle className='text-base font-semibold'>
+          Kirim Pembayaran
+        </CardTitle>
       </CardHeader>
-      <hr />
-      <CardContent>
+      <Separator className='' />
+      <CardContent className='pt-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-4 pt-4'
-          >
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            <div className='grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2 xl:grid-cols-3'>
               {/* Amount */}
               <FormField
                 control={form.control}
                 name='amount'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Pembayaran</FormLabel>
+                  <FormItem className='space-y-1'>
+                    <FormLabel className='text-xs'>Total Pembayaran</FormLabel>
                     <FormControl>
                       <InputFieldNumberFormat
                         value={field.value ?? ''}
                         onValueChange={(value) => field.onChange(value ?? '')}
                         placeholder='0'
                         prefix='Rp'
-                        className='min-w-[100px]'
+                        className='h-8 text-sm'
                       />
                     </FormControl>
                     <FormMessage />
@@ -83,24 +83,26 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 control={form.control}
                 name='payment_date'
                 render={({ field }) => (
-                  <FormItem className='flex flex-col'>
-                    <FormLabel>Tanggal Pembayaran</FormLabel>
+                  <FormItem className='flex flex-col space-y-1'>
+                    <FormLabel className='text-xs'>
+                      Tanggal Pembayaran
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
                             variant={'outline'}
                             className={cn(
-                              'w-full pl-3 text-left font-normal',
+                              'h-8 w-full pl-3 text-left text-sm font-normal',
                               !field.value && 'text-muted-foreground'
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP')
+                              format(field.value, 'dd MMM yyyy')
                             ) : (
                               <span>Pilih tanggal</span>
                             )}
-                            <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                            <CalendarIcon className='ml-auto h-3.5 w-3.5 opacity-50' />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -125,8 +127,8 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 control={form.control}
                 name='account_id'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dibayar dari</FormLabel>
+                  <FormItem className='space-y-1'>
+                    <FormLabel className='text-xs'>Dibayar dari</FormLabel>
                     <ExpensesFormCombobox
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
@@ -142,8 +144,8 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 control={form.control}
                 name='tags'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tag</FormLabel>
+                  <FormItem className='space-y-1'>
+                    <FormLabel className='text-xs'>Tag</FormLabel>
                     <FormControl>
                       <MultiSelectDropdown
                         options={
@@ -167,13 +169,13 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                 control={form.control}
                 name='note'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
+                  <FormItem className='space-y-1'>
+                    <FormLabel className='text-xs'>
                       Referensi
-                      <Tooltip>
-                        <TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
                           <TooltipTrigger>
-                            <span className='text-muted-foreground text-xs'>
+                            <span className='text-muted-foreground ml-1 text-[10px]'>
                               (?)
                             </span>
                           </TooltipTrigger>
@@ -183,19 +185,28 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                               (opsional)
                             </p>
                           </TooltipContent>
-                        </TooltipProvider>
-                      </Tooltip>
+                        </Tooltip>
+                      </TooltipProvider>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder='Referensi pembayaran...' {...field} />
+                      <Input
+                        placeholder='Referensi pembayaran...'
+                        {...field}
+                        className='h-8 text-sm'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className='flex justify-end'>
-              <Button type='submit' disabled={isSubmitting}>
+            <div className='flex justify-end pt-2'>
+              <Button
+                type='submit'
+                size='sm'
+                className='h-8 px-4 text-xs'
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? 'Memproses...' : 'Simpan Pembayaran'}
               </Button>
             </div>
