@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, ProfitLossReportData } from '@/types'
 import apiClient from '@/lib/api-client'
@@ -50,16 +51,28 @@ export function useProfitLossReportQuery(params?: ProfitLossReportQuery) {
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.date_from
-          ? { date_from: params.date_from.toISOString() }
+          ? { date_from: format(params.date_from, 'yyyy-MM-dd') }
           : {}),
-        ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
+        ...(params?.date_to
+          ? { date_to: format(params.date_to, 'yyyy-MM-dd') }
+          : {}),
         ...(params?.tag_id ? { tag_id: params.tag_id } : {}),
         ...(params?.currency_id ? { currency_id: params.currency_id } : {}),
         ...(params?.comparison_date_from
-          ? { comparison_date_from: params.comparison_date_from.toISOString() }
+          ? {
+              comparison_date_from: format(
+                params.comparison_date_from,
+                'yyyy-MM-dd'
+              ),
+            }
           : {}),
         ...(params?.comparison_date_to
-          ? { comparison_date_to: params.comparison_date_to.toISOString() }
+          ? {
+              comparison_date_to: format(
+                params.comparison_date_to,
+                'yyyy-MM-dd'
+              ),
+            }
           : {}),
         ...(params?.view_by ? { view_by: params.view_by } : {}),
         ...(params?.comparison_periods

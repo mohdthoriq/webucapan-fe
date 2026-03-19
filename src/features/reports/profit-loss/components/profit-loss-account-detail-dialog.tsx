@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react'
 import { format } from 'date-fns'
-// import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { Search, X } from 'lucide-react'
 import { formatNumber } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -38,7 +38,7 @@ export function ProfitLossAccountDetailDialog() {
     per_page: 100,
   })
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   if (!isOpen) return null
 
@@ -156,21 +156,32 @@ export function ProfitLossAccountDetailDialog() {
                                 {trans.source.name}
                               </TableCell>
                               <TableCell
-                                // onClick={() =>
-                                //   navigate({
-                                //     to: '/cash-bank/detail',
-                                //     search: {
-                                //       accountId: trans.account.id,
-                                //       transactionId: trans.reference.id,
-                                //     },
-                                //   })
-                                // }
-                                className='p-4 break-words'
+                                onClick={() =>
+                                  navigate({
+                                    to: '/cash-bank/detail',
+                                    search: {
+                                      accountId: trans.account.id,
+                                      transactionId: trans.reference.id,
+                                    },
+                                  })
+                                }
+                                className='text-primary cursor-pointer p-4 break-words hover:underline'
                               >
                                 {trans.desc}
                               </TableCell>
 
-                              <TableCell className='p-4'>
+                              <TableCell
+                                onClick={() =>
+                                  navigate({
+                                    to: '/cash-bank/detail',
+                                    search: {
+                                      accountId: trans.account.id,
+                                      transactionId: trans.reference.id,
+                                    },
+                                  })
+                                }
+                                className='text-primary cursor-pointer p-4 hover:underline'
+                              >
                                 {trans.reference.number}
                               </TableCell>
                               <TableCell className='p-4 text-right'>

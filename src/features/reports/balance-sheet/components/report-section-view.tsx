@@ -32,9 +32,9 @@ export function ReportSectionView({
   }
 
   return (
-    <div>
+    <div className='p-4'>
       {/* Section Header */}
-      <div className='flex items-center justify-between rounded-md bg-slate-100/20 p-4 text-sm font-bold'>
+      <div className='bg-secondary/50 flex items-center justify-between rounded-md p-4 text-sm font-bold'>
         <span className='text-2xl font-semibold'>{title}</span>
         <span className='text-lg'>{format(date, 'dd/MM/yyyy')}</span>
       </div>
@@ -43,7 +43,7 @@ export function ReportSectionView({
         {categories.map((category) => (
           <div key={category.name}>
             {/* Category Header */}
-            <h4 className='border-b border-slate-200 p-4 text-lg font-medium hover:bg-slate-100/20'>
+            <h4 className='border-border hover:bg-secondary/50 border-b p-4 text-base font-semibold'>
               {category.name}
             </h4>
 
@@ -57,17 +57,17 @@ export function ReportSectionView({
                   >
                     <div className='ml-6 flex gap-4'>
                       {item.account.ref_code ? (
-                        <span className='text-md w-20 font-medium'>
+                        <span className='w-20 text-sm font-medium'>
                           {item.account.ref_code}
                         </span>
                       ) : (
                         '-'
                       )}
-                      <span className='text-md font-medium'>
+                      <span className='text-sm font-medium'>
                         {item.account.name}
                       </span>
                     </div>
-                    <span className='text-md text-primary font-medium'>
+                    <span className='text-primary text-sm font-medium'>
                       {item.net < 0
                         ? `(${formatCurrency(Math.abs(item.net))})`
                         : formatCurrency(item.net)}
@@ -81,15 +81,15 @@ export function ReportSectionView({
                   >
                     <div className='ml-6 flex gap-4'>
                       {item.account.ref_code && (
-                        <span className='text-md w-20 font-medium'>
+                        <span className='w-20 text-sm'>
                           {item.account.ref_code}
                         </span>
                       )}
-                      <span className='text-md font-medium'>
+                      <span className='text-sm'>
                         {item.name || item.account.name}
                       </span>
                     </div>
-                    <span className='text-md text-primary font-medium'>
+                    <span className='text-primary text-sm'>
                       {item.net < 0
                         ? `(${formatCurrency(Math.abs(item.net))})`
                         : formatCurrency(item.net)}
@@ -100,7 +100,7 @@ export function ReportSectionView({
             </div>
 
             {/* Category Total */}
-            <div className='flex items-center justify-between border-b border-slate-200 p-4 text-lg font-medium hover:bg-slate-100/20'>
+            <div className='flex items-center justify-between border-b border-slate-200 p-4 text-base font-semibold hover:bg-slate-100/20'>
               <span>Total {category.name}</span>
               <span>
                 {category.total < 0
@@ -114,7 +114,7 @@ export function ReportSectionView({
 
       {/* Main Section Total */}
       <div className='border-b border-slate-200 p-4 hover:bg-slate-100/20'>
-        <div className='flex items-center justify-between text-lg font-semibold tracking-tight uppercase'>
+        <div className='flex items-center justify-between text-base font-semibold tracking-wide uppercase'>
           <span>{totalLabel}</span>
           <span>
             {section.total < 0

@@ -80,5 +80,13 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.0",
     "vite": "^7.1.11"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+    "chrome >= 109",
+    "firefox >= 115",
+    "edge >= 109"
+  ]
 }

@@ -81,7 +81,7 @@ export function BalanceSheetPageContent() {
             <Button
               variant={'outline'}
               className={cn(
-                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                'w-[240px] justify-start text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
                 !date && 'text-muted-foreground'
               )}
             >
@@ -136,8 +136,8 @@ export function BalanceSheetPageContent() {
             </div>
           ) : (
             <div className='text-muted-foreground flex h-96 flex-col items-center justify-center space-y-4'>
-              <div className='rounded-full bg-slate-100 p-4'>
-                <CalendarIcon className='h-10 w-10 text-slate-400' />
+              <div className='bg-background rounded-full p-4'>
+                <CalendarIcon className='text-muted-foreground h-10 w-10' />
               </div>
               <p className='text-lg font-medium'>Tidak ada data ditemukan</p>
               <p className='max-w-xs text-center text-sm'>
@@ -172,7 +172,7 @@ export function BalanceSheetOverviewWithFilters() {
             <Button
               variant={'outline'}
               className={cn(
-                'w-[240px] justify-start border-blue-200 text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
+                'w-[240px] justify-start text-left font-normal transition-colors hover:border-blue-400 hover:bg-blue-50/50',
                 !date && 'text-muted-foreground'
               )}
             >

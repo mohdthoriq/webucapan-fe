@@ -26,7 +26,7 @@ import { ReportSectionView } from './components/report-section-view'
 
 const route = getRouteApi('/_authenticated/reports/profit-loss/')
 
-function ProfitLossPageContent() {
+export function ProfitLossPageContent() {
   const { dateFrom, dateTo, setDateRange, data, isLoading } =
     useProfitLossContext()
   const navigate = route.useNavigate()
@@ -139,7 +139,7 @@ function ProfitLossPageContent() {
                 <ReportSectionSkeleton />
               </div>
             ) : data ? (
-              <div className='flex flex-col gap-8'>
+              <div className='flex flex-col gap-2'>
                 <ReportSectionView
                   title='Pendapatan'
                   section={data.revenue}
@@ -153,8 +153,8 @@ function ProfitLossPageContent() {
                   date={dateTo}
                 />
 
-                <div className='border-y border-slate-200 bg-slate-100/20 p-5'>
-                  <div className='flex items-center justify-between text-xl font-bold uppercase'>
+                <div className='mx-4 border-y'>
+                  <div className='flex items-center justify-between p-5 text-lg font-bold uppercase'>
                     <span>Laba Kotor</span>
                     <span>
                       {data.gross_profit.total < 0
@@ -171,8 +171,8 @@ function ProfitLossPageContent() {
                   date={dateTo}
                 />
 
-                <div className='border-y p-5 shadow-sm'>
-                  <div className='flex items-center justify-between text-2xl font-bold uppercase'>
+                <div className='mx-4 border-y'>
+                  <div className='flex items-center p-5 justify-between text-lg font-bold uppercase'>
                     <span>Laba Bersih</span>
                     <span>
                       {data.net_income.total < 0

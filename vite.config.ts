@@ -18,7 +18,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-
+  build: {
+    target: ['chrome109', 'edge109', 'firefox115', 'safari15.6'],
+  },
   server: {
     allowedHosts: ['app.manajerku.com'],
   },
