@@ -56,15 +56,18 @@ export function InvoiceFormPage() {
       }
       fallback={<InvoiceFormFallback invoiceForm={invoiceForm} />}
     >
-      <Card className='mb-8'>
-        <CardHeader>
+      <Card className='mb-4'>
+        <CardHeader className='pb-4'>
           <CardTitle>
             <div className='flex items-center justify-between'>
-              {invoiceForm.isEdit
-                ? 'Edit Tagihan Penjualan'
-                : 'Tambah Tagihan Penjualan'}
+              <h1 className='text-xl font-semibold'>
+                {invoiceForm.isEdit
+                  ? 'Edit Tagihan Penjualan'
+                  : 'Tambah Tagihan Penjualan'}
+              </h1>
               <Button
                 variant='link'
+                className='h-auto p-0'
                 onClick={() => {
                   if (invoiceForm.isEdit) {
                     history.back()
@@ -82,12 +85,13 @@ export function InvoiceFormPage() {
           <Form {...invoiceForm.form}>
             <form
               onSubmit={invoiceForm.form.handleSubmit(invoiceForm.onSubmit)}
-              className='space-y-8'
+              className='space-y-6'
               id='invoice-form'
             >
               <InvoiceFormHeader />
               <div className='bg-border h-px' />
               <InvoiceFormItems />
+              <div className='bg-border h-px' />
               <InvoiceFormSummary />
               <InvoiceFormActions
                 isEdit={invoiceForm.isEdit}
