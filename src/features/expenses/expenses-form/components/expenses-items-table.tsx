@@ -38,11 +38,11 @@ export function ExpensesItemsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Akun</TableHead>
-            <TableHead className='w-[200px]'>Deskripsi</TableHead>
-            <TableHead className='w-[100px]'>Pajak</TableHead>
-            <TableHead className='w-[100px] text-right'>Total</TableHead>
-            <TableHead className='w-[50px]'></TableHead>
+            <TableHead className='h-10 px-2 text-xs'>Akun</TableHead>
+            <TableHead className='h-10 px-2 text-xs'>Deskripsi</TableHead>
+            <TableHead className='h-10 px-2 text-xs'>Pajak</TableHead>
+            <TableHead className='h-10 px-2 text-right text-xs'>Total</TableHead>
+            <TableHead className='h-10 px-2'></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

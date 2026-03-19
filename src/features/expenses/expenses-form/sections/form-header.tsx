@@ -92,14 +92,14 @@ export function ExpensesFormHeader() {
     (checkResult.exists === true || checkResult.available === false)
 
   return (
-    <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3'>
       <div className='col-span-1 flex gap-6 md:col-span-2 lg:col-span-3'>
         <FormField
           control={control}
           name='account_id'
           render={({ field }) => (
-            <FormItem className='flex min-w-[300px] flex-col'>
-              <FormLabel>Dibayar Dari</FormLabel>
+            <FormItem className='flex min-w-[300px] flex-col space-y-1'>
+              <FormLabel className='text-xs'>Dibayar Dari</FormLabel>
               <FormControl>
                 <ExpensesFormCombobox
                   type='account'
@@ -133,7 +133,7 @@ export function ExpensesFormHeader() {
           control={control}
           name='is_paylater'
           render={({ field }) => (
-            <FormItem className='flex flex-col justify-end pb-2'>
+            <FormItem className='flex flex-col justify-end'>
               <div className='flex items-center space-x-2'>
                 <FormControl>
                   <Switch
@@ -162,8 +162,8 @@ export function ExpensesFormHeader() {
         control={control}
         name='contact_id'
         render={({ field }) => (
-          <FormItem className='flex flex-col'>
-            <FormLabel>Penerima</FormLabel>
+          <FormItem className='mb-0 flex flex-col space-y-1'>
+            <FormLabel className='text-xs'>Penerima</FormLabel>
             <FormControl>
               <ExpensesFormCombobox
                 type='contact'
@@ -195,8 +195,8 @@ export function ExpensesFormHeader() {
         control={control}
         name='date'
         render={({ field }) => (
-          <FormItem className='flex flex-col'>
-            <FormLabel>Tgl. Transaksi</FormLabel>
+          <FormItem className='mb-0 flex flex-col space-y-1'>
+            <FormLabel className='text-xs'>Tgl. Transaksi</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -235,8 +235,8 @@ export function ExpensesFormHeader() {
         control={control}
         name='expense_number'
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nomor</FormLabel>
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Nomor</FormLabel>
             <FormControl>
               <div className='relative'>
                 <Input placeholder='EXP-001' {...field} />
@@ -265,8 +265,8 @@ export function ExpensesFormHeader() {
         control={control}
         name='tags'
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Tag</FormLabel>
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Tag</FormLabel>
             <FormControl>
               <MultiSelectDropdown
                 options={
@@ -304,8 +304,8 @@ export function ExpensesFormHeader() {
           control={control}
           name='due_date'
           render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Jatuh Tempo</FormLabel>
+            <FormItem className='mb-0 flex flex-col space-y-1'>
+              <FormLabel className='text-xs'>Jatuh Tempo</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -346,8 +346,8 @@ export function ExpensesFormHeader() {
           control={control}
           name='payment_term_id'
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Termin Pembayaran</FormLabel>
+            <FormItem className='mb-0 space-y-1'>
+              <FormLabel className='text-xs'>Termin Pembayaran</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className='w-full'>

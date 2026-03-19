@@ -89,14 +89,14 @@ export function InvoiceFormHeader() {
     (checkResult.exists === true || checkResult.available === false)
 
   return (
-    <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3'>
       <div className='col-span-1 md:col-span-2 lg:col-span-1'>
         <FormField
           control={control}
           name='vendor_id'
           render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Vendor</FormLabel>
+            <FormItem className='mb-0 space-y-1'>
+              <FormLabel className='text-xs'>Vendor</FormLabel>
               <FormControl>
                 <InvoiceFormCombobox
                   value={field.value}
@@ -132,8 +132,8 @@ export function InvoiceFormHeader() {
         control={control}
         name='invoice_number'
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nomor Invoice</FormLabel>
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Nomor Invoice</FormLabel>
             <FormControl>
               <div className='relative'>
                 <Input placeholder='INV-001' {...field} />
@@ -163,8 +163,8 @@ export function InvoiceFormHeader() {
         control={control}
         name='currency'
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Mata Uang</FormLabel>
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Mata Uang</FormLabel>
             <FormControl>
               <Input {...field} readOnly />
             </FormControl>
@@ -178,8 +178,8 @@ export function InvoiceFormHeader() {
         control={control}
         name='invoice_date'
         render={({ field }) => (
-          <FormItem className='flex flex-col'>
-            <FormLabel>Tanggal Invoice</FormLabel>
+          <FormItem className='mb-0 flex flex-col space-y-1'>
+            <FormLabel className='text-xs'>Tanggal Invoice</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -219,8 +219,8 @@ export function InvoiceFormHeader() {
         control={control}
         name='due_date'
         render={({ field }) => (
-          <FormItem className='flex flex-col'>
-            <FormLabel>Jatuh Tempo</FormLabel>
+          <FormItem className='mb-0 flex flex-col space-y-1'>
+            <FormLabel className='text-xs'>Jatuh Tempo</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -259,8 +259,8 @@ export function InvoiceFormHeader() {
         control={control}
         name='payment_term_id'
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Termin Pembayaran</FormLabel>
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Termin Pembayaran</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger className='w-full'>
@@ -305,8 +305,8 @@ export function InvoiceFormHeader() {
           control={control}
           name='tags'
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tag</FormLabel>
+            <FormItem className='mb-0 space-y-1'>
+              <FormLabel className='text-xs'>Tag</FormLabel>
               <FormControl>
                 <MultiSelectDropdown
                   options={

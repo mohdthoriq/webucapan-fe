@@ -67,12 +67,12 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
 
   return (
     <TableRow>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.product_id`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <InvoiceFormCombobox
                 type='product'
                 value={field.value}
@@ -107,25 +107,25 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           )}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.description`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} className='h-8 text-sm' />
               </FormControl>
             </FormItem>
           )}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.quantity`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <FormControl>
                 <Input
                   type='number'
@@ -136,7 +136,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                       e.target.value === '' ? '' : Number(e.target.value)
                     )
                   }
-                  className='w-[70px]'
+                  className='h-8 w-[60px] text-sm'
                 />
               </FormControl>
               <FormMessage />
@@ -144,19 +144,19 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           )}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.unit_price`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <FormControl>
                 <InputFieldNumberFormat
                   placeholder='0'
                   value={field.value}
                   onValueChange={field.onChange}
                   prefix='Rp'
-                  className='w-[150px] text-right'
+                  className='h-8 w-[130px] text-right text-sm'
                 />
               </FormControl>
               <FormMessage />
@@ -164,12 +164,12 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           )}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.discount`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <FormControl>
                 <Input
                   type='number'
@@ -181,7 +181,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                   }
                   value={field.value ?? ''}
                   endAdornment={'%'}
-                  className='w-[70px]'
+                  className='h-8 w-[65px] text-sm'
                   placeholder='0'
                 />
               </FormControl>
@@ -190,18 +190,18 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           )}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <FormField
           control={form.control}
           name={`purchase_invoice_items.${index}.tax_id`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='space-y-0'>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value ?? undefined}
               >
                 <FormControl>
-                  <SelectTrigger className='w-full'>
+                  <SelectTrigger className='h-8 w-full text-xs'>
                     <SelectValue placeholder='Pajak' />
                   </SelectTrigger>
                 </FormControl>
@@ -212,7 +212,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                     </div>
                   ) : (
                     taxes?.data.map((t) => (
-                      <SelectItem key={t.id} value={t.id}>
+                      <SelectItem key={t.id} value={t.id} className='text-xs'>
                         {t.name} ({t.rate}%)
                       </SelectItem>
                     ))
@@ -236,15 +236,15 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
           )}
         />
       </TableCell>
-      <TableCell className='text-right font-medium'>
+      <TableCell className='py-2 px-2 text-right text-sm font-medium'>
         {rowTotal.toLocaleString()}
       </TableCell>
-      <TableCell>
+      <TableCell className='py-2 px-2'>
         <Button
           type='button'
           variant='ghost'
-          size='icon'
-          className='text-destructive'
+          size='sm'
+          className='text-destructive h-8 w-8 p-0'
           onClick={() => remove(index)}
         >
           <Trash2 className='h-4 w-4' />

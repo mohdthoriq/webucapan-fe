@@ -58,13 +58,16 @@ export function ExpensesFormPage() {
       }
       fallback={<ExpensesFormFallback expensesForm={expensesForm} />}
     >
-      <Card className='mb-8'>
-        <CardHeader>
+      <Card className='mb-4'>
+        <CardHeader className='pb-4'>
           <CardTitle>
             <div className='flex items-center justify-between'>
-              {expensesForm.isEdit ? 'Edit Biaya' : 'Tambah Biaya'}
+              <h1 className='text-xl font-semibold'>
+                {expensesForm.isEdit ? 'Edit Biaya' : 'Tambah Biaya'}
+              </h1>
               <Button
                 variant='link'
+                className='h-auto p-0'
                 onClick={() => {
                   if (expensesForm.isEdit) {
                     history.back()
@@ -82,12 +85,13 @@ export function ExpensesFormPage() {
           <Form {...expensesForm.form}>
             <form
               onSubmit={expensesForm.form.handleSubmit(expensesForm.onSubmit)}
-              className='space-y-8'
+              className='space-y-6'
               id='expenses-form'
             >
               <ExpensesFormHeader />
               <div className='bg-border h-px' />
               <ExpensesFormItems />
+              <div className='bg-border h-px' />
               <ExpensesFormSummary />
               {expensesForm.errorMessage && (
                 <Alert variant='destructive' className='w-full'>
