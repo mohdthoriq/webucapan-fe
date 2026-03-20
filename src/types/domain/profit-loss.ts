@@ -89,8 +89,7 @@ export interface ProfitLossTransactionData {
   credit: number
   debit: number
   amount: string
-  trans_type_id: number
-  transaction_type: string
+  transaction_type: TransactionType
   balance: string
   source: TransactionType
   valid: boolean

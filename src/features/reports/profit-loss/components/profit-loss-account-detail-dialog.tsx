@@ -156,30 +156,72 @@ export function ProfitLossAccountDetailDialog() {
                                 {trans.source.name}
                               </TableCell>
                               <TableCell
-                                onClick={() =>
-                                  navigate({
-                                    to: '/cash-bank/detail',
-                                    search: {
-                                      accountId: trans.account.id,
-                                      transactionId: trans.reference.id,
-                                    },
-                                  })
-                                }
+                                onClick={() => {
+                                  if (
+                                    trans.transaction_type.code ===
+                                    'sales_invoice'
+                                  ) {
+                                    navigate({
+                                      to: '/sales/invoices/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  } else if (
+                                    trans.transaction_type.code ===
+                                    'purchase_invoice'
+                                  ) {
+                                    navigate({
+                                      to: '/purchases/invoices/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  } else {
+                                    navigate({
+                                      to: '/expenses/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  }
+                                }}
                                 className='text-primary cursor-pointer p-4 break-words hover:underline'
                               >
                                 {trans.desc}
                               </TableCell>
 
                               <TableCell
-                                onClick={() =>
-                                  navigate({
-                                    to: '/cash-bank/detail',
-                                    search: {
-                                      accountId: trans.account.id,
-                                      transactionId: trans.reference.id,
-                                    },
-                                  })
-                                }
+                                onClick={() => {
+                                  if (
+                                    trans.transaction_type.code ===
+                                    'sales_invoice'
+                                  ) {
+                                    navigate({
+                                      to: '/sales/invoices/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  } else if (
+                                    trans.transaction_type.code ===
+                                    'purchase_invoice'
+                                  ) {
+                                    navigate({
+                                      to: '/purchases/invoices/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  } else {
+                                    navigate({
+                                      to: '/expenses/detail',
+                                      state: {
+                                        currentRowId: trans.reference.id,
+                                      } as Record<string, unknown>,
+                                    })
+                                  }
+                                }}
                                 className='text-primary cursor-pointer p-4 hover:underline'
                               >
                                 {trans.reference.number}
