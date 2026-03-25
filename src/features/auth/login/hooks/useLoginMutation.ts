@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import type { ApiResponse, LoginResponse } from '@/types'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
@@ -14,10 +14,8 @@ interface UseLoginMutationProps {
 export function useLoginMutation({
   onUnverifiedEmail,
 }: UseLoginMutationProps = {}) {
-  const navigate = useNavigate()
   const { auth } = useAuthStore()
-
-  const searchParams = useSearch({ strict: false }) as { redirect?: string }
+  const navigate = useNavigate()
 
   return useMutation({
     mutationFn: async (
@@ -66,18 +64,14 @@ export function useLoginMutation({
           ? userData.user.full_name
           : userData.user?.email
 
+        if (userData.role?.name !== 'Administrator') {
+          navigate({ to: '/settings/profile', replace: true })
+        }
+
         toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
       } catch {
         // If profile fetch fails, still show success
         toast.success('Login berhasil!')
-      }
-
-      try {
-        // Use redirect param if it exists, otherwise go to home
-        const targetPath = searchParams.redirect || '/'
-        await navigate({ to: targetPath, replace: true })
-      } catch {
-        // Navigation error, but login was successful - silently ignore
       }
     },
     onError: (error, variables) => {

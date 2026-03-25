@@ -20,7 +20,7 @@ interface LoginFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
 }
 
-export function LoginForm({ className, redirectTo, ...props }: LoginFormProps) {
+export function LoginForm({ className, ...props }: LoginFormProps) {
   const { form, isLoading, onSubmit, unverifiedEmailDialog } = useLoginForm()
 
   return (

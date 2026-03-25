@@ -6,7 +6,7 @@ import businessIllustrator from './assets/web-illustration.jpg'
 import { LoginForm } from './components/login-form'
 
 export function Login() {
-  const { redirect, error } = useSearch({ from: '/(auth)/login' })
+  const { error } = useSearch({ from: '/(auth)/login' })
   const router = useRouter()
 
   useEffect(() => {
@@ -15,15 +15,10 @@ export function Login() {
 
       router.navigate({
         to: '/login',
-        search: () => {
-          const searchParams: { redirect?: string; error?: string } = {}
-          if (redirect) searchParams.redirect = redirect
-          return searchParams
-        },
         replace: true,
       })
     }
-  }, [error, redirect, router])
+  }, [error, router])
 
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
@@ -64,7 +59,7 @@ export function Login() {
               Masukkan email dan kata sandi untuk masuk ke akun Anda
             </p>
           </div>
-          <LoginForm redirectTo={redirect} />
+          <LoginForm />
         </div>
       </div>
     </div>
