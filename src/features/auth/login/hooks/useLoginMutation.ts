@@ -66,6 +66,8 @@ export function useLoginMutation({
 
         if (userData.role?.name !== 'Administrator') {
           navigate({ to: '/settings/profile', replace: true })
+        } else {
+          navigate({ to: '/', replace: true })
         }
 
         toast.success(`Selamat datang kembali, ${greetingsSubject}!`)
