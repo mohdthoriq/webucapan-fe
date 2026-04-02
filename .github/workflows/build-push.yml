@@ -46,6 +46,8 @@ jobs:
         env:
           TAG: ${{ steps.meta.outputs.sha_short }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
+          VITE_USER_DATA: ${{ secrets.VITE_USER_DATA || 'userData' }}
 
   # ============================================================
   # Deploy to Production Server

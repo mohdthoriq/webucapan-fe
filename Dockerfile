@@ -15,9 +15,13 @@ RUN pnpm install --frozen-lockfile
 # Copy source and build
 COPY . .
 
-# Build arg: VITE_API_URL is baked into the bundle at build time
+# Build args: VITE_* variables are baked into the bundle at build time
 ARG VITE_API_URL
+ARG VITE_ACCESS_TOKEN=thisIsJustRandomString
+ARG VITE_USER_DATA=userData
 ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_ACCESS_TOKEN=${VITE_ACCESS_TOKEN}
+ENV VITE_USER_DATA=${VITE_USER_DATA}
 
 RUN pnpm build
 
