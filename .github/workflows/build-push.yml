@@ -63,7 +63,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd ${{ secrets.DEPLOY_PATH }}
+            cd ~/manajerku
 
             # Pull latest frontend image
             docker compose pull frontend
