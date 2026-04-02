@@ -1,0 +1,27 @@
+node_modules
+dist
+dist-ssr
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Dev config
+.vscode
+.idea
+.DS_Store
+*.log
+*.local
+
+# Documentation & config not needed in build
+documentation
+README.md
+netlify.toml
+ecosystem.config.cjs
+cz.yaml
+.prettierrc
+.prettierignore
+.kilocodemodes
+knip.config.ts
+example.docker-bake.hcl
