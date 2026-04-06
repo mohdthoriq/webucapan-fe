@@ -37,9 +37,6 @@ function ProductCategoryContent() {
               </p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-              <Button variant={'link'} onClick={() => history.go(-1)}>
-                Kembali
-              </Button>
               <Button onClick={() => setOpen('add')}>
                 <Plus className='mr-2 h-4 w-4' />
                 Tambah Kategori

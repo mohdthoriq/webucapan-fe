@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
-import { ArrowLeft, Loader2, Plus, Printer } from 'lucide-react'
+import { Loader2, Plus, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
@@ -51,10 +51,6 @@ function InvoiceListsContent() {
               <p className='text-muted-foreground'>Kelola Tagihan Pembelian.</p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-              <Button variant={'outline'} onClick={() => history.go(-1)}>
-                <ArrowLeft className='h-4 w-4' />
-                Kembali
-              </Button>
               <Button
                 onClick={() => navigate({ to: '/purchases/invoices/add' })}
               >

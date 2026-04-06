@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
-import { ArrowLeft, Plus, Printer } from 'lucide-react'
+import { Plus, Printer } from 'lucide-react'
 import { useReactToPrint } from 'react-to-print'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
@@ -48,10 +48,6 @@ function ExpensesListsContent() {
               </p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
-              <Button variant={'outline'} onClick={() => history.go(-1)}>
-                <ArrowLeft className='h-4 w-4' />
-                Kembali
-              </Button>
               <Button onClick={() => navigate({ to: '/expenses/add' })}>
                 <Plus className='h-4 w-4' />
                 Tambah Biaya
