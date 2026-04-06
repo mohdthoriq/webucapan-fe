@@ -1,5 +1,4 @@
 import type { GlobalResponse } from '../api/global-response'
-import type { Account } from './account'
 import type { Company } from './company'
 
 export interface Tax extends GlobalResponse {
@@ -7,7 +6,17 @@ export interface Tax extends GlobalResponse {
   name: string
   rate: number
   description: string
-  sell_account: Account
-  buy_account: Account
+  sell_account: {
+    id: string
+    ref_code: string
+    name: string
+  }
+  buy_account: {
+    id: string
+    ref_code: string
+    name: string
+  }
   is_deletable: boolean
+  is_active: boolean
+  is_withholding: boolean
 }

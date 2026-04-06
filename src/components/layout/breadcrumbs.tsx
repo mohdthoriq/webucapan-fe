@@ -55,6 +55,16 @@ export function Breadcrumbs() {
     'product-categories': 'Kategori Produk',
     'balance-sheet': 'Neraca',
     'profit-loss': 'Laba Rugi',
+    'company': 'Perusahaan',
+    'subscription': 'Langganan',
+    'auto-sequencing': 'Penomoran Otomatis',
+    'users': 'Pengguna',
+    'company-roles': 'Peran Pengguna',
+    'profile': 'Profil',
+    'units': 'Satuan',
+    'taxes': 'Pajak',
+    'payment-terms': 'Termin Pembayaran',
+    'tags': 'Tag',
   }
 
   // Clean pathname and split into segments

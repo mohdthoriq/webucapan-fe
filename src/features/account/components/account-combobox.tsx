@@ -65,9 +65,9 @@ export function AccountsCombobox({
       getLabel={(item) => item.name}
       renderItem={(item) => (
         <div className='flex flex-col'>
-          <span className='font-medium'>{item.name}</span>
+          <span className='font-medium'>{item.code} - {item.name}</span>
           <span className='text-muted-foreground text-xs'>
-            {item.description}
+            {item.category?.name}
           </span>
         </div>
       )}

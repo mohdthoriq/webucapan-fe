@@ -30,12 +30,20 @@ export function useTaxesForm({ currentRow, onSuccess }: useTaxesFormProps) {
           rate: currentRow?.rate ?? 0,
           company_id: currentRow?.company?.id ?? company?.id ?? '',
           description: currentRow?.description || '',
+          is_withholding: currentRow?.is_withholding ?? false,
+          buy_account_id: currentRow?.buy_account?.id ?? '',
+          sell_account_id: currentRow?.sell_account?.id ?? '',
+          is_active: currentRow?.is_active ?? false,
         }
       : {
           company_id: company?.id ?? '',
           name: '',
           rate: 0,
           description: '',
+          is_withholding: false,
+          buy_account_id: '',
+          sell_account_id: '',
+          is_active: true,
         },
   })
 
@@ -59,6 +67,10 @@ export function useTaxesForm({ currentRow, onSuccess }: useTaxesFormProps) {
         name: data.name,
         rate: data.rate,
         description: data.description,
+        is_withholding: data.is_withholding,
+        buy_account_id: data.buy_account_id,
+        sell_account_id: data.sell_account_id,
+        is_active: data.is_active,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()
