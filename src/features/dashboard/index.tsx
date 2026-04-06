@@ -51,9 +51,8 @@ export function Dashboard() {
       fallback={<DashboardFallback />}
     >
       <div>
-        <div className='mb-10 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-          <div className='flex items-center space-x-2'>
+        <div className='mb-6 flex items-center justify-between space-y-2'>
+          <div className='flex items-center justify-end w-full space-x-2'>
             <DashboardGlobalFilter
               period={globalPeriod}
               dateRange={globalDateRange}
