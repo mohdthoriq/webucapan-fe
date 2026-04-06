@@ -6,6 +6,7 @@ import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 import { TaxesContext } from '../components/taxes-provider'
 import {
+  type UpdateTaxStatusFormData,
   type BulkDeleteTaxesFormData,
   type CreateTaxesFormData,
   type UpdateTaxesFormData,
@@ -66,14 +67,36 @@ export function useUpdateTaxMutation(onSuccess?: (data: Tax) => void) {
   })
 }
 
+export function useUpdateTaxStatusMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (data: UpdateTaxStatusFormData) => {
+      const response = await apiClient.patch(
+        `taxes/${data.id}/status`,
+        data
+      )
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'taxes-toast' })
+    },
+    onSuccess: async () => {
+      toast.dismiss('taxes-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAXES] })
+      toast.success('Status pajak berhasil diubah.')
+    },
+    onError: () => {
+      toast.dismiss('taxes-toast')
+      toast.error('Status pajak gagal diubah.')
+    },
+  })
+}
+
 export function useBulkDeleteTaxMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (credentials: BulkDeleteTaxesFormData) => {
-      const response = await apiClient.post(
-        '/taxes/bulk-delete',
-        credentials
-      )
+      const response = await apiClient.post('/taxes/bulk-delete', credentials)
 
       return response.data
     },

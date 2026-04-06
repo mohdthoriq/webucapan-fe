@@ -26,6 +26,13 @@ export const updateTaxesSchema = z.object({
 
 export type UpdateTaxesFormData = z.infer<typeof updateTaxesSchema>
 
+export const updateTaxStatusSchema = z.object({
+  id: z.uuid(),
+  is_active: z.boolean(),
+})
+
+export type UpdateTaxStatusFormData = z.infer<typeof updateTaxStatusSchema>
+
 export const deleteTaxesSchema = z.object({
   id: z.uuid(),
 })
