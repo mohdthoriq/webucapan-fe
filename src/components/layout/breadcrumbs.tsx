@@ -65,6 +65,8 @@ export function Breadcrumbs() {
     'taxes': 'Pajak',
     'payment-terms': 'Termin Pembayaran',
     'tags': 'Tag',
+    'add': 'Tambah',
+    'edit': 'Edit',
   }
 
   // Clean pathname and split into segments
