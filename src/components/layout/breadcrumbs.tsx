@@ -4,7 +4,6 @@ import { useAuthStore } from '@/stores/auth-store'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -106,11 +105,11 @@ export function Breadcrumbs() {
             <Fragment key={item.href}>
               <BreadcrumbItem>
                 {isLast || !item.isClickable ? (
-                  <BreadcrumbPage>{item.title}</BreadcrumbPage>
+                  <BreadcrumbPage><p className='text-md font-bold tracking-wide text-foreground'>{item.title}</p></BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink asChild>
-                    <Link to={item.href} className='text-md font-bold tracking-wide'>{item.title}</Link>
-                  </BreadcrumbLink>
+                  <BreadcrumbPage>
+                    <Link to={item.href} className='text-muted-foreground tracking-wide'>{item.title}</Link>
+                  </BreadcrumbPage>
                 )}
               </BreadcrumbItem>
               {!isLast && <BreadcrumbSeparator />}

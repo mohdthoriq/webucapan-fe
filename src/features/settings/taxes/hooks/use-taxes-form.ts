@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ApiResponse, Tax } from '@/types'
@@ -46,6 +47,33 @@ export function useTaxesForm({ currentRow, onSuccess }: useTaxesFormProps) {
           is_active: true,
         },
   })
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: currentRow is the primary trigger
+  useEffect(() => {
+    if (currentRow) {
+      form.reset({
+        name: currentRow.name || '',
+        rate: currentRow.rate ?? 0,
+        company_id: currentRow.company?.id ?? company?.id ?? '',
+        description: currentRow.description || '',
+        is_withholding: currentRow.is_withholding ?? false,
+        buy_account_id: currentRow.buy_account?.id ?? '',
+        sell_account_id: currentRow.sell_account?.id ?? '',
+        is_active: currentRow.is_active ?? false,
+      })
+    } else {
+      form.reset({
+        company_id: company?.id ?? '',
+        name: '',
+        rate: 0,
+        description: '',
+        is_withholding: false,
+        buy_account_id: '',
+        sell_account_id: '',
+        is_active: true,
+      })
+    }
+  }, [currentRow, company, form])
 
   const createMutation = useCreateTaxMutation(onSuccess)
   const updateMutation = useUpdateTaxMutation(onSuccess)

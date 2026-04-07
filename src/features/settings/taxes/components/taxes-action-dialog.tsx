@@ -26,7 +26,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
+// import { Textarea } from '@/components/ui/textarea'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { AccountsCombobox } from '@/features/account/components/account-combobox'
 import { useTaxesForm } from '../hooks/use-taxes-form'
@@ -54,6 +54,9 @@ export function TaxesActionDialog({
   const hasPermission = useHasPermission(
     isEdit ? PERMISSION_KEY.SETTINGS_TAX_EDIT : PERMISSION_KEY.SETTINGS_TAX_ADD
   )
+
+  const isWithholding = form.watch('is_withholding')
+  const isNotDeletable = isEdit && currentRow?.is_deletable === false
 
   return (
     <Dialog
@@ -146,8 +149,16 @@ export function TaxesActionDialog({
                       <FormControl>
                         <Switch
                           checked={field.value}
-                          onCheckedChange={field.onChange}
-                          disabled={!hasPermission}
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked)
+                            const currentBuyAccount =
+                              form.getValues('buy_account_id')
+                            const currentSellAccount =
+                              form.getValues('sell_account_id')
+                            form.setValue('sell_account_id', currentBuyAccount)
+                            form.setValue('buy_account_id', currentSellAccount)
+                          }}
+                          disabled={!hasPermission || isNotDeletable}
                         />
                       </FormControl>
                     </FormItem>
@@ -165,8 +176,16 @@ export function TaxesActionDialog({
                           value={field.value}
                           onValueChange={field.onChange}
                           placeholder='Pilih akun pajak penjualan...'
-                          disabled={!hasPermission}
-                          codePrefixes={[
+                          disabled={!hasPermission || isNotDeletable}
+                          codePrefixes={isWithholding ? [
+                            '1-10',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ] : [
                             '2-20',
                             '4-40',
                             '6-60',
@@ -193,8 +212,16 @@ export function TaxesActionDialog({
                           value={field.value}
                           onValueChange={field.onChange}
                           placeholder='Pilih akun pajak pembelian...'
-                          disabled={!hasPermission}
-                          codePrefixes={[
+                          disabled={!hasPermission || isNotDeletable}
+                          codePrefixes={isWithholding ? [
+                            '2-20',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ] : [
                             '1-10',
                             '4-40',
                             '6-60',
@@ -210,7 +237,7 @@ export function TaxesActionDialog({
                   )}
                 />
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name='description'
                   render={({ field }) => (
@@ -227,7 +254,7 @@ export function TaxesActionDialog({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </form>
             </Form>
             {!hasPermission && (

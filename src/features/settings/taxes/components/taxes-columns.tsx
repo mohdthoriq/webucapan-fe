@@ -102,22 +102,38 @@ export const taxesColumns: ColumnDef<Tax>[] = [
     },
   },
   {
-    accessorKey: 'Deskripsi',
+    accessorKey: 'Pemotongan',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Deskripsi' />
+      <DataTableColumnHeader column={column} title='Pemotongan' />
     ),
     cell: ({ row }) => {
-      const { description } = row.original
+      const { is_withholding } = row.original
       return (
         <div className='p-2'>
-          <LongText className='line-clamp-1'>{description || '-'}</LongText>
+          <LongText className='truncate'>
+            {is_withholding ? 'Ya' : 'Tidak'}
+          </LongText>
         </div>
       )
     },
-    meta: {
-      className: 'w-full',
-    },
   },
+  // {
+  //   accessorKey: 'Deskripsi',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Deskripsi' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { description } = row.original
+  //     return (
+  //       <div className='p-2'>
+  //         <LongText className='line-clamp-1'>{description || '-'}</LongText>
+  //       </div>
+  //     )
+  //   },
+  //   meta: {
+  //     className: 'w-full',
+  //   },
+  // },
   {
     id: 'status',
     header: ({ column }) => (
