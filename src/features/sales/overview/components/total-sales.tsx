@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { useTotalSalesQuery } from '../hooks/use-sales-total-sales-query'
 import type { Period } from '../types/sales-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
+import { useTotalSalesQuery } from '../hooks/use-sales-overview-query'
 
 interface TotalSalesProps {
   globalPeriod?: Period

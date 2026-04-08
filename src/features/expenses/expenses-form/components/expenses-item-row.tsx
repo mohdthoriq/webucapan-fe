@@ -45,7 +45,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
 
   return (
     <TableRow>
-      <TableCell className='py-2 px-2'>
+      <TableCell className='px-2 py-2'>
         <FormField
           control={form.control}
           name={`expense_items.${index}.account_id`}
@@ -76,7 +76,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
           )}
         />
       </TableCell>
-      <TableCell className='py-2 px-2'>
+      <TableCell className='px-2 py-2'>
         <FormField
           control={form.control}
           name={`expense_items.${index}.description`}
@@ -89,15 +89,17 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
           )}
         />
       </TableCell>
-      <TableCell className='py-2 px-2'>
+      <TableCell className='px-2 py-2'>
         <FormField
           control={form.control}
           name={`expense_items.${index}.tax_id`}
           render={({ field }) => (
             <FormItem className='space-y-0'>
               <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value ?? undefined}
+                onValueChange={(value) => {
+                  field.onChange(value === 'none' ? undefined : value)
+                }}
+                value={field.value ?? 'none'}
               >
                 <FormControl>
                   <SelectTrigger className='h-8 w-full text-sm font-normal'>
@@ -110,11 +112,19 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
                       Tidak ada data pajak
                     </div>
                   ) : (
-                    taxes?.data.map((t) => (
-                      <SelectItem key={t.id} value={t.id} className='text-xs'>
-                        {t.name} ({t.rate}%)
+                    <>
+                      <SelectItem
+                        value='none'
+                        className='text-muted-foreground text-xs'
+                      >
+                        ...
                       </SelectItem>
-                    ))
+                      {taxes?.data.map((t) => (
+                        <SelectItem key={t.id} value={t.id} className='text-xs'>
+                          {t.name} ({t.rate}%)
+                        </SelectItem>
+                      ))}
+                    </>
                   )}
                   <SelectSeparator />
                   <FormShortcutButton
@@ -135,7 +145,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
           )}
         />
       </TableCell>
-      <TableCell className='py-2 px-2'>
+      <TableCell className='px-2 py-2'>
         <FormField
           control={form.control}
           name={`expense_items.${index}.amount`}
@@ -155,7 +165,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
           )}
         />
       </TableCell>
-      <TableCell className='py-2 px-2'>
+      <TableCell className='px-2 py-2'>
         <Button
           type='button'
           variant='ghost'

@@ -13,7 +13,7 @@ import {
 } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useTotalPurchasesQuery } from '../hooks/use-purchases-total-purchases-query'
+import { useTotalPurchasesQuery } from '../hooks/use-purchases-overview-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 

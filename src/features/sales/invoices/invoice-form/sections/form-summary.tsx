@@ -8,7 +8,7 @@ export function InvoiceFormSummary() {
   return (
     <div className='flex justify-end'>
       <div className='w-full space-y-1.5 md:w-1/3'>
-        <div className='flex justify-between text-sm'>
+        <div className='flex justify-between border-b pb-1.5 text-sm'>
           <span className='text-muted-foreground'>Sub Total</span>
           <span>{totals.subtotal.toLocaleString()}</span>
         </div>
@@ -26,7 +26,7 @@ export function InvoiceFormSummary() {
             </div>
           )}
         </div>
-        <div className='flex justify-between text-md font-bold'>
+        <div className='text-md flex justify-between font-bold'>
           <span>Total</span>
           <span>{totals.total.toLocaleString()}</span>
         </div>

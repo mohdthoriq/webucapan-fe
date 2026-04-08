@@ -13,7 +13,7 @@ import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
-import { useUnpaidPurchaseOverviewQuery } from '../hooks/use-unpaid-purchase-overview-query'
+import { useUnpaidPurchaseOverviewQuery } from '../hooks/use-dashboard-query'
 
 interface BillsOverviewProps {
   externalPeriod?: Period

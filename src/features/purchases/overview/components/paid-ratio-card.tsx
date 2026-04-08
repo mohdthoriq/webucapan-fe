@@ -4,7 +4,7 @@ import type { DateRange } from 'react-day-picker'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { cn, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { usePaidRatioQuery } from '../hooks/use-purchases-paid-ratio-query'
+import { usePaidRatioQuery } from '../hooks/use-purchases-overview-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 

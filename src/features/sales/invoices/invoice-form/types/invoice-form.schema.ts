@@ -25,6 +25,19 @@ export const invoiceItemUpdateSchema = z.object({
 
 export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
 
+export const additionalDiscount = z.object({
+  type: z.enum(['percent', 'fixed']),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
+export const updateAdditionalDiscount = z.object({
+  id: z.uuid(),
+  type: z.enum(['percent', 'fixed']),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
 export const CreateInvoiceSchema = z
   .object({
     customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
@@ -45,6 +58,7 @@ export const CreateInvoiceSchema = z
       .array(invoiceItemSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
+    additional_discounts: z.array(additionalDiscount).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -74,6 +88,7 @@ export const UpdateInvoiceSchema = z
       .array(invoiceItemUpdateSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
+    additional_discounts: z.array(updateAdditionalDiscount).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
