@@ -352,7 +352,12 @@ export function ExpensesFormHeader() {
           render={({ field }) => (
             <FormItem className='mb-0 space-y-1'>
               <FormLabel className='text-xs'>Termin Pembayaran</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(value) => {
+                  field.onChange(value === 'none' ? undefined : value)
+                }}
+                value={field.value ?? 'none'}
+              >
                 <FormControl>
                   <SelectTrigger className='h-8 w-full text-sm font-normal'>
                     <SelectValue placeholder='Pilih termin pembayaran' />
@@ -364,11 +369,14 @@ export function ExpensesFormHeader() {
                       Tidak ada termin pembayaran
                     </div>
                   ) : (
-                    paymentTerms?.data.map((term) => (
-                      <SelectItem key={term.id} value={term.id}>
-                        {term.name}
-                      </SelectItem>
-                    ))
+                    <>
+                      <SelectItem value='none'>...</SelectItem>
+                      {paymentTerms?.data.map((term) => (
+                        <SelectItem key={term.id} value={term.id}>
+                          {term.name}
+                        </SelectItem>
+                      ))}
+                    </>
                   )}
                   <SelectSeparator />
                   <FormShortcutButton

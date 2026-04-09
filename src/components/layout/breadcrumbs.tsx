@@ -49,8 +49,8 @@ export function Breadcrumbs() {
 
   // Manual mappings for specific segments that might not be in sidebarData
   const manualMappings: Record<string, string> = {
-    sales: 'Penjualan',
-    purchases: 'Pembelian',
+    'sales': 'Penjualan',
+    'purchases': 'Pembelian',
     'product-categories': 'Kategori Produk',
     'balance-sheet': 'Neraca',
     'profit-loss': 'Laba Rugi',
@@ -66,6 +66,8 @@ export function Breadcrumbs() {
     'tags': 'Tag',
     'add': 'Tambah',
     'edit': 'Edit',
+    'spend': 'Kirim Dana', 
+    'receive': 'Terima Dana',
   }
 
   // Clean pathname and split into segments
@@ -96,7 +98,7 @@ export function Breadcrumbs() {
   ]
 
   return (
-    <Breadcrumb className='px-4 py-4 border-b bg-header'>
+    <Breadcrumb className='bg-header border-b px-4 py-4'>
       <BreadcrumbList>
         {items.map((item, index) => {
           const isLast = index === items.length - 1
@@ -104,11 +106,26 @@ export function Breadcrumbs() {
           return (
             <Fragment key={item.href}>
               <BreadcrumbItem>
-                {isLast || !item.isClickable ? (
-                  <BreadcrumbPage><p className='text-md font-bold tracking-wide text-foreground'>{item.title}</p></BreadcrumbPage>
+                {isLast ? (
+                  <BreadcrumbPage>
+                    <p className='text-md text-foreground font-bold tracking-wide'>
+                      {item.title}
+                    </p>
+                  </BreadcrumbPage>
+                ) : !item.isClickable ? (
+                  <BreadcrumbPage>
+                    <p className='text-muted-foreground tracking-wide'>
+                      {item.title}
+                    </p>
+                  </BreadcrumbPage>
                 ) : (
                   <BreadcrumbPage>
-                    <Link to={item.href} className='text-muted-foreground tracking-wide'>{item.title}</Link>
+                    <Link
+                      to={item.href}
+                      className='text-muted-foreground tracking-wide'
+                    >
+                      {item.title}
+                    </Link>
                   </BreadcrumbPage>
                 )}
               </BreadcrumbItem>

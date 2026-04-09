@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
-import { useOverdueQuery } from '../hooks/use-purchases-overdue-query'
+import { useOverdueQuery } from '../hooks/use-purchases-overview-query'
 import type { Period } from '../types/purchases-overview'
 import { CardAction } from './card-action'
 import { CardStatistic } from './card-statistic'
