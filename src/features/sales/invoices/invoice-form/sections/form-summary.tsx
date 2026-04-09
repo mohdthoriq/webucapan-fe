@@ -1,7 +1,7 @@
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { Plus, MinusCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { FormField, FormItem } from '@/components/ui/form'
+import { FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { AccountsCombobox } from '@/features/account/components/account-combobox'
 import { useTaxesQuery } from '@/features/settings/taxes/hooks/use-taxes-query'
@@ -263,6 +263,7 @@ export function InvoiceFormSummary() {
                         placeholder='Dipotong dari...'
                         className='w-40'
                       />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />

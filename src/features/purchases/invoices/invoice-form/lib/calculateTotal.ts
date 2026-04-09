@@ -1,17 +1,20 @@
 import type { useForm } from 'react-hook-form'
 import type { Tax } from '@/types'
+import { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import {
   type CreateInvoiceFormData,
   type UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-import { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 
 export const calculateTotals = (
   form: Pick<
     ReturnType<typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>>,
     'setValue' | 'getValues'
   >,
-  items: (CreateInvoiceFormData | UpdateInvoiceFormData)['purchase_invoice_items'],
+  items: (
+    | CreateInvoiceFormData
+    | UpdateInvoiceFormData
+  )['purchase_invoice_items'],
   additionalDiscounts: (
     | CreateInvoiceFormData
     | UpdateInvoiceFormData
@@ -41,10 +44,11 @@ export const calculateTotals = (
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
         const itemTax = (lineTotal * tax.rate) / 100
-        newTaxTotal += itemTax
+        const signedItemTax = tax.is_withholding ? -itemTax : itemTax
+        newTaxTotal += signedItemTax
 
         if (tax.name) {
-          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + itemTax
+          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + signedItemTax
         }
       }
     }

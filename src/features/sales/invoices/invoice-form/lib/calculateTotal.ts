@@ -41,10 +41,11 @@ export const calculateTotals = (
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
         const itemTax = (lineTotal * tax.rate) / 100
-        newTaxTotal += itemTax
+        const signedItemTax = tax.is_withholding ? -itemTax : itemTax
+        newTaxTotal += signedItemTax
 
         if (tax.name) {
-          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + itemTax
+          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + signedItemTax
         }
       }
     }
