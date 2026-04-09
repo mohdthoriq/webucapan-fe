@@ -42,7 +42,7 @@ export function InvoiceFormSummary() {
 
   return (
     <div className='flex justify-end'>
-      <div className='w-full md:w-3/5'>
+      <div className='w-full md:w-2/3'>
         <div className='hover:bg-muted flex justify-between border-b p-2 py-3 text-sm'>
           <span className='text-muted-foreground'>Sub Total</span>
           <span>{totals.subtotal.toLocaleString()}</span>
