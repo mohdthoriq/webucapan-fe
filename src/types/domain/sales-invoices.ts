@@ -1,3 +1,4 @@
+import type { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import type { GlobalResponse } from '../api/global-response'
 import type { Company } from './company'
 import type { Contact } from './contact'
@@ -29,6 +30,26 @@ export interface InvoiceItem extends GlobalResponse {
   line_total: number
 }
 
+export interface AdditionalDiscount extends GlobalResponse {
+  type: UnitsType
+  value: number
+  amount: number
+}
+
+export interface TransactionFee extends GlobalResponse {
+  name: string
+  type: UnitsType
+  value: number
+  amount: number
+}
+
+export interface Deduction extends GlobalResponse {
+  account_id: string
+  type: UnitsType
+  value: number
+  amount: number
+}
+
 export interface SalesInvoice extends GlobalResponse {
   company: Company
   customer: Contact
@@ -48,4 +69,8 @@ export interface SalesInvoice extends GlobalResponse {
   payments: Payment[]
   tags: (string | Tag)[]
   taxes: Tax[]
+  additional_discounts: AdditionalDiscount[]
+  transaction_fees: TransactionFee[]
+  deductions: Deduction[]
+  is_tax_inclusive: boolean
 }

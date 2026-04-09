@@ -1,8 +1,9 @@
 import type { useForm } from 'react-hook-form'
 import type { Tax } from '@/types'
-import type {
-  CreateInvoiceFormData,
-  UpdateInvoiceFormData,
+import {
+  type CreateInvoiceFormData,
+  type UpdateInvoiceFormData,
+  UnitsType,
 } from '../types/invoice-form.schema'
 
 export const calculateTotals = (
@@ -11,6 +12,15 @@ export const calculateTotals = (
     'setValue' | 'getValues'
   >,
   items: (CreateInvoiceFormData | UpdateInvoiceFormData)['sales_invoice_items'],
+  additionalDiscounts: (
+    | CreateInvoiceFormData
+    | UpdateInvoiceFormData
+  )['additional_discounts'],
+  transactionFees: (
+    | CreateInvoiceFormData
+    | UpdateInvoiceFormData
+  )['transaction_fees'],
+  deductions: (CreateInvoiceFormData | UpdateInvoiceFormData)['deductions'],
   taxes: Tax[]
 ) => {
   let newSubtotal = 0
@@ -40,7 +50,45 @@ export const calculateTotals = (
     }
   })
 
-  newTotal = newSubtotal + newTaxTotal
+  let additionalDiscountsTotal = 0
+  additionalDiscounts?.forEach((discount, index) => {
+    const value = Number(discount.value) || 0
+    const amount =
+      discount.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
+    additionalDiscountsTotal += amount
+    if (discount.amount !== amount) {
+      form.setValue(`additional_discounts.${index}.amount`, amount)
+    }
+  })
+
+  let transactionFeesTotal = 0
+  transactionFees?.forEach((fee, index) => {
+    const value = Number(fee.value) || 0
+    const amount =
+      fee.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
+    transactionFeesTotal += amount
+    if (fee.amount !== amount) {
+      form.setValue(`transaction_fees.${index}.amount`, amount)
+    }
+  })
+
+  let deductionsTotal = 0
+  deductions?.forEach((deduction, index) => {
+    const value = Number(deduction.value) || 0
+    const amount =
+      deduction.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
+    deductionsTotal += amount
+    if (deduction.amount !== amount) {
+      form.setValue(`deductions.${index}.amount`, amount)
+    }
+  })
+
+  newTotal =
+    newSubtotal -
+    additionalDiscountsTotal +
+    newTaxTotal +
+    transactionFeesTotal -
+    deductionsTotal
 
   if (form.getValues('subtotal') !== newSubtotal)
     form.setValue('subtotal', newSubtotal)

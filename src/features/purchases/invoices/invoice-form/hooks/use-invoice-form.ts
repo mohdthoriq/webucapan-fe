@@ -70,6 +70,10 @@ export function useInvoiceForm({
               currentRow.tags?.map((tag: string | { id: string }) =>
                 typeof tag === 'object' ? tag.id : tag
               ) || [],
+            additional_discount: currentRow.additional_discounts || [],
+            transaction_fee: currentRow.transaction_fees || [],
+            deduction: currentRow.deductions || [],
+            is_tax_inclusive: currentRow.is_tax_inclusive || false,
           }
         : {
             invoice_number: autoNumbering?.format ?? '',
@@ -95,6 +99,10 @@ export function useInvoiceForm({
               },
             ],
             tags: [],
+            additional_discount: [],
+            transaction_fee: [],
+            deduction: [],
+            is_tax_inclusive: false,
           },
     [currentRow, isEdit, autoNumbering]
   )

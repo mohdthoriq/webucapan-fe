@@ -1,5 +1,14 @@
-import { additionalDiscount, invoiceItemSchema, invoiceItemUpdateSchema, updateAdditionalDiscount } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import { z } from 'zod'
+import {
+  additionalDiscount,
+  deductions,
+  invoiceItemSchema,
+  invoiceItemUpdateSchema,
+  transactionFee,
+  updateAdditionalDiscount,
+  updateDeductions,
+  updateTransactionFee,
+} from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 
 export const CreateInvoiceSchema = z
   .object({
@@ -22,6 +31,9 @@ export const CreateInvoiceSchema = z
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
     additional_discounts: z.array(additionalDiscount).optional(),
+    deductions: z.array(deductions).optional(),
+    is_tax_inclusive: z.boolean(),
+    transaction_fees: z.array(transactionFee).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -51,7 +63,10 @@ export const UpdateInvoiceSchema = z
       .array(invoiceItemUpdateSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
-    additionalDiscount: z.array(updateAdditionalDiscount).optional(),
+    additional_discounts: z.array(updateAdditionalDiscount).optional(),
+    deductions: z.array(updateDeductions).optional(),
+    is_tax_inclusive: z.boolean(),
+    transaction_fees: z.array(updateTransactionFee).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',

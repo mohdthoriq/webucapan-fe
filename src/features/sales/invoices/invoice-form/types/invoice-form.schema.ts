@@ -25,15 +25,50 @@ export const invoiceItemUpdateSchema = z.object({
 
 export type InvoiceItemUpdateFormData = z.infer<typeof invoiceItemUpdateSchema>
 
+export enum UnitsType {
+  percent = 'percent',
+  fixed = 'fixed',
+}
+
 export const additionalDiscount = z.object({
-  type: z.enum(['percent', 'fixed']),
+  type: z.enum(UnitsType),
   value: z.number().nonnegative(),
   amount: z.number().nonnegative(),
 })
 
 export const updateAdditionalDiscount = z.object({
   id: z.uuid(),
-  type: z.enum(['percent', 'fixed']),
+  type: z.enum(UnitsType),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
+export const deductions = z.object({
+  account_id: z.string().min(1, 'Akun tidak boleh kosong'),
+  type: z.enum(UnitsType),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
+export const updateDeductions = z.object({
+  id: z.uuid(),
+  account_id: z.string().min(1, 'Akun tidak boleh kosong'),
+  type: z.enum(UnitsType),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
+export const transactionFee = z.object({
+  name: z.string().optional(),
+  type: z.enum(UnitsType),
+  value: z.number().nonnegative(),
+  amount: z.number().nonnegative(),
+})
+
+export const updateTransactionFee = z.object({
+  id: z.uuid(),
+  name: z.string().optional(),
+  type: z.enum(UnitsType),
   value: z.number().nonnegative(),
   amount: z.number().nonnegative(),
 })
@@ -43,22 +78,21 @@ export const CreateInvoiceSchema = z
     customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
     payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
-
     invoice_date: z.date(),
     due_date: z.date(),
-
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
-
     payment_status: z.enum(['unpaid', 'partially_paid', 'paid']),
-
     sales_invoice_items: z
       .array(invoiceItemSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
     additional_discounts: z.array(additionalDiscount).optional(),
+    deductions: z.array(deductions).optional(),
+    is_tax_inclusive: z.boolean(),
+    transaction_fees: z.array(transactionFee).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -73,22 +107,21 @@ export const UpdateInvoiceSchema = z
     customer_id: z.string().min(1, 'Pelanggan tidak boleh kosong'),
     payment_term_id: z.string().optional(),
     invoice_number: z.string().min(1, 'Nomor invoice tidak boleh kosong'),
-
     invoice_date: z.date(),
     due_date: z.date(),
-
     currency: z.string().min(1, 'Mata uang tidak boleh kosong'),
     subtotal: z.number().nonnegative(),
     tax_total: z.number().nonnegative(),
     total: z.number().nonnegative(),
-
     payment_status: z.enum(['unpaid', 'partially_paid', 'paid']),
-
     sales_invoice_items: z
       .array(invoiceItemUpdateSchema)
       .min(1, 'Invoice harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
     additional_discounts: z.array(updateAdditionalDiscount).optional(),
+    deductions: z.array(updateDeductions).optional(),
+    is_tax_inclusive: z.boolean(),
+    transaction_fees: z.array(updateTransactionFee).optional(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
