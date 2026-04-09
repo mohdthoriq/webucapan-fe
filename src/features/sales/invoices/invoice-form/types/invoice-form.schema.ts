@@ -37,7 +37,7 @@ export const additionalDiscount = z.object({
 })
 
 export const updateAdditionalDiscount = z.object({
-  id: z.uuid(),
+  id: z.uuid().optional().nullable(),
   type: z.enum(UnitsType),
   value: z.number().nonnegative(),
   amount: z.number().nonnegative(),
@@ -51,7 +51,7 @@ export const deductions = z.object({
 })
 
 export const updateDeductions = z.object({
-  id: z.uuid(),
+  id: z.uuid().optional().nullable(),
   account_id: z.string().min(1, 'Akun tidak boleh kosong'),
   type: z.enum(UnitsType),
   value: z.number().nonnegative(),
@@ -66,7 +66,7 @@ export const transactionFee = z.object({
 })
 
 export const updateTransactionFee = z.object({
-  id: z.uuid(),
+  id: z.uuid().optional().nullable(),
   name: z.string().optional(),
   type: z.enum(UnitsType),
   value: z.number().nonnegative(),
