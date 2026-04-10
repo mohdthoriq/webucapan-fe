@@ -17,6 +17,7 @@ export function useInvoiceTotals(taxes: Tax[]) {
         'additional_discounts',
         'transaction_fees',
         'deductions',
+        'shipping_fee',
       ],
     })
 

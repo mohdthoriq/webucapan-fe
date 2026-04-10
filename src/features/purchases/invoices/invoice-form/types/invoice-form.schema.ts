@@ -34,6 +34,10 @@ export const CreateInvoiceSchema = z
     deductions: z.array(deductions).optional(),
     is_tax_inclusive: z.boolean(),
     transaction_fees: z.array(transactionFee).optional(),
+    shipping_fee: z.number().nonnegative().optional().nullable(),
+    shipping_date: z.date().optional().nullable(),
+    expedition_id: z.string().optional().nullable(),
+    tracking_number: z.string().optional().nullable(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -67,6 +71,10 @@ export const UpdateInvoiceSchema = z
     deductions: z.array(updateDeductions).optional(),
     is_tax_inclusive: z.boolean(),
     transaction_fees: z.array(updateTransactionFee).optional(),
+    shipping_fee: z.number().nonnegative().optional().nullable(),
+    shipping_date: z.date().optional().nullable(),
+    expedition_id: z.string().optional().nullable(),
+    tracking_number: z.string().optional().nullable(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',

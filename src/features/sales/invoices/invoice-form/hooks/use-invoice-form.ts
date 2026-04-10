@@ -73,6 +73,12 @@ export function useInvoiceForm({
             additional_discounts: currentRow.additional_discounts || [],
             transaction_fees: currentRow.transaction_fees || [],
             deductions: currentRow.deductions || [],
+            shipping_fee: Number(currentRow.shipping_fee) || 0,
+            shipping_date: currentRow.shipping_date
+              ? new Date(currentRow.shipping_date)
+              : undefined,
+            expedition_id: currentRow.expedition_id || undefined,
+            tracking_number: currentRow.tracking_number || '',
           }
         : {
             invoice_number: autoNumbering?.format ?? '',
@@ -102,6 +108,10 @@ export function useInvoiceForm({
             transaction_fees: [],
             deductions: [],
             is_tax_inclusive: false,
+            shipping_fee: 0,
+            shipping_date: undefined,
+            expedition_id: undefined,
+            tracking_number: '',
           },
     [currentRow, isEdit, autoNumbering]
   )
