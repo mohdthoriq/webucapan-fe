@@ -367,9 +367,9 @@ export function InvoiceFormHeader() {
           <CollapsibleTrigger asChild>
             <Button
               variant='link'
-              className='text-primary h-auto p-0 text-xs font-medium hover:no-underline'
+              className='text-primary h-auto pb-2 font-medium hover:no-underline'
             >
-              <div className='flex items-center gap-1'>
+              <div className='flex items-center'>
                 <span>Tampilkan Informasi Pengiriman</span>
                 <ChevronDown className='h-3 w-3' />
               </div>
