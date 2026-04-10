@@ -2,6 +2,7 @@ import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import type {
   Account,
   Contact,
+  Expedition,
   PaymentTerm,
   Product,
   ProductCategory,
@@ -19,6 +20,7 @@ import { PaymentTermsActionDialog } from '@/features/settings/payment-terms/comp
 import { TagsActionDialog } from '@/features/settings/tags/components/tags-action-dialog'
 import { TaxesActionDialog } from '@/features/settings/taxes/components/taxes-action-dialog'
 import { UnitsActionDialog } from '@/features/settings/units/components/units-action-dialog'
+import { ExpeditionsActionDialog } from '@/features/settings/expeditions/components/expeditions-action-dialog'
 
 export function GlobalDialogProvider() {
   const { stack, closeDialog } = useGlobalDialogStore()
@@ -110,6 +112,14 @@ export function GlobalDialogProvider() {
                 key={id}
                 {...commonProps}
                 currentRow={data as CashBankTransactionDetail}
+              />
+            )
+          case 'expedition':
+            return (
+              <ExpeditionsActionDialog
+                key={id}
+                {...commonProps}
+                currentRow={data as Expedition}
               />
             )
           default:

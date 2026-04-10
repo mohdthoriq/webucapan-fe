@@ -35,14 +35,19 @@ export function InvoiceFormItems() {
   return (
     <div className='flex flex-col space-y-3'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-md font-medium'>Item Tagihan</h3>
+        <div className='flex items-center gap-1.5'>
+          <h3 className='text-md font-medium'>Item Tagihan</h3>
+          <span className='bg-secondary text-muted-foreground flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-medium border'>
+            {fields.length} item
+          </span>
+        </div>
         <div className='flex items-center gap-2'>
           <FormField
             control={form.control}
             name='is_tax_inclusive'
             render={({ field }) => (
               <FormItem className='flex flex-row items-center space-x-3 rounded-md border p-2'>
-                <FormLabel>Harga termasuk pajak</FormLabel>
+                <FormLabel className='text-xs'>Harga termasuk pajak</FormLabel>
                 <FormControl>
                   <Switch
                     className='h-5 w-8'
@@ -53,12 +58,6 @@ export function InvoiceFormItems() {
               </FormItem>
             )}
           />
-          <Badge
-            variant={'outline'}
-            className='text-muted-foreground bg-secondary h-6 p-3 text-sm'
-          >
-            Total: {fields.length}
-          </Badge>
         </div>
       </div>
 

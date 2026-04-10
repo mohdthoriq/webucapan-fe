@@ -89,7 +89,8 @@ export const calculateTotals = (
     additionalDiscountsTotal +
     newTaxTotal +
     transactionFeesTotal -
-    deductionsTotal
+    deductionsTotal +
+    Number(form.getValues('shipping_fee') || 0)
 
   if (form.getValues('subtotal') !== newSubtotal)
     form.setValue('subtotal', newSubtotal)

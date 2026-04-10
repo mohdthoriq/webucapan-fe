@@ -2,6 +2,7 @@ import type { UnitsType } from '@/features/sales/invoices/invoice-form/types/inv
 import type { GlobalResponse } from '../api/global-response'
 import type { Company } from './company'
 import type { Contact } from './contact'
+import type { Expedition } from './expedition'
 import type { PaymentTerm } from './payment-term'
 import type { Payment } from './payments'
 import type { Product } from './product'
@@ -73,4 +74,9 @@ export interface SalesInvoice extends GlobalResponse {
   transaction_fees: TransactionFee[]
   deductions: Deduction[]
   is_tax_inclusive: boolean
+  shipping_fee: number
+  shipping_date: Date
+  expedition_id: string
+  expedition: Expedition | null
+  tracking_number: string
 }

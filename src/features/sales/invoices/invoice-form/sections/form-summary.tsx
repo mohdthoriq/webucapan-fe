@@ -232,6 +232,14 @@ export function InvoiceFormSummary() {
           <span className='text-primary text-sm'>Biaya Transaksi</span>
         </div>
 
+        {/* Shipping Fee */}
+        {Number(watch('shipping_fee') || 0) > 0 && (
+          <div className='hover:bg-muted flex justify-between border-b p-2 py-3 text-sm'>
+            <span className='text-muted-foreground'>Biaya Pengiriman</span>
+            <span>{Number(watch('shipping_fee')).toLocaleString()}</span>
+          </div>
+        )}
+
         <div className='text-md hover:bg-muted flex justify-between border-b p-2 py-3 font-semibold'>
           <span>Total</span>
           <span>{totals.total.toLocaleString()}</span>
@@ -326,9 +334,9 @@ export function InvoiceFormSummary() {
           <span className='text-primary text-sm'>Pemotongan</span>
         </div>
 
-        <div className='text-md hover:bg-muted flex justify-between border-b p-2 py-3 font-semibold'>
-          <span>Total Tagihan</span>
-          <span>{totals.total.toLocaleString()}</span>
+        <div className='text-lg hover:bg-muted flex justify-between border-b p-2 py-4 font-bold'>
+          <span className='text-foreground'>Total Tagihan</span>
+          <span className='text-primary'>{totals.total.toLocaleString()}</span>
         </div>
       </div>
     </div>

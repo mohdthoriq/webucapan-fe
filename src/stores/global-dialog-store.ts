@@ -10,6 +10,7 @@ export type GlobalDialogType =
   | 'product-category'
   | 'account'
   | 'transfer'
+  | 'expedition'
 
 interface DialogInstance {
   id: string
