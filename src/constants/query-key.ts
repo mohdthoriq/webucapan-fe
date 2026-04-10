@@ -39,6 +39,7 @@ export const QUERY_KEY = {
   TAXES: 'taxes',
   UNITS: 'units',
   USERS: 'users',
+  EXPEDITIONS: 'expeditions',
   DASHBOARD_EXPENSE: 'dashboard_expense',
   DASHBOARD_CASH_BANK: 'dashboard_cash_bank',
   DASHBOARD_SALES: 'dashboard_sales',

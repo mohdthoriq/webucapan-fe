@@ -17,6 +17,7 @@ import {
   Tag,
   Users,
   Workflow,
+  Truck
 } from 'lucide-react'
 
 export const settingsTabs = [
@@ -162,6 +163,12 @@ export const settingsTabs = [
         description: 'Atur tag untuk pemisahan laporan',
         url: '/settings/tags',
         icon: Tag,
+      },
+       {
+        title: 'Ekspedisi',
+        description: 'Kelola data pengiriman ekspedisi',
+        url: '/settings/expeditions',
+        icon: Truck,
       },
     ],
   },
