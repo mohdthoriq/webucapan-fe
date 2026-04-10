@@ -50,7 +50,7 @@ import {
 } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
 import { useProductsForm } from '../hooks/use-products-form'
-import { ImageThumbnail } from './image-thumbnail'
+import { ImageThumbnail } from '../../../../components/forms/image-thumbnail'
 
 type ProductsFormContentProps = {
   currentRow?: Product | null
