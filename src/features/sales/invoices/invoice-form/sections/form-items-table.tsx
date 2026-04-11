@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Plus } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
