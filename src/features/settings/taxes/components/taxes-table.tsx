@@ -223,7 +223,7 @@ function TableRows({ table }: { table: TanstackTable<Tax> }) {
           {row.getVisibleCells().map((cell) => (
             <TableCell
               onClick={() => {
-                if (cell.column.id === 'select') return
+                if (cell.column.id === 'select' || cell.column.id === 'status') return
                 setOpen('edit')
                 setCurrentRow(row.original)
               }}

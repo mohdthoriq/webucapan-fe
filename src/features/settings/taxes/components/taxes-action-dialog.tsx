@@ -24,8 +24,11 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Switch } from '@/components/ui/switch'
+// import { Textarea } from '@/components/ui/textarea'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
+import { AccountsCombobox } from '@/features/account/components/account-combobox'
 import { useTaxesForm } from '../hooks/use-taxes-form'
 
 type TaxesActionDialogProps = {
@@ -52,6 +55,9 @@ export function TaxesActionDialog({
     isEdit ? PERMISSION_KEY.SETTINGS_TAX_EDIT : PERMISSION_KEY.SETTINGS_TAX_ADD
   )
 
+  const isWithholding = form.watch('is_withholding')
+  const isNotDeletable = isEdit && currentRow?.is_deletable === false
+
   return (
     <Dialog
       open={open}
@@ -70,90 +76,195 @@ export function TaxesActionDialog({
             Klik simpan setelah selesai.
           </DialogDescription>
         </DialogHeader>
-        <div className={cn('py-4', !hasPermission && 'relative')}>
-          <Form {...form}>
-            <form
-              id='tax-form'
-              onSubmit={form.handleSubmit(onSubmit)}
-              className={cn(
-                'space-y-4',
-                !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
-              )}
-            >
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nama Pajak</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan nama pajak...'
-                        autoComplete='off'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+        <ScrollArea className='h-[60vh] w-full'>
+          <div className={cn('py-4 pr-4 pl-2', !hasPermission && 'relative')}>
+            <Form {...form}>
+              <form
+                id='tax-form'
+                onSubmit={form.handleSubmit(onSubmit)}
+                className={cn(
+                  'space-y-4',
+                  !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
                 )}
-              />
+              >
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nama Pajak</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Masukkan nama pajak...'
+                          autoComplete='off'
+                          {...field}
+                          disabled={!hasPermission}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name='rate'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rate</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan rate pajak...'
-                        autoComplete='off'
-                        onChange={(e) => {
-                          field.onChange(
-                            e.target.value === '' ? 0 : Number(e.target.value)
-                          )
-                        }}
-                        type='number'
-                        value={field.value ?? ''}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name='rate'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Persentase (%)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Masukkan persentase pajak...'
+                          autoComplete='off'
+                          onChange={(e) => {
+                            field.onChange(
+                              e.target.value === ''
+                                ? ''
+                                : Number(e.target.value)
+                            )
+                          }}
+                          type='number'
+                          startAdornment={
+                            <span className='text-muted-foreground'>%</span>
+                          }
+                          value={field.value ?? ''}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                          disabled={!hasPermission}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='is_withholding'
+                  render={({ field }) => (
+                    <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm'>
+                      <div className='grow space-y-0.5'>
+                        <FormLabel>Pemotongan</FormLabel>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked)
+                            const currentBuyAccount =
+                              form.getValues('buy_account_id')
+                            const currentSellAccount =
+                              form.getValues('sell_account_id')
+                            form.setValue('sell_account_id', currentBuyAccount)
+                            form.setValue('buy_account_id', currentSellAccount)
+                          }}
+                          disabled={!hasPermission || isNotDeletable}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Deskripsi</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder='Deskripsikan pajak ini...'
-                        className='min-h-[80px]'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                <FormField
+                  control={form.control}
+                  name='sell_account_id'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Akun Pajak Penjualan</FormLabel>
+                      <FormControl>
+                        <AccountsCombobox
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder='Pilih akun pajak penjualan...'
+                          disabled={!hasPermission || isNotDeletable}
+                          codePrefixes={isWithholding ? [
+                            '1-10',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ] : [
+                            '2-20',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ]}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='buy_account_id'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Akun Pajak Pembelian</FormLabel>
+                      <FormControl>
+                        <AccountsCombobox
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder='Pilih akun pajak pembelian...'
+                          disabled={!hasPermission || isNotDeletable}
+                          codePrefixes={isWithholding ? [
+                            '2-20',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ] : [
+                            '1-10',
+                            '4-40',
+                            '6-60',
+                            '7-70',
+                            '8-80',
+                            '8-81',
+                            '9-90',
+                          ]}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Deskripsi</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder='Deskripsikan pajak ini...'
+                          className='min-h-[80px] resize-none'
+                          {...field}
+                          disabled={!hasPermission}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+              </form>
+            </Form>
+            {!hasPermission && (
+              <UpgradePlanCard
+                type='dialog'
+                feature={isEdit ? 'Edit Pajak' : 'Tambah Pajak'}
               />
-            </form>
-          </Form>
-          {!hasPermission && (
-            <UpgradePlanCard
-              type='dialog'
-              feature={isEdit ? 'Edit Pajak' : 'Tambah Pajak'}
-            />
-          )}
-        </div>
+            )}
+          </div>
+        </ScrollArea>
 
         {errorMessage && (
           <Alert variant='destructive' className='w-full'>

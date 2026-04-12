@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { type Plan } from '@/types'
 import { Plus, Trash2 } from 'lucide-react'
@@ -49,12 +50,17 @@ export function PlansActionDialog({
 
   const is_active = form.watch('is_active')
 
+  useEffect(() => {
+    if (!open) {
+      form.reset()
+    }
+  }, [open, form])
+
   return (
     <Dialog
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
-        form.reset()
       }}
     >
       <DialogContent className='flex max-h-[90vh] flex-col sm:max-w-md'>

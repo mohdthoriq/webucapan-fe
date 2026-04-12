@@ -3,11 +3,12 @@ import { addDays, format } from 'date-fns'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
   type Contact,
+  type Expedition,
   FinanceNumberType,
   type PaymentTerm,
   type Tag,
 } from '@/types'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, ChevronDown } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -27,6 +28,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -39,14 +45,29 @@ import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import { useExpeditionsQuery } from '@/features/settings/expeditions/hooks/use-expeditions-query'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import type {
+  CreateInvoiceFormData,
+  UpdateInvoiceFormData,
+} from '../types/invoice-form.schema'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
 import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
 
 export function InvoiceFormHeader() {
-  const { control, formState, setValue } = useFormContext()
+  const { control, formState, setValue } =
+    useFormContext<CreateInvoiceFormData | UpdateInvoiceFormData>()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
   const { data: contactTypes } = useContactTypesQuery({ page: 1, limit: 100 })
+  const { data: expeditions } = useExpeditionsQuery({ page: 1, limit: 100 })
   const { openDialog } = useGlobalDialogStore()
 
   const customerTypeId = contactTypes?.data?.find(
@@ -339,6 +360,176 @@ export function InvoiceFormHeader() {
             </FormItem>
           )}
         />
+      </div>
+
+      {/* Shipping Information */}
+      <div className='md:col-span-2 lg:col-span-3'>
+        <Collapsible>
+          <CollapsibleTrigger asChild>
+            <Button
+              variant='link'
+              className='text-primary h-auto p-0 text-xs font-medium hover:no-underline'
+            >
+              <div className='flex items-center gap-1'>
+                <span>Tampilkan Informasi Pengiriman</span>
+                <ChevronDown className='h-3 w-3' />
+              </div>
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className='CollapsibleContent'>
+            <div className='rounded-md border overflow-hidden'>
+              <Table>
+                <TableHeader>
+                  <TableRow className='bg-muted/50'>
+                    <TableHead className='h-10 px-2 text-xs'>Tanggal Pengiriman</TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>Ekspedisi</TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>Nomor Resi</TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>Biaya Pengiriman</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    {/* Shipping Date */}
+                    <TableCell className='p-2 align-top'>
+                      <FormField
+                        control={control}
+                        name='shipping_date'
+                        render={({ field }) => (
+                          <FormItem className='mb-0 flex flex-col'>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={'outline'}
+                                    className={cn(
+                                      'w-full pl-3 text-left font-normal text-xs h-9',
+                                      !field.value && 'text-muted-foreground'
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, 'dd/MM/yyyy')
+                                    ) : (
+                                      <span>Pilih tanggal</span>
+                                    )}
+                                    <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className='w-auto p-0' align='start'>
+                                <Calendar
+                                  mode='single'
+                                  selected={field.value ?? undefined}
+                                  onSelect={(date) => field.onChange(date)}
+                                  disabled={(date) => date < new Date('1900-01-01')}
+                                  autoFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage className='text-[10px]' />
+                          </FormItem>
+                        )}
+                      />
+                    </TableCell>
+
+                    {/* Expedition */}
+                    <TableCell className='p-2 align-top'>
+                      <FormField
+                        control={control}
+                        name='expedition_id'
+                        render={({ field }) => (
+                          <FormItem className='mb-0'>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value ?? undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className='w-full text-xs h-9'>
+                                  <SelectValue placeholder='Pilih ekspedisi' />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {expeditions?.data.length === 0 ? (
+                                  <div className='text-muted-foreground p-2 text-center text-sm'>
+                                    Tidak ada ekspedisi
+                                  </div>
+                                ) : (
+                                  expeditions?.data.map((exp) => (
+                                    <SelectItem key={exp.id} value={exp.id}>
+                                      {exp.name}
+                                    </SelectItem>
+                                  ))
+                                )}
+                                <SelectSeparator />
+                                <FormShortcutButton
+                                  title='Tambah Ekspedisi Baru'
+                                  onClick={() =>
+                                    openDialog('expedition', {
+                                      onSuccess: (data: Expedition) => {
+                                        if (data?.id) {
+                                          field.onChange(data.id)
+                                        }
+                                      },
+                                    })
+                                  }
+                                />
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className='text-[10px]' />
+                          </FormItem>
+                        )}
+                      />
+                    </TableCell>
+
+                    {/* Tracking Number */}
+                    <TableCell className='p-2 align-top'>
+                      <FormField
+                        control={control}
+                        name='tracking_number'
+                        render={({ field }) => (
+                          <FormItem className='mb-0'>
+                            <FormControl>
+                              <Input 
+                                placeholder='Contoh: JNE123456789' 
+                                {...field} 
+                                value={field.value ?? ''}
+                                className='text-xs h-9'
+                              />
+                            </FormControl>
+                            <FormMessage className='text-[10px]' />
+                          </FormItem>
+                        )}
+                      />
+                    </TableCell>
+
+                    {/* Shipping Fee */}
+                    <TableCell className='p-2 align-top'>
+                      <FormField
+                        control={control}
+                        name='shipping_fee'
+                        render={({ field }) => (
+                          <FormItem className='mb-0'>
+                            <FormControl>
+                              <Input
+                                type='number'
+                                placeholder='0'
+                                {...field}
+                                value={field.value ?? 0}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                startAdornment='Rp'
+                                className='text-xs h-9'
+                              />
+                            </FormControl>
+                            <FormMessage className='text-[10px]' />
+                          </FormItem>
+                        )}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       </div>
     </div>
   )

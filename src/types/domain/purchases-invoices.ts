@@ -1,10 +1,17 @@
 import type { GlobalResponse } from '../api/global-response'
 import type { Company } from './company'
 import type { Contact } from './contact'
+import type { Expedition } from './expedition'
 import type { PaymentTerm } from './payment-term'
 import type { Payment } from './payments'
 import type { Product } from './product'
-import type { DocumentStatus, PaymentStatus } from './sales-invoices'
+import type {
+  AdditionalDiscount,
+  Deduction,
+  DocumentStatus,
+  PaymentStatus,
+  TransactionFee,
+} from './sales-invoices'
 import type { Tag } from './tag'
 import type { Tax } from './tax'
 
@@ -37,4 +44,13 @@ export interface PurchaseInvoice extends GlobalResponse {
   payments: Payment[]
   tags: (string | Tag)[]
   taxes: Tax[]
+  additional_discounts: AdditionalDiscount[]
+  transaction_fees: TransactionFee[]
+  deductions: Deduction[]
+  is_tax_inclusive: boolean
+  shipping_fee: number
+  shipping_date: Date
+  expedition_id: string
+  expedition: Expedition | null
+  tracking_number: string
 }

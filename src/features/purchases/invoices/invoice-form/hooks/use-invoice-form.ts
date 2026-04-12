@@ -48,7 +48,7 @@ export function useInvoiceForm({
             currency: currentRow.currency,
             subtotal: Number(currentRow.subtotal),
             tax_total: Number(currentRow.tax_total),
-            grand_total: Number(currentRow.total),
+            total: Number(currentRow.total),
             invoice_date: currentRow.invoice_date
               ? new Date(currentRow.invoice_date)
               : new Date(),
@@ -70,6 +70,16 @@ export function useInvoiceForm({
               currentRow.tags?.map((tag: string | { id: string }) =>
                 typeof tag === 'object' ? tag.id : tag
               ) || [],
+            additional_discounts: currentRow.additional_discounts || [],
+            transaction_fees: currentRow.transaction_fees || [],
+            deductions: currentRow.deductions || [],
+            is_tax_inclusive: currentRow.is_tax_inclusive || false,
+            shipping_fee: Number(currentRow.shipping_fee) || 0,
+            shipping_date: currentRow.shipping_date
+              ? new Date(currentRow.shipping_date)
+              : undefined,
+            expedition_id: currentRow.expedition_id || undefined,
+            tracking_number: currentRow.tracking_number || '',
           }
         : {
             invoice_number: autoNumbering?.format ?? '',
@@ -78,7 +88,7 @@ export function useInvoiceForm({
             currency: 'IDR',
             subtotal: 0,
             tax_total: 0,
-            grand_total: 0,
+            total: 0,
             payment_status: PaymentStatus.unpaid,
             document_status: DocumentStatus.draft,
             invoice_date: new Date(),
@@ -95,6 +105,14 @@ export function useInvoiceForm({
               },
             ],
             tags: [],
+            additional_discounts: [],
+            transaction_fees: [],
+            deductions: [],
+            is_tax_inclusive: false,
+            shipping_fee: 0,
+            shipping_date: undefined,
+            expedition_id: undefined,
+            tracking_number: '',
           },
     [currentRow, isEdit, autoNumbering]
   )
@@ -103,6 +121,7 @@ export function useInvoiceForm({
     resolver: zodResolver(isEdit ? UpdateInvoiceSchema : CreateInvoiceSchema),
     defaultValues: defaultValues,
   })
+
 
   useEffect(() => {
     if (isEdit && currentRow) {

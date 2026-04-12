@@ -16,6 +16,8 @@ import { Search } from '../search'
 import { ThemeSwitch } from '../theme-switch'
 import { Header } from './header'
 import { Main } from './main'
+import { Breadcrumbs } from './breadcrumbs'
+import { useAuthStore } from '@/stores/auth-store'
 
 type AuthenticatedLayoutProps = {
   children?: ReactNode
@@ -23,6 +25,7 @@ type AuthenticatedLayoutProps = {
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
   const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const userCompany = useAuthStore((state) => state?.auth?.user?.company)
 
   return (
     <SearchProvider>
@@ -48,11 +51,15 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
             <Header fixed>
               <SidebarTrigger className='md:hidden' />
               <Search />
-              <div className='ms-auto flex items-center space-x-4'>
+              <div className='ms-auto flex items-center space-x-2'>
+                <p className='text-sm uppercase tracking-wide font-medium mr-4'>{userCompany?.name}</p>
                 <ThemeSwitch />
                 <ProfileDropdown />
               </div>
             </Header>
+            <div className='bg-background @7xl/content:mx-auto @7xl/content:w-full @7xl/content:max-w-7xl'>
+              <Breadcrumbs />
+            </div>
 
             <Main className='flex flex-1 flex-col'>
               {children ?? <Outlet />}

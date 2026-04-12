@@ -42,6 +42,7 @@ import { Route as AuthenticatedSettingsTagsIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedSettingsSubscriptionIndexRouteImport } from './routes/_authenticated/settings/subscription/index'
 import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsPaymentTermsIndexRouteImport } from './routes/_authenticated/settings/payment-terms/index'
+import { Route as AuthenticatedSettingsExpeditionsIndexRouteImport } from './routes/_authenticated/settings/expeditions/index'
 import { Route as AuthenticatedSettingsCompanyIndexRouteImport } from './routes/_authenticated/settings/company/index'
 import { Route as AuthenticatedSettingsCompanyRolesIndexRouteImport } from './routes/_authenticated/settings/company-roles/index'
 import { Route as AuthenticatedSettingsAutoSequencingIndexRouteImport } from './routes/_authenticated/settings/auto-sequencing/index'
@@ -256,6 +257,12 @@ const AuthenticatedSettingsPaymentTermsIndexRoute =
   AuthenticatedSettingsPaymentTermsIndexRouteImport.update({
     id: '/settings/payment-terms/',
     path: '/settings/payment-terms/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsExpeditionsIndexRoute =
+  AuthenticatedSettingsExpeditionsIndexRouteImport.update({
+    id: '/settings/expeditions/',
+    path: '/settings/expeditions/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsCompanyIndexRoute =
@@ -493,6 +500,7 @@ export interface FileRoutesByFullPath {
   '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/expeditions': typeof AuthenticatedSettingsExpeditionsIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/subscription': typeof AuthenticatedSettingsSubscriptionIndexRoute
@@ -558,6 +566,7 @@ export interface FileRoutesByTo {
   '/settings/auto-sequencing': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/settings/company-roles': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/settings/company': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/settings/expeditions': typeof AuthenticatedSettingsExpeditionsIndexRoute
   '/settings/payment-terms': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
   '/settings/subscription': typeof AuthenticatedSettingsSubscriptionIndexRoute
@@ -625,6 +634,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/auto-sequencing/': typeof AuthenticatedSettingsAutoSequencingIndexRoute
   '/_authenticated/settings/company-roles/': typeof AuthenticatedSettingsCompanyRolesIndexRoute
   '/_authenticated/settings/company/': typeof AuthenticatedSettingsCompanyIndexRoute
+  '/_authenticated/settings/expeditions/': typeof AuthenticatedSettingsExpeditionsIndexRoute
   '/_authenticated/settings/payment-terms/': typeof AuthenticatedSettingsPaymentTermsIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
   '/_authenticated/settings/subscription/': typeof AuthenticatedSettingsSubscriptionIndexRoute
@@ -692,6 +702,7 @@ export interface FileRouteTypes {
     | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
+    | '/settings/expeditions'
     | '/settings/payment-terms'
     | '/settings/profile'
     | '/settings/subscription'
@@ -757,6 +768,7 @@ export interface FileRouteTypes {
     | '/settings/auto-sequencing'
     | '/settings/company-roles'
     | '/settings/company'
+    | '/settings/expeditions'
     | '/settings/payment-terms'
     | '/settings/profile'
     | '/settings/subscription'
@@ -823,6 +835,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/auto-sequencing/'
     | '/_authenticated/settings/company-roles/'
     | '/_authenticated/settings/company/'
+    | '/_authenticated/settings/expeditions/'
     | '/_authenticated/settings/payment-terms/'
     | '/_authenticated/settings/profile/'
     | '/_authenticated/settings/subscription/'
@@ -1086,6 +1099,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/payment-terms'
       fullPath: '/settings/payment-terms'
       preLoaderRoute: typeof AuthenticatedSettingsPaymentTermsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/expeditions/': {
+      id: '/_authenticated/settings/expeditions/'
+      path: '/settings/expeditions'
+      fullPath: '/settings/expeditions'
+      preLoaderRoute: typeof AuthenticatedSettingsExpeditionsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/company/': {
@@ -1375,6 +1395,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsAutoSequencingIndexRoute: typeof AuthenticatedSettingsAutoSequencingIndexRoute
   AuthenticatedSettingsCompanyRolesIndexRoute: typeof AuthenticatedSettingsCompanyRolesIndexRoute
   AuthenticatedSettingsCompanyIndexRoute: typeof AuthenticatedSettingsCompanyIndexRoute
+  AuthenticatedSettingsExpeditionsIndexRoute: typeof AuthenticatedSettingsExpeditionsIndexRoute
   AuthenticatedSettingsPaymentTermsIndexRoute: typeof AuthenticatedSettingsPaymentTermsIndexRoute
   AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute
   AuthenticatedSettingsSubscriptionIndexRoute: typeof AuthenticatedSettingsSubscriptionIndexRoute
@@ -1430,6 +1451,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsCompanyRolesIndexRoute,
   AuthenticatedSettingsCompanyIndexRoute:
     AuthenticatedSettingsCompanyIndexRoute,
+  AuthenticatedSettingsExpeditionsIndexRoute:
+    AuthenticatedSettingsExpeditionsIndexRoute,
   AuthenticatedSettingsPaymentTermsIndexRoute:
     AuthenticatedSettingsPaymentTermsIndexRoute,
   AuthenticatedSettingsProfileIndexRoute:

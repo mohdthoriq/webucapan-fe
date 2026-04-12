@@ -88,7 +88,7 @@ export const getUsersColumns = (isAdmin: boolean): ColumnDef<User>[] => {
     columns.push({
       id: 'active_status',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Edit Status' />
+        <DataTableColumnHeader column={column} title='Status' />
       ),
       cell: ({ row }) => <UserStatusSwitch user={row.original} />,
     })

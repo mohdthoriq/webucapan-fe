@@ -16,6 +16,7 @@ interface AccountsComboboxProps {
   categoryId?: string
   codePrefixes?: string[]
   disabled?: boolean
+  className?: string
 }
 
 export function AccountsCombobox({
@@ -27,6 +28,7 @@ export function AccountsCombobox({
   categoryId,
   codePrefixes,
   disabled,
+  className,
 }: AccountsComboboxProps) {
   const {
     allItems,
@@ -63,11 +65,14 @@ export function AccountsCombobox({
       onLoadMore={loadMore}
       onRetry={refetch}
       getLabel={(item) => item.name}
+      className={className}
       renderItem={(item) => (
         <div className='flex flex-col'>
-          <span className='font-medium'>{item.name}</span>
+          <span className='font-medium'>
+            {item.code} - {item.name}
+          </span>
           <span className='text-muted-foreground text-xs'>
-            {item.description}
+            {item.category?.name}
           </span>
         </div>
       )}

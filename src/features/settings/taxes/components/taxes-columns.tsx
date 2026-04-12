@@ -1,9 +1,10 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Tax } from '@/types'
 import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { Checkbox } from '@/components/ui/checkbox'
+import { TaxStatusSwitch } from './taxes-status-switch'
 
 export const taxesColumns: ColumnDef<Tax>[] = [
   {
@@ -42,7 +43,7 @@ export const taxesColumns: ColumnDef<Tax>[] = [
       const { name } = row.original
       return (
         <div className='p-2'>
-          <LongText className='min-w-36'>{name}</LongText>
+          <LongText>{name}</LongText>
         </div>
       )
     },
@@ -67,25 +68,77 @@ export const taxesColumns: ColumnDef<Tax>[] = [
         </div>
       )
     },
-    meta: {
-      className: 'min-w-32',
-    },
   },
   {
-    accessorKey: 'Deskripsi',
+    accessorKey: 'Akun Pajak Penjualan',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Deskripsi' />
+      <DataTableColumnHeader column={column} title='Akun Pajak Penjualan' />
     ),
     cell: ({ row }) => {
-      const { description } = row.original
+      const { sell_account } = row.original
       return (
         <div className='p-2'>
-          <LongText className='line-clamp-1'>{description || '-'}</LongText>
+          <LongText className='truncate'>
+            {sell_account?.ref_code} - {sell_account?.name}
+          </LongText>
         </div>
       )
     },
-    meta: {
-      className: 'w-full min-w-64',
+  },
+  {
+    accessorKey: 'Akun Pajak Pembelian',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Akun Pajak Pembelian' />
+    ),
+    cell: ({ row }) => {
+      const { buy_account } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>
+            {buy_account?.ref_code} - {buy_account?.name}
+          </LongText>
+        </div>
+      )
     },
+  },
+  {
+    accessorKey: 'Pemotongan',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Pemotongan' />
+    ),
+    cell: ({ row }) => {
+      const { is_withholding } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>
+            {is_withholding ? 'Ya' : 'Tidak'}
+          </LongText>
+        </div>
+      )
+    },
+  },
+  // {
+  //   accessorKey: 'Deskripsi',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Deskripsi' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { description } = row.original
+  //     return (
+  //       <div className='p-2'>
+  //         <LongText className='line-clamp-1'>{description || '-'}</LongText>
+  //       </div>
+  //     )
+  //   },
+  //   meta: {
+  //     className: 'w-full',
+  //   },
+  // },
+  {
+    id: 'status',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ row }) => <TaxStatusSwitch tax={row.original} />,
   },
 ]

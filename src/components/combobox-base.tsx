@@ -38,6 +38,7 @@ interface ComboboxBaseProps<T extends { id: string }> {
   disabled?: boolean
   action?: ReactNode
   initialLabel?: string
+  className?: string
 }
 
 export function ComboboxBase<T extends { id: string }>({
@@ -60,6 +61,7 @@ export function ComboboxBase<T extends { id: string }>({
   disabled,
   action,
   initialLabel,
+  className,
 }: ComboboxBaseProps<T>) {
   const [open, setOpen] = useState(false)
 
@@ -80,7 +82,7 @@ export function ComboboxBase<T extends { id: string }>({
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-full justify-between'
+          className={cn('w-full justify-between', className)}
         >
           <span className='truncate'>
             {selectedItem
