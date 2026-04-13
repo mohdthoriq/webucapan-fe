@@ -26,7 +26,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useContactsForm } from '../hooks/use-contacts-form'
-import { ContactCombobox } from './contacts-combobox'
+import { ContactTypeCombobox } from './contacts-combobox'
 
 type ContactsActionDialogProps = {
   currentRow?: Contact
@@ -106,7 +106,7 @@ export function ContactsActionDialog({
                   <FormItem>
                     <FormLabel>Tipe Kontak</FormLabel>
                     <FormControl>
-                      <ContactCombobox
+                      <ContactTypeCombobox
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder='Pilih tipe kontak...'
