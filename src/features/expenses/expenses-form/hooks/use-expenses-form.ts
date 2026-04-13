@@ -21,6 +21,7 @@ import {
   useUpdateExpenseMutation,
 } from './use-expenses-form-mutation'
 import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
+import { toast } from 'sonner'
 
 type UseExpensesFormProps = {
   currentRow?: Expense
@@ -142,7 +143,7 @@ export function useExpensesForm({
         attachmentUrls = uploadResponse.data?.urls || []
       }
 
-      // 2. Prepare final payload
+      // 2. Prepare final payload with uploaded URLs
       const payload = {
         ...data,
         images: attachmentUrls,
@@ -152,7 +153,7 @@ export function useExpensesForm({
         const updateData: UpdateExpenseFormData = {
           ...payload,
           id: currentRow.id,
-        } as UpdateExpenseFormData
+        } as unknown as UpdateExpenseFormData
         const response = await updateMutation.mutateAsync(updateData)
 
         form.reset(data)
@@ -162,7 +163,7 @@ export function useExpensesForm({
         })
       } else {
         const response = await createMutation.mutateAsync(
-          payload as CreateExpenseFormData
+          payload as unknown as CreateExpenseFormData
         )
 
         await generateNextNumber.mutateAsync(FinanceNumberType.expense)
@@ -173,8 +174,8 @@ export function useExpensesForm({
         })
       }
     } catch (error) {
-      console.error('Submit error:', error)
-    }
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)    }
   }
 
   return {

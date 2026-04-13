@@ -23,6 +23,7 @@ import {
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
 import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
+import { toast } from 'sonner'
 
 type UseInvoiceFormProps = {
   currentRow?: PurchaseInvoice
@@ -171,7 +172,7 @@ export function useInvoiceForm({
         attachmentUrls = uploadResponse.data?.urls || []
       }
 
-      // 2. Prepare final payload
+      // 2. Prepare final payload with uploaded URLs
       const payload = {
         ...data,
         images: attachmentUrls,
@@ -181,7 +182,7 @@ export function useInvoiceForm({
         const updateData: UpdateInvoiceFormData = {
           ...payload,
           id: currentRow.id,
-        } as UpdateInvoiceFormData
+        } as unknown as UpdateInvoiceFormData
         const response = await updateMutation.mutateAsync(updateData)
 
         form.reset(data)
@@ -190,7 +191,9 @@ export function useInvoiceForm({
           state: { currentRowId: response.data.id } as Record<string, unknown>,
         })
       } else {
-        const response = await createMutation.mutateAsync(payload)
+        const response = await createMutation.mutateAsync(
+          payload as unknown as CreateInvoiceFormData
+        )
 
         await generateNextNumber.mutateAsync(FinanceNumberType.purchase_invoice)
         form.reset()
@@ -200,7 +203,8 @@ export function useInvoiceForm({
         })
       }
     } catch (error) {
-      console.error('Submit error:', error)
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)
     }
   }
 

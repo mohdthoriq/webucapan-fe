@@ -23,6 +23,7 @@ import {
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
 import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
+import { toast } from 'sonner'
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice
@@ -199,7 +200,8 @@ export function useInvoiceForm({
       }
     } catch (error) {
       // Error handling is managed by the mutation's state
-      console.error('Submit error:', error)
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)
     }
   }
 
