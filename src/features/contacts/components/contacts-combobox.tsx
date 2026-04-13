@@ -1,13 +1,13 @@
 import { type ReactNode, useMemo } from 'react'
-import type { Contact } from '@/types'
+import type { ContactType } from '@/types'
 import { useComboboxQuery } from '@/hooks/use-combobox-query'
 import { ComboboxBase } from '@/components/combobox-base'
 import {
   type ContactQueryParams,
-  useContactsQuery,
+  useContactTypesQuery,
 } from '../hooks/use-contacts-query'
 
-export interface ContactComboboxProps {
+export interface ContactTypeComboboxProps {
   value?: string
   onValueChange?: (value: string) => void
   placeholder?: string
@@ -18,16 +18,15 @@ export interface ContactComboboxProps {
   companyId?: string
 }
 
-export function ContactCombobox({
+export function ContactTypeCombobox({
   value,
   onValueChange,
-  placeholder = 'Pilih Vendor',
+  placeholder = 'Pilih Tipe Kontak',
   limit = 20,
   action,
-  contactTypeId,
   disabled,
   companyId,
-}: ContactComboboxProps) {
+}: ContactTypeComboboxProps) {
   const {
     allItems,
     isLoading,
@@ -36,11 +35,10 @@ export function ContactCombobox({
     refetch,
     loadMore,
     setSearchTerm,
-  } = useComboboxQuery<Contact, ContactQueryParams>({
-    queryHook: useContactsQuery,
+  } = useComboboxQuery<ContactType, ContactQueryParams>({
+    queryHook: useContactTypesQuery,
     limit,
     extraParams: {
-      type_id: contactTypeId,
       company_id: companyId,
     },
   })
@@ -70,9 +68,9 @@ export function ContactCombobox({
       renderItem={(item) => (
         <div className='flex flex-col'>
           <span className='font-medium'>{item.name}</span>
-          {item.company?.name && (
+          {item.description && (
             <span className='text-muted-foreground text-xs'>
-              {item.company.name}
+              {item.description}
             </span>
           )}
         </div>
