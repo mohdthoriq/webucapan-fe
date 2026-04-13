@@ -124,47 +124,56 @@ export function useExpensesForm({
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
   const onSubmit = async (
-    data: (CreateExpenseFormData | UpdateExpenseFormData) & { images?: File[] }
+    data: CreateExpenseFormData | UpdateExpenseFormData
   ) => {
-    if (isEdit && currentRow) {
-      const updateData: UpdateExpenseFormData = {
+    try {
+      let attachmentUrls: string[] = []
+
+      // 1. Upload files first if any
+      const filesToUpload = (data.images || []).filter(
+        (item) => item instanceof File
+      ) as File[]
+
+      if (filesToUpload.length > 0) {
+        const uploadResponse = await uploadAttachments.mutateAsync({
+          feature: 'expenses',
+          images: filesToUpload,
+        })
+        attachmentUrls = uploadResponse.data?.urls || []
+      }
+
+      // 2. Prepare final payload
+      const payload = {
         ...data,
-        id: currentRow.id,
-      } as UpdateExpenseFormData
-      const response = await updateMutation.mutateAsync(updateData)
-
-      if (data.images && data.images.length > 0) {
-        await uploadAttachments.mutateAsync({
-          feature: 'expenses',
-          id: response.data.id,
-          images: data.images,
-        })
+        images: attachmentUrls,
       }
 
-      form.reset(data)
-      navigate({
-        to: `/expenses/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
-    } else {
-      const response = await createMutation.mutateAsync(
-        data as CreateExpenseFormData
-      )
+      if (isEdit && currentRow) {
+        const updateData: UpdateExpenseFormData = {
+          ...payload,
+          id: currentRow.id,
+        } as UpdateExpenseFormData
+        const response = await updateMutation.mutateAsync(updateData)
 
-      if (data.images && data.images.length > 0) {
-        await uploadAttachments.mutateAsync({
-          feature: 'expenses',
-          id: response.data.id,
-          images: data.images,
+        form.reset(data)
+        navigate({
+          to: `/expenses/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      } else {
+        const response = await createMutation.mutateAsync(
+          payload as CreateExpenseFormData
+        )
+
+        await generateNextNumber.mutateAsync(FinanceNumberType.expense)
+        form.reset()
+        navigate({
+          to: `/expenses/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
         })
       }
-
-      await generateNextNumber.mutateAsync(FinanceNumberType.expense)
-      form.reset()
-      navigate({
-        to: `/expenses/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
+    } catch (error) {
+      console.error('Submit error:', error)
     }
   }
 

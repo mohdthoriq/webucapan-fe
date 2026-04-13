@@ -152,44 +152,54 @@ export function useInvoiceForm({
       ? (firstError.message as string)
       : undefined)
 
-  const onSubmit = async (data: CreateInvoiceFormData & { images?: File[] }) => {
-    if (isEdit && currentRow) {
-      const updateData: UpdateInvoiceFormData = {
+  const onSubmit = async (data: CreateInvoiceFormData) => {
+    try {
+      let attachmentUrls: string[] = []
+
+      // 1. Upload files first if any
+      const filesToUpload = (data.images || []).filter(
+        (item) => item instanceof File
+      ) as File[]
+
+      if (filesToUpload.length > 0) {
+        const uploadResponse = await uploadAttachments.mutateAsync({
+          feature: 'sales-invoices',
+          images: filesToUpload,
+        })
+        attachmentUrls = uploadResponse.data?.urls || []
+      }
+
+      // 2. Prepare final payload
+      const payload = {
         ...data,
-        id: currentRow.id,
-      } as UpdateInvoiceFormData
-      const response = await updateMutation.mutateAsync(updateData)
-      
-      if (data.images && data.images.length > 0) {
-        await uploadAttachments.mutateAsync({
-          feature: 'sales-invoices',
-          id: response.data.id,
-          images: data.images,
-        })
+        images: attachmentUrls,
       }
 
-      form.reset(data)
-      navigate({
-        to: `/sales/invoices/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
-    } else {
-      const response = await createMutation.mutateAsync(data)
+      if (isEdit && currentRow) {
+        const updateData: UpdateInvoiceFormData = {
+          ...payload,
+          id: currentRow.id,
+        } as UpdateInvoiceFormData
+        const response = await updateMutation.mutateAsync(updateData)
 
-      if (data.images && data.images.length > 0) {
-        await uploadAttachments.mutateAsync({
-          feature: 'sales-invoices',
-          id: response.data.id,
-          images: data.images,
+        form.reset(data)
+        navigate({
+          to: `/sales/invoices/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      } else {
+        const response = await createMutation.mutateAsync(payload)
+
+        await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
+        form.reset()
+        navigate({
+          to: `/sales/invoices/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
         })
       }
-
-      await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
-      form.reset()
-      navigate({
-        to: `/sales/invoices/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
+    } catch (error) {
+      // Error handling is managed by the mutation's state
+      console.error('Submit error:', error)
     }
   }
 
