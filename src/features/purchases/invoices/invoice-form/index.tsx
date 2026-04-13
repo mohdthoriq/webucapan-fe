@@ -3,7 +3,7 @@ import { FinanceNumberType } from '@/types'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Form } from '@/components/ui/form'
+import { Form, FormField } from '@/components/ui/form'
 import { PermissionGuard } from '@/components/permission-guard'
 import { InvoiceFormFallback } from './components/invoice-form-fallback'
 import { useInvoiceForm } from './hooks/use-invoice-form'
@@ -15,6 +15,7 @@ import { InvoiceFormActions } from './sections/form-actions'
 import { InvoiceFormHeader } from './sections/form-header'
 import { InvoiceFormItems } from './sections/form-items-table'
 import { InvoiceFormSummary } from './sections/form-summary'
+import { AttachmentCard } from '@/components/forms/attachment-card'
 
 export function InvoiceFormPage() {
   const location = useLocation()
@@ -92,7 +93,24 @@ export function InvoiceFormPage() {
               <div className='bg-border h-px' />
               <InvoiceFormItems />
               <div className='bg-border h-px' />
-              <InvoiceFormSummary />
+              
+              <div className='flex flex-col md:flex-row gap-6 items-start'>
+                <div className='w-full md:w-1/3'>
+                  <FormField
+                    control={invoiceForm.form.control}
+                    name='images'
+                    render={({ field }) => (
+                      <AttachmentCard
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </div>
+                <div className='w-full md:w-2/3 ml-auto'>
+                  <InvoiceFormSummary />
+                </div>
+              </div>
               <InvoiceFormActions
                 isEdit={invoiceForm.isEdit}
                 isSubmitting={invoiceForm.isSubmitting}

@@ -20,6 +20,7 @@ import {
   useGenerateNextNumber,
   useUpdateExpenseMutation,
 } from './use-expenses-form-mutation'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 
 type UseExpensesFormProps = {
   currentRow?: Expense
@@ -110,6 +111,7 @@ export function useExpensesForm({
   const createMutation = useCreateExpenseMutation()
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateExpenseMutation()
+  const uploadAttachments = useUploadAttachmentsMutation()
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
@@ -122,7 +124,7 @@ export function useExpensesForm({
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
   const onSubmit = async (
-    data: CreateExpenseFormData | UpdateExpenseFormData
+    data: (CreateExpenseFormData | UpdateExpenseFormData) & { images?: File[] }
   ) => {
     if (isEdit && currentRow) {
       const updateData: UpdateExpenseFormData = {
@@ -130,6 +132,15 @@ export function useExpensesForm({
         id: currentRow.id,
       } as UpdateExpenseFormData
       const response = await updateMutation.mutateAsync(updateData)
+
+      if (data.images && data.images.length > 0) {
+        await uploadAttachments.mutateAsync({
+          feature: 'expenses',
+          id: response.data.id,
+          images: data.images,
+        })
+      }
+
       form.reset(data)
       navigate({
         to: `/expenses/detail`,
@@ -139,6 +150,15 @@ export function useExpensesForm({
       const response = await createMutation.mutateAsync(
         data as CreateExpenseFormData
       )
+
+      if (data.images && data.images.length > 0) {
+        await uploadAttachments.mutateAsync({
+          feature: 'expenses',
+          id: response.data.id,
+          images: data.images,
+        })
+      }
+
       await generateNextNumber.mutateAsync(FinanceNumberType.expense)
       form.reset()
       navigate({

@@ -5,7 +5,7 @@ import { PERMISSION_KEY } from '@/constants/permissions'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Form } from '@/components/ui/form'
+import { Form, FormField } from '@/components/ui/form'
 import { PermissionGuard } from '@/components/permission-guard'
 import { ExpensesFormFallback } from './components/expenses-form-fallback'
 import { useExpensesForm } from './hooks/use-expenses-form'
@@ -17,6 +17,7 @@ import { ExpensesFormActions } from './sections/form-actions'
 import { ExpensesFormHeader } from './sections/form-header'
 import { ExpensesFormItems } from './sections/form-items-table'
 import { ExpensesFormSummary } from './sections/form-summary'
+import { AttachmentCard } from '@/components/forms/attachment-card'
 
 export function ExpensesFormPage() {
   const location = useLocation()
@@ -92,7 +93,24 @@ export function ExpensesFormPage() {
               <div className='bg-border h-px' />
               <ExpensesFormItems />
               <div className='bg-border h-px' />
-              <ExpensesFormSummary />
+              
+              <div className='flex flex-col md:flex-row gap-6 items-start'>
+                <div className='w-full md:w-1/3'>
+                  <FormField
+                    control={expensesForm.form.control}
+                    name='images'
+                    render={({ field }) => (
+                      <AttachmentCard
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </div>
+                <div className='w-full md:w-2/3 ml-auto'>
+                  <ExpensesFormSummary />
+                </div>
+              </div>
               {expensesForm.errorMessage && (
                 <Alert variant='destructive' className='w-full'>
                   <CheckCircle2Icon />

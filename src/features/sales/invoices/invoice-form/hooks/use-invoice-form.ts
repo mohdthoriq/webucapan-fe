@@ -22,6 +22,7 @@ import {
   useGenerateNextNumber,
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice
@@ -137,6 +138,7 @@ export function useInvoiceForm({
   const createMutation = useCreateInvoiceMutation()
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateInvoiceMutation()
+  const uploadAttachments = useUploadAttachmentsMutation()
 
   const errors = form.formState.errors
   const mutationError = createMutation.error || updateMutation.error
@@ -150,13 +152,22 @@ export function useInvoiceForm({
       ? (firstError.message as string)
       : undefined)
 
-  const onSubmit = async (data: CreateInvoiceFormData) => {
+  const onSubmit = async (data: CreateInvoiceFormData & { images?: File[] }) => {
     if (isEdit && currentRow) {
       const updateData: UpdateInvoiceFormData = {
         ...data,
         id: currentRow.id,
       } as UpdateInvoiceFormData
       const response = await updateMutation.mutateAsync(updateData)
+      
+      if (data.images && data.images.length > 0) {
+        await uploadAttachments.mutateAsync({
+          feature: 'sales-invoices',
+          id: response.data.id,
+          images: data.images,
+        })
+      }
+
       form.reset(data)
       navigate({
         to: `/sales/invoices/detail`,
@@ -164,6 +175,15 @@ export function useInvoiceForm({
       })
     } else {
       const response = await createMutation.mutateAsync(data)
+
+      if (data.images && data.images.length > 0) {
+        await uploadAttachments.mutateAsync({
+          feature: 'sales-invoices',
+          id: response.data.id,
+          images: data.images,
+        })
+      }
+
       await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
       form.reset()
       navigate({
