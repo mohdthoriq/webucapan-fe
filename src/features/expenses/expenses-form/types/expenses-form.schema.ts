@@ -40,6 +40,7 @@ export const CreateExpenseSchema = z
       .array(expenseItemSchema)
       .min(1, 'Expense harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
+    images: z.array(z.instanceof(File)).optional(),
   })
   .refine((data) => data.date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -69,6 +70,7 @@ export const UpdateExpenseSchema = z
       .array(expenseItemUpdateSchema)
       .min(1, 'Expense harus memiliki minimal 1 item'),
     tags: z.array(z.uuid()).nullable(),
+    images: z.array(z.instanceof(File)).optional(),
   })
   .refine((data) => data.date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal expense',
