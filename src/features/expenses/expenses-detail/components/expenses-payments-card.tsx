@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import {
   Form,
   FormControl,
@@ -20,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
 import {
   Tooltip,
   TooltipContent,
@@ -48,7 +48,7 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
 
   return (
     <Card className='border-border gap-0 shadow-none'>
-      <CardHeader className='pb-3 border-none'>
+      <CardHeader className='border-none pb-3'>
         <CardTitle className='text-base font-semibold'>
           Kirim Pembayaran
         </CardTitle>
@@ -111,9 +111,13 @@ export function ExpensesPaymentsCard({ expense }: ExpensesPaymentsCardProps) {
                           mode='single'
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date('1900-01-01')
-                          }
+                          disabled={(date) => {
+                            const today = new Date()
+                            const sixDaysAgo = new Date()
+                            sixDaysAgo.setDate(today.getDate() - 6)
+                            sixDaysAgo.setHours(0, 0, 0, 0)
+                            return date < sixDaysAgo
+                          }}
                           autoFocus
                         />
                       </PopoverContent>
