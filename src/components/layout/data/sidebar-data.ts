@@ -11,6 +11,7 @@ import {
   ShoppingBasket,
   ShoppingCart,
   Store,
+  Truck,
   WalletCards,
 } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -44,6 +45,12 @@ export const sidebarData: SidebarData = {
               icon: FileText,
               permission: PERMISSION_KEY.SALES_INVOICE_VIEW,
             },
+            {
+              title: 'Pengiriman',
+              url: '/sales/delivery',
+              icon: Truck,
+              permission: PERMISSION_KEY.SALES_DELIVERY_VIEW,
+            },
           ],
         },
         {
@@ -62,6 +69,12 @@ export const sidebarData: SidebarData = {
               url: '/purchases/invoices',
               icon: FileText,
               permission: PERMISSION_KEY.PURCHASE_INVOICE_VIEW,
+            },
+            {
+              title: 'Pengiriman',
+              url: '/purchases/delivery',
+              icon: Truck,
+              permission: PERMISSION_KEY.PURCHASE_DELIVERY_VIEW,
             },
           ],
         },
