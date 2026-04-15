@@ -9,7 +9,10 @@ interface UserStatusSwitchProps {
 export function UserStatusSwitch({ user }: UserStatusSwitchProps) {
   const updateStatus = useUpdateUserStatusMutation()
   return (
-    <div className='flex items-center justify-center px-4'>
+    <div
+      className='flex items-center justify-center px-4'
+      onClick={(e) => e.stopPropagation()}
+    >
       <Switch
         checked={user.is_active}
         onCheckedChange={(checked) =>

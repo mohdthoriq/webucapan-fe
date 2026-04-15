@@ -6,6 +6,7 @@ import { useUsers } from '../components/users-provider'
 import type {
   CreateUserFormData,
   DeleteUserFormData,
+  UpdateUserFormData,
   UpdateUserStatusFormData,
 } from '../types/users.schema'
 
@@ -30,6 +31,32 @@ export function useCreateUserMutation() {
     onError: () => {
       toast.dismiss('users-toast')
       toast.error('Pengguna gagal diundang.')
+    },
+  })
+}
+
+export function useUpdateUserMutation() {
+  const { setOpen } = useUsers()
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: UpdateUserFormData) => {
+      const { id, ...data } = payload
+      const response = await apiClient.patch(`/users/${id}`, data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-update-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-update-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] })
+      toast.success('Pengguna berhasil diperbarui.')
+      setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('users-update-toast')
+      toast.error('Gagal memperbarui pengguna.')
     },
   })
 }

@@ -3,7 +3,6 @@ import { type User } from '@/types'
 import { cn } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './users-row-actions'
 import { UserStatusSwitch } from './users-status-switch'
 
 export const getUsersColumns = (isAdmin: boolean): ColumnDef<User>[] => {
@@ -93,12 +92,6 @@ export const getUsersColumns = (isAdmin: boolean): ColumnDef<User>[] => {
       cell: ({ row }) => <UserStatusSwitch user={row.original} />,
     })
   }
-
-  columns.push({
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
-  })
 
   return columns
 }

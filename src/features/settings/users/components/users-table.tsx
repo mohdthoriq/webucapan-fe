@@ -169,13 +169,18 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<User> }) {
+  const { setOpen, setCurrentRow } = useUsers()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer'
+          onClick={() => {
+            setCurrentRow(row.original)
+            setOpen('edit')
+          }}
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
