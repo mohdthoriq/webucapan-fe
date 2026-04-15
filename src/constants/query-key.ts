@@ -1,6 +1,7 @@
 export const QUERY_KEY = {
   ACCOUNT: 'account',
   CONTACT: 'contact',
+  CONTACT_TYPE: 'contact_type',
   CASH_BANK: 'cash_bank',
   CASH_BANK_OVERVIEW: 'cash_bank_overview',
   CASH_BANK_TRANSACTIONS: 'cash_bank_transactions',

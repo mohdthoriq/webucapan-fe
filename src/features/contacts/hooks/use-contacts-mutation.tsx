@@ -56,13 +56,14 @@ export function useUpdateContactMutation(onSuccess?: (data: Contact) => void) {
     onSuccess: async (data) => {
       toast.dismiss('contacts-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT_TYPE] })
       toast.success('Kontak berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
     },
     onError: () => {
       toast.dismiss('contacts-toast')
-      toast.error('Satuan gagal diubah.')
+      toast.error('Kontak gagal diubah.')
     },
   })
 }
