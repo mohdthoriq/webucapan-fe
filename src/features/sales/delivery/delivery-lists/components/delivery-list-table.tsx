@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -12,8 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
-import type { User } from '@/types'
-import { useAuthStore } from '@/stores/auth-store'
+import type { SalesDelivery } from '@/types'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -25,27 +24,31 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { getUsersColumns } from './users-columns'
-import { useUsers } from './users-provider'
+import { DeliveryListFilter } from './delivery-list-filter'
+import { deliveryListsColumns } from './delivery-list-columns'
+import { useDeliveryLists } from './delivery-list-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function UsersTable({ search, navigate }: DataTableProps) {
-  const { usersData, pagination: serverPagination, isLoading } = useUsers()
+export function DeliveryListsTable({ search, navigate }: DataTableProps) {
+  const {
+    deliveryListsData,
+    pagination: serverPagination,
+    isLoading,
+    columnVisibility,
+    setColumnVisibility,
+  } = useDeliveryLists()
 
-  const currentUser = useAuthStore((state) => state.auth.user)
-  const isAdmin = currentUser?.role.name === 'Administrator'
-
-  const columns = useMemo(() => getUsersColumns(isAdmin), [isAdmin])
-
+  // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
 
+  // Synced with URL states
   const {
     columnFilters,
     onColumnFiltersChange,
@@ -57,13 +60,15 @@ export function UsersTable({ search, navigate }: DataTableProps) {
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'Nama', searchKey: 'name', type: 'string' }],
+    columnFilters: [
+      { columnId: 'Nomor', searchKey: 'invoice_number', type: 'string' },
+    ],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: usersData,
-    columns,
+    data: deliveryListsData,
+    columns: deliveryListsColumns,
     state: {
       sorting,
       pagination,
@@ -103,10 +108,28 @@ export function UsersTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari pengguna...'
-        searchKey='Nama'
-      />
-      <div className='overflow-hidden rounded-md border'>
+        searchPlaceholder='Cari nomor pengiriman...'
+        searchKey='Nomor'
+      >
+        <div className='gap-2'>
+          <DeliveryListFilter search={search} navigate={navigate} />
+        </div>
+      </DataTableToolbar>
+      <Tabs
+        defaultValue=''
+        value={search.payment_status as string}
+        onValueChange={(value) =>
+          navigate({ search: { ...search, payment_status: value } })
+        }
+      >
+        <TabsList className='h-10'>
+          <TabsTrigger value=''>Semua</TabsTrigger>
+          <TabsTrigger value='paid'>Lunas</TabsTrigger>
+          <TabsTrigger value='unpaid'>Belum Dibayar</TabsTrigger>
+          <TabsTrigger value='partially_paid'>Sebagian Dibayar</TabsTrigger>
+        </TabsList>
+      </Tabs>
+      <div className='overflow-hidden rounded-lg border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -142,7 +165,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={columns.length} />
+              <TableEmpty colSpan={deliveryListsColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -168,8 +191,8 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<User> }) {
-  const { setOpen, setCurrentRow } = useUsers()
+function TableRows({ table }: { table: TanstackTable<SalesDelivery> }) {
+  const navigate = useNavigate()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
@@ -177,16 +200,21 @@ function TableRows({ table }: { table: TanstackTable<User> }) {
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
           className='group/row cursor-pointer'
-          onClick={() => {
-            setCurrentRow(row.original)
-            setOpen('edit')
-          }}
+          onClick={() =>
+            navigate({
+              to: '/sales/delivery/detail',
+              state: { currentRowId: row.original.id } as Record<
+                string,
+                unknown
+              >,
+            })
+          }
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
               key={cell.id}
               className={cn(
-                'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
+                'bg-background group-hover/row:bg-muted/100 group-data-[state=selected]/row:bg-muted',
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
@@ -204,8 +232,12 @@ function TableEmpty({ colSpan }: { colSpan: number }) {
   return (
     <TableRow>
       <TableCell colSpan={colSpan} className='h-24 text-center'>
-        No results.
+        Tidak ada data.
       </TableCell>
     </TableRow>
   )
 }
+
+// function getRowActions(_row: SalesDelivery) {
+//   return []
+// }

@@ -10,6 +10,16 @@ export const createUserSchema = z.object({
 
 export type CreateUserFormData = z.infer<typeof createUserSchema>
 
+export const updateUserSchema = z.object({
+  id: z.string().uuid(),
+  full_name: z.string().min(1, 'Nama lengkap harus diisi'),
+  email: z.string().email('Email tidak valid').min(1, 'Email harus diisi'),
+  phone: z.string().min(1, 'Nomor telepon harus diisi'),
+  role_id: z.string().min(1, 'Role harus diisi'),
+})
+
+export type UpdateUserFormData = z.infer<typeof updateUserSchema>
+
 export const deleteUserSchema = z.object({
   id: z.uuid(),
 })

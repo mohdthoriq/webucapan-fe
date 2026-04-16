@@ -66,11 +66,11 @@ export function UsersActionDialog({
       <DialogContent className='flex flex-col sm:max-w-lg'>
         <DialogHeader className='text-start'>
           <DialogTitle>
-            {isEdit ? 'Edit Pengguna' : 'Invite Pengguna'}
+            {isEdit ? 'Edit Peran Pengguna' : 'Invite Pengguna'}
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Edit data pengguna.'
+              ? 'Ubah peran untuk pengguna ini.'
               : 'Undang pengguna baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
@@ -84,61 +84,83 @@ export function UsersActionDialog({
                 !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
               )}
             >
-              <FormField
-                control={form.control}
-                name='full_name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nama Lengkap</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan nama lengkap...'
-                        autoComplete='off'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan email...'
-                        autoComplete='off'
-                        type='email'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telepon</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan nomor telepon...'
-                        autoComplete='off'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isEdit ? (
+                <div className='bg-muted/50 rounded-lg p-3 space-y-2'>
+                  <div>
+                    <p className='text-muted-foreground text-xs font-medium'>
+                      Nama Lengkap
+                    </p>
+                    <p className='text-sm font-semibold'>
+                      {currentRow.full_name}
+                    </p>
+                  </div>
+                  <div>
+                    <p className='text-muted-foreground text-xs font-medium'>
+                      Email
+                    </p>
+                    <p className='text-sm font-semibold'>{currentRow.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name='full_name'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nama Lengkap</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan nama lengkap...'
+                            autoComplete='off'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan email...'
+                            autoComplete='off'
+                            type='email'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='phone'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telepon</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan nomor telepon...'
+                            autoComplete='off'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
               <FormField
                 control={form.control}
                 name='role_id'
@@ -177,7 +199,7 @@ export function UsersActionDialog({
 
         <DialogFooter>
           <Button type='submit' form='user-form' disabled={isSubmitting}>
-            {isEdit ? 'Simpan' : 'Undang'}
+            {isEdit ? 'Simpan Perubahan' : 'Undang'}
           </Button>
         </DialogFooter>
       </DialogContent>

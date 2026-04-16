@@ -1,5 +1,4 @@
 import { UsersActionDialog } from './users-action-dialog'
-import { UsersDetailDialog } from './users-detail-dialog'
 import { useUsers } from './users-provider'
 
 export function UsersDialogs() {
@@ -10,23 +9,23 @@ export function UsersDialogs() {
       <UsersActionDialog
         key='user-add'
         open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
+        onOpenChange={(state) => setOpen(state ? 'add' : null)}
       />
 
       {currentRow && (
-        <>
-          <UsersDetailDialog
-            key={`user-view-${currentRow.id}`}
-            open={open === 'view'}
-            onOpenChange={() => {
-              setOpen('view')
+        <UsersActionDialog
+          key={`user-edit-${currentRow.id}`}
+          open={open === 'edit'}
+          onOpenChange={(state) => {
+            setOpen(state ? 'edit' : null)
+            if (!state) {
               setTimeout(() => {
                 setCurrentRow(null)
               }, 500)
-            }}
-            currentRow={currentRow}
-          />
-        </>
+            }
+          }}
+          currentRow={currentRow}
+        />
       )}
     </>
   )

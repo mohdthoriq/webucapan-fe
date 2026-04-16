@@ -5,6 +5,7 @@ export const PERMISSION_KEY = {
   // Sales
   SALES: 'sales',
   SALES_OVERVIEW_VIEW: 'sales.overview.view',
+  SALES_DELIVERY_VIEW: 'sales.delivery.view',
   SALES_INVOICE: 'sales.invoice',
   SALES_INVOICE_VIEW: 'sales.invoice.view',
   SALES_INVOICE_ADD: 'sales.invoice.add',
@@ -15,6 +16,7 @@ export const PERMISSION_KEY = {
   // Purchase
   PURCHASE: 'purchase',
   PURCHASE_OVERVIEW_VIEW: 'purchase.overview.view',
+  PURCHASE_DELIVERY_VIEW: 'purchase.delivery.view',
   PURCHASE_INVOICE: 'purchase.invoice',
   PURCHASE_INVOICE_VIEW: 'purchase.invoice.view',
   PURCHASE_INVOICE_ADD: 'purchase.invoice.add',
