@@ -21,6 +21,7 @@ interface ExpensesFormComboboxProps {
   excludeIds?: string[]
   disabled?: boolean
   action?: ReactNode
+  isParent?: boolean
   extraParams?: Partial<AccountQueryParams | ContactQueryParams>
 }
 
@@ -103,6 +104,7 @@ function AccountCombobox({
   limit = 20,
   disabled,
   action,
+  isParent,
   extraParams,
 }: Omit<ExpensesFormComboboxProps, 'type'>) {
   const {
@@ -119,6 +121,7 @@ function AccountCombobox({
     searchKey: 'search',
     extraParams: {
       code_prefix: ['5-500', '6-600', '8-800', '9-900'],
+      is_parent: isParent,
       ...extraParams,
     } as AccountQueryParams,
   })

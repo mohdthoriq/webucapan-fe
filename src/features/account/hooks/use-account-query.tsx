@@ -15,6 +15,7 @@ export interface AccountQueryParams {
   category_id?: string
   order?: 'asc' | 'desc'
   is_active?: boolean
+  is_parent?: boolean
   transaction_types?: string[]
   code_prefix?: string[]
 }
@@ -28,6 +29,7 @@ export function useAccountsQuery(params?: AccountQueryParams) {
       params?.search,
       params?.category_id,
       params?.is_active,
+      params?.is_parent,
       params?.transaction_types,
       params?.order,
       params?.code_prefix,
@@ -40,6 +42,9 @@ export function useAccountsQuery(params?: AccountQueryParams) {
         ...(params?.category_id ? { category_id: params.category_id } : {}),
         ...(params?.is_active !== undefined
           ? { is_active: params.is_active.toString() }
+          : {}),
+        ...(params?.is_parent !== undefined
+          ? { is_parent: params.is_parent.toString() }
           : {}),
         ...(params?.order ? { order: params.order } : {}),
       })

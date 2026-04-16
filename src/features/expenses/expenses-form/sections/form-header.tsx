@@ -107,6 +107,7 @@ export function ExpensesFormHeader() {
                   onValueChange={field.onChange}
                   placeholder='Pilih Akun'
                   disabled={isPaylater}
+                  isParent={false}
                   extraParams={{ code_prefix: ['1-100'] }}
                   action={
                     <FormShortcutButton
