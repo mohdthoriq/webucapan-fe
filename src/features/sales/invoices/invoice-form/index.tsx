@@ -103,6 +103,7 @@ export function InvoiceFormPage() {
                       <AttachmentCard
                         value={field.value}
                         onChange={field.onChange}
+                        maxFiles={5}
                       />
                     )}
                   />
