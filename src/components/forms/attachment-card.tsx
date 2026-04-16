@@ -1,11 +1,9 @@
 import React from 'react'
 import { Plus, X } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-
-
 
 type AttachmentCardProps = {
   value?: File[]
@@ -21,22 +19,28 @@ type AttachmentCardProps = {
 export function AttachmentCard({
   value = [],
   onChange,
-  maxFiles = 10,
+  maxFiles = 5,
   maxSize = 5 * 1024 * 1024, // 5MB
   accept = 'image/*,.pdf,.doc,.docx',
   className,
   title = 'Lampiran',
   disabled = false,
 }: AttachmentCardProps) {
+  const currentTotalSize = value.reduce((acc, file) => acc + file.size, 0)
+  const isMaxReached = value.length >= maxFiles || currentTotalSize >= maxSize
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
     if (!selectedFiles.length) return
 
     let validFiles: File[] = []
+    const currentTotalSize = value.reduce((acc, file) => acc + file.size, 0)
 
     selectedFiles.forEach((file) => {
       if (file.size > maxSize) {
-        toast.error(`Ukuran file ${file.name} melebihi maksimal ${maxSize / 1024 / 1024}MB.`)
+        toast.error(
+          `Ukuran file ${file.name} melebihi maksimal ${maxSize / 1024 / 1024}MB.`
+        )
       } else {
         validFiles.push(file)
       }
@@ -48,11 +52,19 @@ export function AttachmentCard({
       validFiles = validFiles.slice(0, remainingSlots)
     }
 
+    const finalTotalSize =
+      currentTotalSize + validFiles.reduce((acc, file) => acc + file.size, 0)
+    if (finalTotalSize > maxSize) {
+      toast.error(
+        `Total ukuran file tidak boleh melebihi ${maxSize / 1024 / 1024}MB.`
+      )
+      return
+    }
+
     if (validFiles.length > 0) {
       onChange?.([...value, ...validFiles])
     }
 
-    // Reset input
     e.target.value = ''
   }
 
@@ -63,22 +75,21 @@ export function AttachmentCard({
   }
 
   return (
-    <Card className={cn('shadow-none w-full border', className)}>
-      <CardHeader className='pb-3 border-b border-border'>
-        <CardTitle className='text-base flex items-center gap-2 font-semibold'>
-          {/* <Paperclip className='size-4' /> */}
+    <Card className={cn('w-full border shadow-none', className)}>
+      <CardHeader className='border-border border-b pb-3'>
+        <CardTitle className='flex items-center gap-2 text-base font-semibold'>
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className='pt-4 space-y-4'>
+      <CardContent className='space-y-4 pt-4'>
         {value.length > 0 && (
           <div className='space-y-2'>
             {value.map((file: File, index: number) => (
               <div
                 key={`${file.name}-${index}`}
-                className='flex items-center justify-between p-2 border rounded-md text-sm'
+                className='flex items-center justify-between rounded-md border p-2 text-sm'
               >
-                <span className='truncate max-w-[80%]'>{file.name}</span>
+                <span className='max-w-[80%] truncate'>{file.name}</span>
                 <button
                   type='button'
                   disabled={disabled}
@@ -92,19 +103,19 @@ export function AttachmentCard({
           </div>
         )}
 
-        {value.length < maxFiles && (
+        {!isMaxReached && (
           <div>
             <Label
               htmlFor='attachment-upload'
               className={cn(
-                'flex items-center justify-center w-full h-20 px-4 transition bg-transparent border-2 border-dashed rounded-md appearance-none cursor-pointer hover:border-primary hover:bg-muted/50',
-                disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
+                'hover:border-primary hover:bg-muted/50 flex h-20 w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed bg-transparent px-4 transition',
+                disabled && 'pointer-events-none cursor-not-allowed opacity-50'
               )}
             >
               <div className='flex flex-col items-center space-y-1'>
-                <Plus className='size-5 text-muted-foreground' />
-                <span className='text-xs text-muted-foreground font-medium'>
-                  Unggah File (Maks {maxFiles})
+                <Plus className='text-muted-foreground size-5' />
+                <span className='text-muted-foreground text-xs font-medium'>
+                  Unggah File (Maks {maxFiles} file)
                 </span>
               </div>
               <input
@@ -117,8 +128,8 @@ export function AttachmentCard({
                 accept={accept}
               />
             </Label>
-            <p className='text-[10px] text-muted-foreground mt-2 text-center text-balance'>
-              Maks. ukuran {maxSize / 1024 / 1024}MB per file.
+            <p className='text-muted-foreground mt-2 text-center text-[10px] text-balance'>
+              Maks. ukuran {maxSize / 1024 / 1024}MB.
             </p>
           </div>
         )}
