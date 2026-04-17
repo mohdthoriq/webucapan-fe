@@ -270,6 +270,7 @@ export function InvoiceFormSummary() {
                         onValueChange={field.onChange}
                         placeholder='Dipotong dari...'
                         className='w-40'
+                        isParent={false}
                       />
                       <FormMessage />
                     </FormItem>

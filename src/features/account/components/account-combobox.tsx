@@ -15,6 +15,7 @@ interface AccountsComboboxProps {
   action?: ReactNode
   categoryId?: string
   codePrefixes?: string[]
+  isParent?: boolean
   disabled?: boolean
   className?: string
 }
@@ -27,6 +28,7 @@ export function AccountsCombobox({
   action,
   categoryId,
   codePrefixes,
+  isParent,
   disabled,
   className,
 }: AccountsComboboxProps) {
@@ -41,7 +43,11 @@ export function AccountsCombobox({
   } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
-    extraParams: { category_id: categoryId, code_prefix: codePrefixes },
+    extraParams: {
+      category_id: categoryId,
+      code_prefix: codePrefixes,
+      is_parent: isParent,
+    },
     searchKey: 'search',
   })
 

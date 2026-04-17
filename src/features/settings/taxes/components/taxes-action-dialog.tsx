@@ -177,6 +177,7 @@ export function TaxesActionDialog({
                           onValueChange={field.onChange}
                           placeholder='Pilih akun pajak penjualan...'
                           disabled={!hasPermission || isNotDeletable}
+                          isParent={false}
                           codePrefixes={isWithholding ? [
                             '1-10',
                             '4-40',
@@ -213,6 +214,7 @@ export function TaxesActionDialog({
                           onValueChange={field.onChange}
                           placeholder='Pilih akun pajak pembelian...'
                           disabled={!hasPermission || isNotDeletable}
+                          isParent={false}
                           codePrefixes={isWithholding ? [
                             '2-20',
                             '4-40',

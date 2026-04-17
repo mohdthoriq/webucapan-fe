@@ -36,6 +36,7 @@ export function InvoicePaymentsCombobox({
     searchKey: 'search',
     extraParams: {
       code_prefix: ['1-100'],
+      is_parent: false,
     },
   })
 
