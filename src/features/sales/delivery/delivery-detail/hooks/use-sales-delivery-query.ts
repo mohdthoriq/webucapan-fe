@@ -12,6 +12,7 @@ export function useSalesDeliveryQuery(id?: string) {
       const response = await apiClient.get<{ data: SalesDelivery }>(
         `/sales-delivery/${id}`
       )
+
       return response.data.data
     },
     enabled: !!id,

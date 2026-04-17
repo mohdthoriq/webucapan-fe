@@ -61,7 +61,7 @@ export function DeliveryListsTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      { columnId: 'Nomor', searchKey: 'invoice_number', type: 'string' },
+      { columnId: 'search', searchKey: 'search', type: 'string' },
     ],
   })
 
@@ -108,9 +108,10 @@ export function DeliveryListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari nomor pengiriman...'
-        searchKey='Nomor'
+        searchPlaceholder='Cari pengiriman...'
+        searchKey='search'
       >
+
         <div className='gap-2'>
           <DeliveryListFilter search={search} navigate={navigate} />
         </div>

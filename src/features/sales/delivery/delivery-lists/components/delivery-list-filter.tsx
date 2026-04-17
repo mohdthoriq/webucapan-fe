@@ -38,15 +38,15 @@ export function DeliveryListFilter({
     const syncStateFromUrl = () => {
       const getParam = (key: string) => (search[key] as string) || undefined
 
-      const shippingDateFrom = getParam('shipping_date_from')
-      const shippingDateTo = getParam('shipping_date_to')
-      if (shippingDateFrom && shippingDateTo) {
+      const dateFrom = getParam('date_from')
+      const dateTo = getParam('date_to')
+      if (dateFrom && dateTo) {
         setShippingDate({
-          from: new Date(shippingDateFrom),
-          to: new Date(shippingDateTo),
+          from: new Date(dateFrom),
+          to: new Date(dateTo),
         })
-      } else if (shippingDateFrom) {
-        setShippingDate({ from: new Date(shippingDateFrom), to: undefined })
+      } else if (dateFrom) {
+        setShippingDate({ from: new Date(dateFrom), to: undefined })
       }
     }
 
@@ -57,14 +57,14 @@ export function DeliveryListFilter({
     const newParams: Record<string, unknown> = {}
 
     if (shippingDate?.from) {
-      newParams['shipping_date_from'] = format(shippingDate.from, 'yyyy-MM-dd')
+      newParams['date_from'] = format(shippingDate.from, 'yyyy-MM-dd')
     } else {
-      newParams['shipping_date_from'] = undefined
+      newParams['date_from'] = undefined
     }
     if (shippingDate?.to) {
-      newParams['shipping_date_to'] = format(shippingDate.to, 'yyyy-MM-dd')
+      newParams['date_to'] = format(shippingDate.to, 'yyyy-MM-dd')
     } else {
-      newParams['shipping_date_to'] = undefined
+      newParams['date_to'] = undefined
     }
 
     newParams['page'] = 1
@@ -84,13 +84,14 @@ export function DeliveryListFilter({
     navigate({
       search: (prev) => ({
         ...prev,
-        shipping_date_from: undefined,
-        shipping_date_to: undefined,
+        date_from: undefined,
+        date_to: undefined,
         page: 1,
       }),
     })
     setOpen(false)
   }
+
 
   const activeFilterCount = [shippingDate].filter(Boolean).length
 

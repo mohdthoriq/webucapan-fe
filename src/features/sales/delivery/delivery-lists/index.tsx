@@ -42,20 +42,25 @@ function DeliveryLists() {
     payment_status:
       (search.payment_status as DeliveryListQueryParams['payment_status']) ||
       undefined,
+    document_status:
+      (search.document_status as DeliveryListQueryParams['document_status']) ||
+      undefined,
     customer_id: (search.customer_id as string) || undefined,
     company_id: (search.company_id as string) || undefined,
     order: (search.order as string) || undefined,
-    shipping_date_from: search.shipping_date_from
-      ? new Date(search.shipping_date_from as string)
+    search: (search.search as string) || undefined,
+    date_from: search.date_from
+      ? new Date(search.date_from as string)
       : undefined,
-    shipping_date_to: search.shipping_date_to
-      ? new Date(search.shipping_date_to as string)
+    date_to: search.date_to
+      ? new Date(search.date_to as string)
       : undefined,
     expedition_id: (search.expedition_id as string) || undefined,
   }
 
   return (
     <DeliveryListsProvider paginationParams={queryParams}>
+
       <DeliveryListsContent />
     </DeliveryListsProvider>
   )

@@ -43,7 +43,7 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       <DataTableColumnHeader column={column} title='Nomor' />
     ),
     cell: ({ row }) => {
-      const { invoice_number, id } = row.original
+      const { number, id } = row.original
       return (
         <div className='p-2'>
           <Link
@@ -51,7 +51,7 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
             state={{ currentRowId: id } as Record<string, unknown>}
           >
             <LongText className='text-primary cursor-pointer hover:underline'>
-              {invoice_number}
+              {number}
             </LongText>
           </Link>
         </div>
@@ -71,10 +71,12 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       <DataTableColumnHeader column={column} title='Vendor' />
     ),
     cell: ({ row }) => {
-      const { vendor } = row.original
+      const { customer } = row.original
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{vendor?.name}</LongText>
+          <LongText className='truncate'>
+            {typeof customer === 'string' ? customer : customer?.name || '-'}
+          </LongText>
         </div>
       )
     },
@@ -93,7 +95,9 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       return (
         <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>
-            {expedition?.name || '-'}
+            {typeof expedition === 'string'
+              ? expedition
+              : expedition?.name || '-'}
           </LongText>
         </div>
       )
@@ -108,9 +112,9 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       <DataTableColumnHeader column={column} title='Tanggal' />
     ),
     cell: ({ row }) => {
-      const { shipping_date } = row.original
-      const formattedDate = shipping_date
-        ? format(shipping_date, 'dd/MM/yyyy')
+      const { date } = row.original
+      const formattedDate = date
+        ? format(new Date(date), 'dd/MM/yyyy')
         : '-'
       return (
         <div className='p-2'>
@@ -128,11 +132,11 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const { payment_status } = row.original
+      const { status } = row.original
       return (
         <div className='p-2'>
-          <Badge className={cn(getStatusStyles(payment_status))}>
-            {invoiceLabel[payment_status] || payment_status}
+          <Badge className={cn(getStatusStyles(status))}>
+            {invoiceLabel[status] || status}
           </Badge>
         </div>
       )

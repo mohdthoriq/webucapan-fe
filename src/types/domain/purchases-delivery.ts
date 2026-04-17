@@ -20,27 +20,35 @@ export interface PurchaseDeliveryItem extends GlobalResponse {
 }
 
 export interface PurchaseDelivery extends GlobalResponse {
-  company: Company
-  vendor: Contact
-  payment_term: PaymentTerm
-  invoice_number: string
-  invoice_date: Date
-  due_date: Date
-  currency: string
-  subtotal: number
-  tax_total: number
-  total: number
-  paid_amount: number
-  outstanding: number
-  payment_status: PaymentStatus
-  document_status: DocumentStatus
-  purchase_invoice_items: PurchaseDeliveryItem[]
-  payments: Payment[]
-  tags: (string | Tag)[]
-  taxes: Tax[]
-  shipping_fee: number
-  shipping_date: Date | null
-  expedition_id: string | null
-  expedition: Expedition | null
-  tracking_number: string | null
+  number: string
+  customer: string | Contact
+  date: string
+  expedition: string | Expedition | null
+  tracking_number: string
+  status: string
+  reference: string
+  // Optional detailed fields
+  company?: Company
+  vendor?: Contact
+  payment_term?: PaymentTerm
+  invoice_number?: string
+  invoice_date?: Date
+  due_date?: Date
+  currency?: string
+  subtotal?: number
+  tax_total?: number
+  total?: number
+  paid_amount?: number
+  outstanding?: number
+  payment_status?: PaymentStatus
+  document_status?: DocumentStatus
+  purchase_invoice_items?: PurchaseDeliveryItem[]
+  payments?: Payment[]
+  tags?: (string | Tag)[]
+  taxes?: Tax[]
+  shipping_fee?: number
+  shipping_date?: Date | null
+  expedition_id?: string | null
 }
+
+
