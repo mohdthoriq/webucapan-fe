@@ -12,6 +12,7 @@ export function usePurchaseDeliveryQuery(id?: string) {
       const response = await apiClient.get<{ data: PurchaseDelivery }>(
         `/purchase-delivery/${id}`
       )
+
       return response.data.data
     },
     enabled: !!id,
