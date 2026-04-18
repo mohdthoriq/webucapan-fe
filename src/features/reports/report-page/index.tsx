@@ -68,7 +68,7 @@ function ReportContents() {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 mb-10'>
           {filteredData?.map((category) => (
             <div key={category.category} className='flex flex-col space-y-4'>
               <h2 className='text-foreground/90 text-sm font-semibold'>

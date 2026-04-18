@@ -46,4 +46,19 @@ export const reportData: ReportData[] = [
       },
     ],
   },
+  {
+    category: 'Penjualan',
+    reports: [
+      {
+        id: 8,
+        name: 'Penjualan per Produk',
+        url: '/reports/sales-per-product',
+      },
+      {
+        id: 9,
+        name: 'Penjualan per Kategori Produk',
+        url: '/reports/sales-per-categories',
+      },
+    ],
+  },
 ]

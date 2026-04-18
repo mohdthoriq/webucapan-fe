@@ -50,6 +50,11 @@ export const QUERY_KEY = {
   CHECK_FINANCE_NUMBER: 'check_finance_number',
   COMPANY_ROLE_PERMISSIONS: 'company_role_permissions',
   JOURNAL: 'journal',
+  REPORTS: 'reports',
+  REPORTS_SALES_CATEGORY: 'reports_sales_category',
+  REPORTS_SALES_PRODUCT: 'reports_sales_product',
+  REPORTS_PROFIT_LOSS: 'reports_profit_loss',
+  REPORTS_BALANCE_SHEET: 'reports_balance_sheet',
 }
 
 export const QUERY_KEY_ADMIN = {

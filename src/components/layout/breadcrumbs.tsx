@@ -68,6 +68,8 @@ export function Breadcrumbs() {
     'edit': 'Edit',
     'spend': 'Kirim Dana', 
     'receive': 'Terima Dana',
+    'sales-per-product': 'Penjualan per Produk',
+    'sales-per-categories': 'Penjualan per Kategori',
   }
 
   // Clean pathname and split into segments
@@ -82,7 +84,7 @@ export function Breadcrumbs() {
       routeMap.get(`${href}/`) ||
       parentMap.get(href) ||
       manualMappings[segment] ||
-      segment.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
+      segment.replace(/-/g, ' ').replace(/%20/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
 
     return {
       title,

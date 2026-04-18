@@ -27,6 +27,7 @@ export function useCreateAccountMutation(onSuccess?: (data: Account) => void) {
     onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Akun berhasil ditambahkan.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -56,6 +57,7 @@ export function useUpdateAccountMutation(onSuccess?: (data: Account) => void) {
     onSuccess: async (data) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Akun berhasil diubah.')
       context?.setOpen(null)
       onSuccess?.(data)
@@ -83,6 +85,7 @@ export function useDeleteAccountMutation() {
     onSuccess: async (_) => {
       toast.dismiss('accounts-toast')
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ACCOUNT] })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Akun berhasil dihapus.')
       setOpen(null)
     },
@@ -112,6 +115,7 @@ export function useBulkDeleteAccountMutation() {
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.ACCOUNT],
       })
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CASH_BANK] })
       toast.success('Akun berhasil dihapus.')
     },
     onError: () => {
