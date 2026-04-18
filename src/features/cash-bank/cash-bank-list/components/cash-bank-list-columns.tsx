@@ -56,10 +56,10 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       <DataTableColumnHeader column={column} title='Referensi' />
     ),
     cell: ({ row }) => {
-      const { memo } = row.original
+      const { note } = row.original
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{memo || '-'}</LongText>
+          <LongText className='truncate'>{note || '-'}</LongText>
         </div>
       )
     },
