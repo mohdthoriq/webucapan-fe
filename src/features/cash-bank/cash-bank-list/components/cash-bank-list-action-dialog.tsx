@@ -63,7 +63,7 @@ export function CashBankListActionDialog({
           date: currentRow?.trans_date
             ? new Date(currentRow.trans_date)
             : new Date(),
-          description: currentRow?.items[0]?.desc || '',
+          note: currentRow?.note || '',
         }
       : undefined,
     onSuccess
@@ -285,7 +285,7 @@ export function CashBankListActionDialog({
 
                 <FormField
                   control={form.control}
-                  name='description'
+                  name='note'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='text-xs'>
@@ -308,7 +308,7 @@ export function CashBankListActionDialog({
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder='Masukkan keterangan transfer...'
+                          placeholder='Masukkan referensi transfer...'
                           className='min-h-[100px] resize-none'
                           {...field}
                           disabled={!hasPermission}

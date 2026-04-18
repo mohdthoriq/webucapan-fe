@@ -25,7 +25,7 @@ export function useCashBankListForm(
           tags: currentRow?.tags || null,
           amount: currentRow?.amount || 0,
           date: currentRow?.date ? new Date(currentRow.date) : new Date(),
-          description: currentRow?.description || '',
+          note: currentRow?.note || '',
         }
       : {
           from_account_id: '',
@@ -33,7 +33,7 @@ export function useCashBankListForm(
           tags: null,
           amount: 0,
           date: new Date(),
-          description: '',
+          note: '',
         },
   })
 

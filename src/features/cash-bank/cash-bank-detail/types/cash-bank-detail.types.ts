@@ -29,7 +29,7 @@ export interface CashBankTransactionDetail {
   contact_id: string
   amount: number
   amount_after_tax: number
-  memo: string
+  note: string
   desc: string
   trans_type_id: string
   transaction_type?: TransactionType
