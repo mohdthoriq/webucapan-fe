@@ -127,9 +127,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
                 Referensi:
               </p>
-              <p className='text-sm font-semibold'>
-                {invoice.notes || '-'}
-              </p>
+              <p className='text-sm font-semibold'>{invoice.note || '-'}</p>
             </div>
             <div className='mt-5'>
               <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
@@ -274,7 +272,7 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
 
         <div className='mt-6 flex flex-col items-start justify-between gap-6 md:flex-row'>
           <div className='hidden flex-1 md:block'>
-            {/* Space for notes or signatures if needed */}
+            {/* Space for note or signatures if needed */}
           </div>
 
           <div className='bg-muted/20 w-full space-y-1.5 rounded-lg p-4 md:w-96'>
