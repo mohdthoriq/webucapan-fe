@@ -148,7 +148,6 @@ export function InvoiceFormHeader() {
         />
       </div>
 
-      {/* Invoice Number */}
       <FormField
         control={control}
         name='invoice_number'
@@ -175,6 +174,24 @@ export function InvoiceFormHeader() {
             ) : (
               <FormMessage />
             )}
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name='notes'
+        render={({ field }) => (
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>Referensi</FormLabel>
+            <FormControl>
+              <Input
+                placeholder='Referensi (opsional)'
+                {...field}
+                value={field.value ?? ''}
+              />
+            </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
