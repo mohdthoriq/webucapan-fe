@@ -79,7 +79,7 @@ export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
       {/* Reference */}
       <FormField
         control={control}
-        name='reference'
+        name='note'
         render={({ field }) => (
           <FormItem>
             <FormLabel className='text-xs'>

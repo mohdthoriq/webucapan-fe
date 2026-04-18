@@ -25,7 +25,7 @@ export interface CashBankTransactionAudit {
 export interface CashBankTransactionDetail {
   id: string
   trans_date: string
-  reference: Reference
+  reference: Reference | string
   contact_id: string
   amount: number
   amount_after_tax: number
@@ -40,4 +40,5 @@ export interface CashBankTransactionDetail {
   tags: Tag[]
   audit: CashBankTransactionAudit
   id_journal: string
+  entry_number?: string
 }
