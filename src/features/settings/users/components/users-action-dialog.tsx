@@ -46,7 +46,10 @@ export function UsersActionDialog({
   const { form, onSubmit, isSubmitting, errorMessage } = useUsersForm({
     currentRow,
   })
-  const company = useAuthStore((state) => state.auth.user?.company)
+  const currentUser = useAuthStore((state) => state.auth.user)
+  const company = currentUser?.company
+  const isSelf = currentRow?.id === currentUser?.user.id
+
   useEffect(() => {
     if (!isEdit && company?.id) {
       form.setValue('company_id', company.id)
@@ -172,7 +175,7 @@ export function UsersActionDialog({
                         placeholder='Pilih peran...'
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
-                        disabled={!hasPermission}
+                        disabled={!hasPermission || isSelf}
                       />
                     </FormControl>
                     <FormMessage />
@@ -198,7 +201,11 @@ export function UsersActionDialog({
         )}
 
         <DialogFooter>
-          <Button type='submit' form='user-form' disabled={isSubmitting}>
+          <Button
+            type='submit'
+            form='user-form'
+            disabled={isSubmitting || (isEdit && isSelf)}
+          >
             {isEdit ? 'Simpan Perubahan' : 'Undang'}
           </Button>
         </DialogFooter>

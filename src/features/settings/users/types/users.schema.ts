@@ -32,3 +32,8 @@ export const updateUserStatusSchema = z.object({
 })
 
 export type UpdateUserStatusFormData = z.infer<typeof updateUserStatusSchema>
+export const bulkDeleteUserSchema = z.object({
+  ids: z.array(z.string().uuid()),
+})
+
+export type BulkDeleteUserFormData = z.infer<typeof bulkDeleteUserSchema>

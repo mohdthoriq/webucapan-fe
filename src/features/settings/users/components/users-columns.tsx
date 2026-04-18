@@ -1,12 +1,43 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { type User } from '@/types'
 import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { UserStatusSwitch } from './users-status-switch'
 
-export const getUsersColumns = (isAdmin: boolean): ColumnDef<User>[] => {
+export const getUsersColumns = (
+  isAdmin: boolean,
+  currentUserId?: string
+): ColumnDef<User>[] => {
   const columns: ColumnDef<User>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label='Select all'
+          className='translate-y-[2px]'
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label='Select row'
+          className='translate-y-[2px]'
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      meta: {
+        className: 'w-[40px]',
+      },
+    },
     {
       accessorKey: 'Nama',
       header: ({ column }) => (
@@ -89,7 +120,12 @@ export const getUsersColumns = (isAdmin: boolean): ColumnDef<User>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Status' />
       ),
-      cell: ({ row }) => <UserStatusSwitch user={row.original} />,
+      cell: ({ row }) => (
+        <UserStatusSwitch
+          user={row.original}
+          disabled={row.original.id === currentUserId}
+        />
+      ),
     })
   }
 

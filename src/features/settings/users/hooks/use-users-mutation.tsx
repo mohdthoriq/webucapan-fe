@@ -8,6 +8,7 @@ import type {
   DeleteUserFormData,
   UpdateUserFormData,
   UpdateUserStatusFormData,
+  BulkDeleteUserFormData,
 } from '../types/users.schema'
 
 export function useCreateUserMutation() {
@@ -105,6 +106,28 @@ export function useDeleteUserMutation() {
     },
     onError: () => {
       toast.dismiss('users-delete-toast')
+      toast.error('Gagal menghapus pengguna.')
+    },
+  })
+}
+
+export function useBulkDeleteUserMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (data: BulkDeleteUserFormData) => {
+      const response = await apiClient.post('/users/bulk-delete', data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-bulk-delete-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-bulk-delete-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] })
+      toast.success('Pengguna berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('users-bulk-delete-toast')
       toast.error('Gagal menghapus pengguna.')
     },
   })

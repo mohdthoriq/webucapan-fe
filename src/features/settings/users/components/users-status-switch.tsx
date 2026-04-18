@@ -4,9 +4,10 @@ import { useUpdateUserStatusMutation } from '../hooks/use-users-mutation'
 
 interface UserStatusSwitchProps {
   user: User
+  disabled?: boolean
 }
 
-export function UserStatusSwitch({ user }: UserStatusSwitchProps) {
+export function UserStatusSwitch({ user, disabled }: UserStatusSwitchProps) {
   const updateStatus = useUpdateUserStatusMutation()
   return (
     <div
@@ -18,7 +19,7 @@ export function UserStatusSwitch({ user }: UserStatusSwitchProps) {
         onCheckedChange={(checked) =>
           updateStatus.mutate({ id: user.id, is_active: checked })
         }
-        disabled={updateStatus.isPending}
+        disabled={disabled || updateStatus.isPending}
       />
     </div>
   )
