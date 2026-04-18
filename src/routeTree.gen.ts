@@ -49,6 +49,8 @@ import { Route as AuthenticatedSettingsAutoSequencingIndexRouteImport } from './
 import { Route as AuthenticatedSalesOverviewIndexRouteImport } from './routes/_authenticated/sales/overview/index'
 import { Route as AuthenticatedSalesInvoicesIndexRouteImport } from './routes/_authenticated/sales/invoices/index'
 import { Route as AuthenticatedSalesDeliveryIndexRouteImport } from './routes/_authenticated/sales/delivery/index'
+import { Route as AuthenticatedReportsSalesPerProductIndexRouteImport } from './routes/_authenticated/reports/sales-per-product/index'
+import { Route as AuthenticatedReportsSalesPerCategoriesIndexRouteImport } from './routes/_authenticated/reports/sales-per-categories/index'
 import { Route as AuthenticatedReportsProfitLossIndexRouteImport } from './routes/_authenticated/reports/profit-loss/index'
 import { Route as AuthenticatedReportsBalanceSheetIndexRouteImport } from './routes/_authenticated/reports/balance-sheet/index'
 import { Route as AuthenticatedPurchasesOverviewIndexRouteImport } from './routes/_authenticated/purchases/overview/index'
@@ -305,6 +307,18 @@ const AuthenticatedSalesDeliveryIndexRoute =
     path: '/sales/delivery/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedReportsSalesPerProductIndexRoute =
+  AuthenticatedReportsSalesPerProductIndexRouteImport.update({
+    id: '/reports/sales-per-product/',
+    path: '/reports/sales-per-product/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedReportsSalesPerCategoriesIndexRoute =
+  AuthenticatedReportsSalesPerCategoriesIndexRouteImport.update({
+    id: '/reports/sales-per-categories/',
+    path: '/reports/sales-per-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedReportsProfitLossIndexRoute =
   AuthenticatedReportsProfitLossIndexRouteImport.update({
     id: '/reports/profit-loss/',
@@ -524,6 +538,8 @@ export interface FileRoutesByFullPath {
   '/purchases/overview': typeof AuthenticatedPurchasesOverviewIndexRoute
   '/reports/balance-sheet': typeof AuthenticatedReportsBalanceSheetIndexRoute
   '/reports/profit-loss': typeof AuthenticatedReportsProfitLossIndexRoute
+  '/reports/sales-per-categories': typeof AuthenticatedReportsSalesPerCategoriesIndexRoute
+  '/reports/sales-per-product': typeof AuthenticatedReportsSalesPerProductIndexRoute
   '/sales/delivery': typeof AuthenticatedSalesDeliveryIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
@@ -594,6 +610,8 @@ export interface FileRoutesByTo {
   '/purchases/overview': typeof AuthenticatedPurchasesOverviewIndexRoute
   '/reports/balance-sheet': typeof AuthenticatedReportsBalanceSheetIndexRoute
   '/reports/profit-loss': typeof AuthenticatedReportsProfitLossIndexRoute
+  '/reports/sales-per-categories': typeof AuthenticatedReportsSalesPerCategoriesIndexRoute
+  '/reports/sales-per-product': typeof AuthenticatedReportsSalesPerProductIndexRoute
   '/sales/delivery': typeof AuthenticatedSalesDeliveryIndexRoute
   '/sales/invoices': typeof AuthenticatedSalesInvoicesIndexRoute
   '/sales/overview': typeof AuthenticatedSalesOverviewIndexRoute
@@ -666,6 +684,8 @@ export interface FileRoutesById {
   '/_authenticated/purchases/overview/': typeof AuthenticatedPurchasesOverviewIndexRoute
   '/_authenticated/reports/balance-sheet/': typeof AuthenticatedReportsBalanceSheetIndexRoute
   '/_authenticated/reports/profit-loss/': typeof AuthenticatedReportsProfitLossIndexRoute
+  '/_authenticated/reports/sales-per-categories/': typeof AuthenticatedReportsSalesPerCategoriesIndexRoute
+  '/_authenticated/reports/sales-per-product/': typeof AuthenticatedReportsSalesPerProductIndexRoute
   '/_authenticated/sales/delivery/': typeof AuthenticatedSalesDeliveryIndexRoute
   '/_authenticated/sales/invoices/': typeof AuthenticatedSalesInvoicesIndexRoute
   '/_authenticated/sales/overview/': typeof AuthenticatedSalesOverviewIndexRoute
@@ -738,6 +758,8 @@ export interface FileRouteTypes {
     | '/purchases/overview'
     | '/reports/balance-sheet'
     | '/reports/profit-loss'
+    | '/reports/sales-per-categories'
+    | '/reports/sales-per-product'
     | '/sales/delivery'
     | '/sales/invoices'
     | '/sales/overview'
@@ -808,6 +830,8 @@ export interface FileRouteTypes {
     | '/purchases/overview'
     | '/reports/balance-sheet'
     | '/reports/profit-loss'
+    | '/reports/sales-per-categories'
+    | '/reports/sales-per-product'
     | '/sales/delivery'
     | '/sales/invoices'
     | '/sales/overview'
@@ -879,6 +903,8 @@ export interface FileRouteTypes {
     | '/_authenticated/purchases/overview/'
     | '/_authenticated/reports/balance-sheet/'
     | '/_authenticated/reports/profit-loss/'
+    | '/_authenticated/reports/sales-per-categories/'
+    | '/_authenticated/reports/sales-per-product/'
     | '/_authenticated/sales/delivery/'
     | '/_authenticated/sales/invoices/'
     | '/_authenticated/sales/overview/'
@@ -1202,6 +1228,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesDeliveryIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/reports/sales-per-product/': {
+      id: '/_authenticated/reports/sales-per-product/'
+      path: '/reports/sales-per-product'
+      fullPath: '/reports/sales-per-product'
+      preLoaderRoute: typeof AuthenticatedReportsSalesPerProductIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports/sales-per-categories/': {
+      id: '/_authenticated/reports/sales-per-categories/'
+      path: '/reports/sales-per-categories'
+      fullPath: '/reports/sales-per-categories'
+      preLoaderRoute: typeof AuthenticatedReportsSalesPerCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reports/profit-loss/': {
       id: '/_authenticated/reports/profit-loss/'
       path: '/reports/profit-loss'
@@ -1471,6 +1511,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPurchasesOverviewIndexRoute: typeof AuthenticatedPurchasesOverviewIndexRoute
   AuthenticatedReportsBalanceSheetIndexRoute: typeof AuthenticatedReportsBalanceSheetIndexRoute
   AuthenticatedReportsProfitLossIndexRoute: typeof AuthenticatedReportsProfitLossIndexRoute
+  AuthenticatedReportsSalesPerCategoriesIndexRoute: typeof AuthenticatedReportsSalesPerCategoriesIndexRoute
+  AuthenticatedReportsSalesPerProductIndexRoute: typeof AuthenticatedReportsSalesPerProductIndexRoute
   AuthenticatedSalesDeliveryIndexRoute: typeof AuthenticatedSalesDeliveryIndexRoute
   AuthenticatedSalesInvoicesIndexRoute: typeof AuthenticatedSalesInvoicesIndexRoute
   AuthenticatedSalesOverviewIndexRoute: typeof AuthenticatedSalesOverviewIndexRoute
@@ -1529,6 +1571,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedReportsBalanceSheetIndexRoute,
   AuthenticatedReportsProfitLossIndexRoute:
     AuthenticatedReportsProfitLossIndexRoute,
+  AuthenticatedReportsSalesPerCategoriesIndexRoute:
+    AuthenticatedReportsSalesPerCategoriesIndexRoute,
+  AuthenticatedReportsSalesPerProductIndexRoute:
+    AuthenticatedReportsSalesPerProductIndexRoute,
   AuthenticatedSalesDeliveryIndexRoute: AuthenticatedSalesDeliveryIndexRoute,
   AuthenticatedSalesInvoicesIndexRoute: AuthenticatedSalesInvoicesIndexRoute,
   AuthenticatedSalesOverviewIndexRoute: AuthenticatedSalesOverviewIndexRoute,
