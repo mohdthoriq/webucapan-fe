@@ -14,6 +14,7 @@ import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { CashBankListCombobox } from '../../cash-bank-list/components/cash-bank-list-combobox'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
   const { control } = useFormContext()
@@ -78,10 +79,26 @@ export function CashBankFormHeader({ type }: { type: 'spend' | 'receive' }) {
       {/* Reference */}
       <FormField
         control={control}
-        name='reference'
+        name='note'
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Referensi</FormLabel>
+            <FormLabel className='text-xs'>
+              Referensi
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span className='text-muted-foreground ml-1 text-[10px]'>
+                      (?)
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Catatan internal untuk mempermudah pencarian (opsional)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </FormLabel>
             <FormControl>
               <Input placeholder='Contoh: REF001' {...field} />
             </FormControl>

@@ -89,10 +89,10 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       <DataTableColumnHeader column={column} title='Referensi' />
     ),
     cell: ({ row }) => {
-      const { notes } = row.original
+      const { note } = row.original
       return (
         <div className='p-2'>
-          <LongText className='truncate'>{notes || '-'}</LongText>
+          <LongText className='truncate'>{note || '-'}</LongText>
         </div>
       )
     },

@@ -31,7 +31,7 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
       date: new Date(),
       description: '',
       contact_id: null,
-      reference: '',
+      note: '',
       tags: null,
       include_tax: false,
       tax_total: 0,

@@ -98,7 +98,7 @@ export const CreateInvoiceSchema = z
     expedition_id: z.string().optional().nullable(),
     tracking_number: z.string().optional().nullable(),
     images: z.any().array().optional(),
-    notes: z.string().optional().nullable(),
+    note: z.string().optional().nullable(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',
@@ -133,7 +133,7 @@ export const UpdateInvoiceSchema = z
     expedition_id: z.string().optional().nullable(),
     tracking_number: z.string().optional().nullable(),
     images: z.any().array().optional(),
-    notes: z.string().optional().nullable(),
+    note: z.string().optional().nullable(),
   })
   .refine((data) => data.invoice_date <= data.due_date, {
     message: 'Tanggal jatuh tempo harus lebih dari tanggal invoice',

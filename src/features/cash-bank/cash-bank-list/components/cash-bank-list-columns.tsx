@@ -23,7 +23,7 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       )
     },
     meta: {
-      className: 'w-full',
+      className: 'w-[120px]',
     },
   },
   {
@@ -56,10 +56,12 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
       <DataTableColumnHeader column={column} title='Referensi' />
     ),
     cell: ({ row }) => {
-      const { memo } = row.original
+      const { note, reference } = row.original
+      const displayNote = note || (typeof reference === 'string' ? reference : '')
+
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{memo || '-'}</LongText>
+          <LongText className='truncate'>{displayNote || '-'}</LongText>
         </div>
       )
     },

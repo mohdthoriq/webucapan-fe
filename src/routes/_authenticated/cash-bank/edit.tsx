@@ -56,7 +56,7 @@ function EditTransactionComponent() {
       : new Date(),
     description: transaction.desc ?? undefined,
     contact_id: transaction.contact?.id ?? undefined,
-    reference: transaction.reference.number ?? undefined,
+    note: transaction.note ?? (typeof transaction.reference === 'string' ? transaction.reference : ''),
     tags: transaction.tags.map((tag) => tag.id),
     include_tax: false,
     tax_total: 0,
