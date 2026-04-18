@@ -34,6 +34,7 @@ import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cash-bank-detail.types'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 type CashBankListActionDialogProps = {
   open: boolean
@@ -287,7 +288,24 @@ export function CashBankListActionDialog({
                   name='description'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Keterangan</FormLabel>
+                      <FormLabel className='text-xs'>
+                        Referensi
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span className='text-muted-foreground ml-1 text-[10px]'>
+                                (?)
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>
+                                Catatan internal untuk mempermudah pencarian
+                                (opsional)
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder='Masukkan keterangan transfer...'

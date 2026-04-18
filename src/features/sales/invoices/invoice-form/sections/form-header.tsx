@@ -60,6 +60,7 @@ import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext<
@@ -184,7 +185,23 @@ export function InvoiceFormHeader() {
         name='note'
         render={({ field }) => (
           <FormItem className='mb-0 space-y-1'>
-            <FormLabel className='text-xs'>Referensi</FormLabel>
+            <FormLabel className='text-xs'>
+              Referensi
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span className='text-muted-foreground ml-1 text-[10px]'>
+                      (?)
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Catatan internal untuk mempermudah pencarian (opsional)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </FormLabel>
             <FormControl>
               <Input
                 placeholder='Referensi (opsional)'
