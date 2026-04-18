@@ -81,9 +81,26 @@ export const purchaseDeliveryListsColumns: ColumnDef<PurchaseDelivery>[] = [
       )
     },
     meta: {
-      className: 'w-full px-2',
+      className: 'w-full',
     },
     enableHiding: false,
+  },
+  {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
+    cell: ({ row }) => {
+      const { reference } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>{reference || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
   },
   {
     accessorKey: 'Ekspedisi',

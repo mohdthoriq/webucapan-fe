@@ -66,6 +66,23 @@ export const deliveryListsColumns: ColumnDef<SalesDelivery>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
+    cell: ({ row }) => {
+      const { reference } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>{reference || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
     accessorKey: 'Pelanggan',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Pelanggan' />

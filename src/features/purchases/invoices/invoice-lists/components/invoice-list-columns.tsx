@@ -84,6 +84,23 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
+    cell: ({ row }) => {
+      const { notes } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>{notes || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
     accessorKey: 'Tanggal Invoice',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tanggal Invoice' />

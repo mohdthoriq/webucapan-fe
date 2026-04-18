@@ -123,6 +123,14 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 {invoice.invoice_number || '-'}
               </p>
             </div>
+            <div className='mt-2'>
+              <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+                Referensi:
+              </p>
+              <p className='text-sm font-semibold'>
+                {invoice.notes || '-'}
+              </p>
+            </div>
             <div className='mt-5'>
               <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
                 Detail Waktu:
