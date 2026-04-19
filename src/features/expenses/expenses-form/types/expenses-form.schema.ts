@@ -25,6 +25,7 @@ export const CreateExpenseSchema = z
     account_id: z.uuid('ID akun tidak boleh kosong').optional().nullable(),
     payment_term_id: z.string().optional(),
     expense_number: z.string().min(1, 'Nomor expense tidak boleh kosong'),
+    note: z.string().optional(),
 
     date: z.date(),
     due_date: z.date(),
@@ -55,6 +56,7 @@ export const UpdateExpenseSchema = z
     contact_id: z.string().min(1, 'Penerima tidak boleh kosong'),
     payment_term_id: z.string().optional(),
     expense_number: z.string().min(1, 'Nomor expense tidak boleh kosong'),
+    note: z.string().optional(),
 
     date: z.date(),
     due_date: z.date(),

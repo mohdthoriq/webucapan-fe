@@ -84,6 +84,23 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
+    cell: ({ row }) => {
+      const { note } = row.original
+      return (
+        <div className='p-2 text-center'>
+          <LongText className='truncate'>{note || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
     accessorKey: 'Tanggal',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tanggal Biaya' />
