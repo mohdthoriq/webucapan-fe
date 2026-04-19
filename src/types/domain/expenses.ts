@@ -36,4 +36,5 @@ export interface Expense extends GlobalResponse {
   payments: Payment[]
   tags: (string | Tag)[]
   taxes: Tax[]
+  note?: string
 }

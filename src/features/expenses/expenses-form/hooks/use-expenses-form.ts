@@ -65,6 +65,7 @@ export function useExpensesForm({
               currentRow.tags?.map((tag: string | { id: string }) =>
                 typeof tag === 'object' ? tag.id : tag
               ) || [],
+            note: currentRow.note ?? '',
           }
         : {
             expense_number: autoNumbering?.format ?? '',
@@ -87,6 +88,7 @@ export function useExpensesForm({
               },
             ],
             tags: [],
+            note: '',
           },
     [currentRow, isEdit, autoNumbering]
   )

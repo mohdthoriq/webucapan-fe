@@ -113,6 +113,12 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 {expense.expense_number || '-'}
               </p>
             </div>
+            <div className='mt-2'>
+              <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
+                Referensi:
+              </p>
+              <p className='text-sm font-semibold'>{expense.note || '-'}</p>
+            </div>
             <div className='mt-5'>
               <p className='text-muted-foreground text-[10px] font-bold tracking-widest uppercase'>
                 Detail Waktu:
