@@ -97,10 +97,9 @@ export function AppSidebar() {
       {state === 'expanded' && (
           <div className='px-4 py-2 text-[11px] items-center justify-center leading-tight text-muted-foreground'>
             <p className='text-center'>
-              &copy; {new Date().getFullYear()} ManajerKu v
+              &copy; {new Date().getFullYear()} Manajerku v
               {import.meta.env.APP_VERSION}
             </p>
-            <p className='text-center'>All rights reserved</p>
           </div>
         )}
       <SidebarFooter className='border-t'>

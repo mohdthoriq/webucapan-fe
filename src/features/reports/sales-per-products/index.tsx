@@ -1,12 +1,18 @@
 import { parse, startOfMonth, endOfMonth, format } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
-import { ArrowLeft, CalendarIcon } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, FileText, Loader2, Printer } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import {
   Popover,
   PopoverContent,
@@ -18,7 +24,7 @@ import {
   useSalesPerProduct,
 } from './components/sales-per-product-provider'
 import { SalesPerProductTable } from './components/sales-per-product-table'
-import { type SalesPerProductQueryParams } from './hooks/use-sales-per-product-query'
+import { type SalesPerProductQueryParams, useSalesPerProductExport } from './hooks/use-sales-per-product-query'
 
 // import { SalesPerProductFallback } from './components/sales-per-product-fallback'
 
@@ -27,7 +33,10 @@ const route = getRouteApi('/_authenticated/reports/sales-per-product/')
 function SalesPerProductContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { date_from, date_to, setDateRange } = useSalesPerProduct()
+  const { date_from, date_to, setDateRange, paginationParams } =
+    useSalesPerProduct()
+  const { exportToExcel, isExporting } =
+    useSalesPerProductExport(paginationParams ?? {})
 
   const handleSelectRange = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {
@@ -60,18 +69,24 @@ function SalesPerProductContent() {
               </p>
             </div>
             <div className='flex items-center gap-2'>
-              {/* <Button
-                variant={'outline'}
-                // onClick={() => handlePrint()}
-                // disabled={isPrinting || isLoading || !data}
-              >
-                {isPrinting ? (
-                  <Loader2 className='h-4 w-4 animate-spin' />
-                ) : (
-                  <Printer className='h-4 w-4' />
-                )}
-                {isPrinting ? 'Memproses...' : 'Cetak'}
-              </Button> */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline' disabled={isExporting}>
+                    {isExporting ? (
+                      <Loader2 className='h-4 w-4 animate-spin' />
+                    ) : (
+                      <Printer className='h-4 w-4' />
+                    )}
+                    {isExporting ? 'Memproses...' : 'Cetak'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuItem onClick={exportToExcel}>
+                    <FileText className='mr-2 h-4 w-4' />
+                    Download Excel
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button
                 variant={'outline'}
                 onClick={() => navigate({ to: '/reports' })}
