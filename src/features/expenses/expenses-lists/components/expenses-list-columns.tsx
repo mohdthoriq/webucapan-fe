@@ -5,6 +5,19 @@ import type { Expense } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 
@@ -43,17 +56,64 @@ export const expensesListsColumns: ColumnDef<Expense>[] = [
       <DataTableColumnHeader column={column} title='Nomor' />
     ),
     cell: ({ row }) => {
-      const { expense_number, id } = row.original
+      const { expense_number, id, expense_items } = row.original
       return (
         <div className='p-2'>
-          <Link
-            to='/expenses/detail'
-            state={{ currentRowId: id } as Record<string, unknown>}
-          >
-            <LongText className='text-primary cursor-pointer hover:underline'>
-              {expense_number}
-            </LongText>
-          </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to='/expenses/detail'
+                state={{ currentRowId: id } as Record<string, unknown>}
+              >
+                <LongText className='text-primary cursor-pointer hover:underline'>
+                  {expense_number}
+                </LongText>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent
+              className='border-border w-80 bg-white p-0'
+              arrowClassName='bg-white fill-white'
+            >
+              <Table>
+                <TableHeader className='bg-white'>
+                  <TableRow className='border-b hover:bg-transparent'>
+                    <TableHead className='text-foreground h-9 px-3 text-xs font-semibold'>
+                      Items
+                    </TableHead>
+                    <TableHead className='text-foreground h-9 px-3 text-right text-xs font-semibold'>
+                      Jumlah
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {expense_items?.length > 0 ? (
+                    expense_items.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        className='border-b last:border-0 hover:bg-slate-50/50'
+                      >
+                        <TableCell className='text-foreground px-3 py-2 text-xs'>
+                          {item.account?.name}
+                        </TableCell>
+                        <TableCell className='text-foreground px-3 py-2 text-right text-xs'>
+                          {formatNumber(item.amount)}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={2}
+                        className='text-muted-foreground h-12 text-center text-xs'
+                      >
+                        No items
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TooltipContent>
+          </Tooltip>
         </div>
       )
     },
