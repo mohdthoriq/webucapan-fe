@@ -1,20 +1,20 @@
 import { type ColumnDef } from '@tanstack/react-table'
+import type { CategorySalesReportItem } from '@/types/domain/sales-per-categories'
 import { cn, formatCurrency } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import type { ProductSalesReportItem } from '@/types/domain/sales-per-products'
 
-export const salesPerProductColumns: ColumnDef<ProductSalesReportItem>[] = [
+export const salesPerCategoriesColumns: ColumnDef<CategorySalesReportItem>[] = [
   {
-    accessorKey: 'SKU',
+    accessorKey: 'Nama Kategori',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='SKU' />
+      <DataTableColumnHeader column={column} title='Nama Kategori' />
     ),
     cell: ({ row }) => {
-      const { product_code } = row.original
+      const { category_name } = row.original
       return (
         <div className='p-2'>
-          <LongText>{product_code}</LongText>
+          <LongText>{category_name}</LongText>
         </div>
       )
     },
@@ -27,15 +27,15 @@ export const salesPerProductColumns: ColumnDef<ProductSalesReportItem>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'Nama Produk',
+    accessorKey: 'Jumlah Terjual',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nama Produk' />
+      <DataTableColumnHeader column={column} title='Jumlah Terjual' />
     ),
     cell: ({ row }) => {
-      const { product_name } = row.original
+      const { quantity_sold } = row.original
       return (
         <div className='p-2'>
-          <LongText>{product_name}</LongText>
+          <LongText>{quantity_sold}</LongText>
         </div>
       )
     },
@@ -44,15 +44,16 @@ export const salesPerProductColumns: ColumnDef<ProductSalesReportItem>[] = [
     },
   },
   {
-    accessorKey: 'Kategori',
+    accessorKey: 'Total Penjualan',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Kategori' />
+      <DataTableColumnHeader column={column} title='Total Penjualan' />
     ),
     cell: ({ row }) => {
-      const { category_name } = row.original
+      const { total_sales } = row.original
+      const formattedTotalSales = formatCurrency(total_sales)
       return (
         <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{category_name}</LongText>
+          <LongText className='truncate'>{formattedTotalSales}</LongText>
         </div>
       )
     },
@@ -88,42 +89,6 @@ export const salesPerProductColumns: ColumnDef<ProductSalesReportItem>[] = [
       return (
         <div className='w-full overflow-hidden p-2'>
           <LongText className='truncate'>{formattedTotalSales}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
-  {
-    accessorKey: 'Total Biaya',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Total Biaya' />
-    ),
-    cell: ({ row }) => {
-      const { total_cost } = row.original
-      const formattedTotalCost = formatCurrency(total_cost)
-      return (
-        <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{formattedTotalCost}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
-  {
-    accessorKey: 'Laba Kotor',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Laba Kotor' />
-    ),
-    cell: ({ row }) => {
-      const { gross_profit } = row.original
-      const formattedGrossProfit = formatCurrency(gross_profit)
-      return (
-        <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{formattedGrossProfit}</LongText>
         </div>
       )
     },

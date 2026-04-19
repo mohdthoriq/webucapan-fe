@@ -5,8 +5,8 @@ import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
 
 export interface SalesPerCategoryQueryParams {
-  date_from?: string
-  date_to?: string
+  date_from?: Date
+  date_to?: Date
   search?: string
   product_category_id?: string
   page?: number

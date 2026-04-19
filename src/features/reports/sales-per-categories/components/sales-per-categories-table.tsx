@@ -14,7 +14,7 @@ import {
   getExpandedRowModel,
   type ExpandedState,
 } from '@tanstack/react-table'
-import type { ProductSalesReportItem } from '@/types/domain/sales-per-products'
+import type { CategorySalesReportItem } from '@/types/domain/sales-per-categories'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -28,29 +28,26 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
-import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
-import { salesPerProductColumns } from './sales-per-product-columns'
-import { useSalesPerProduct } from './sales-per-product-provider'
+import { salesPerCategoriesColumns } from './sales-per-categories-columns'
+import { useSalesPerCategories } from './sales-per-categories-provider'
 
 type DataTableProps = {
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function SalesPerProductTable({ search, navigate }: DataTableProps) {
+export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
   const {
-    salesPerProductData,
+    salesPerCategoriesData,
     pagination: serverPagination,
     isLoading,
-  } = useSalesPerProduct()
+  } = useSalesPerCategories()
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [expanded, setExpanded] = useState<ExpandedState>({})
   const [lockFeatureDialog, setLockFeatureDialog] = useState(false)
-
-  const { data: productCategories } = useProductCategoryQuery()
 
   const {
     columnFilters,
@@ -71,8 +68,8 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: (salesPerProductData?.items ?? []) as ProductSalesReportItem[],
-    columns: salesPerProductColumns,
+    data: (salesPerCategoriesData?.items ?? []) as CategorySalesReportItem[],
+    columns: salesPerCategoriesColumns,
     state: {
       sorting,
       pagination,
@@ -117,17 +114,6 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
         table={table}
         searchPlaceholder='Cari produk...'
         searchKey='Nama Produk'
-        filters={[
-          {
-            columnId: 'Kategori',
-            title: 'Filter Kategori',
-            options:
-              productCategories?.data?.map((category) => ({
-                label: category.name,
-                value: category.id,
-              })) ?? [],
-          },
-        ]}
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>
@@ -165,7 +151,7 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
             ) : table.getRowModel().rows?.length ? (
               <TableRows table={table} />
             ) : (
-              <TableEmpty colSpan={salesPerProductColumns.length} />
+              <TableEmpty colSpan={salesPerCategoriesColumns.length} />
             )}
           </TableBody>
         </Table>
@@ -199,7 +185,7 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 function TableRows({
   table,
 }: {
-  table: TanstackTable<ProductSalesReportItem>
+  table: TanstackTable<CategorySalesReportItem>
 }) {
   return (
     <>

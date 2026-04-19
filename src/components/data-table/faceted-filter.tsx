@@ -36,7 +36,10 @@ export function DataTableFacetedFilter<TData, TValue>({
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
+  const filterValue = column?.getFilterValue()
+  const selectedValues = new Set(
+    Array.isArray(filterValue) ? (filterValue as string[]) : []
+  )
 
   return (
     <Popover>
@@ -51,20 +54,20 @@ export function DataTableFacetedFilter<TData, TValue>({
                 variant='secondary'
                 className='rounded-sm px-1 font-normal lg:hidden'
               >
-                {selectedValues.size}
+                {selectedValues?.size}
               </Badge>
               <div className='hidden space-x-1 lg:flex'>
-                {selectedValues.size > 2 ? (
+                {selectedValues?.size > 2 ? (
                   <Badge
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'
                   >
-                    {selectedValues.size} selected
+                    {selectedValues?.size} selected
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
+                    ?.filter((option) => selectedValues?.has(option.value))
+                    ?.map((option) => (
                       <Badge
                         variant='secondary'
                         key={option.value}
@@ -85,20 +88,20 @@ export function DataTableFacetedFilter<TData, TValue>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+              {options?.map((option) => {
+                const isSelected = selectedValues?.has(option.value)
                 return (
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value)
+                        selectedValues?.delete(option.value)
                       } else {
-                        selectedValues.add(option.value)
+                        selectedValues?.add(option.value)
                       }
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
+                        filterValues?.length ? filterValues : undefined
                       )
                     }}
                   >
@@ -125,7 +128,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 )
               })}
             </CommandGroup>
-            {selectedValues.size > 0 && (
+            {selectedValues?.size > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
