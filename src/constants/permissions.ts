@@ -5,7 +5,11 @@ export const PERMISSION_KEY = {
   // Sales
   SALES: 'sales',
   SALES_OVERVIEW_VIEW: 'sales.overview.view',
+  SALES_DELIVERY: 'sales.delivery',
   SALES_DELIVERY_VIEW: 'sales.delivery.view',
+  SALES_DELIVERY_ADD: 'sales.delivery.add',
+  SALES_DELIVERY_EDIT: 'sales.delivery.edit',
+  SALES_DELIVERY_DELETE: 'sales.delivery.delete',
   SALES_INVOICE: 'sales.invoice',
   SALES_INVOICE_VIEW: 'sales.invoice.view',
   SALES_INVOICE_ADD: 'sales.invoice.add',
@@ -16,7 +20,11 @@ export const PERMISSION_KEY = {
   // Purchase
   PURCHASE: 'purchase',
   PURCHASE_OVERVIEW_VIEW: 'purchase.overview.view',
+  PURCHASE_DELIVERY: 'purchase.delivery',
   PURCHASE_DELIVERY_VIEW: 'purchase.delivery.view',
+  PURCHASE_DELIVERY_ADD: 'purchase.delivery.add',
+  PURCHASE_DELIVERY_EDIT: 'purchase.delivery.edit',
+  PURCHASE_DELIVERY_DELETE: 'purchase.delivery.delete',
   PURCHASE_INVOICE: 'purchase.invoice',
   PURCHASE_INVOICE_VIEW: 'purchase.invoice.view',
   PURCHASE_INVOICE_ADD: 'purchase.invoice.add',
