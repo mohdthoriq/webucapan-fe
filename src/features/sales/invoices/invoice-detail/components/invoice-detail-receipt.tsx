@@ -139,9 +139,11 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     Tanggal Invoice:
                   </span>
                   <span className='text-primary text-xs font-semibold'>
-                    {format(new Date(invoice.invoice_date), 'dd MMM yyyy', {
-                      locale: id,
-                    })}
+                    {invoice.invoice_date
+                      ? format(new Date(invoice.invoice_date), 'dd MMM yyyy', {
+                          locale: id,
+                        })
+                      : '-'}
                   </span>
                 </div>
                 <div className='flex items-baseline gap-2'>
@@ -149,9 +151,11 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                     Jatuh Tempo:
                   </span>
                   <span className='text-primary text-xs font-semibold'>
-                    {format(new Date(invoice.due_date), 'dd MMM yyyy', {
-                      locale: id,
-                    })}
+                    {invoice.due_date
+                      ? format(new Date(invoice.due_date), 'dd MMM yyyy', {
+                          locale: id,
+                        })
+                      : '-'}
                   </span>
                 </div>
                 <div className='flex items-baseline gap-2'>

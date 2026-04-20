@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { useNavigate } from '@tanstack/react-router'
 import type { Expense } from '@/types/domain/expenses'
 import { id } from 'date-fns/locale'
 import { Building2, Printer, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
@@ -9,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { usePrintExpensesQuery } from '../hooks/use-print-expenses-invoice-query'
 import { ExpenseDetailRowActions } from './expenses-detail-row-actions'
-import { useNavigate } from '@tanstack/react-router'
 
 interface ExpensesDetailReceiptProps {
   expense: Expense
@@ -129,9 +129,11 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                     Tanggal Biaya:
                   </span>
                   <span className='text-primary text-xs font-semibold'>
-                    {format(new Date(expense.date), 'dd MMM yyyy', {
-                      locale: id,
-                    })}
+                    {expense.date
+                      ? format(new Date(expense.date), 'dd MMM yyyy', {
+                          locale: id,
+                        })
+                      : '-'}
                   </span>
                 </div>
                 <div className='flex items-baseline gap-2'>
@@ -140,9 +142,13 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                   </span>
                   <span className='text-primary text-xs font-semibold'>
                     {expense.due_date
-                      ? format(new Date(expense.due_date as Date), 'dd MMM yyyy', {
-                          locale: id,
-                        })
+                      ? format(
+                          new Date(expense.due_date as Date),
+                          'dd MMM yyyy',
+                          {
+                            locale: id,
+                          }
+                        )
                       : '-'}
                   </span>
                 </div>
@@ -258,7 +264,10 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm font-medium'>
                   <span className='text-muted-foreground'>Pajak</span>
                   <span>
-                    {formatCurrency(Number(expense.tax_total), expense.currency)}
+                    {formatCurrency(
+                      Number(expense.tax_total),
+                      expense.currency
+                    )}
                   </span>
                 </div>
               )}
