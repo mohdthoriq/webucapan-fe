@@ -1,6 +1,7 @@
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import type {
   Account,
+  CashBankTransactionDetail,
   Contact,
   Expedition,
   PaymentTerm,
@@ -10,7 +11,6 @@ import type {
   Tax,
   Unit,
 } from '@/types'
-import type { CashBankTransactionDetail } from '@/features/cash-bank/cash-bank-detail/types/cash-bank-detail.types'
 import { AccountsActionDialog } from '@/features/account/components/account-action-dialog'
 import { CashBankListActionDialog } from '@/features/cash-bank/cash-bank-list/components/cash-bank-list-action-dialog'
 import { ContactsActionDialog } from '@/features/contacts/components/contacts-action-dialog'

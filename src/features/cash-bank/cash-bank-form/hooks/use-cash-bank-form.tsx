@@ -28,6 +28,7 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
     }
     return {
       bank_account_id: search?.bank_account_id || '',
+      transaction_number: '',
       date: new Date(),
       description: '',
       contact_id: null,

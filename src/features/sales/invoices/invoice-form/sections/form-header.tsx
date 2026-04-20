@@ -55,12 +55,12 @@ import { useExpeditionsQuery } from '@/features/settings/expeditions/hooks/use-e
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
-import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
 import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { useCheckFinanceNumberQuery } from '@/hooks/use-auto-numbering'
 
 export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext<

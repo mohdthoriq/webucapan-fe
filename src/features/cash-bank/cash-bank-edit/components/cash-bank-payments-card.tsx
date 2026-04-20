@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import type { FieldValues, UseFormReturn, Path } from 'react-hook-form'
-import { TransactionCode } from '@/types'
+import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -33,7 +33,6 @@ import { useInvoicePaymentsForm as usePurchasesInvoicePaymentsForm } from '@/fea
 import { InvoicePaymentsCombobox } from '@/features/sales/invoices/invoice-detail/components/invoice-payments-combobox'
 import { useInvoicePaymentsForm as useSalesInvoicePaymentsForm } from '@/features/sales/invoices/invoice-detail/hooks/use-invoice-payments-form'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cash-bank-detail.types'
 
 interface CashBankPaymentsCardProps {
   transaction: CashBankTransactionDetail

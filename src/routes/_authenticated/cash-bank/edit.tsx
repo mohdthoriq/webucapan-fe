@@ -51,6 +51,7 @@ function EditTransactionComponent() {
   const currentRow = {
     id: transaction.id,
     bank_account_id: transaction.account.id,
+    transaction_number: transaction.reference.number,
     date: transaction.trans_date
       ? new Date(transaction.trans_date)
       : new Date(),
