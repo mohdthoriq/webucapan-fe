@@ -3,6 +3,7 @@ import { getRouteApi } from '@tanstack/react-router'
 import {
   ArrowLeft,
   CalendarIcon,
+  ChevronDown,
   FileText,
   Loader2,
   Printer,
@@ -89,6 +90,7 @@ function SalesPerProductContent() {
                       <Printer className='h-4 w-4' />
                     )}
                     {isExporting ? 'Memproses...' : 'Cetak'}
+                    <ChevronDown className='h-4 w-4' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
