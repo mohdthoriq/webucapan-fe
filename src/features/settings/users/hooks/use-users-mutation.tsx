@@ -132,3 +132,24 @@ export function useBulkDeleteUserMutation() {
     },
   })
 }
+
+export function useResendInviteMutation() {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiClient.post(`/users/${id}/resend-invite`)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-resend-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-resend-toast')
+      toast.success('Undangan berhasil dikirim ulang.')
+    },
+    onError: () => {
+      toast.dismiss('users-resend-toast')
+      toast.error('Gagal mengirim ulang undangan.')
+    },
+  })
+}
+
