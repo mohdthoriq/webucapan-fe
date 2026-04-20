@@ -28,6 +28,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useUsersForm } from '../hooks/use-users-form'
+import { useResendInviteMutation } from '../hooks/use-users-mutation'
 import { RolesCombobox } from './users-role-combobox'
 
 type UsersActionDialogProps = {
@@ -57,6 +58,7 @@ export function UsersActionDialog({
   }, [company?.id, isEdit, form])
 
   const hasPermission = useHasPermission(PERMISSION_KEY.SETTINGS_USER_ADD)
+  const resendInviteMutation = useResendInviteMutation()
 
   return (
     <Dialog
@@ -88,7 +90,7 @@ export function UsersActionDialog({
               )}
             >
               {isEdit ? (
-                <div className='bg-muted/50 rounded-lg p-3 space-y-2'>
+                <div className='bg-muted/50 space-y-2 rounded-lg p-3'>
                   <div>
                     <p className='text-muted-foreground text-xs font-medium'>
                       Nama Lengkap
@@ -201,6 +203,18 @@ export function UsersActionDialog({
         )}
 
         <DialogFooter>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => {
+              if (currentRow?.id) {
+                resendInviteMutation.mutate(currentRow.id)
+              }
+            }}
+            disabled={!hasPermission || !isEdit || resendInviteMutation.isPending}
+          >
+            Kirim Ulang Undangan
+          </Button>
           <Button
             type='submit'
             form='user-form'
