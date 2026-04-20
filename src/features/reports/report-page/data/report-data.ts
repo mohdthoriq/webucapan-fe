@@ -2,6 +2,7 @@ import type { ReportData } from '../types/report-data.types'
 
 export const reportData: ReportData[] = [
   {
+    id: 1,
     category: 'Finansial',
     reports: [
       {
@@ -27,6 +28,7 @@ export const reportData: ReportData[] = [
     ],
   },
   {
+    id: 2,
     category: 'Akuntansi',
     reports: [
       {
@@ -47,6 +49,7 @@ export const reportData: ReportData[] = [
     ],
   },
   {
+    id: 3,
     category: 'Penjualan',
     reports: [
       {

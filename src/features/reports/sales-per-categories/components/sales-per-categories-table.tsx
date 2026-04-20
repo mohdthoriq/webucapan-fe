@@ -61,8 +61,7 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
     globalFilter: { enabled: false },
     columnFilters: [
-      { columnId: 'Nama Produk', searchKey: 'search', type: 'string' },
-      { columnId: 'Kategori', searchKey: 'product_category_id' },
+      { columnId: 'Nama Kategori', searchKey: 'search', type: 'string' },
     ],
   })
 
@@ -112,8 +111,8 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari produk...'
-        searchKey='Nama Produk'
+        searchPlaceholder='Cari kategori...'
+        searchKey='Nama Kategori'
       />
       <div className='overflow-hidden rounded-md border'>
         <Table>
