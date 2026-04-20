@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { FinanceNumberType } from '@/types'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
@@ -7,28 +6,6 @@ import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-
-export function useGenerateNextNumber() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (type: FinanceNumberType) => {
-      const response = await apiClient.post(`auto-numbering/generate/${type}`)
-      return response.data
-    },
-    onMutate: () => {
-      toast.loading('Loading...', { id: 'invoices-form-toast' })
-    },
-    onSuccess: async (_) => {
-      await queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.AUTO_NUMBERING],
-      })
-      toast.dismiss('invoices-form-toast')
-    },
-    onError: () => {
-      toast.error('Gagal generate nomor seterusnya.')
-    },
-  })
-}
 
 export function useCreateInvoiceMutation() {
   const queryClient = useQueryClient()

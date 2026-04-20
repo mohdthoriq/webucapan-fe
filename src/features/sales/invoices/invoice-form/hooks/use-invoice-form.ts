@@ -19,11 +19,11 @@ import {
 } from '../types/invoice-form.schema'
 import {
   useCreateInvoiceMutation,
-  useGenerateNextNumber,
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
 import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 import { toast } from 'sonner'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice

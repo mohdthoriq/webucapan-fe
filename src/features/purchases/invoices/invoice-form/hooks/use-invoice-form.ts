@@ -11,6 +11,9 @@ import {
   DocumentStatus,
   type ApiResponse,
 } from '@/types'
+import { toast } from 'sonner'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 import {
   CreateInvoiceSchema,
   UpdateInvoiceSchema,
@@ -19,11 +22,8 @@ import {
 } from '../types/invoice-form.schema'
 import {
   useCreateInvoiceMutation,
-  useGenerateNextNumber,
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
-import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
-import { toast } from 'sonner'
 
 type UseInvoiceFormProps = {
   currentRow?: PurchaseInvoice
@@ -124,7 +124,6 @@ export function useInvoiceForm({
     defaultValues: defaultValues,
   })
 
-
   useEffect(() => {
     if (isEdit && currentRow) {
       form.reset(defaultValues)
@@ -203,7 +202,8 @@ export function useInvoiceForm({
         })
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      const message =
+        error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
       toast.error(message)
     }
   }
