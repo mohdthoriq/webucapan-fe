@@ -81,7 +81,9 @@ export const invoiceLabel: Record<string, string> = {
   paid: 'Lunas',
   partially_paid: 'Dibayar Sebagian',
   overdue: 'Terlambat',
+  open: 'Terbuka',
 }
+
 
 export const getStatusStyles = (payment_status: string) => {
   switch (payment_status) {
@@ -91,6 +93,8 @@ export const getStatusStyles = (payment_status: string) => {
       return 'bg-yellow-50 text-yellow-700 border-yellow-200'
     case 'unpaid':
       return 'bg-red-50 text-red-700 border-red-200'
+    case 'open':
+      return 'bg-blue-50 text-blue-700 border-blue-200'
     default:
       return ''
   }

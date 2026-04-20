@@ -58,6 +58,7 @@ function AccountCombobox({
     searchKey: 'search',
     extraParams: {
       code_prefix: codePrefix,
+      is_parent: false,
     },
   })
 

@@ -23,7 +23,7 @@ export function CashBankEdit({ transaction }: CashBankEditProps) {
             <div className='mb-2 flex items-center justify-between'>
               <div>
                 <h1 className='text-4xl font-semibold tracking-tight'>
-                  Ubah Transaksi {transaction?.reference?.number}
+                  Ubah Transaksi {transaction?.entry_number || (typeof transaction?.reference === 'object' ? transaction?.reference?.number : '')}
                 </h1>
               </div>
               <div className='mr-4 flex gap-2'>

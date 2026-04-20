@@ -94,6 +94,14 @@ export function AppSidebar() {
           <NavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>
+      {state === 'expanded' && (
+          <div className='px-4 py-2 text-[11px] items-center justify-center leading-tight text-muted-foreground'>
+            <p className='text-center'>
+              &copy; {new Date().getFullYear()} Manajerku v
+              {import.meta.env.APP_VERSION}
+            </p>
+          </div>
+        )}
       <SidebarFooter className='border-t'>
         <Button
           variant='ghost'

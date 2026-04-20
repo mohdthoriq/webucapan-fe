@@ -6,8 +6,12 @@ import { useAuthStore } from '@/stores/auth-store'
 import {
   type CreateUserFormData,
   createUserSchema,
+  type UpdateUserFormData,
 } from '../types/users.schema'
-import { useCreateUserMutation } from './use-users-mutation'
+import {
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} from './use-users-mutation'
 import { useEffect } from 'react'
 
 type useUsersFormProps = {
@@ -44,10 +48,11 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
   }, [company?.id, isEdit, form])
 
   const createMutation = useCreateUserMutation()
+  const updateMutation = useUpdateUserMutation()
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
-  const mutationError = createMutation.error
+  const mutationError = isEdit ? updateMutation.error : createMutation.error
   const errorMessage =
     (mutationError
       ? (mutationError as AxiosError<ApiResponse>)?.response?.data?.message ||
@@ -58,40 +63,35 @@ export function useUsersForm({ currentRow }: useUsersFormProps) {
   const onSubmit = async (data: CreateUserFormData) => {
     try {
       if (isEdit && currentRow) {
-        // const updateData: UpdateUserFormData = {
-        //   id: currentRow.id,
-        //   name: data.name,
-        //   type_id: data.type_id,
-        //   code: data.code,
-        //   category_id: data.category_id,
-        //   parent_id: data.parent_id,
-        //   allow_transaction: data.allow_transaction,
-        //   is_active: data.is_active,
-        //   description: data.description,
-        // }
-        // await updateMutation.mutateAsync(updateData)
-        // form.reset()
+        const updateData: UpdateUserFormData = {
+          id: currentRow.id,
+          full_name: data.full_name,
+          email: data.email,
+          phone: data.phone,
+          role_id: data.role_id,
+        }
+        await updateMutation.mutateAsync(updateData)
       } else {
         await createMutation.mutateAsync(data)
-        
+
         form.reset({
           email: '',
           full_name: '',
           role_id: '',
           phone: '',
-          company_id: company?.id ?? '', 
+          company_id: company?.id ?? '',
         })
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log('Submit error:', error);
+      console.log('Submit error:', error)
     }
   }
 
   return {
     form,
     onSubmit,
-    isSubmitting: createMutation.isPending,
+    isSubmitting: isEdit ? updateMutation.isPending : createMutation.isPending,
     errorMessage,
   }
 }

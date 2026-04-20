@@ -57,7 +57,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
                 <ProfileDropdown />
               </div>
             </Header>
-            <div className='bg-background @7xl/content:mx-auto @7xl/content:w-full @7xl/content:max-w-7xl'>
+            <div className='bg-background'>
               <Breadcrumbs />
             </div>
 

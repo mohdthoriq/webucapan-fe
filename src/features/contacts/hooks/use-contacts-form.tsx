@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import type { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,7 +33,7 @@ export function useContactsForm({
           name: currentRow?.name ?? '',
           type_id: currentRow?.type?.id ?? '',
           phone: currentRow?.phone ?? '',
-          email: currentRow?.email ?? '',
+          email: currentRow?.email ?? undefined,
           address: currentRow?.address ?? '',
           company_id: currentRow?.company?.id ?? company?.id ?? '',
           company_name: currentRow?.company_name ?? '',
@@ -43,10 +44,24 @@ export function useContactsForm({
           type_id: '',
           company_name: '',
           phone: '',
-          email: '',
+          email: undefined,
           address: '',
         },
   })
+
+  useEffect(() => {
+    if (currentRow) {
+      form.reset({
+        name: currentRow.name ?? '',
+        type_id: currentRow.type?.id ?? '',
+        phone: currentRow.phone ?? '',
+        email: currentRow.email ?? undefined,
+        address: currentRow.address ?? '',
+        company_id: currentRow.company?.id ?? company?.id ?? '',
+        company_name: currentRow.company_name ?? '',
+      })
+    }
+  }, [currentRow, form, company?.id])
 
   // Pass onSuccess to mutations if they support it, or handle it here
   const createMutation = useCreateContactMutation(onSuccess)
@@ -72,6 +87,7 @@ export function useContactsForm({
         email: data.email,
         address: data.address,
         company_id: data.company_id,
+        company_name: data.company_name,
       }
       await updateMutation.mutateAsync(updateData)
       form.reset()

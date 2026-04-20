@@ -31,7 +31,8 @@ export function DataTableToolbar<TData>({
   children,
 }: DataTableToolbarProps<TData>) {
   const isFiltered =
-    table.getState().columnFilters.length > 0 || table.getState().globalFilter
+    (table.getState().columnFilters?.length ?? 0) > 0 ||
+    table.getState().globalFilter
 
   // Handle debounced search for column or global filter
   const column = searchKey ? table.getColumn(searchKey) : null

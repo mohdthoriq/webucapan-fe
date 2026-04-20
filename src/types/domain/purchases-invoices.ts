@@ -53,4 +53,5 @@ export interface PurchaseInvoice extends GlobalResponse {
   expedition_id: string
   expedition: Expedition | null
   tracking_number: string
+  note?: string | null
 }

@@ -12,9 +12,10 @@ export interface GraphicData {
 export interface TransactionData extends GlobalResponse {
   trans_date: Date
   desc: string
-  memo: string
+  note: string
   account: Account
-  reference: Reference
+  reference: Reference | string
+  entry_number?: string
   tags: (string | Tag)[]
   amount_after_tax: number
   balance: number

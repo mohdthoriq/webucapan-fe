@@ -15,6 +15,11 @@ import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import {
   FormControl,
   FormField,
   FormItem,
@@ -28,11 +33,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -40,12 +40,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
-import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
-import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
-import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
-import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import { useExpeditionsQuery } from '@/features/settings/expeditions/hooks/use-expeditions-query'
 import {
   Table,
   TableBody,
@@ -54,16 +48,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
+import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
+import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
+import { useExpeditionsQuery } from '@/features/settings/expeditions/hooks/use-expeditions-query'
+import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
+import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
+import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
+import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
 import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
-import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function InvoiceFormHeader() {
-  const { control, formState, setValue } =
-    useFormContext<CreateInvoiceFormData | UpdateInvoiceFormData>()
+  const { control, formState, setValue } = useFormContext<
+    CreateInvoiceFormData | UpdateInvoiceFormData
+  >()
   const { data: paymentTerms } = usePaymentTermsQuery({ page: 1, limit: 100 })
   const { data: tags } = useTagsQuery({ page: 1, limit: 100 })
   const { data: contactTypes } = useContactTypesQuery({ page: 1, limit: 100 })
@@ -148,7 +150,6 @@ export function InvoiceFormHeader() {
         />
       </div>
 
-      {/* Invoice Number */}
       <FormField
         control={control}
         name='invoice_number'
@@ -175,6 +176,40 @@ export function InvoiceFormHeader() {
             ) : (
               <FormMessage />
             )}
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name='note'
+        render={({ field }) => (
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>
+              Referensi
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span className='text-muted-foreground ml-1 text-[10px]'>
+                      (?)
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Catatan internal untuk mempermudah pencarian (opsional)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </FormLabel>
+            <FormControl>
+              <Input
+                placeholder='Referensi (opsional)'
+                {...field}
+                value={field.value ?? ''}
+              />
+            </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -377,14 +412,22 @@ export function InvoiceFormHeader() {
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className='CollapsibleContent'>
-            <div className='rounded-md border overflow-hidden'>
+            <div className='overflow-hidden rounded-md border'>
               <Table>
                 <TableHeader>
                   <TableRow className='bg-muted/50'>
-                    <TableHead className='h-10 px-2 text-xs'>Tanggal Pengiriman</TableHead>
-                    <TableHead className='h-10 px-2 text-xs'>Ekspedisi</TableHead>
-                    <TableHead className='h-10 px-2 text-xs'>Nomor Resi</TableHead>
-                    <TableHead className='h-10 px-2 text-xs'>Biaya Pengiriman</TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>
+                      Tanggal Pengiriman
+                    </TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>
+                      Ekspedisi
+                    </TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>
+                      Nomor Resi
+                    </TableHead>
+                    <TableHead className='h-10 px-2 text-xs'>
+                      Biaya Pengiriman
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -402,7 +445,7 @@ export function InvoiceFormHeader() {
                                   <Button
                                     variant={'outline'}
                                     className={cn(
-                                      'w-full pl-3 text-left font-normal text-xs h-9',
+                                      'h-9 w-full pl-3 text-left text-xs font-normal',
                                       !field.value && 'text-muted-foreground'
                                     )}
                                   >
@@ -415,12 +458,17 @@ export function InvoiceFormHeader() {
                                   </Button>
                                 </FormControl>
                               </PopoverTrigger>
-                              <PopoverContent className='w-auto p-0' align='start'>
+                              <PopoverContent
+                                className='w-auto p-0'
+                                align='start'
+                              >
                                 <Calendar
                                   mode='single'
                                   selected={field.value ?? undefined}
                                   onSelect={(date) => field.onChange(date)}
-                                  disabled={(date) => date < new Date('1900-01-01')}
+                                  disabled={(date) =>
+                                    date < new Date('1900-01-01')
+                                  }
                                   autoFocus
                                 />
                               </PopoverContent>
@@ -443,7 +491,7 @@ export function InvoiceFormHeader() {
                               value={field.value ?? undefined}
                             >
                               <FormControl>
-                                <SelectTrigger className='w-full text-xs h-9'>
+                                <SelectTrigger className='h-9 w-full text-xs'>
                                   <SelectValue placeholder='Pilih ekspedisi' />
                                 </SelectTrigger>
                               </FormControl>
@@ -488,11 +536,11 @@ export function InvoiceFormHeader() {
                         render={({ field }) => (
                           <FormItem className='mb-0'>
                             <FormControl>
-                              <Input 
-                                placeholder='Contoh: JNE123456789' 
-                                {...field} 
+                              <Input
+                                placeholder='Contoh: JNE123456789'
+                                {...field}
                                 value={field.value ?? ''}
-                                className='text-xs h-9'
+                                className='h-9 text-xs'
                               />
                             </FormControl>
                             <FormMessage className='text-[10px]' />
@@ -514,9 +562,11 @@ export function InvoiceFormHeader() {
                                 placeholder='0'
                                 {...field}
                                 value={field.value ?? 0}
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
                                 startAdornment='Rp'
-                                className='text-xs h-9'
+                                className='h-9 text-xs'
                               />
                             </FormControl>
                             <FormMessage className='text-[10px]' />

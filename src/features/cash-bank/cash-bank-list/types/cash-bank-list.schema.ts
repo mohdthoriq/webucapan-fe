@@ -6,7 +6,7 @@ export const createCashBankListSchema = z.object({
   tags: z.array(z.uuid()).nullable(),
   amount: z.number().positive('Jumlah harus lebih dari 0'),
   date: z.date().min(1, 'Tanggal harus diisi'),
-  description: z.string().optional(),
+  note: z.string().optional(),
 })
 
 export type CreateCashBankListFormData = z.infer<
@@ -20,7 +20,7 @@ export const updateCashBankListSchema = z.object({
   tags: z.array(z.uuid()).nullable(),
   amount: z.number().positive('Jumlah harus lebih dari 0'),
   date: z.date().min(1, 'Tanggal harus diisi'),
-  description: z.string().optional(),
+  note: z.string().optional(),
 })
 
 export type UpdateCashBankListFormData = z.infer<

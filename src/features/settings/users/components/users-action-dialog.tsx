@@ -28,6 +28,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useUsersForm } from '../hooks/use-users-form'
+import { useResendInviteMutation } from '../hooks/use-users-mutation'
 import { RolesCombobox } from './users-role-combobox'
 
 type UsersActionDialogProps = {
@@ -46,7 +47,10 @@ export function UsersActionDialog({
   const { form, onSubmit, isSubmitting, errorMessage } = useUsersForm({
     currentRow,
   })
-  const company = useAuthStore((state) => state.auth.user?.company)
+  const currentUser = useAuthStore((state) => state.auth.user)
+  const company = currentUser?.company
+  const isSelf = currentRow?.id === currentUser?.user.id
+
   useEffect(() => {
     if (!isEdit && company?.id) {
       form.setValue('company_id', company.id)
@@ -54,6 +58,7 @@ export function UsersActionDialog({
   }, [company?.id, isEdit, form])
 
   const hasPermission = useHasPermission(PERMISSION_KEY.SETTINGS_USER_ADD)
+  const resendInviteMutation = useResendInviteMutation()
 
   return (
     <Dialog
@@ -66,11 +71,11 @@ export function UsersActionDialog({
       <DialogContent className='flex flex-col sm:max-w-lg'>
         <DialogHeader className='text-start'>
           <DialogTitle>
-            {isEdit ? 'Edit Pengguna' : 'Invite Pengguna'}
+            {isEdit ? 'Edit Peran Pengguna' : 'Invite Pengguna'}
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? 'Edit data pengguna.'
+              ? 'Ubah peran untuk pengguna ini.'
               : 'Undang pengguna baru untuk Perusahaan Anda.'}
           </DialogDescription>
         </DialogHeader>
@@ -84,61 +89,83 @@ export function UsersActionDialog({
                 !hasPermission && 'pointer-events-none opacity-100 blur-[2px]'
               )}
             >
-              <FormField
-                control={form.control}
-                name='full_name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nama Lengkap</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan nama lengkap...'
-                        autoComplete='off'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan email...'
-                        autoComplete='off'
-                        type='email'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telepon</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Masukkan nomor telepon...'
-                        autoComplete='off'
-                        {...field}
-                        disabled={!hasPermission}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isEdit ? (
+                <div className='bg-muted/50 space-y-2 rounded-lg p-3'>
+                  <div>
+                    <p className='text-muted-foreground text-xs font-medium'>
+                      Nama Lengkap
+                    </p>
+                    <p className='text-sm font-semibold'>
+                      {currentRow.full_name}
+                    </p>
+                  </div>
+                  <div>
+                    <p className='text-muted-foreground text-xs font-medium'>
+                      Email
+                    </p>
+                    <p className='text-sm font-semibold'>{currentRow.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name='full_name'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nama Lengkap</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan nama lengkap...'
+                            autoComplete='off'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan email...'
+                            autoComplete='off'
+                            type='email'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='phone'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telepon</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='Masukkan nomor telepon...'
+                            autoComplete='off'
+                            {...field}
+                            disabled={!hasPermission}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
               <FormField
                 control={form.control}
                 name='role_id'
@@ -150,7 +177,7 @@ export function UsersActionDialog({
                         placeholder='Pilih peran...'
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
-                        disabled={!hasPermission}
+                        disabled={!hasPermission || isSelf}
                       />
                     </FormControl>
                     <FormMessage />
@@ -176,8 +203,24 @@ export function UsersActionDialog({
         )}
 
         <DialogFooter>
-          <Button type='submit' form='user-form' disabled={isSubmitting}>
-            {isEdit ? 'Simpan' : 'Undang'}
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => {
+              if (currentRow?.id) {
+                resendInviteMutation.mutate(currentRow.id)
+              }
+            }}
+            disabled={!hasPermission || !isEdit || resendInviteMutation.isPending}
+          >
+            Kirim Ulang Undangan
+          </Button>
+          <Button
+            type='submit'
+            form='user-form'
+            disabled={isSubmitting || (isEdit && isSelf)}
+          >
+            {isEdit ? 'Simpan Perubahan' : 'Undang'}
           </Button>
         </DialogFooter>
       </DialogContent>

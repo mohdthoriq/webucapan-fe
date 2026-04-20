@@ -42,6 +42,12 @@ import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/us
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { ExpensesFormCombobox } from '../components/expenses-form-combobox'
 import { useCheckFinanceNumberQuery } from '../hooks/use-expenses-form-query'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export function ExpensesFormHeader() {
   const { control, formState, setValue } = useFormContext()
@@ -107,6 +113,7 @@ export function ExpensesFormHeader() {
                   onValueChange={field.onChange}
                   placeholder='Pilih Akun'
                   disabled={isPaylater}
+                  isParent={false}
                   extraParams={{ code_prefix: ['1-100'] }}
                   action={
                     <FormShortcutButton
@@ -261,6 +268,41 @@ export function ExpensesFormHeader() {
             ) : (
               <FormMessage />
             )}
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name='note'
+        render={({ field }) => (
+          <FormItem className='mb-0 space-y-1'>
+            <FormLabel className='text-xs'>
+              Referensi
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className='text-muted-foreground ml-1 cursor-help text-[10px]'>
+                      (?)
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Catatan internal untuk mempermudah pencarian (opsional)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </FormLabel>
+            <FormControl>
+              <Input
+                className='h-8 text-sm'
+                placeholder='Referensi (opsional)'
+                {...field}
+                value={field.value ?? ''}
+              />
+            </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />

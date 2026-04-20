@@ -22,6 +22,8 @@ import {
   useGenerateNextNumber,
   useUpdateInvoiceMutation,
 } from './use-invoice-form-mutation'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
+import { toast } from 'sonner'
 
 type UseInvoiceFormProps = {
   currentRow?: SalesInvoice
@@ -137,6 +139,7 @@ export function useInvoiceForm({
   const createMutation = useCreateInvoiceMutation()
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateInvoiceMutation()
+  const uploadAttachments = useUploadAttachmentsMutation()
 
   const errors = form.formState.errors
   const mutationError = createMutation.error || updateMutation.error
@@ -151,25 +154,54 @@ export function useInvoiceForm({
       : undefined)
 
   const onSubmit = async (data: CreateInvoiceFormData) => {
-    if (isEdit && currentRow) {
-      const updateData: UpdateInvoiceFormData = {
+    try {
+      let attachmentUrls: string[] = []
+
+      // 1. Upload files first if any
+      const filesToUpload = (data.images || []).filter(
+        (item) => item instanceof File
+      ) as File[]
+
+      if (filesToUpload.length > 0) {
+        const uploadResponse = await uploadAttachments.mutateAsync({
+          feature: 'sales-invoices',
+          images: filesToUpload,
+        })
+        attachmentUrls = uploadResponse.data?.urls || []
+      }
+
+      // 2. Prepare final payload
+      const payload = {
         ...data,
-        id: currentRow.id,
-      } as UpdateInvoiceFormData
-      const response = await updateMutation.mutateAsync(updateData)
-      form.reset(data)
-      navigate({
-        to: `/sales/invoices/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
-    } else {
-      const response = await createMutation.mutateAsync(data)
-      await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
-      form.reset()
-      navigate({
-        to: `/sales/invoices/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
+        images: attachmentUrls,
+      }
+
+      if (isEdit && currentRow) {
+        const updateData: UpdateInvoiceFormData = {
+          ...payload,
+          id: currentRow.id,
+        } as UpdateInvoiceFormData
+        const response = await updateMutation.mutateAsync(updateData)
+
+        form.reset(data)
+        navigate({
+          to: `/sales/invoices/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      } else {
+        const response = await createMutation.mutateAsync(payload)
+
+        await generateNextNumber.mutateAsync(FinanceNumberType.sales_invoice)
+        form.reset()
+        navigate({
+          to: `/sales/invoices/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      }
+    } catch (error) {
+      // Error handling is managed by the mutation's state
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)
     }
   }
 

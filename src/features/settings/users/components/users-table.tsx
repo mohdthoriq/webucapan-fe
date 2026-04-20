@@ -13,9 +13,11 @@ import {
   type Table as TanstackTable,
 } from '@tanstack/react-table'
 import type { User } from '@/types'
+import { Trash2 } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -25,7 +27,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DataTableBulkActions,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import { UsersBulkDeleteDialog } from './users-bulk-delete-dialog'
 import { getUsersColumns } from './users-columns'
 import { useUsers } from './users-provider'
 
@@ -40,11 +52,15 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   const currentUser = useAuthStore((state) => state.auth.user)
   const isAdmin = currentUser?.role.name === 'Administrator'
 
-  const columns = useMemo(() => getUsersColumns(isAdmin), [isAdmin])
+  const columns = useMemo(
+    () => getUsersColumns(isAdmin, currentUser?.user.id),
+    [isAdmin, currentUser?.user.id]
+  )
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
 
   const {
     columnFilters,
@@ -93,6 +109,10 @@ export function UsersTable({ search, navigate }: DataTableProps) {
       ensurePageInRange(serverPagination.total_pages)
     }
   }, [serverPagination.total_pages, ensurePageInRange])
+
+  const selectedRows = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original)
 
   return (
     <div
@@ -148,6 +168,32 @@ export function UsersTable({ search, navigate }: DataTableProps) {
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />
+      <DataTableBulkActions table={table} entityName='pengguna'>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='destructive'
+              size='icon'
+              onClick={() => setBulkDeleteDialogOpen(true)}
+              className='size-8 rounded-lg bg-red-500/80 hover:bg-red-500'
+            >
+              <Trash2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side='top' className='bg-slate-800 text-slate-50'>
+            <p>Hapus</p>
+          </TooltipContent>
+        </Tooltip>
+      </DataTableBulkActions>
+
+      <UsersBulkDeleteDialog
+        open={bulkDeleteDialogOpen}
+        onOpenChange={setBulkDeleteDialogOpen}
+        selectedRows={selectedRows}
+        onSuccess={() => {
+          table.resetRowSelection()
+        }}
+      />
     </div>
   )
 }
@@ -169,13 +215,14 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<User> }) {
+  const { setOpen, setCurrentRow } = useUsers()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer'
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
@@ -185,6 +232,11 @@ function TableRows({ table }: { table: TanstackTable<User> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={() => {
+                if (cell.column.id === 'select') return
+                setCurrentRow(row.original)
+                setOpen('edit')
+              }}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

@@ -148,7 +148,7 @@ export function CashBankDetailReceipt({
                 Nomor
               </p>
               <p className='text-md font-semibold'>
-                {transaction?.reference?.number || '-'}
+                {transaction?.entry_number || (typeof transaction?.reference === 'object' ? transaction?.reference?.number : '-')}
               </p>
             </div>
             <div className='space-y-2'>
@@ -173,6 +173,17 @@ export function CashBankDetailReceipt({
                   <span className='text-md font-semibold'>-</span>
                 )}
               </div>
+            </div>
+          </div>
+
+          <div className='flex flex-col gap-6'>
+            <div className='space-y-2'>
+              <p className='text-muted-foreground text-[12px] font-semibold tracking-[0.2em]'>
+                Referensi
+              </p>
+              <p className='text-md font-semibold underline-offset-4'>
+                {transaction?.note || (typeof transaction?.reference === 'string' ? transaction?.reference : '-')}
+              </p>
             </div>
           </div>
         </div>

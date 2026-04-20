@@ -5,8 +5,14 @@ import type { PurchaseInvoice } from '@/types'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
   {
@@ -43,17 +49,66 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       <DataTableColumnHeader column={column} title='Nomor' />
     ),
     cell: ({ row }) => {
-      const { invoice_number, id } = row.original
+      const { invoice_number, id, purchase_invoice_items } = row.original
       return (
         <div className='p-2'>
-          <Link
-            to='/purchases/invoices/detail'
-            state={{ currentRowId: id } as Record<string, unknown>}
-          >
-            <LongText className='text-primary cursor-pointer hover:underline'>
-              {invoice_number}
-            </LongText>
-          </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to='/purchases/invoices/detail'
+                state={{ currentRowId: id } as Record<string, unknown>}
+              >
+                <LongText className='text-primary cursor-pointer hover:underline'>
+                  {invoice_number}
+                </LongText>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent
+              className='border-border w-80 bg-white p-0'
+              arrowClassName='bg-white fill-white'
+            >
+              <Table>
+                <TableHeader className='bg-white'>
+                  {' '}
+                  {/* Pakai putih murni */}
+                  <TableRow className='border-b hover:bg-transparent'>
+                    <TableHead className='text-foreground h-9 px-3 text-xs font-semibold'>
+                      Item
+                    </TableHead>
+                    <TableHead className='text-foreground h-9 px-3 text-right text-xs font-semibold'>
+                      Qty
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {purchase_invoice_items?.length > 0 ? (
+                    purchase_invoice_items.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        className='border-b last:border-0 hover:bg-slate-50/50'
+                      >
+                        <TableCell className='text-foreground px-3 py-2 text-xs'>
+                          {item.product?.name}
+                        </TableCell>
+                        <TableCell className='text-foreground px-3 py-2 text-right text-xs'>
+                          {item.quantity}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={2}
+                        className='text-muted-foreground h-12 text-center text-xs'
+                      >
+                        No items
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TooltipContent>
+          </Tooltip>
         </div>
       )
     },
@@ -82,6 +137,23 @@ export const invoiceListsColumns: ColumnDef<PurchaseInvoice>[] = [
       className: 'w-full',
     },
     enableHiding: false,
+  },
+  {
+    accessorKey: 'Referensi',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Referensi' />
+    ),
+    cell: ({ row }) => {
+      const { note } = row.original
+      return (
+        <div className='p-2'>
+          <LongText className='truncate'>{note || '-'}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
   },
   {
     accessorKey: 'Tanggal Invoice',

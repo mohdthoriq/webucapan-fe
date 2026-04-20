@@ -1,6 +1,7 @@
 export const QUERY_KEY = {
   ACCOUNT: 'account',
   CONTACT: 'contact',
+  CONTACT_TYPE: 'contact_type',
   CASH_BANK: 'cash_bank',
   CASH_BANK_OVERVIEW: 'cash_bank_overview',
   CASH_BANK_TRANSACTIONS: 'cash_bank_transactions',
@@ -9,6 +10,7 @@ export const QUERY_KEY = {
   PRODUCTS: 'products',
   SALES: 'sales',
   SALES_INVOICE: 'sales_invoice',
+  SALES_DELIVERY: 'sales_delivery',
   SALES_OVERVIEW: 'sales_overview',
   SALES_OVERDUE: 'sales_overdue',
   SALES_PAID_RATIO: 'sales_paid_ratio',
@@ -20,6 +22,7 @@ export const QUERY_KEY = {
   SALES_WAITING_PAYMENTS: 'sales_waiting_payments',
   PURCHASES: 'purchases',
   PURCHASES_INVOICE: 'purchases_invoice',
+  PURCHASES_DELIVERY: 'purchases_delivery',
   PURCHASES_OVERVIEW: 'purchases_overview',
   PURCHASES_OVERDUE: 'purchases_overdue',
   PURCHASES_PAID_RATIO: 'purchases_paid_ratio',
@@ -47,6 +50,11 @@ export const QUERY_KEY = {
   CHECK_FINANCE_NUMBER: 'check_finance_number',
   COMPANY_ROLE_PERMISSIONS: 'company_role_permissions',
   JOURNAL: 'journal',
+  REPORTS: 'reports',
+  REPORTS_SALES_CATEGORY: 'reports_sales_category',
+  REPORTS_SALES_PRODUCT: 'reports_sales_product',
+  REPORTS_PROFIT_LOSS: 'reports_profit_loss',
+  REPORTS_BALANCE_SHEET: 'reports_balance_sheet',
 }
 
 export const QUERY_KEY_ADMIN = {

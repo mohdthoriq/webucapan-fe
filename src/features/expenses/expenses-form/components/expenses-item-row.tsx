@@ -54,6 +54,7 @@ export const ExpensesItemRow = memo(function ExpensesItemRow({
               <ExpensesFormCombobox
                 type='account'
                 value={field.value}
+                isParent={false}
                 onValueChange={(value) => {
                   field.onChange(value)
                 }}

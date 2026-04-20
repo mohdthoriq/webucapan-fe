@@ -6,7 +6,9 @@ import { useUsers } from '../components/users-provider'
 import type {
   CreateUserFormData,
   DeleteUserFormData,
+  UpdateUserFormData,
   UpdateUserStatusFormData,
+  BulkDeleteUserFormData,
 } from '../types/users.schema'
 
 export function useCreateUserMutation() {
@@ -30,6 +32,32 @@ export function useCreateUserMutation() {
     onError: () => {
       toast.dismiss('users-toast')
       toast.error('Pengguna gagal diundang.')
+    },
+  })
+}
+
+export function useUpdateUserMutation() {
+  const { setOpen } = useUsers()
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: UpdateUserFormData) => {
+      const { id, ...data } = payload
+      const response = await apiClient.patch(`/users/${id}`, data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-update-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-update-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] })
+      toast.success('Pengguna berhasil diperbarui.')
+      setOpen(null)
+    },
+    onError: () => {
+      toast.dismiss('users-update-toast')
+      toast.error('Gagal memperbarui pengguna.')
     },
   })
 }
@@ -82,3 +110,46 @@ export function useDeleteUserMutation() {
     },
   })
 }
+
+export function useBulkDeleteUserMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (data: BulkDeleteUserFormData) => {
+      const response = await apiClient.post('/users/bulk-delete', data)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-bulk-delete-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-bulk-delete-toast')
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] })
+      toast.success('Pengguna berhasil dihapus.')
+    },
+    onError: () => {
+      toast.dismiss('users-bulk-delete-toast')
+      toast.error('Gagal menghapus pengguna.')
+    },
+  })
+}
+
+export function useResendInviteMutation() {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiClient.post(`/users/${id}/resend-invite`)
+      return response.data
+    },
+    onMutate: () => {
+      toast.loading('Loading...', { id: 'users-resend-toast' })
+    },
+    onSuccess: async (_) => {
+      toast.dismiss('users-resend-toast')
+      toast.success('Undangan berhasil dikirim ulang.')
+    },
+    onError: () => {
+      toast.dismiss('users-resend-toast')
+      toast.error('Gagal mengirim ulang undangan.')
+    },
+  })
+}
+

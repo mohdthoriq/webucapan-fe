@@ -4,7 +4,12 @@ import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
+import packageJson from './package.json'
+
 export default defineConfig({
+  define: {
+    'import.meta.env.APP_VERSION': JSON.stringify(packageJson.version),
+  },
   plugins: [
     tanstackRouter({
       target: 'react',

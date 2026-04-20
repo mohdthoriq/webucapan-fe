@@ -20,6 +20,8 @@ import {
   useGenerateNextNumber,
   useUpdateExpenseMutation,
 } from './use-expenses-form-mutation'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
+import { toast } from 'sonner'
 
 type UseExpensesFormProps = {
   currentRow?: Expense
@@ -63,6 +65,7 @@ export function useExpensesForm({
               currentRow.tags?.map((tag: string | { id: string }) =>
                 typeof tag === 'object' ? tag.id : tag
               ) || [],
+            note: currentRow.note ?? '',
           }
         : {
             expense_number: autoNumbering?.format ?? '',
@@ -85,6 +88,7 @@ export function useExpensesForm({
               },
             ],
             tags: [],
+            note: '',
           },
     [currentRow, isEdit, autoNumbering]
   )
@@ -110,6 +114,7 @@ export function useExpensesForm({
   const createMutation = useCreateExpenseMutation()
   const generateNextNumber = useGenerateNextNumber()
   const updateMutation = useUpdateExpenseMutation()
+  const uploadAttachments = useUploadAttachmentsMutation()
 
   const errors = form.formState.errors
   const firstError = Object.values(errors)[0]
@@ -124,28 +129,55 @@ export function useExpensesForm({
   const onSubmit = async (
     data: CreateExpenseFormData | UpdateExpenseFormData
   ) => {
-    if (isEdit && currentRow) {
-      const updateData: UpdateExpenseFormData = {
+    try {
+      let attachmentUrls: string[] = []
+
+      // 1. Upload files first if any
+      const filesToUpload = (data.images || []).filter(
+        (item) => item instanceof File
+      ) as File[]
+
+      if (filesToUpload.length > 0) {
+        const uploadResponse = await uploadAttachments.mutateAsync({
+          feature: 'expenses',
+          images: filesToUpload,
+        })
+        attachmentUrls = uploadResponse.data?.urls || []
+      }
+
+      // 2. Prepare final payload with uploaded URLs
+      const payload = {
         ...data,
-        id: currentRow.id,
-      } as UpdateExpenseFormData
-      const response = await updateMutation.mutateAsync(updateData)
-      form.reset(data)
-      navigate({
-        to: `/expenses/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
-    } else {
-      const response = await createMutation.mutateAsync(
-        data as CreateExpenseFormData
-      )
-      await generateNextNumber.mutateAsync(FinanceNumberType.expense)
-      form.reset()
-      navigate({
-        to: `/expenses/detail`,
-        state: { currentRowId: response.data.id } as Record<string, unknown>,
-      })
-    }
+        images: attachmentUrls,
+      }
+
+      if (isEdit && currentRow) {
+        const updateData: UpdateExpenseFormData = {
+          ...payload,
+          id: currentRow.id,
+        } as unknown as UpdateExpenseFormData
+        const response = await updateMutation.mutateAsync(updateData)
+
+        form.reset(data)
+        navigate({
+          to: `/expenses/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      } else {
+        const response = await createMutation.mutateAsync(
+          payload as unknown as CreateExpenseFormData
+        )
+
+        await generateNextNumber.mutateAsync(FinanceNumberType.expense)
+        form.reset()
+        navigate({
+          to: `/expenses/detail`,
+          state: { currentRowId: response.data.id } as Record<string, unknown>,
+        })
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)    }
   }
 
   return {
