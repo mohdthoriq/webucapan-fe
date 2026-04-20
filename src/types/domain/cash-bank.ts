@@ -1,8 +1,9 @@
-import type { GlobalResponse } from '../api/global-response'
-import type { PaginationMeta } from '../api/pagination'
-import type { Account } from './account'
-import type { Reference, TransactionType } from './payments'
-import type { Tag } from './tag'
+import type { GlobalResponse } from '../api/global-response';
+import type { PaginationMeta } from '../api/pagination';
+import type { Account } from './account';
+import type { Reference, TransactionType } from './payments';
+import type { Tag } from './tag';
+
 
 export interface GraphicData {
   date: Date
@@ -47,4 +48,47 @@ export interface CashBankTransaction extends GlobalResponse {
   }
   transactions: TransactionData[]
   pagination: PaginationMeta
+}
+
+export interface CashBankTransactionItem {
+  id: string
+  desc: string
+  qty: number
+  price: number
+  amount: number
+  account: Account
+}
+
+export interface CashBankTransactionContact {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  address: string | null
+}
+
+export interface CashBankTransactionAudit {
+  created_at: string
+  updated_at: string
+}
+
+export interface CashBankTransactionDetail {
+  id: string
+  trans_date: string
+  reference: Reference | string
+  contact_id: string
+  amount: number
+  amount_after_tax: number
+  note: string
+  desc: string
+  trans_type_id: string
+  transaction_type?: TransactionType
+  valid: boolean
+  items: CashBankTransactionItem[]
+  contact: CashBankTransactionContact
+  account: Account
+  tags: Tag[]
+  audit: CashBankTransactionAudit
+  id_journal: string
+  entry_number?: string
 }

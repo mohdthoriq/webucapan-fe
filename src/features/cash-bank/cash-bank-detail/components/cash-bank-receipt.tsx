@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { type LinkProps, useNavigate } from '@tanstack/react-router'
-import { TransactionCode } from '@/types'
+import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { id } from 'date-fns/locale'
 import { Printer } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 import { CashBankRowActions } from './cash-bank-row-actions'
 
 interface CashBankDetailReceiptProps {

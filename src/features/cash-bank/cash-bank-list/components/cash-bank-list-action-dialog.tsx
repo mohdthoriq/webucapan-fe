@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import type { Account, Tag } from '@/types'
+import type { Account, CashBankTransactionDetail, Tag } from '@/types'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -37,7 +37,6 @@ import { InputFieldNumberFormat } from '@/components/forms/input-field-number-fo
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cash-bank-detail.types'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
 
