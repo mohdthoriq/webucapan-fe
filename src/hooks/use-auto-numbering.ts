@@ -59,7 +59,12 @@ export interface CheckFinanceNumberResponse {
 
 export function useCheckFinanceNumberQuery(params: CheckFinanceNumberParams) {
   return useQuery({
-    queryKey: [QUERY_KEY.CHECK_FINANCE_NUMBER, params.type, params.number],
+    queryKey: [
+      QUERY_KEY.AUTO_NUMBERING,
+      QUERY_KEY.CHECK_FINANCE_NUMBER,
+      params.type,
+      params.number,
+    ],
     queryFn: async () => {
       const response = await apiClient.get<
         ApiResponse<CheckFinanceNumberResponse>

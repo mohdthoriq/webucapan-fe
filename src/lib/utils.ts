@@ -1,3 +1,4 @@
+import { TransactionCode } from '@/types'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -84,7 +85,6 @@ export const invoiceLabel: Record<string, string> = {
   open: 'Terbuka',
 }
 
-
 export const getStatusStyles = (payment_status: string) => {
   switch (payment_status) {
     case 'paid':
@@ -106,4 +106,23 @@ export const formatDate = (date: Date | string) => {
     month: 'short',
     day: 'numeric',
   })
+}
+
+export const getTransactionTitle = (transTypeCode: string | undefined) => {
+  switch (transTypeCode) {
+    case TransactionCode.SalesInvoice:
+      return 'Penerimaan Pembayaran Penjualan'
+    case TransactionCode.PurchaseInvoice:
+      return 'Pembayaran Pembelian'
+    case TransactionCode.Expense:
+      return 'Pembayaran Biaya'
+    case TransactionCode.BankTransfer:
+      return 'Transfer Dana'
+    case TransactionCode.SpendMoney:
+      return 'Kirim Dana'
+    case TransactionCode.ReceiveMoney:
+      return 'Terima Dana'
+    default:
+      return 'Detail Transaksi'
+  }
 }

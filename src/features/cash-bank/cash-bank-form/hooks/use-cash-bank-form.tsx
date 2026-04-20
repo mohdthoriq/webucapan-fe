@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearch } from '@tanstack/react-router'
@@ -13,13 +13,19 @@ import {
   useUpdateSpendMoneyMutation,
   useUpdateReceiveMoneyMutation,
 } from './use-cash-bank-form-mutation'
+import { FinanceNumberType, type FinanceNumber } from '@/types'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
 
 type UseCashBankFormProps = {
   type: 'spend' | 'receive'
   currentRow?: CashBankFormEditData
 }
 
-export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
+export function useCashBankForm({
+  type,
+  currentRow,
+  autoNumbering,
+}: UseCashBankFormProps & { autoNumbering?: FinanceNumber | null }) {
   const search = useSearch({ strict: false }) as { bank_account_id?: string }
 
   const defaultValues = useMemo<CashBankFormFormData>(() => {
@@ -28,7 +34,7 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
     }
     return {
       bank_account_id: search?.bank_account_id || '',
-      transaction_number: '',
+      transaction_number: autoNumbering?.format || '',
       date: new Date(),
       description: '',
       contact_id: null,
@@ -46,12 +52,20 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
       ],
       withholdings: [],
     }
-  }, [search?.bank_account_id, currentRow])
+  }, [search?.bank_account_id, currentRow, autoNumbering])
 
   const form = useForm<CashBankFormFormData>({
     resolver: zodResolver(cashBankFormSchema),
     defaultValues,
   })
+ 
+  useEffect(() => {
+    if (currentRow) {
+      form.reset(defaultValues)
+    } else if (autoNumbering) {
+      form.reset(defaultValues)
+    }
+  }, [currentRow, autoNumbering, form, defaultValues])
 
   const {
     fields: itemFields,
@@ -73,13 +87,14 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
 
   const spendMutation = useCreateSpendMoneyMutation()
   const receiveMutation = useCreateReceiveMoneyMutation()
-  const updateSpendMutation = useUpdateSpendMoneyMutation()
+  const generateNextNumber = useGenerateNextNumber()
+  const updateMutation = useUpdateSpendMoneyMutation()
   const updateReceiveMutation = useUpdateReceiveMoneyMutation()
 
   const isSubmitting =
     spendMutation.isPending ||
     receiveMutation.isPending ||
-    updateSpendMutation.isPending ||
+    updateMutation.isPending ||
     updateReceiveMutation.isPending
 
   const onSubmit = async (data: CashBankFormFormData) => {
@@ -89,7 +104,7 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
         ...data,
       }
       if (type === 'spend') {
-        await updateSpendMutation.mutateAsync(UpdateData)
+        await updateMutation.mutateAsync(UpdateData)
       } else {
         await updateReceiveMutation.mutateAsync(UpdateData)
       }
@@ -99,6 +114,7 @@ export function useCashBankForm({ type, currentRow }: UseCashBankFormProps) {
       } else {
         await receiveMutation.mutateAsync(data)
       }
+      await generateNextNumber.mutateAsync(FinanceNumberType.bank_transaction)
     }
   }
 
