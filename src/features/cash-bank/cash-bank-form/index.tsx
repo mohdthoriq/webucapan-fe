@@ -1,6 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
+import { FinanceNumberType } from '@/types'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
+import { useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
 import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,9 +21,14 @@ type CashBankFormPageProps = {
 }
 
 export function CashBankFormPage({ type, currentRow }: CashBankFormPageProps) {
+  const { data: autoNumbering } = useDefaultNumberingQuery({
+    type: FinanceNumberType.bank_transaction,
+  })
+
   const cashBankForm = useCashBankForm({
     type,
     currentRow,
+    autoNumbering,
   })
   const navigate = useNavigate()
 
@@ -68,7 +75,7 @@ export function CashBankFormPage({ type, currentRow }: CashBankFormPageProps) {
               )}
               id='cash-bank-form'
             >
-              <CashBankFormHeader type={type} />
+              <CashBankFormHeader type={type} currentRow={currentRow} />
               <div className='bg-border h-px' />
               <CashBankFormItems />
               <div className='bg-border h-px' />

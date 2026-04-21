@@ -1,21 +1,19 @@
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { FinanceNumberType } from '@/types'
 import { PERMISSION_KEY } from '@/constants/permissions'
+import { useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormField } from '@/components/ui/form'
+import { AttachmentCard } from '@/components/forms/attachment-card'
 import { PermissionGuard } from '@/components/permission-guard'
 import { InvoiceFormFallback } from './components/invoice-form-fallback'
 import { useInvoiceForm } from './hooks/use-invoice-form'
-import {
-  useDefaultNumberingQuery,
-  useInvoiceFormQuery,
-} from './hooks/use-invoice-form-query'
+import { useInvoiceFormQuery } from './hooks/use-invoice-form-query'
 import { InvoiceFormActions } from './sections/form-actions'
 import { InvoiceFormHeader } from './sections/form-header'
 import { InvoiceFormItems } from './sections/form-items-table'
 import { InvoiceFormSummary } from './sections/form-summary'
-import { AttachmentCard } from '@/components/forms/attachment-card'
 
 export function InvoiceFormPage() {
   const location = useLocation()
@@ -93,8 +91,8 @@ export function InvoiceFormPage() {
               <div className='bg-border h-px' />
               <InvoiceFormItems />
               <div className='bg-border h-px' />
-              
-              <div className='flex flex-col md:flex-row gap-6 items-start'>
+
+              <div className='flex flex-col items-start gap-6 md:flex-row'>
                 <div className='w-full md:w-1/3'>
                   <FormField
                     control={invoiceForm.form.control}
@@ -107,7 +105,7 @@ export function InvoiceFormPage() {
                     )}
                   />
                 </div>
-                <div className='w-full md:w-2/3 ml-auto'>
+                <div className='ml-auto w-full md:w-2/3'>
                   <InvoiceFormSummary />
                 </div>
               </div>

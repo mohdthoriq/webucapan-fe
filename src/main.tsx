@@ -67,7 +67,7 @@ const queryClient = new QueryClient({
           }
         }
         if (error.response?.status === 403) {
-          // router.navigate("/forbidden", { replace: true });
+          toast.warning(error.response?.data.message)
         }
       }
     },

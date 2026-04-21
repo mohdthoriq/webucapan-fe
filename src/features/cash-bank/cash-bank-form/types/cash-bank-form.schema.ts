@@ -23,6 +23,7 @@ export type CashBankWithholdingFormData = z.infer<
 
 export const cashBankFormSchema = z.object({
   bank_account_id: z.uuid(),
+  transaction_number: z.string().min(1, 'Nomor Transaksi harus diisi'),
   date: z.date(),
   description: z.string().optional(),
   contact_id: z.uuid('Kontak harus dipilih').optional().nullable(),
@@ -39,6 +40,7 @@ export type CashBankFormFormData = z.infer<typeof cashBankFormSchema>
 export const cashBankFormEditSchema = z.object({
   id: z.uuid(),
   bank_account_id: z.uuid(),
+  transaction_number: z.string().min(1, 'Nomor Transaksi harus diisi'),
   date: z.date(),
   description: z.string().optional(),
   contact_id: z.uuid('Kontak harus dipilih').optional().nullable(),

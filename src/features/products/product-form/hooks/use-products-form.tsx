@@ -9,7 +9,7 @@ import {
   type Product,
 } from '@/types'
 import { toast } from 'sonner'
-import { useGenerateNextNumber } from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-mutation'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
 import {
   type CreateProductFormData,
   createProductSchema,

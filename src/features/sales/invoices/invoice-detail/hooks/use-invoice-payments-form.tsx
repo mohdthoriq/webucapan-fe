@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FinanceNumberType, type FinanceNumber } from '@/types'
-import { useGenerateNextNumber } from '../../invoice-form/hooks/use-invoice-form-mutation'
 import {
   type InvoicePaymentsFormData,
   invoicePaymentsSchema,
@@ -12,6 +11,7 @@ import {
   useCreateInvoicePaymentMutation,
   useUpdateInvoicePaymentMutation,
 } from './use-invoice-payments.mutation'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
 
 type UseInvoicePaymentsFormProps = {
   invoiceId: string

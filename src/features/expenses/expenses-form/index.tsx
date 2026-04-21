@@ -2,22 +2,20 @@ import { useLocation, useNavigate } from '@tanstack/react-router'
 import { FinanceNumberType } from '@/types'
 import { CheckCircle2Icon } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
+import { useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormField } from '@/components/ui/form'
+import { AttachmentCard } from '@/components/forms/attachment-card'
 import { PermissionGuard } from '@/components/permission-guard'
 import { ExpensesFormFallback } from './components/expenses-form-fallback'
 import { useExpensesForm } from './hooks/use-expenses-form'
-import {
-  useDefaultNumberingQuery,
-  useExpensesFormQuery,
-} from './hooks/use-expenses-form-query'
+import { useExpensesFormQuery } from './hooks/use-expenses-form-query'
 import { ExpensesFormActions } from './sections/form-actions'
 import { ExpensesFormHeader } from './sections/form-header'
 import { ExpensesFormItems } from './sections/form-items-table'
 import { ExpensesFormSummary } from './sections/form-summary'
-import { AttachmentCard } from '@/components/forms/attachment-card'
 
 export function ExpensesFormPage() {
   const location = useLocation()
@@ -93,8 +91,8 @@ export function ExpensesFormPage() {
               <div className='bg-border h-px' />
               <ExpensesFormItems />
               <div className='bg-border h-px' />
-              
-              <div className='flex flex-col md:flex-row gap-6 items-start'>
+
+              <div className='flex flex-col items-start gap-6 md:flex-row'>
                 <div className='w-full md:w-1/3'>
                   <FormField
                     control={expensesForm.form.control}
@@ -107,7 +105,7 @@ export function ExpensesFormPage() {
                     )}
                   />
                 </div>
-                <div className='w-full md:w-2/3 ml-auto'>
+                <div className='ml-auto w-full md:w-2/3'>
                   <ExpensesFormSummary />
                 </div>
               </div>

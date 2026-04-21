@@ -64,10 +64,13 @@ export function useLoginMutation({
           ? userData.user.full_name
           : userData.user?.email
 
-        if (userData.role?.name !== 'Administrator') {
-          navigate({ to: '/settings/profile', replace: true })
-        } else {
+        if (
+          userData.role?.name === 'Administrator' ||
+          userData.role?.name === 'superadmin'
+        ) {
           navigate({ to: '/', replace: true })
+        } else {
+          navigate({ to: '/settings/profile', replace: true })
         }
 
         toast.success(`Selamat datang kembali, ${greetingsSubject}!`)

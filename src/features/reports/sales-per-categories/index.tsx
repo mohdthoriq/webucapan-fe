@@ -1,6 +1,12 @@
 import { parse, startOfMonth, endOfMonth, format } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
-import { ArrowLeft, CalendarIcon, FileText, Loader2, Printer } from 'lucide-react'
+import {
+  ArrowLeft,
+  CalendarIcon,
+  FileText,
+  Loader2,
+  Printer,
+} from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -19,14 +25,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { PermissionGuard } from '@/components/permission-guard'
+import { SalesPerCategoriesFallback } from './components/sales-per-categories-fallback'
 import {
   SalesPerCategoriesProvider,
   useSalesPerCategories,
 } from './components/sales-per-categories-provider'
 import { SalesPerCategoriesTable } from './components/sales-per-categories-table'
-import { type SalesPerCategoryQueryParams, useSalesPerCategoryExport } from './hooks/use-sales-per-category-query'
-
-// import { SalesPerProductFallback } from './components/sales-per-product-fallback'
+import {
+  type SalesPerCategoryQueryParams,
+  useSalesPerCategoryExport,
+} from './hooks/use-sales-per-category-query'
 
 const route = getRouteApi('/_authenticated/reports/sales-per-categories/')
 
@@ -35,8 +43,9 @@ function SalesPerCategoriesContent() {
   const navigate = route.useNavigate()
   const { date_from, date_to, setDateRange, paginationParams } =
     useSalesPerCategories()
-  const { exportToExcel, isExporting } =
-    useSalesPerCategoryExport(paginationParams ?? {})
+  const { exportToExcel, isExporting } = useSalesPerCategoryExport(
+    paginationParams ?? {}
+  )
 
   const handleSelectRange = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {
@@ -55,7 +64,7 @@ function SalesPerCategoriesContent() {
   return (
     <PermissionGuard
       permission={PERMISSION_KEY.REPORTS_SALES_PRODUCT}
-      // fallback={<SalesPerProductFallback search={search} navigate={navigate} />}
+      fallback={<SalesPerCategoriesFallback />}
     >
       <Card>
         <CardHeader>

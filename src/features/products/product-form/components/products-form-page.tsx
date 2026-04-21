@@ -7,13 +7,12 @@ import {
   type Product,
   type ProductCategory,
 } from '@/types'
-import {
-  CheckCircle2Icon,
-  ChevronRight,
-  Loader2,
-  Upload,
-} from 'lucide-react'
+import { CheckCircle2Icon, ChevronRight, Loader2, Upload } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
+import {
+  useCheckFinanceNumberQuery,
+  useDefaultNumberingQuery,
+} from '@/hooks/use-auto-numbering'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -44,13 +43,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
 import { useProductCategoryQuery } from '@/features/product-categories/hooks/use-product-category-query'
-import {
-  useCheckFinanceNumberQuery,
-  useDefaultNumberingQuery,
-} from '@/features/sales/invoices/invoice-form/hooks/use-invoice-form-query'
 import { useUnitsQuery } from '@/features/settings/units/hooks/use-units-query'
-import { useProductsForm } from '../hooks/use-products-form'
 import { ImageThumbnail } from '../../../../components/forms/image-thumbnail'
+import { useProductsForm } from '../hooks/use-products-form'
 
 type ProductsFormContentProps = {
   currentRow?: Product | null

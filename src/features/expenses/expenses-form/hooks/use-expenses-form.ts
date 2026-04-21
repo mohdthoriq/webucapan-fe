@@ -9,6 +9,9 @@ import {
   type Expense,
   type ApiResponse,
 } from '@/types'
+import { toast } from 'sonner'
+import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
+import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 import {
   CreateExpenseSchema,
   UpdateExpenseSchema,
@@ -17,11 +20,8 @@ import {
 } from '../types/expenses-form.schema'
 import {
   useCreateExpenseMutation,
-  useGenerateNextNumber,
   useUpdateExpenseMutation,
 } from './use-expenses-form-mutation'
-import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
-import { toast } from 'sonner'
 
 type UseExpensesFormProps = {
   currentRow?: Expense
@@ -176,8 +176,10 @@ export function useExpensesForm({
         })
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
-      toast.error(message)    }
+      const message =
+        error instanceof Error ? error.message : 'Terjadi kesalahan sistem'
+      toast.error(message)
+    }
   }
 
   return {

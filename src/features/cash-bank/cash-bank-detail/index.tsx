@@ -1,9 +1,10 @@
+import { useSearch } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
+import { getTransactionTitle } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { CashBankDetailReceipt } from './components/cash-bank-receipt'
 import { useCashBankDetailQuery } from './hooks/use-cash-bank-detail-query'
-import { useSearch } from '@tanstack/react-router'
 
 export function CashBankDetail() {
   const search = useSearch({ strict: false }) as Record<string, string>
@@ -66,7 +67,7 @@ export function CashBankDetail() {
           <div className='mb-2 flex items-center justify-between'>
             <div>
               <h1 className='text-4xl font-semibold tracking-tight'>
-                {transaction.transaction_type?.name}
+                {getTransactionTitle(transaction.transaction_type?.code)}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>
