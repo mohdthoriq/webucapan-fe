@@ -16,6 +16,11 @@ export const PERMISSION_KEY = {
   SALES_INVOICE_EDIT: 'sales.invoice.edit',
   SALES_INVOICE_DELETE: 'sales.invoice.delete',
   SALES_INVOICE_JOURNAL: 'sales.invoice.journal',
+  SALES_ORDER: 'sales.order',
+  SALES_ORDER_VIEW: 'sales.order.view',
+  SALES_ORDER_ADD: 'sales.order.add',
+  SALES_ORDER_EDIT: 'sales.order.edit',
+  SALES_ORDER_DELETE: 'sales.order.delete',
 
   // Purchase
   PURCHASE: 'purchase',
@@ -31,6 +36,11 @@ export const PERMISSION_KEY = {
   PURCHASE_INVOICE_EDIT: 'purchase.invoice.edit',
   PURCHASE_INVOICE_DELETE: 'purchase.invoice.delete',
   PURCHASE_INVOICE_JOURNAL: 'purchase.invoice.journal',
+  PURCHASE_ORDER: 'purchase.order',
+  PURCHASE_ORDER_VIEW: 'purchase.order.view',
+  PURCHASE_ORDER_ADD: 'purchase.order.add',
+  PURCHASE_ORDER_EDIT: 'purchase.order.edit',
+  PURCHASE_ORDER_DELETE: 'purchase.order.delete',
 
   // Expense
   EXPENSE: 'expense',
