@@ -61,39 +61,4 @@ export const salesPerCategoriesColumns: ColumnDef<CategorySalesReportItem>[] = [
       className: 'w-full',
     },
   },
-  {
-    accessorKey: 'Jumlah Terjual',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Jumlah Terjual' />
-    ),
-    cell: ({ row }) => {
-      const { quantity_sold } = row.original
-      return (
-        <div className='w-full overflow-hidden p-2'>
-          <LongText>{quantity_sold}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
-  {
-    accessorKey: 'Total Penjualan',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Total Penjualan' />
-    ),
-    cell: ({ row }) => {
-      const { total_sales } = row.original
-      const formattedTotalSales = formatCurrency(total_sales)
-      return (
-        <div className='w-full overflow-hidden p-2'>
-          <LongText className='truncate'>{formattedTotalSales}</LongText>
-        </div>
-      )
-    },
-    meta: {
-      className: 'w-full',
-    },
-  },
 ]

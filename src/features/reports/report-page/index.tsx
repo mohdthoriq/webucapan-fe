@@ -43,9 +43,9 @@ function ReportContents() {
             </h2>
             <Card className='bg-card text-card-foreground p-0'>
               <div className='divide-border divide-y'>
-                {favoriteReports.map((report) => (
+                {favoriteReports.map((report, index) => (
                   <ReportItem
-                    key={report.url}
+                    key={`${report.id}-${index}`}
                     report={report}
                     isFavorite={true}
                     toggleFavorite={toggleFavorite}
@@ -68,17 +68,20 @@ function ReportContents() {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 mb-10'>
-          {filteredData?.map((category) => (
-            <div key={category.category} className='flex flex-col space-y-4'>
+        <div className='mb-10 grid grid-cols-1 gap-8 md:grid-cols-2'>
+          {filteredData?.map((category, index) => (
+            <div
+              key={`${category.id}-${index}`}
+              className='flex flex-col space-y-4'
+            >
               <h2 className='text-foreground/90 text-sm font-semibold'>
                 {category.category}
               </h2>
               <Card className='bg-card text-card-foreground p-0'>
                 <div className='divide-border divide-y'>
-                  {category.reports.map((report) => (
+                  {category.reports.map((report, index) => (
                     <ReportItem
-                      key={report.url}
+                      key={`${report.id}-${index}`}
                       report={report}
                       isFavorite={favorites.includes(report.id)}
                       toggleFavorite={toggleFavorite}

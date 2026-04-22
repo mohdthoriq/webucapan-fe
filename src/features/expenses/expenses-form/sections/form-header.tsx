@@ -41,13 +41,13 @@ import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { ExpensesFormCombobox } from '../components/expenses-form-combobox'
-import { useCheckFinanceNumberQuery } from '../hooks/use-expenses-form-query'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useCheckFinanceNumberQuery } from '@/hooks/use-auto-numbering'
 
 export function ExpensesFormHeader() {
   const { control, formState, setValue } = useFormContext()

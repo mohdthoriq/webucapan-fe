@@ -11,6 +11,7 @@ import {
 import { CalendarIcon, ChevronDown } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
+import { useCheckFinanceNumberQuery } from '@/hooks/use-auto-numbering'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -48,6 +49,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
@@ -55,12 +62,10 @@ import { useExpeditionsQuery } from '@/features/settings/expeditions/hooks/use-e
 import { usePaymentTermsQuery } from '@/features/settings/payment-terms/hooks/use-payment-terms-query'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { InvoiceFormCombobox } from '../components/invoice-form-combobox'
-import { useCheckFinanceNumberQuery } from '../hooks/use-invoice-form-query'
 import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext<

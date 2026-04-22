@@ -1,6 +1,13 @@
 import { parse, startOfMonth, endOfMonth, format } from 'date-fns'
 import { getRouteApi } from '@tanstack/react-router'
-import { ArrowLeft, CalendarIcon, FileText, Loader2, Printer } from 'lucide-react'
+import {
+  ArrowLeft,
+  CalendarIcon,
+  ChevronDown,
+  FileText,
+  Loader2,
+  Printer,
+} from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -19,12 +26,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { PermissionGuard } from '@/components/permission-guard'
+import { SalesPerProductFallback } from './components/sales-per-product-fallback'
 import {
   SalesPerProductProvider,
   useSalesPerProduct,
 } from './components/sales-per-product-provider'
 import { SalesPerProductTable } from './components/sales-per-product-table'
-import { type SalesPerProductQueryParams, useSalesPerProductExport } from './hooks/use-sales-per-product-query'
+import {
+  type SalesPerProductQueryParams,
+  useSalesPerProductExport,
+} from './hooks/use-sales-per-product-query'
 
 // import { SalesPerProductFallback } from './components/sales-per-product-fallback'
 
@@ -35,8 +46,9 @@ function SalesPerProductContent() {
   const navigate = route.useNavigate()
   const { date_from, date_to, setDateRange, paginationParams } =
     useSalesPerProduct()
-  const { exportToExcel, isExporting } =
-    useSalesPerProductExport(paginationParams ?? {})
+  const { exportToExcel, isExporting } = useSalesPerProductExport(
+    paginationParams ?? {}
+  )
 
   const handleSelectRange = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {
@@ -55,7 +67,7 @@ function SalesPerProductContent() {
   return (
     <PermissionGuard
       permission={PERMISSION_KEY.REPORTS_SALES_PRODUCT}
-      // fallback={<SalesPerProductFallback search={search} navigate={navigate} />}
+      fallback={<SalesPerProductFallback />}
     >
       <Card>
         <CardHeader>
@@ -78,6 +90,7 @@ function SalesPerProductContent() {
                       <Printer className='h-4 w-4' />
                     )}
                     {isExporting ? 'Memproses...' : 'Cetak'}
+                    <ChevronDown className='h-4 w-4' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>

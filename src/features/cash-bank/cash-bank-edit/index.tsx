@@ -5,8 +5,8 @@ import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
-import type { CashBankTransactionDetail } from '../cash-bank-detail/types/cash-bank-detail.types'
 import { CashBankPaymentsCard } from './components/cash-bank-payments-card'
+import type { CashBankTransactionDetail } from '@/types'
 
 interface CashBankEditProps {
   transaction: CashBankTransactionDetail

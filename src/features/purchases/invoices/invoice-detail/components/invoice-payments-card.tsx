@@ -36,11 +36,10 @@ import { InputFieldNumberFormat } from '@/components/forms/input-field-number-fo
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import {
-  useCheckFinanceNumberQuery,
-  useDefaultNumberingQuery,
 } from '../../invoice-form/hooks/use-invoice-form-query'
 import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
+import { useCheckFinanceNumberQuery, useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
 
 interface InvoicePaymentsCardProps {
   invoice: PurchaseInvoice

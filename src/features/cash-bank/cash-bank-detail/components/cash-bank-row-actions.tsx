@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
-import { TransactionCode } from '@/types'
+import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
 // import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
 // import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
@@ -17,7 +17,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
-import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 
 type CashBankRowActionsProps = {
   transaction: CashBankTransactionDetail

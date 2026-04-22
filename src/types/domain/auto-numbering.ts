@@ -1,10 +1,16 @@
 export enum FinanceNumberType {
   expense = 'expense',
-  sales_payment = 'sales_payment',
   sales_invoice = 'sales_invoice',
+  sales_payment = 'sales_payment',
+  sales_delivery = 'sales_delivery',
+  sales_order = 'sales_order',
   purchase_invoice = 'purchase_invoice',
   purchase_payment = 'purchase_payment',
+  purchase_delivery = 'purchase_delivery',
+  purchase_order = 'purchase_order',
   product_sku = 'product_sku',
+  bank_transaction = 'bank_transaction',
+  bank_transfer = 'bank_transfer',
 }
 
 export interface FinanceNumber {

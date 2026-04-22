@@ -1,9 +1,9 @@
 import { format } from 'date-fns'
 import { type LinkProps, useNavigate } from '@tanstack/react-router'
-import { TransactionCode } from '@/types'
+import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { id } from 'date-fns/locale'
 import { Printer } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, getTransactionTitle } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 import { CashBankRowActions } from './cash-bank-row-actions'
 
 interface CashBankDetailReceiptProps {
@@ -39,25 +38,6 @@ export function CashBankDetailReceipt({
     transaction?.transaction_type?.code === TransactionCode.SalesInvoice ||
     transaction?.transaction_type?.code === TransactionCode.PurchaseInvoice ||
     transaction?.transaction_type?.code === TransactionCode.Expense
-
-  const getTransactionTitle = (transTypeCode: string | undefined) => {
-    switch (transTypeCode) {
-      case TransactionCode.SalesInvoice:
-        return 'Penerimaan Pembayaran Penjualan'
-      case TransactionCode.PurchaseInvoice:
-        return 'Pembayaran Pembelian'
-      case TransactionCode.Expense:
-        return 'Pembayaran Biaya'
-      case TransactionCode.BankTransfer:
-        return 'Transfer Dana'
-      case TransactionCode.SpendMoney:
-        return 'Kirim Dana'
-      case TransactionCode.ReceiveMoney:
-        return 'Terima Dana'
-      default:
-        return 'Detail Transaksi'
-    }
-  }
 
   return (
     <Card className='gap-3 overflow-hidden py-4 shadow-md'>

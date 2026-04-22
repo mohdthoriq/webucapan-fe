@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import type { Account, Tag } from '@/types'
+import { FinanceNumberType, type Account, type CashBankTransactionDetail, type Tag } from '@/types'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
@@ -37,9 +37,10 @@ import { InputFieldNumberFormat } from '@/components/forms/input-field-number-fo
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
-import type { CashBankTransactionDetail } from '../../cash-bank-detail/types/cash-bank-detail.types'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
+import { useCheckFinanceNumberQuery, useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
+import { useDebounce } from '@/hooks/use-debounce'
 
 type CashBankListActionDialogProps = {
   open: boolean
@@ -54,12 +55,18 @@ export function CashBankListActionDialog({
   currentRow,
   onSuccess,
 }: CashBankListActionDialogProps) {
+  const { data: autoNumbering } = useDefaultNumberingQuery({
+    type: FinanceNumberType.bank_transfer,
+    enabled: true,
+  })
+
   const { form, onSubmit, isSubmitting } = useCashBankListForm(
     currentRow
       ? {
           id: currentRow?.id,
           from_account_id: currentRow?.account?.id || '',
           to_account_id: currentRow?.items[0]?.account?.id || '',
+          transaction_number: currentRow?.reference?.number || '',
           tags:
             currentRow?.tags?.map((tag) =>
               typeof tag === 'object' ? tag.id : tag
@@ -71,6 +78,7 @@ export function CashBankListActionDialog({
           note: currentRow?.note || '',
         }
       : undefined,
+    autoNumbering,
     onSuccess
   )
   const { data: tags } = useTagsQuery()
@@ -82,6 +90,26 @@ export function CashBankListActionDialog({
 
   const currentFromAccountId = form.watch('from_account_id')
   const currentToAccountId = form.watch('to_account_id')
+  const transactionNumber = form.watch('transaction_number')
+  const debouncedTransactionNumber = useDebounce(transactionNumber, 500)
+
+  const isOriginalNumber =
+    !!debouncedTransactionNumber &&
+    debouncedTransactionNumber === (currentRow?.reference?.number ?? '')
+
+  const {
+    data: checkResult,
+    isFetching: isCheckingNumber,
+    isError: hasCheckError,
+  } = useCheckFinanceNumberQuery({
+    type: FinanceNumberType.bank_transfer,
+    number: debouncedTransactionNumber,
+  })
+
+  const numberIsTaken =
+    !isOriginalNumber &&
+    checkResult &&
+    (checkResult.exists === true || checkResult.available === false)
 
   // Combobox "Dari Akun" hanya mengecualikan akun yang dipilih di "Ke Akun"
   const excludeFromIds = useMemo(() => {
@@ -294,6 +322,43 @@ export function CashBankListActionDialog({
                     )}
                   />
                 </div>
+
+                <div className='col-span-1 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='transaction_number'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nomor Transaksi</FormLabel>
+                        <FormControl>
+                          <div className='relative'>
+                            <Input
+                              placeholder='Contoh: TRF-001'
+                              {...field}
+                              disabled={!hasPermission}
+                            />
+                            {isCheckingNumber && (
+                              <div className='absolute right-2 top-1/2 -translate-y-1/2'>
+                                <div className='h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent' />
+                              </div>
+                            )}
+                          </div>
+                        </FormControl>
+                        {numberIsTaken || hasCheckError ? (
+                          <p className='text-[0.8rem] font-medium text-destructive'>
+                            {checkResult?.message ||
+                              (hasCheckError
+                                ? 'Gagal memeriksa nomor transaksi'
+                                : 'Nomor transaksi sudah digunakan')}
+                          </p>
+                        ) : (
+                          <FormMessage />
+                        )}
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
 
                 <div className='col-span-1 md:col-span-1'>
                   <FormField

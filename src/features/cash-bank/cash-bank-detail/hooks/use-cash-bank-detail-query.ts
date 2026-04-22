@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ApiResponse } from '@/types'
+import type { ApiResponse, CashBankTransactionDetail } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
-import type { CashBankTransactionDetail } from '../types/cash-bank-detail.types'
 
 interface CashBankDetailQueryParams {
   accountId?: string
