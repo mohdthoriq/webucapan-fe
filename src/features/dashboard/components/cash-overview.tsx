@@ -4,9 +4,9 @@ import type { DateRange } from 'react-day-picker'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { CardAction } from '@/features/purchases/overview/components/card-action'
 import type { Period } from '@/features/purchases/overview/types/purchases-overview'
 import { useCashBankDashboardOverviewQuery } from '../hooks/use-dashboard-query'
+import { CardAction } from './card-action'
 
 interface CashOverviewProps {
   externalPeriod?: Period
