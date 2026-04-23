@@ -1,0 +1,111 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main, development]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ============================================================
+  # Build & Push Image via Docker Bake
+  # ============================================================
+  build:
+    name: Build & Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Generate short SHA tag
+        id: meta
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build & Push with Bake
+        uses: docker/bake-action@v6
+        with:
+          files: docker-bake.hcl
+          targets: ${{ github.ref == 'refs/heads/main' && 'app-prod' || 'app-development' }}
+          push: true
+        env:
+          TAG: ${{ steps.meta.outputs.sha_short }}
+          VITE_API_URL: ${{ github.ref == 'refs/heads/main' && secrets.VITE_API_URL_PRODUCTION || secrets.VITE_API_URL_DEVELOPMENT }}
+          VITE_API_URL_NODE_ENVIRONMENT: ${{ secrets.VITE_API_URL_NODE_ENVIRONMENT }}
+          VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
+          VITE_USER_DATA: ${{ secrets.VITE_USER_DATA || 'userData' }}
+
+  # ============================================================
+  # Deploy to Production Server
+  # ============================================================
+  deploy-prod:
+    name: Deploy Production
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+            cd ~/manajerku
+
+            # Pull latest frontend image
+            docker compose pull frontend
+
+            # Recreate only the frontend container (zero-downtime)
+            docker compose up -d --no-deps frontend
+
+            # Prune dangling images
+            docker image prune -f
+
+  # ============================================================
+  # Deploy to Development Server
+  # ============================================================
+  deploy-dev:
+    name: Deploy Development
+    needs: build
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_STAGING_HOST }}
+          username: ${{ secrets.DEPLOY_STAGING_USER }}
+          password: ${{ secrets.DEPLOY_STAGING_PASSWORD }}
+          script: |
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+            cd ~/manajerku
+
+            # Pull latest development image
+            docker compose pull frontend
+
+            # Recreate only the frontend container
+            docker compose up -d --no-deps frontend
+
+            # Prune dangling images
+            docker image prune -f
