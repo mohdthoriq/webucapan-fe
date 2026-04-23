@@ -35,7 +35,7 @@ export function useOverdueQuery(params?: OverdueQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -70,7 +70,7 @@ export function usePaidRatioQuery(params?: PaidRatioQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -105,7 +105,7 @@ export function useRecentUnpaidQuery(params?: RecentUnpaidQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -141,7 +141,7 @@ export function useTopProductsQuery(params?: TopProductsQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -176,7 +176,7 @@ export function useTopVendorQuery(params?: TopVendorQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -211,7 +211,7 @@ export function useTotalPaymentsQuery(params?: TotalPaymentsQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -246,7 +246,7 @@ export function useTotalPurchasesQuery(params?: TotalPurchasesQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -281,7 +281,7 @@ export function useWaitingPaymentsQuery(params?: WaitingPaymentsQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }

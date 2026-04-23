@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import {
@@ -17,29 +17,35 @@ import { useSalesOverviewQuery } from '../hooks/use-dashboard-query'
 
 interface SalesDashboardOverviewProps {
   externalPeriod?: Period
-  externalDateFrom?: string
-  externalDateTo?: string
+  externalDateRange?: DateRange
 }
 
 export function SalesDashboardOverview({
   externalPeriod,
-  externalDateFrom,
-  externalDateTo,
+  externalDateRange,
 }: SalesDashboardOverviewProps) {
   const [period, setPeriod] = useState<Period>('month')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
-  // Use external props if provided, otherwise use local state
-  const periodToUse = externalPeriod ?? period
-  const dateFromToUse =
-    externalDateFrom ??
-    (dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined)
-  const dateToToUse =
-    externalDateTo ??
-    (dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined)
+  useEffect(() => {
+    if (externalPeriod) {
+      setPeriod(externalPeriod)
+    }
+  }, [externalPeriod])
+
+  useEffect(() => {
+    setDateRange(externalDateRange)
+  }, [externalDateRange])
+
+  const dateFromToUse = dateRange?.from
+    ? format(dateRange.from, 'yyyy-MM-dd')
+    : undefined
+  const dateToToUse = dateRange?.to
+    ? format(dateRange.to, 'yyyy-MM-dd')
+    : undefined
 
   const { data } = useSalesOverviewQuery({
-    period: periodToUse,
+    period: period,
     date_from: dateFromToUse as string,
     date_to: dateToToUse as string,
   })

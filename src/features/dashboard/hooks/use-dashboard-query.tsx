@@ -25,7 +25,9 @@ export function useCashBankDashboardOverviewQuery(
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
         ...(params?.date_to ? { date_to: params.date_to } : {}),
-        ...(params?.period ? { period: params.period } : {}),
+        ...(params?.period
+          ? { period: params.period === 'custom' ? 'month' : params.period }
+          : {}),
       })
 
       const url = queryParams.toString()
@@ -35,7 +37,7 @@ export function useCashBankDashboardOverviewQuery(
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -59,7 +61,9 @@ export function useExpenseOverviewQuery(params?: ExpenseOverviewQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
         ...(params?.date_to ? { date_to: params.date_to } : {}),
-        ...(params?.period ? { period: params.period } : {}),
+        ...(params?.period
+          ? { period: params.period === 'custom' ? 'month' : params.period }
+          : {}),
       })
 
       const url = queryParams.toString()
@@ -69,7 +73,7 @@ export function useExpenseOverviewQuery(params?: ExpenseOverviewQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -93,7 +97,9 @@ export function useSalesOverviewQuery(params?: SalesOverviewQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
         ...(params?.date_to ? { date_to: params.date_to } : {}),
-        ...(params?.period ? { period: params.period } : {}),
+        ...(params?.period
+          ? { period: params.period === 'custom' ? 'month' : params.period }
+          : {}),
       })
 
       const url = queryParams.toString()
@@ -103,7 +109,7 @@ export function useSalesOverviewQuery(params?: SalesOverviewQueryParams) {
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
@@ -129,7 +135,9 @@ export function useUnpaidPurchaseOverviewQuery(
       const queryParams = new URLSearchParams({
         ...(params?.date_from ? { date_from: params.date_from } : {}),
         ...(params?.date_to ? { date_to: params.date_to } : {}),
-        ...(params?.period ? { period: params.period } : {}),
+        ...(params?.period
+          ? { period: params.period === 'custom' ? 'month' : params.period }
+          : {}),
       })
 
       const url = queryParams.toString()
@@ -139,7 +147,7 @@ export function useUnpaidPurchaseOverviewQuery(
 
       return response.data.data
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
     retry: 1,
   })
 }
