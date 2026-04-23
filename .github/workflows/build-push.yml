@@ -93,9 +93,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.DEPLOY_DEVELOPMENT_HOST }}
-          username: ${{ secrets.DEPLOY_DEVELOPMENT_USER }}
-          password: ${{ secrets.DEPLOY_DEVELOPMENT_PASSWORD }}
+          host: ${{ secrets.DEPLOY_DEV_HOST }}
+          username: ${{ secrets.DEPLOY_DEV_USER }}
+          password: ${{ secrets.DEPLOY_DEV_PASSWORD }}
           script: |
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
