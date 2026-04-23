@@ -6,6 +6,7 @@ import {
   DollarSign,
   FileText,
   GalleryHorizontalEnd,
+  Inbox,
   LayoutDashboard,
   Settings,
   ShoppingBasket,
@@ -51,6 +52,12 @@ export const sidebarData: SidebarData = {
               icon: Truck,
               permission: PERMISSION_KEY.SALES_DELIVERY_VIEW,
             },
+            {
+              title: 'Pesanan',
+              url: '/sales/orders',
+              icon: Inbox,
+              permission: PERMISSION_KEY.SALES_ORDER_VIEW,
+            },
           ],
         },
         {
@@ -75,6 +82,12 @@ export const sidebarData: SidebarData = {
               url: '/purchases/delivery',
               icon: Truck,
               permission: PERMISSION_KEY.PURCHASE_DELIVERY_VIEW,
+            },
+            {
+              title: 'Pesanan',
+              url: '/purchases/orders',
+              icon: Inbox,
+              permission: PERMISSION_KEY.PURCHASE_ORDER_VIEW,
             },
           ],
         },
