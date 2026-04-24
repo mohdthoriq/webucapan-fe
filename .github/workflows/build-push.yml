@@ -45,6 +45,8 @@ jobs:
           push: true
           set: |
             *.args.VITE_API_URL=${{ github.ref == 'refs/heads/main' && secrets.VITE_API_URL_PRODUCTION || secrets.VITE_API_URL_DEVELOPMENT }}
+            *.args.VITE_API_URL_PRODUCTION=${{ secrets.VITE_API_URL_PRODUCTION }}
+            *.args.VITE_API_URL_DEVELOPMENT=${{ secrets.VITE_API_URL_DEVELOPMENT }}
             *.args.VITE_API_URL_NODE_ENVIRONMENT=${{ github.ref == 'refs/heads/main' && 'PRODUCTION' || 'DEVELOPMENT' }}
             *.args.VITE_ACCESS_TOKEN=${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
             *.args.VITE_USER_DATA=${{ secrets.VITE_USER_DATA || 'userData' }}

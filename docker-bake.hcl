@@ -18,6 +18,14 @@ variable "VITE_API_URL" {
   default = "https://api.manajerku.com"
 }
 
+variable "VITE_API_URL_PRODUCTION" {
+  default = "https://api.manajerku.com"
+}
+
+variable "VITE_API_URL_DEVELOPMENT" {
+  default = "https://api-dev.manajerku.com"
+}
+
 variable "VITE_ACCESS_TOKEN" {
   default = "thisIsJustRandomString"
 }
@@ -48,8 +56,10 @@ target "base" {
   platforms  = ["linux/amd64"]
   args = {
     VITE_API_URL                  = "${VITE_API_URL}"
+    VITE_API_URL_PRODUCTION       = "${VITE_API_URL_PRODUCTION}"
+    VITE_API_URL_DEVELOPMENT      = "${VITE_API_URL_DEVELOPMENT}"
     VITE_ACCESS_TOKEN             = "${VITE_ACCESS_TOKEN}"
-    VITE_USER_DATA               = "${VITE_USER_DATA}"
+    VITE_USER_DATA                = "${VITE_USER_DATA}"
     VITE_API_URL_NODE_ENVIRONMENT = "${VITE_API_URL_NODE_ENVIRONMENT}"
   }
 }
