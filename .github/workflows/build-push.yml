@@ -43,12 +43,13 @@ jobs:
           files: docker-bake.hcl
           targets: ${{ github.ref == 'refs/heads/main' && 'app-prod' || 'app-development' }}
           push: true
+          set: |
+            *.args.VITE_API_URL=${{ github.ref == 'refs/heads/main' && secrets.VITE_API_URL_PRODUCTION || secrets.VITE_API_URL_DEVELOPMENT }}
+            *.args.VITE_API_URL_NODE_ENVIRONMENT=${{ github.ref == 'refs/heads/main' && 'PRODUCTION' || 'DEVELOPMENT' }}
+            *.args.VITE_ACCESS_TOKEN=${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
+            *.args.VITE_USER_DATA=${{ secrets.VITE_USER_DATA || 'userData' }}
         env:
           TAG: ${{ steps.meta.outputs.sha_short }}
-          VITE_API_URL: ${{ github.ref == 'refs/heads/main' && secrets.VITE_API_URL_PRODUCTION || secrets.VITE_API_URL_DEVELOPMENT }}
-          VITE_API_URL_NODE_ENVIRONMENT: ${{ secrets.VITE_API_URL_NODE_ENVIRONMENT }}
-          VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
-          VITE_USER_DATA: ${{ secrets.VITE_USER_DATA || 'userData' }}
 
   # ============================================================
   # Deploy to Production Server
