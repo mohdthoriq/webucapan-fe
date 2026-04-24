@@ -8,14 +8,14 @@ import { Calendar } from '@/components/ui/calendar'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  // DropdownMenuItem,
-  // DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { Period } from '../types/purchases-overview'
+import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 interface CardActionProps {
   period: Period
@@ -29,7 +29,7 @@ export function CardAction({
   dateRange,
   setPeriod,
   setDateRange,
-  // onChange,
+  onChange,
 }: CardActionProps) {
   return (
     <>
@@ -51,7 +51,7 @@ export function CardAction({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-48'>
-          {/* <DropdownMenuItem
+          <DropdownMenuItem
             onClick={() => onChange('day')}
             className={cn(period === 'day' && 'bg-accent')}
           >
@@ -69,7 +69,7 @@ export function CardAction({
           >
             Tahunan
           </DropdownMenuItem>
-          <DropdownMenuSeparator /> */}
+          <DropdownMenuSeparator />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger
               className={cn(period === 'custom' && 'bg-accent')}

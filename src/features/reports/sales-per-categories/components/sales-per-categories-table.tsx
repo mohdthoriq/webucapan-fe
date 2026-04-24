@@ -15,7 +15,7 @@ import {
   type ExpandedState,
 } from '@tanstack/react-table'
 import type { CategorySalesReportItem } from '@/types/domain/sales-per-categories'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -24,6 +24,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TableFooter,
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
@@ -153,6 +154,20 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
               <TableEmpty colSpan={salesPerCategoriesColumns.length} />
             )}
           </TableBody>
+          {table.getRowModel().rows?.length > 0 &&
+            salesPerCategoriesData?.summary && (
+              <TableFooter className='bg-secondary hover:bg-secondary font-bold'>
+                <TableRow className='hover:bg-transparent border-none'>
+                  <TableCell>Total</TableCell>
+                  <TableCell>
+                    {salesPerCategoriesData.summary.total_quantity}
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(salesPerCategoriesData.summary.total_sales)}
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            )}
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />

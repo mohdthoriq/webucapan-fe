@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { format } from 'date-fns'
 import { Loader2, Printer } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { useReactToPrint } from 'react-to-print'
@@ -25,12 +24,12 @@ export function Dashboard() {
     undefined
   )
 
-  const globalDateFrom = globalDateRange?.from
-    ? format(globalDateRange.from, 'yyyy-MM-dd')
-    : undefined
-  const globalDateTo = globalDateRange?.to
-    ? format(globalDateRange.to, 'yyyy-MM-dd')
-    : undefined
+  // const globalDateFrom = globalDateRange?.from
+  //   ? format(globalDateRange.from, 'yyyy-MM-dd')
+  //   : undefined
+  // const globalDateTo = globalDateRange?.to
+  //   ? format(globalDateRange.to, 'yyyy-MM-dd')
+  //   : undefined
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -77,23 +76,19 @@ export function Dashboard() {
         <div className='grid gap-x-4 gap-y-6 sm:grid-cols-1 lg:grid-cols-2'>
           <CashOverview
             externalPeriod={globalPeriod}
-            externalDateFrom={globalDateFrom}
-            externalDateTo={globalDateTo}
+            externalDateRange={globalDateRange}
           />
           <BillsOverview
             externalPeriod={globalPeriod}
-            externalDateFrom={globalDateFrom}
-            externalDateTo={globalDateTo}
+            externalDateRange={globalDateRange}
           />
           <SalesDashboardOverview
             externalPeriod={globalPeriod}
-            externalDateFrom={globalDateFrom}
-            externalDateTo={globalDateTo}
+            externalDateRange={globalDateRange}
           />
           <ExpenseOverview
             externalPeriod={globalPeriod}
-            externalDateFrom={globalDateFrom}
-            externalDateTo={globalDateTo}
+            externalDateRange={globalDateRange}
           />
         </div>
       </div>

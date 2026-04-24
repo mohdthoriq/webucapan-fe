@@ -15,7 +15,7 @@ import {
   type ExpandedState,
 } from '@tanstack/react-table'
 import type { ProductSalesReportItem } from '@/types/domain/sales-per-products'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -24,6 +24,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TableFooter,
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
@@ -168,6 +169,28 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
               <TableEmpty colSpan={salesPerProductColumns.length} />
             )}
           </TableBody>
+          {table.getRowModel().rows?.length > 0 &&
+            salesPerProductData?.summary && (
+              <TableFooter className='bg-secondary hover:bg-secondary font-bold'>
+                <TableRow className='hover:bg-transparent border-none'>
+                  <TableCell />
+                  <TableCell>Total</TableCell>
+                  <TableCell />
+                  <TableCell>
+                    {salesPerProductData.summary.total_quantity}
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(salesPerProductData.summary.total_sales)}
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(salesPerProductData.summary.total_cost)}
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(salesPerProductData.summary.total_profit)}
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            )}
         </Table>
       </div>
       <DataTablePagination table={table} className='mt-auto' />

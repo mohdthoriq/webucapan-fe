@@ -34,6 +34,7 @@ export function useSalesPerProductQuery(params: SalesPerProductQueryParams) {
 
 export function useSalesPerProductExport(params: SalesPerProductQueryParams) {
   const [isExporting, setIsExporting] = useState(false)
+  const [isExportingPdf, setIsExportingPdf] = useState(false)
 
   const exportToExcel = async () => {
     if (!params.date_from || !params.date_to) {
@@ -79,5 +80,46 @@ export function useSalesPerProductExport(params: SalesPerProductQueryParams) {
     }
   }
 
-  return { exportToExcel, isExporting }
+  const exportToPdf = async () => {
+    if (!params.date_from || !params.date_to) {
+      toast.error('Silakan pilih rentang tanggal terlebih dahulu.')
+      return
+    }
+
+    setIsExportingPdf(true)
+
+    try {
+      const response = await apiClient.get('/reports/sales/per-product/print', {
+        params: {
+          date_from: format(params.date_from, 'yyyy-MM-dd'),
+          date_to: format(params.date_to, 'yyyy-MM-dd'),
+          search: params.search,
+          product_category_id: params.product_category_id,
+          page: params.page,
+          limit: params.limit,
+        },
+        responseType: 'blob',
+      })
+
+      const blob = new Blob([response.data], {
+        type: 'application/pdf',
+      })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `laporan-penjualan-per-produk-${format(params.date_from, 'yyyy-MM-dd')}_${format(params.date_to, 'yyyy-MM-dd')}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      toast.success('Berhasil mengunduh laporan PDF.')
+    } catch {
+      toast.error('Gagal mengunduh laporan PDF. Silakan coba lagi.')
+    } finally {
+      setIsExportingPdf(false)
+    }
+  }
+
+  return { exportToExcel, isExporting, exportToPdf, isExportingPdf }
 }

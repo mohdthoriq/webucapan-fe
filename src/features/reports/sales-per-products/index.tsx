@@ -46,7 +46,7 @@ function SalesPerProductContent() {
   const navigate = route.useNavigate()
   const { date_from, date_to, setDateRange, paginationParams } =
     useSalesPerProduct()
-  const { exportToExcel, isExporting } = useSalesPerProductExport(
+  const { exportToExcel, isExporting, exportToPdf, isExportingPdf } = useSalesPerProductExport(
     paginationParams ?? {}
   )
 
@@ -83,17 +83,21 @@ function SalesPerProductContent() {
             <div className='flex items-center gap-2'>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant='outline' disabled={isExporting}>
-                    {isExporting ? (
+                  <Button variant='outline' disabled={isExporting || isExportingPdf}>
+                    {isExporting || isExportingPdf ? (
                       <Loader2 className='h-4 w-4 animate-spin' />
                     ) : (
                       <Printer className='h-4 w-4' />
                     )}
-                    {isExporting ? 'Memproses...' : 'Cetak'}
+                    {isExporting || isExportingPdf ? 'Memproses...' : 'Cetak'}
                     <ChevronDown className='h-4 w-4' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
+                  <DropdownMenuItem onClick={exportToPdf}>
+                    <FileText className='mr-2 h-4 w-4' />
+                    Download PDF
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={exportToExcel}>
                     <FileText className='mr-2 h-4 w-4' />
                     Download Excel

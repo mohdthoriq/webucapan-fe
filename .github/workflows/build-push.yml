@@ -2,7 +2,7 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, development]
 
 env:
   REGISTRY: ghcr.io
@@ -41,20 +41,22 @@ jobs:
         uses: docker/bake-action@v6
         with:
           files: docker-bake.hcl
-          targets: app-prod
+          targets: ${{ github.ref == 'refs/heads/main' && 'app-prod' || 'app-development' }}
           push: true
         env:
           TAG: ${{ steps.meta.outputs.sha_short }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL: ${{ github.ref == 'refs/heads/main' && secrets.VITE_API_URL_PRODUCTION || secrets.VITE_API_URL_DEVELOPMENT }}
+          VITE_API_URL_NODE_ENVIRONMENT: ${{ secrets.VITE_API_URL_NODE_ENVIRONMENT }}
           VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN || 'thisIsJustRandomString' }}
           VITE_USER_DATA: ${{ secrets.VITE_USER_DATA || 'userData' }}
 
   # ============================================================
   # Deploy to Production Server
   # ============================================================
-  deploy:
-    name: Deploy
+  deploy-prod:
+    name: Deploy Production
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -73,6 +75,36 @@ jobs:
             docker compose pull frontend
 
             # Recreate only the frontend container (zero-downtime)
+            docker compose up -d --no-deps frontend
+
+            # Prune dangling images
+            docker image prune -f
+
+  # ============================================================
+  # Deploy to Development Server
+  # ============================================================
+  deploy-dev:
+    name: Deploy Development
+    needs: build
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_DEV_HOST }}
+          username: ${{ secrets.DEPLOY_DEV_USER }}
+          password: ${{ secrets.DEPLOY_DEV_PASSWORD }}
+          script: |
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+            cd ~/manajerku
+
+            # Pull latest development image
+            docker compose pull frontend
+
+            # Recreate only the frontend container
             docker compose up -d --no-deps frontend
 
             # Prune dangling images

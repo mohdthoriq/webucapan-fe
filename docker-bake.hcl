@@ -26,6 +26,10 @@ variable "VITE_USER_DATA" {
   default = "userData"
 }
 
+variable "VITE_API_URL_NODE_ENVIRONMENT" {
+  default = "DEVELOPMENT"
+}
+
 group "default" {
   targets = ["app"]
 }
@@ -34,14 +38,19 @@ group "prod" {
   targets = ["app-prod"]
 }
 
+group "development" {
+  targets = ["app-development"]
+}
+
 target "base" {
   context    = "."
   dockerfile = "Dockerfile"
   platforms  = ["linux/amd64"]
   args = {
-    VITE_API_URL      = "${VITE_API_URL}"
-    VITE_ACCESS_TOKEN = "${VITE_ACCESS_TOKEN}"
-    VITE_USER_DATA    = "${VITE_USER_DATA}"
+    VITE_API_URL                  = "${VITE_API_URL}"
+    VITE_ACCESS_TOKEN             = "${VITE_ACCESS_TOKEN}"
+    VITE_USER_DATA               = "${VITE_USER_DATA}"
+    VITE_API_URL_NODE_ENVIRONMENT = "${VITE_API_URL_NODE_ENVIRONMENT}"
   }
 }
 
@@ -55,6 +64,14 @@ target "app-prod" {
   inherits = ["app"]
   tags = [
     "${REGISTRY}/${OWNER}/${REPO}:latest",
+    "${REGISTRY}/${OWNER}/${REPO}:${TAG}"
+  ]
+}
+
+target "app-development" {
+  inherits = ["app"]
+  tags = [
+    "${REGISTRY}/${OWNER}/${REPO}:development",
     "${REGISTRY}/${OWNER}/${REPO}:${TAG}"
   ]
 }
