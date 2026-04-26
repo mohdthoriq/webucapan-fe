@@ -28,25 +28,28 @@ export function UnderDevelopmentDialog({
             <Construction className='size-8' />
           </div>
           <DialogTitle className='text-lg font-semibold'>
-            Fitur ini sedang dalam proses perbaikan
+            Fitur ini sedang dalam proses pengembangan
           </DialogTitle>
-          <DialogDescription className='text-muted-foreground text-sm'>
+          <DialogDescription className='text-muted-foreground text-sm text-center'>
             {featureName ? (
               <>
                 Fitur{' '}
                 <span className='text-foreground font-medium'>
                   {featureName}
                 </span>{' '}
-                sedang dalam proses perbaikan dan akan segera tersedia.
+                sedang dalam proses pengembangan dan akan segera tersedia.
               </>
             ) : (
-              'Fitur ini sedang dalam proses perbaikan dan akan segera tersedia.'
+              'Fitur ini sedang dalam proses pengembangan dan akan segera tersedia.'
             )}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className='sm:justify-center'>
           <Button
-            onClick={() => onOpenChange(false)}
+            onClick={() => {
+              onOpenChange(false)
+              history.back()
+            }}
             className='w-full sm:w-auto'
           >
             Mengerti

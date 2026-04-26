@@ -57,7 +57,8 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     ),
     cell: ({ row }) => {
       const { note, reference } = row.original
-      const displayNote = note || (typeof reference === 'string' ? reference : '')
+      const displayNote =
+        note || (typeof reference === 'string' ? reference : '')
 
       return (
         <div className='w-full overflow-hidden p-2'>
@@ -94,16 +95,55 @@ export const cashBankListsColumns: ColumnDef<TransactionData>[] = [
     },
   },
   {
+    accessorKey: 'Terima',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Terima' />
+    ),
+    cell: ({ row }) => {
+      const { amount_after_tax } = row.original
+      const displayValue = amount_after_tax > 0 ? formatNumber(amount_after_tax) : ''
+      return (
+        <div className='p-2 text-right'>
+          <LongText className='truncate'>{displayValue}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
+    accessorKey: 'Kirim',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Kirim' />
+    ),
+    cell: ({ row }) => {
+      const { amount_after_tax } = row.original
+      const displayValue =
+        amount_after_tax < 0 ? formatNumber(Math.abs(amount_after_tax)) : ''
+      return (
+        <div className='p-2 text-right'>
+          <LongText className='truncate'>{displayValue}</LongText>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full',
+    },
+  },
+  {
     accessorKey: 'Saldo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Saldo' />
     ),
     cell: ({ row }) => {
       const { balance } = row.original
-      const formattedBalance = formatNumber(balance)
+      const isNegative = balance < 0
+      const formattedBalance = formatNumber(Math.abs(balance))
+      const displayValue = isNegative ? `(${formattedBalance})` : formattedBalance
       return (
-        <div className='p-2'>
-          <LongText className='truncate'>{formattedBalance}</LongText>
+        <div className='p-2 text-right'>
+          <LongText className='truncate'>{displayValue}</LongText>
         </div>
       )
     },

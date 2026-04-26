@@ -1,4 +1,5 @@
 import {
+  Calendar,
   ChartLine,
   ChartPie,
   ContactRound,
@@ -90,6 +91,12 @@ export const sidebarData: SidebarData = {
               permission: PERMISSION_KEY.PURCHASE_ORDER_VIEW,
             },
           ],
+        },
+        {
+          title: 'Persewaan',
+          url: '/rental',
+          icon: Calendar,
+          permission: PERMISSION_KEY.RENTAL_VIEW,
         },
         {
           title: 'Biaya',

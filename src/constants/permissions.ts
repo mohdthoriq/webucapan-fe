@@ -42,6 +42,13 @@ export const PERMISSION_KEY = {
   PURCHASE_ORDER_EDIT: 'purchase.order.edit',
   PURCHASE_ORDER_DELETE: 'purchase.order.delete',
 
+  // Rental
+  RENTAL: 'rental',
+  RENTAL_VIEW: 'rental.view',
+  RENTAL_ADD: 'rental.add',
+  RENTAL_EDIT: 'rental.edit',
+  RENTAL_DELETE: 'rental.delete',
+
   // Expense
   EXPENSE: 'expense',
   EXPENSE_VIEW: 'expense.view',
