@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { format } from 'date-fns'
+import { format } from '@/lib/date'
 import type { DateRange } from 'react-day-picker'
 import { useWaitingPaymentsQuery } from '../hooks/use-sales-overview-query'
 import type { Period } from '../types/sales-overview'

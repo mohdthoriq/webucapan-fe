@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format } from '@/lib/date'
 import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'

@@ -116,6 +116,7 @@ export const formatDate = (date: Date | string) => {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
+    timeZone: 'Asia/Jakarta',
   })
 }
 
