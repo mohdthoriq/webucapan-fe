@@ -8,7 +8,7 @@ export interface ApiResponse<T = unknown> {
   message: string
   data: T | null
   pagination?: PaginationMeta | null
-  errors?: string[] | null
+  errors?: (string | { field: string; error: string })[] | null
 }
 
 export interface PaginationApiResponse<T = unknown> {
@@ -17,5 +17,5 @@ export interface PaginationApiResponse<T = unknown> {
   message: string
   data: T[]
   pagination?: PaginationMeta
-  errors?: string[] | null
+  errors?: (string | { field: string; error: string })[] | null
 }

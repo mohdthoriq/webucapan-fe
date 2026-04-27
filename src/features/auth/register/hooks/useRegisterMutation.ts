@@ -51,7 +51,15 @@ export function useRegisterMutation() {
     onError: (error) => {
       toast.dismiss('register-toast')
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message)
+        const errorData = error.response?.data as ApiResponse
+        if (errorData?.errors && Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((err) => {
+            const message = typeof err === 'string' ? err : err.error
+            toast.error(message)
+          })
+        } else {
+          toast.error(errorData?.message || 'Pendaftaran gagal')
+        }
       } else {
         toast.error('Pendaftaran gagal. Silakan lakukan ulang pendaftaran.')
       }
