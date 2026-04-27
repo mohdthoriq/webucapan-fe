@@ -18,7 +18,7 @@ export const RegisterSchema = z
     password: z
       .string()
       .min(1, 'Tolong masukkan kata sandi Anda')
-      .min(7, 'Kata sandi harus minimal 7 karakter')
+      .min(8, 'Kata sandi harus minimal 8 karakter')
       .regex(/[A-Z]/, 'Kata sandi harus mengandung minimal satu huruf kapital')
       .regex(/[0-9]/, 'Kata sandi harus mengandung minimal satu angka')
       .regex(

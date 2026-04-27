@@ -8,7 +8,7 @@ export const LoginSchema = z.object({
   password: z
     .string()
     .min(1, 'Silakan masukkan kata sandi Anda')
-    .min(7, 'Kata sandi harus minimal 7 karakter'),
+    .min(8, 'Kata sandi harus minimal 8 karakter'),
 })
 
 export type LoginFormData = z.infer<typeof LoginSchema>
