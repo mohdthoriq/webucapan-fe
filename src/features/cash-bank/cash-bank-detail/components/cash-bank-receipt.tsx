@@ -3,7 +3,7 @@ import { type LinkProps, useNavigate } from '@tanstack/react-router'
 import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { id } from 'date-fns/locale'
 import { Printer } from 'lucide-react'
-import { formatCurrency, getTransactionTitle } from '@/lib/utils'
+import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -44,25 +44,9 @@ export function CashBankDetailReceipt({
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-3'>
-            {isNavigate ? (
-              <CardTitle
-                onClick={() =>
-                  navigate({
-                    to: url,
-                    state: {
-                      currentRowId: transaction?.items[0].id,
-                    } as Record<string, unknown>,
-                  })
-                }
-                className='text-primary flex cursor-pointer items-center gap-4 text-2xl font-bold tracking-tight'
-              >
-                {getTransactionTitle(transaction?.transaction_type?.code)}
-              </CardTitle>
-            ) : (
-              <CardTitle className='text-primary flex items-center gap-4 text-2xl font-bold tracking-tight'>
-                {getTransactionTitle(transaction?.transaction_type?.code)}
-              </CardTitle>
-            )}
+            <CardTitle className='flex items-center gap-2 text-lg font-bold tracking-tight'>
+              # {transaction?.reference.number}
+            </CardTitle>
           </div>
           <div className='flex gap-2'>
             <Button
@@ -128,7 +112,10 @@ export function CashBankDetailReceipt({
                 Nomor
               </p>
               <p className='text-md font-semibold'>
-                {transaction?.entry_number || (typeof transaction?.reference === 'object' ? transaction?.reference?.number : '-')}
+                {transaction?.entry_number ||
+                  (typeof transaction?.reference === 'object'
+                    ? transaction?.reference?.number
+                    : '-')}
               </p>
             </div>
             <div className='space-y-2'>
@@ -162,7 +149,10 @@ export function CashBankDetailReceipt({
                 Referensi
               </p>
               <p className='text-md font-semibold underline-offset-4'>
-                {transaction?.note || (typeof transaction?.reference === 'string' ? transaction?.reference : '-')}
+                {transaction?.note ||
+                  (typeof transaction?.reference === 'string'
+                    ? transaction?.reference
+                    : '-')}
               </p>
             </div>
           </div>
