@@ -21,14 +21,13 @@ export function CashBankDetail() {
   if (!transactionId || !accountId) {
     return (
       <Card className='flex h-[60vh] flex-col items-center justify-center gap-4'>
-        <CardContent className='text-center'>
+        <CardContent>
           <p className='text-muted-foreground'>
             ID Transaksi atau ID Akun tidak ditemukan.
           </p>
           <Button
             onClick={() => window.history.back()}
             variant='outline'
-            className='mt-4'
           >
             <ArrowLeft className='mr-2 h-4 w-4' /> Kembali
           </Button>
@@ -61,12 +60,12 @@ export function CashBankDetail() {
   }
 
   return (
-    <div className='space-y-6'>
-      <Card>
-        <CardHeader>
-          <div className='mb-2 flex items-center justify-between'>
+    <div className='space-y-4 font-sans'>
+      <Card  className='gap-1'>
+        <CardHeader className='py-3'>
+          <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-4xl font-semibold tracking-tight'>
+              <h1 className='text-xl font-semibold'>
                 {getTransactionTitle(transaction.transaction_type?.code)}
               </h1>
             </div>
@@ -74,14 +73,14 @@ export function CashBankDetail() {
               <Button
                 variant='outline'
                 onClick={() => history.back()}
-                className='gap-2'
+                className='h-8 gap-2 px-3 text-xs'
               >
-                <ArrowLeft className='h-4 w-4' /> Kembali
+                <ArrowLeft className='h-3.5 w-3.5' /> Kembali
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent className='space-y-6'>
+        <CardContent className='space-y-4'>
           <CashBankDetailReceipt transaction={transaction} />
         </CardContent>
       </Card>

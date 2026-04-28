@@ -35,10 +35,10 @@ function CashBankListsContent() {
     },
   })
 
-  const location = useLocation()
+  // const location = useLocation()
 
-  const accountData = location.state as unknown as Record<string, string>
-  const { accountName } = route.useParams()
+  // const accountData = location.state as unknown as Record<string, string>
+  // const { accountName } = route.useParams()
 
   return (
     <PermissionGuard
@@ -48,13 +48,11 @@ function CashBankListsContent() {
       <Card>
         <CardHeader>
           <div className='flex justify-between'>
-            <div className='mb-2 flex items-center gap-4'>
-              <h2 className='text-4xl font-bold tracking-tight'>
-                {decodeURIComponent(accountName)}
+            <div className='mb-2 grid'>
+              <h2 className='text-2xl font-bold tracking-tight'>
+                Kas
               </h2>
-              <p className='text-muted-foreground text-2xl'>
-                {accountData?.accountCode || (search.code as string)}
-              </p>
+              <p className='text-muted-foreground'>Kelola Transaksi Kas.</p>
             </div>
             <div className='flex flex-col items-end gap-2 md:flex-row md:items-start'>
               <Button
