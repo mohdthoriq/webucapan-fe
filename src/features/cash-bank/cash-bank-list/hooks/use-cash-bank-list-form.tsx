@@ -45,25 +45,15 @@ export function useCashBankListForm(
  
   useEffect(() => {
     if (isEdit && currentRow) {
-      form.reset(isEdit
-        ? {
-            from_account_id: currentRow?.from_account_id || '',
-            to_account_id: currentRow?.to_account_id || '',
-            transaction_number: currentRow?.transaction_number || '',
-            tags: currentRow?.tags || null,
-            amount: currentRow?.amount || 0,
-            date: currentRow?.date ? new Date(currentRow.date) : new Date(),
-            note: currentRow?.note || '',
-          }
-        : {
-            from_account_id: '',
-            to_account_id: '',
-            transaction_number: autoNumbering?.format || '',
-            tags: null,
-            amount: 0,
-            date: new Date(),
-            note: '',
-          })
+      form.reset({
+        from_account_id: currentRow?.from_account_id || '',
+        to_account_id: currentRow?.to_account_id || '',
+        transaction_number: currentRow?.transaction_number || '',
+        tags: currentRow?.tags || null,
+        amount: currentRow?.amount || 0,
+        date: currentRow?.date ? new Date(currentRow.date) : new Date(),
+        note: currentRow?.note || '',
+      })
     } else if (!isEdit && autoNumbering) {
       form.reset({
         from_account_id: '',

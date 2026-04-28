@@ -96,7 +96,7 @@ apiClient.interceptors.response.use(
         // But here we can use the instance if we are careful, or create a new one.
         // Let's use a fresh axios call for safety to avoid attaching old token if not needed,
         // though the endpoint likely needs the refresh token in body.
-        const response = await axios.post(`${BASE_URL}auth/refresh`, {
+        const response = await axios.post(`${BASE_URL}/auth/refresh`, {
           refreshToken: auth.refreshToken,
         })
 

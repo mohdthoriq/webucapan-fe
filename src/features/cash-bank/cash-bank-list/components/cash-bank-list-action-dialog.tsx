@@ -1,10 +1,20 @@
 'use client'
 
 import { useMemo } from 'react'
-import { FinanceNumberType, type Account, type CashBankTransactionDetail, type Tag } from '@/types'
+import {
+  FinanceNumberType,
+  type Account,
+  type CashBankTransactionDetail,
+  type Tag,
+} from '@/types'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
 import { PERMISSION_KEY } from '@/constants/permissions'
+import {
+  useCheckFinanceNumberQuery,
+  useDefaultNumberingQuery,
+} from '@/hooks/use-auto-numbering'
+import { useDebounce } from '@/hooks/use-debounce'
 import { useHasPermission } from '@/hooks/use-has-permission'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,8 +49,6 @@ import { UpgradePlanCard } from '@/components/upgrade-plan-card'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { useCashBankListForm } from '../hooks/use-cash-bank-list-form'
 import { CashBankListCombobox } from './cash-bank-list-combobox'
-import { useCheckFinanceNumberQuery, useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
-import { useDebounce } from '@/hooks/use-debounce'
 
 type CashBankListActionDialogProps = {
   open: boolean
@@ -60,24 +68,28 @@ export function CashBankListActionDialog({
     enabled: true,
   })
 
+  const formData = useMemo(() => {
+    if (!currentRow) return undefined
+
+    return {
+      id: currentRow?.id,
+      from_account_id: currentRow?.account?.id || '',
+      to_account_id: currentRow?.items[0]?.account?.id || '',
+      transaction_number: currentRow?.reference?.number || '',
+      tags:
+        currentRow?.tags?.map((tag) =>
+          typeof tag === 'object' ? tag.id : tag
+        ) || [],
+      amount: currentRow?.items[0]?.amount || 0,
+      date: currentRow?.trans_date
+        ? new Date(currentRow.trans_date)
+        : new Date(),
+      note: currentRow?.note || '',
+    }
+  }, [currentRow])
+
   const { form, onSubmit, isSubmitting } = useCashBankListForm(
-    currentRow
-      ? {
-          id: currentRow?.id,
-          from_account_id: currentRow?.account?.id || '',
-          to_account_id: currentRow?.items[0]?.account?.id || '',
-          transaction_number: currentRow?.reference?.number || '',
-          tags:
-            currentRow?.tags?.map((tag) =>
-              typeof tag === 'object' ? tag.id : tag
-            ) || [],
-          amount: currentRow?.items[0]?.amount || 0,
-          date: currentRow?.trans_date
-            ? new Date(currentRow.trans_date)
-            : new Date(),
-          note: currentRow?.note || '',
-        }
-      : undefined,
+    formData,
     autoNumbering,
     onSuccess
   )
@@ -338,14 +350,14 @@ export function CashBankListActionDialog({
                               disabled={!hasPermission}
                             />
                             {isCheckingNumber && (
-                              <div className='absolute right-2 top-1/2 -translate-y-1/2'>
-                                <div className='h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent' />
+                              <div className='absolute top-1/2 right-2 -translate-y-1/2'>
+                                <div className='border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
                               </div>
                             )}
                           </div>
                         </FormControl>
                         {numberIsTaken || hasCheckError ? (
-                          <p className='text-[0.8rem] font-medium text-destructive'>
+                          <p className='text-destructive text-[0.8rem] font-medium'>
                             {checkResult?.message ||
                               (hasCheckError
                                 ? 'Gagal memeriksa nomor transaksi'
@@ -358,7 +370,6 @@ export function CashBankListActionDialog({
                     )}
                   />
                 </div>
-
 
                 <div className='col-span-1 md:col-span-1'>
                   <FormField
