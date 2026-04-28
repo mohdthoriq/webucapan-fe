@@ -171,7 +171,7 @@ export function ContactCombobox({
           <span className='font-medium'>{item.name}</span>
           {item.company?.name && (
             <span className='text-muted-foreground text-xs'>
-              {item.company.name}
+              {item.company_name}
             </span>
           )}
         </div>
