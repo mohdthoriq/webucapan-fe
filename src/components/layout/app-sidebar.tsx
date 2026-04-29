@@ -17,22 +17,12 @@ import { sidebarData } from './data/sidebar-data'
 import { sidebarDataAdmin } from './data/sidebar-data-admin'
 import { NavGroup } from './nav-group'
 
-// import { transformMenusToSidebarData } from './utils/menu-utils'
-
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
   const { state, toggleSidebar } = useSidebar()
   const {
     auth: { user },
   } = useAuthStore()
-
-  // const data = useMemo(() => {
-  //   if (user?.menus && user.menus.length > 0) {
-  //     return transformMenusToSidebarData(user.menus)
-  //   } else if (user?.role?.name === 'superadmin') {
-  //     return sidebarDataAdmin
-  //   }
-  // }, [user])
 
   const roleName = user?.role?.name?.toLowerCase()
   const isSuperAdmin =
