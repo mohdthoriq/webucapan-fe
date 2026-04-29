@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { ApiResponse, DashboardData } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY } from '@/constants/query-key'
+import { useAuthStore } from '@/stores/auth-store'
 import type { Period } from '@/features/sales/overview/types/sales-overview'
 
 interface CashBankOverviewQueryParams {
@@ -13,6 +14,7 @@ interface CashBankOverviewQueryParams {
 export function useCashBankDashboardOverviewQuery(
   params?: CashBankOverviewQueryParams
 ) {
+  const { auth } = useAuthStore()
   return useQuery({
     queryKey: [
       QUERY_KEY.CASH_BANK,
@@ -37,6 +39,7 @@ export function useCashBankDashboardOverviewQuery(
 
       return response.data.data
     },
+    enabled: auth.isAuthenticated,
     staleTime: 0,
     retry: 1,
   })
@@ -49,6 +52,7 @@ interface ExpenseOverviewQueryParams {
 }
 
 export function useExpenseOverviewQuery(params?: ExpenseOverviewQueryParams) {
+  const { auth } = useAuthStore()
   return useQuery({
     queryKey: [
       QUERY_KEY.EXPENSES,
@@ -73,6 +77,7 @@ export function useExpenseOverviewQuery(params?: ExpenseOverviewQueryParams) {
 
       return response.data.data
     },
+    enabled: auth.isAuthenticated,
     staleTime: 0,
     retry: 1,
   })
@@ -85,6 +90,7 @@ interface SalesOverviewQueryParams {
 }
 
 export function useSalesOverviewQuery(params?: SalesOverviewQueryParams) {
+  const { auth } = useAuthStore()
   return useQuery({
     queryKey: [
       QUERY_KEY.SALES,
@@ -109,6 +115,7 @@ export function useSalesOverviewQuery(params?: SalesOverviewQueryParams) {
 
       return response.data.data
     },
+    enabled: auth.isAuthenticated,
     staleTime: 0,
     retry: 1,
   })
@@ -123,6 +130,7 @@ interface UnpaidPurchaseOverviewQueryParams {
 export function useUnpaidPurchaseOverviewQuery(
   params?: UnpaidPurchaseOverviewQueryParams
 ) {
+  const { auth } = useAuthStore()
   return useQuery({
     queryKey: [
       QUERY_KEY.PURCHASES,
@@ -147,6 +155,7 @@ export function useUnpaidPurchaseOverviewQuery(
 
       return response.data.data
     },
+    enabled: auth.isAuthenticated,
     staleTime: 0,
     retry: 1,
   })

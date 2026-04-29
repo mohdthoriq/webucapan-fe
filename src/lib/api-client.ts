@@ -59,6 +59,11 @@ apiClient.interceptors.request.use(
     const token = getAuthToken()
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+    } else if (!config.url?.includes('/auth/') && config.url !== '/login') {
+      // If no token and not an auth route, cancel the request
+      const controller = new AbortController()
+      config.signal = controller.signal
+      controller.abort('No authentication token found')
     }
     return config
   },
