@@ -227,13 +227,19 @@ function TableLoading({ columnCount }: { columnCount: number }) {
 }
 
 function TableRows({ table }: { table: TanstackTable<Subscription> }) {
+  const { setOpen, setCurrentRow } = useSubscriptions()
+
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer'
+          onClick={() => {
+            setCurrentRow(row.original)
+            setOpen('edit')
+          }}
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
@@ -243,6 +249,12 @@ function TableRows({ table }: { table: TanstackTable<Subscription> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={(e) => {
+                // Prevent row click if clicking selection column
+                if (cell.column.id === 'select') {
+                  e.stopPropagation()
+                }
+              }}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>
