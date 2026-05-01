@@ -1,5 +1,6 @@
 import type { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import type { GlobalResponse } from '../api/global-response'
+import type { Account } from './account'
 import type { Company } from './company'
 import type { Contact } from './contact'
 import type { Expedition } from './expedition'
@@ -7,7 +8,7 @@ import type { PaymentTerm } from './payment-term'
 import type { Payment } from './payments'
 import type { Product } from './product'
 import type { Tag } from './tag'
-import type { Tax } from './tax'
+import type { Tax, TransactionTax } from './tax'
 
 export enum PaymentStatus {
   unpaid = 'unpaid',
@@ -35,6 +36,7 @@ export interface AdditionalDiscount extends GlobalResponse {
   type: UnitsType
   value: number
   amount: number
+  name: string
 }
 
 export interface TransactionFee extends GlobalResponse {
@@ -45,10 +47,12 @@ export interface TransactionFee extends GlobalResponse {
 }
 
 export interface Deduction extends GlobalResponse {
+  account: Account
   account_id: string
   type: UnitsType
   value: number
   amount: number
+  name: string
 }
 
 export interface SalesInvoice extends GlobalResponse {
@@ -69,7 +73,7 @@ export interface SalesInvoice extends GlobalResponse {
   sales_invoice_items: InvoiceItem[]
   payments: Payment[]
   tags: (string | Tag)[]
-  taxes: Tax[]
+  taxes: TransactionTax[]
   additional_discounts: AdditionalDiscount[]
   transaction_fees: TransactionFee[]
   deductions: Deduction[]

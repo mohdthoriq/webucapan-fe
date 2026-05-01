@@ -20,3 +20,7 @@ export interface Tax extends GlobalResponse {
   is_active: boolean
   is_withholding: boolean
 }
+
+export interface TransactionTax extends Tax {
+  amount: number
+}

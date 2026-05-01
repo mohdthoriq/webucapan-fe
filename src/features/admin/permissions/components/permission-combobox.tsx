@@ -45,7 +45,7 @@ export function PermissionCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari parent permission...'
+      searchPlaceholder='Cari permission...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}

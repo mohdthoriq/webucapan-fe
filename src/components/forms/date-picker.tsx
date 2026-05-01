@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { id } from 'date-fns/locale'
 import { Calendar as CalendarIcon, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -22,7 +23,7 @@ type DatePickerProps = {
 export function DatePicker({
   selected,
   onSelect,
-  placeholder = 'Pick a date',
+  placeholder = 'Pilih tanggal',
   className,
   startMonth = new Date(new Date().getFullYear() - 10, 0),
   endMonth = new Date(new Date().getFullYear() + 10, 11),
@@ -42,7 +43,7 @@ export function DatePicker({
         >
           <CalendarIcon className='me-2 h-4 w-4 opacity-50' />
           {selected ? (
-            format(selected, 'MMM d, yyyy')
+            format(selected, 'dd MMM yyyy', { locale: id })
           ) : (
             <span>{placeholder}</span>
           )}
@@ -66,7 +67,7 @@ export function DatePicker({
               onClick={() => onSelect(null)}
             >
               <X className='me-2 h-3 w-3' />
-              Clear Selection
+              Hapus Pilihan
             </Button>
           </div>
         )}

@@ -21,6 +21,7 @@ export const calculateTotals = (
     | UpdateInvoiceFormData
   )['transaction_fees'],
   deductions: (CreateInvoiceFormData | UpdateInvoiceFormData)['deductions'],
+  shippingFee: number,
   taxes: Tax[]
 ) => {
   let newSubtotal = 0
@@ -28,20 +29,31 @@ export const calculateTotals = (
   let newTotal = 0
   const taxBreakdown: Record<string, number> = {}
 
+  const isTaxInclusive = form.getValues('is_tax_inclusive')
+
   items.forEach((item) => {
     const quantity = Number(item.quantity) || 0
     const unitPrice = Number(item.unit_price) || 0
     const discount = Number(item.discount) || 0
 
     const discountAmount = (quantity * unitPrice * discount) / 100
-    const lineTotal = quantity * unitPrice - discountAmount
-    newSubtotal += lineTotal
+    const grossLineTotal = quantity * unitPrice - discountAmount
+
+    let lineSubtotal = grossLineTotal
+    let lineTax = 0
 
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
-        const itemTax = (lineTotal * tax.rate) / 100
-        const signedItemTax = tax.is_withholding ? -itemTax : itemTax
+        if (isTaxInclusive) {
+          lineSubtotal = grossLineTotal / (1 + tax.rate / 100)
+          lineTax = grossLineTotal - lineSubtotal
+        } else {
+          lineSubtotal = grossLineTotal
+          lineTax = (lineSubtotal * tax.rate) / 100
+        }
+
+        const signedItemTax = tax.is_withholding ? -lineTax : lineTax
         newTaxTotal += signedItemTax
 
         if (tax.name) {
@@ -49,39 +61,32 @@ export const calculateTotals = (
         }
       }
     }
+
+    newSubtotal += lineSubtotal
   })
 
   let additionalDiscountsTotal = 0
-  additionalDiscounts?.forEach((discount, index) => {
+  additionalDiscounts?.forEach((discount) => {
     const value = Number(discount.value) || 0
     const amount =
       discount.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     additionalDiscountsTotal += amount
-    if (discount.amount !== amount) {
-      form.setValue(`additional_discounts.${index}.amount`, amount)
-    }
   })
 
   let transactionFeesTotal = 0
-  transactionFees?.forEach((fee, index) => {
+  transactionFees?.forEach((fee) => {
     const value = Number(fee.value) || 0
     const amount =
       fee.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     transactionFeesTotal += amount
-    if (fee.amount !== amount) {
-      form.setValue(`transaction_fees.${index}.amount`, amount)
-    }
   })
 
   let deductionsTotal = 0
-  deductions?.forEach((deduction, index) => {
+  deductions?.forEach((deduction) => {
     const value = Number(deduction.value) || 0
     const amount =
       deduction.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     deductionsTotal += amount
-    if (deduction.amount !== amount) {
-      form.setValue(`deductions.${index}.amount`, amount)
-    }
   })
 
   newTotal =
@@ -90,18 +95,30 @@ export const calculateTotals = (
     newTaxTotal +
     transactionFeesTotal -
     deductionsTotal +
-    Number(form.getValues('shipping_fee') || 0)
-
-  if (form.getValues('subtotal') !== newSubtotal)
-    form.setValue('subtotal', newSubtotal)
-  if (form.getValues('tax_total') !== newTaxTotal)
-    form.setValue('tax_total', newTaxTotal)
-  if (form.getValues('total') !== newTotal) form.setValue('total', newTotal)
+    Number(shippingFee || 0)
 
   return {
     subtotal: newSubtotal,
     taxTotal: newTaxTotal,
     total: newTotal,
     taxBreakdown,
+    additionalDiscounts: additionalDiscounts?.map((d) => {
+      const value = Number(d.value) || 0
+      return d.type === UnitsType.percent
+        ? (newSubtotal * value) / 100
+        : value
+    }),
+    transactionFees: transactionFees?.map((f) => {
+      const value = Number(f.value) || 0
+      return f.type === UnitsType.percent
+        ? (newSubtotal * value) / 100
+        : value
+    }),
+    deductions: deductions?.map((d) => {
+      const value = Number(d.value) || 0
+      return d.type === UnitsType.percent
+        ? (newSubtotal * value) / 100
+        : value
+    }),
   }
 }

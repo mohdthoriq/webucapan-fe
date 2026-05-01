@@ -230,9 +230,16 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                   className='hover:bg-muted/40 transition-colors'
                 >
                   <TableCell className='px-2 py-1.5 align-top'>
-                    <p className='text-primary text-[13px] font-semibold'>
-                      {item.product?.name || '-'}
-                    </p>
+                    <div className='space-y-0.5'>
+                      <p className='text-primary text-[13px] font-semibold'>
+                        {item.product?.name || '-'}
+                      </p>
+                      {item.product?.sku && (
+                        <p className='text-muted-foreground text-[11px] font-medium'>
+                          {item.product.sku}
+                        </p>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className='px-2 py-1.5 align-top'>
                     <p className='text-[13px]'>{item.description || '-'}</p>
@@ -247,7 +254,10 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                   </TableCell>
                   <TableCell className='px-2 py-1.5 text-center align-top'>
                     <p className='text-[13px] font-medium'>
-                      {item.quantity || '-'}
+                      {item.quantity}{' '}
+                      <span className='text-muted-foreground text-[11px]'>
+                        {item.product?.unit?.name}
+                      </span>
                     </p>
                   </TableCell>
                   <TableCell className='px-2 py-1.5 align-top'>
@@ -287,41 +297,40 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               </span>
             </div>
 
-            {/* Tax Breakdown */}
-            {Object.entries(
-              invoice.sales_invoice_items.reduce(
-                (acc, item) => {
-                  if (item.tax) {
-                    const taxName = item.tax.name
-                    const quantity = Number(item.quantity) || 0
-                    const unitPrice = Number(item.unit_price) || 0
-                    const taxAmount =
-                      (quantity * unitPrice * (item.tax.rate || 0)) / 100
-
-                    acc[taxName] = (acc[taxName] || 0) + taxAmount
-                  }
-                  return acc
-                },
-                {} as Record<string, number>
-              )
-            ).map(([name, amount]) => (
+            {/* Additional Discounts */}
+            {invoice.additional_discounts?.map((discount) => (
               <div
-                key={name}
+                key={discount.id}
                 className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
               >
-                <span className='text-muted-foreground'>{name}</span>
-                <span className='font-medium'>
-                  {formatCurrency(amount, invoice.currency)}
+                <span className='text-muted-foreground'>{discount.name}</span>
+                <span className='font-medium text-red-500'>
+                  ({formatCurrency(Number(discount.amount), invoice.currency)})
                 </span>
               </div>
             ))}
 
-            {/* Fallback if no specific tax items but a total exists */}
-            {invoice.sales_invoice_items.every((item) => !item.tax) &&
+            {/* Tax Breakdown from API */}
+            {invoice.taxes?.map((tax) => (
+              <div
+                key={tax.id}
+                className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
+              >
+                <span className='text-muted-foreground'>
+                  {tax.name} ({tax.rate}%)
+                </span>
+                <span className='font-medium'>
+                  {formatCurrency(Number(tax.amount), invoice.currency)}
+                </span>
+              </div>
+            ))}
+
+            {/* Fallback if no specific tax list but total exists */}
+            {(!invoice.taxes || invoice.taxes.length === 0) &&
               Number(invoice.tax_total) > 0 && (
-                <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm font-medium'>
-                  <span className='text-muted-foreground'>Pajak</span>
-                  <span>
+                <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
+                  <span className='text-muted-foreground'>Total Pajak</span>
+                  <span className='font-medium'>
                     {formatCurrency(
                       Number(invoice.tax_total),
                       invoice.currency
@@ -330,12 +339,55 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 </div>
               )}
 
+            {/* Transaction Fees */}
+            {invoice.transaction_fees?.map((fee) => (
+              <div
+                key={fee.id}
+                className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
+              >
+                <span className='text-muted-foreground'>{fee.name}</span>
+                <span className='font-medium'>
+                  {formatCurrency(Number(fee.amount), invoice.currency)}
+                </span>
+              </div>
+            ))}
+
+            {/* Shipping Fee */}
+            {Number(invoice.shipping_fee) > 0 && (
+              <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
+                <span className='text-muted-foreground'>Biaya Pengiriman</span>
+                <span className='font-medium'>
+                  {formatCurrency(Number(invoice.shipping_fee), invoice.currency)}
+                </span>
+              </div>
+            )}
+
             <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
               <span className='text-muted-foreground font-medium'>Total</span>
               <span className='text-lg font-bold'>
                 {formatCurrency(Number(invoice.total), invoice.currency)}
               </span>
             </div>
+
+            {/* Deductions */}
+            {invoice.deductions?.map((deduction) => (
+              <div
+                key={deduction.id}
+                className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
+              >
+                <span className='text-muted-foreground'>
+                  {deduction.name}{' '}
+                  {deduction.account && (
+                    <span className='text-[10px] text-gray-400'>
+                      ({deduction.account.name})
+                    </span>
+                  )}
+                </span>
+                <span className='font-medium text-red-500'>
+                  ({formatCurrency(Number(deduction.amount), invoice.currency)})
+                </span>
+              </div>
+            ))}
 
             {invoice.payments?.map((payment) => (
               <div

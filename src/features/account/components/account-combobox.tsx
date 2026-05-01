@@ -61,7 +61,7 @@ export function AccountsCombobox({
       value={value || undefined}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari parent akun...'
+      searchPlaceholder='Cari akun...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}

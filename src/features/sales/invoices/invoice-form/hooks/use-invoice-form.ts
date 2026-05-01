@@ -81,6 +81,7 @@ export function useInvoiceForm({
               : undefined,
             expedition_id: currentRow.expedition_id || undefined,
             tracking_number: currentRow.tracking_number || '',
+            is_tax_inclusive: !!currentRow.is_tax_inclusive,
           }
         : {
             invoice_number: autoNumbering?.format ?? '',

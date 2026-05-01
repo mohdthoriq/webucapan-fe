@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { addDays, format } from 'date-fns'
+import { id } from 'date-fns/locale'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
   type Contact,
@@ -11,6 +12,7 @@ import {
 import { CalendarIcon, ChevronDown } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
+import { useCheckFinanceNumberQuery } from '@/hooks/use-auto-numbering'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -48,6 +50,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useContactTypesQuery } from '@/features/contacts/hooks/use-contacts-query'
@@ -59,8 +67,6 @@ import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { useCheckFinanceNumberQuery } from '@/hooks/use-auto-numbering'
 
 export function InvoiceFormHeader() {
   const { control, formState, setValue } = useFormContext<
@@ -214,8 +220,8 @@ export function InvoiceFormHeader() {
         )}
       />
 
-      {/* Currency */}
-      <FormField
+      {/* Currency - Untuk Sementara Fitur ini di disabled karena perlu ada research lanjutan -- Malfazakki */}
+      {/* <FormField
         control={control}
         name='currency'
         render={({ field }) => (
@@ -227,7 +233,7 @@ export function InvoiceFormHeader() {
             <FormMessage />
           </FormItem>
         )}
-      />
+      /> */}
 
       {/* Invoice Date */}
       <FormField
@@ -247,7 +253,7 @@ export function InvoiceFormHeader() {
                     )}
                   >
                     {field.value ? (
-                      format(field.value, 'PPP')
+                      format(field.value, 'dd MMMM yyyy', { locale: id })
                     ) : (
                       <span>Pilih tanggal</span>
                     )}
@@ -288,7 +294,7 @@ export function InvoiceFormHeader() {
                     )}
                   >
                     {field.value ? (
-                      format(field.value, 'PPP')
+                      format(field.value, 'dd MMMM yyyy', { locale: id })
                     ) : (
                       <span>Pilih tanggal</span>
                     )}
@@ -450,7 +456,9 @@ export function InvoiceFormHeader() {
                                     )}
                                   >
                                     {field.value ? (
-                                      format(field.value, 'dd/MM/yyyy')
+                                      format(field.value, 'dd/MM/yyyy', {
+                                        locale: id,
+                                      })
                                     ) : (
                                       <span>Pilih tanggal</span>
                                     )}

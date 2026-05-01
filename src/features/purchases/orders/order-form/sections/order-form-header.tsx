@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { addDays, format } from 'date-fns'
+import { id } from 'date-fns/locale'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
   type Contact,
@@ -250,7 +251,7 @@ export function OrderFormHeader() {
                     )}
                   >
                     {field.value ? (
-                      format(field.value, 'PPP')
+                      format(field.value, 'dd MMMM yyyy', { locale: id })
                     ) : (
                       <span>Pilih tanggal</span>
                     )}
@@ -290,7 +291,7 @@ export function OrderFormHeader() {
                     )}
                   >
                     {field.value ? (
-                      format(field.value, 'PPP')
+                      format(field.value, 'dd MMMM yyyy', { locale: id })
                     ) : (
                       <span>Pilih tanggal</span>
                     )}
@@ -451,10 +452,9 @@ export function OrderFormHeader() {
                                     )}
                                   >
                                     {field.value ? (
-                                      format(
-                                        new Date(field.value),
-                                        'dd/MM/yyyy'
-                                      )
+                                      format(new Date(field.value), 'dd/MM/yyyy', {
+                                        locale: id,
+                                      })
                                     ) : (
                                       <span>Pilih tanggal</span>
                                     )}

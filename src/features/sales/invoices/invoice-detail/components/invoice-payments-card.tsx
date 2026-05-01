@@ -3,9 +3,14 @@
 import { format } from 'date-fns'
 import { useWatch } from 'react-hook-form'
 import { FinanceNumberType, type Tag, type SalesInvoice } from '@/types'
+import { id } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
+import {
+  useCheckFinanceNumberQuery,
+  useDefaultNumberingQuery,
+} from '@/hooks/use-auto-numbering'
 import { useDebounce } from '@/hooks/use-debounce'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -37,7 +42,6 @@ import { MultiSelectDropdown } from '@/components/forms/multi-select-dropdown'
 import { useTagsQuery } from '@/features/settings/tags/hooks/use-tags-query'
 import { useInvoicePaymentsForm } from '../hooks/use-invoice-payments-form'
 import { InvoicePaymentsCombobox } from './invoice-payments-combobox'
-import { useCheckFinanceNumberQuery, useDefaultNumberingQuery } from '@/hooks/use-auto-numbering'
 
 interface InvoicePaymentsCardProps {
   invoice: SalesInvoice
@@ -85,7 +89,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
 
   return (
     <Card className='border-border gap-0 shadow-none'>
-      <CardHeader className='pb-3 border-none'>
+      <CardHeader className='border-none pb-3'>
         <CardTitle className='text-base font-semibold'>
           Terima Pembayaran
         </CardTitle>
@@ -188,7 +192,7 @@ export function InvoicePaymentsCard({ invoice }: InvoicePaymentsCardProps) {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'dd MMM yyyy')
+                              format(field.value, 'dd MMM yyyy', { locale: id })
                             ) : (
                               <span>Pilih tanggal</span>
                             )}

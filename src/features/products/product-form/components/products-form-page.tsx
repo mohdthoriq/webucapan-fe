@@ -38,7 +38,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { FormShortcutButton } from '@/components/forms/form-shortcut-button'
 import { InputFieldNumberFormat } from '@/components/forms/input-field-number-format'
@@ -113,6 +112,19 @@ export function ProductsFormContent({
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
           <FormField
             control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nama Produk</FormLabel>
+                <FormControl>
+                  <Input placeholder='Nama Produk' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='sku'
             render={({ field }) => (
               <FormItem>
@@ -137,19 +149,6 @@ export function ProductsFormContent({
                 ) : (
                   <FormMessage />
                 )}
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nama Produk</FormLabel>
-                <FormControl>
-                  <Input placeholder='Nama Produk' {...field} />
-                </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -279,7 +278,8 @@ export function ProductsFormContent({
           )}
         />
 
-        <FormField
+        {/* Untuk Sementara Fitur ini di disabled karena perlu ada research lanjutan -- Malfazakki */}
+        {/* <FormField
           control={form.control}
           name='taxable'
           render={({ field }) => (
@@ -295,7 +295,7 @@ export function ProductsFormContent({
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
 
         <Collapsible
           defaultOpen

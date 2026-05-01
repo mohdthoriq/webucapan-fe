@@ -67,7 +67,7 @@ function ContactCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder='Cari vendor...'
+      searchPlaceholder='Cari pelanggan...'
       items={allItems}
       selectedItem={selectedItem}
       isLoading={isLoading}
