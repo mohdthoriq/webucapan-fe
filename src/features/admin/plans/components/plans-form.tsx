@@ -10,6 +10,19 @@ import {
   ChevronDown,
   ArrowLeft,
 } from 'lucide-react'
+
+const getAllChildIds = (children?: PermissionTreeItem[]): string[] => {
+  if (!children) return []
+  let ids: string[] = []
+  children.forEach((child) => {
+    ids.push(child.id)
+    if (child.children && child.children.length > 0) {
+      ids = [...ids, ...getAllChildIds(child.children)]
+    }
+  })
+  return ids
+}
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -106,18 +119,6 @@ export function PlansForm({ mode, planId }: PlansFormProps) {
         return Array.from(new Set([...prev, ...idsToToggle]))
       }
     })
-  }
-
-  const getAllChildIds = (children?: PermissionTreeItem[]): string[] => {
-    if (!children) return []
-    let ids: string[] = []
-    children.forEach((child) => {
-      ids.push(child.id)
-      if (child.children && child.children.length > 0) {
-        ids = [...ids, ...getAllChildIds(child.children)]
-      }
-    })
-    return ids
   }
 
   const toggleExpand = (id: string) => {
@@ -272,33 +273,37 @@ export function PlansForm({ mode, planId }: PlansFormProps) {
                         control={form.control}
                         name={`features.${index}` as never}
                         render={({ field: inputField }) => (
-                          <FormItem>
-                            <div className='flex items-center gap-2'>
-                              <FormControl className='flex-1'>
-                                <Input
-                                  {...inputField}
-                                  placeholder={`Fitur ${index + 1}`}
-                                />
-                              </FormControl>
+                          <div className='flex w-full flex-col gap-1'>
+                            <div className='flex w-full items-center gap-2'>
+                              <div className='flex-1'>
+                                <FormControl>
+                                  <Input
+                                    {...inputField}
+                                    placeholder={`Fitur ${index + 1}`}
+                                    className='w-full'
+                                  />
+                                </FormControl>
+                              </div>
                               <Button
                                 type='button'
                                 variant='ghost'
                                 size='icon'
-                                className='text-red-500'
+                                className='h-9 w-9 text-red-500 hover:bg-red-50 hover:text-red-600'
                                 onClick={() => remove(index)}
                               >
                                 <Trash2 className='h-4 w-4' />
                               </Button>
                             </div>
                             <FormMessage />
-                          </FormItem>
+                          </div>
                         )}
                       />
                     ))}
                     <Button
                       type='button'
-                      variant='outline'
+                      variant='default'
                       size='sm'
+                      className='mt-2 w-full'
                       onClick={() => append('')}
                     >
                       <Plus className='mr-2 h-4 w-4' />
@@ -348,7 +353,7 @@ export function PlansForm({ mode, planId }: PlansFormProps) {
         </Card>
 
         {/* Permissions Card */}
-        <Card>
+        <Card className='overflow-hidden'>
           <CardHeader>
             <CardTitle>Manage Permissions</CardTitle>
             <CardDescription>
@@ -359,13 +364,13 @@ export function PlansForm({ mode, planId }: PlansFormProps) {
           </CardHeader>
           <CardContent>
             {!isEdit ? (
-              <div className='flex h-[400px] items-center justify-center rounded-lg border border-dashed'>
+              <div className='flex min-h-[300px] items-center justify-center rounded-lg border border-dashed'>
                 <p className='text-muted-foreground'>
                   Tersedia setelah plan dibuat.
                 </p>
               </div>
             ) : (
-              <ScrollArea className='h-[600px] pr-4'>
+              <ScrollArea className='h-[calc(100vh-280px)] min-h-[400px] pr-4'>
                 <div className='space-y-4'>
                   {tree?.map((item: PermissionTreeItem) => (
                     <PermissionItem
@@ -404,32 +409,44 @@ function PermissionItem({
 }: PermissionItemProps) {
   const isExpanded = expandedIds.includes(item.id)
   const isSelected = selectedIds.includes(item.id)
-  const hasChildren = item.children && item.children.length > 0
+  const hasChildren = !!(item.children && item.children.length > 0)
+  const allChildIds = getAllChildIds(item.children || [])
+    const selectedChildrenCount = allChildIds.filter((id) =>
+      selectedIds.includes(id)
+    ).length
+    const isAllSelected =
+      hasChildren && allChildIds.length > 0
+        ? selectedChildrenCount === allChildIds.length
+        : isSelected
+    const isIndeterminate =
+      hasChildren &&
+      selectedChildrenCount > 0 &&
+      selectedChildrenCount < allChildIds.length
 
-  return (
-    <div className='ml-4'>
-      <div className='flex items-center gap-2 py-2'>
-        {hasChildren ? (
-          <Button
-            variant='ghost'
-            size='icon'
-            className='h-6 w-6'
-            onClick={() => onExpand(item.id)}
-          >
-            {isExpanded ? (
-              <ChevronDown className='h-4 w-4' />
-            ) : (
-              <ChevronRight className='h-4 w-4' />
-            )}
-          </Button>
-        ) : (
-          <div className='w-6' />
-        )}
-        <Checkbox
-          id={item.id}
-          checked={isSelected}
-          onCheckedChange={() => onToggle(item.id, item.children)}
-        />
+    return (
+      <div className='ml-4'>
+        <div className='flex items-center gap-2 py-2'>
+          {hasChildren ? (
+            <Button
+              variant='ghost'
+              size='icon'
+              className='h-6 w-6'
+              onClick={() => onExpand(item.id)}
+            >
+              {isExpanded ? (
+                <ChevronDown className='h-4 w-4' />
+              ) : (
+                <ChevronRight className='h-4 w-4' />
+              )}
+            </Button>
+          ) : (
+            <div className='w-6' />
+          )}
+          <Checkbox
+            id={item.id}
+            checked={isIndeterminate ? 'indeterminate' : isAllSelected}
+            onCheckedChange={() => onToggle(item.id, item.children)}
+          />
         <label
           htmlFor={item.id}
           className='cursor-pointer text-sm leading-none font-medium'
