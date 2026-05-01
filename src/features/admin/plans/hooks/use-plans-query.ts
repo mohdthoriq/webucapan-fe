@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Plan, PaginationApiResponse } from '@/types'
+import type { Plan, ApiResponse, PaginationApiResponse } from '@/types'
 import apiClient from '@/lib/api-client'
 import { QUERY_KEY_ADMIN } from '@/constants/query-key'
 
@@ -41,5 +41,18 @@ export function usePlansQuery(params?: PlansQueryParams) {
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1, // optional: retry once only
+  })
+}
+
+export function usePlanDetailQuery(planId: string) {
+  return useQuery({
+    queryKey: [QUERY_KEY_ADMIN.PLANS, planId],
+    queryFn: async () => {
+      const response = await apiClient.get<ApiResponse<Plan>>(
+        `/subscriptions/plans/${planId}`
+      )
+      return response.data.data
+    },
+    enabled: !!planId,
   })
 }

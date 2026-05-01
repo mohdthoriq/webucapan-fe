@@ -2,8 +2,7 @@ import { getRouteApi } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { PlansDialogs } from './components/plans-dialogs'
-import { PlansProvider, usePlans } from './components/plans-provider'
+import { PlansProvider } from './components/plans-provider'
 import { PlansTable } from './components/plans-table'
 
 // We will update this to '/_authenticated/admin/plans/' after renaming the route
@@ -12,7 +11,6 @@ const route = getRouteApi('/_authenticated/admin/plans/')
 function PlansContent() {
   const search = route.useSearch() as Record<string, string>
   const navigate = route.useNavigate()
-  const { setOpen } = usePlans()
 
   return (
     <Card>
@@ -30,7 +28,7 @@ function PlansContent() {
             <Button variant={'link'} onClick={() => history.go(-1)}>
               Kembali
             </Button>
-            <Button onClick={() => setOpen('add')}>
+            <Button onClick={() => navigate({ to: '/admin/plans/add' })}>
               <Plus className='mr-2 h-4 w-4' />
               Tambah Plan
             </Button>
@@ -40,7 +38,6 @@ function PlansContent() {
       </CardHeader>
       <CardContent>
         <PlansTable search={search} navigate={navigate} />
-        <PlansDialogs />
       </CardContent>
     </Card>
   )

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Plan } from '@/types'
+import { type Plan, type ApiResponse } from '@/types'
 import {
   createPlanSchema,
   type CreatePlanFormData,
@@ -13,10 +13,11 @@ import {
 } from './use-plans-mutation'
 
 type usePlansFormProps = {
-  currentRow?: Plan
+  currentRow?: Plan | null
+  onSuccess?: (data?: ApiResponse<Plan>) => void
 }
 
-export function usePlansForm({ currentRow }: usePlansFormProps) {
+export function usePlansForm({ currentRow, onSuccess }: usePlansFormProps) {
   const isEdit = !!currentRow
   const form = useForm<CreatePlanFormData>({
     resolver: zodResolver(createPlanSchema),
@@ -64,11 +65,13 @@ export function usePlansForm({ currentRow }: usePlansFormProps) {
         id: currentRow.id,
         ...data,
       }
-      await updateMutation.mutateAsync(updateData)
+      const res = await updateMutation.mutateAsync(updateData)
       form.reset()
+      onSuccess?.(res)
     } else {
-      await createMutation.mutateAsync(data)
+      const res = await createMutation.mutateAsync(data)
       form.reset()
+      onSuccess?.(res)
     }
   }
 

@@ -12,6 +12,7 @@ import {
   useReactTable,
   type Table as TanstackTable,
 } from '@tanstack/react-table'
+import { useNavigate } from '@tanstack/react-router'
 import type { Plan } from '@/types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -222,14 +223,25 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table }: { table: TanstackTable<Plan> }) {
+function TableRows({
+  table,
+}: {
+  table: TanstackTable<Plan>
+}) {
+  const navigate = useNavigate()
   return (
     <>
       {table.getRowModel().rows.map((row) => (
         <TableRow
           key={row.id}
           data-state={row.getIsSelected() && 'selected'}
-          className='group/row'
+          className='group/row cursor-pointer'
+          onClick={() => {
+            navigate({
+              to: '/admin/plans/$planId',
+              params: { planId: row.original.id },
+            })
+          }}
         >
           {row.getVisibleCells().map((cell) => (
             <TableCell
@@ -239,6 +251,12 @@ function TableRows({ table }: { table: TanstackTable<Plan> }) {
                 cell.column.columnDef.meta?.className,
                 cell.column.columnDef.meta?.tdClassName
               )}
+              onClick={(e) => {
+                // Prevent row click if clicking selection column
+                if (cell.column.id === 'select') {
+                  e.stopPropagation()
+                }
+              }}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

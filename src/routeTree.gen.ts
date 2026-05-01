@@ -72,6 +72,7 @@ import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminMenuCategoriesIndexRouteImport } from './routes/_authenticated/admin/menu-categories/index'
 import { Route as AuthenticatedAdminDashboardIndexRouteImport } from './routes/_authenticated/admin/dashboard/index'
 import { Route as AuthenticatedAdminAccountCategoriesIndexRouteImport } from './routes/_authenticated/admin/account-categories/index'
+import { Route as AuthenticatedAdminPlansAddRouteImport } from './routes/_authenticated/admin/plans/add'
 import { Route as AuthenticatedSettingsCompanyRolesEditIndexRouteImport } from './routes/_authenticated/settings/company-roles/edit/index'
 import { Route as AuthenticatedSettingsCompanyRolesAddIndexRouteImport } from './routes/_authenticated/settings/company-roles/add/index'
 import { Route as AuthenticatedSalesOrdersEditIndexRouteImport } from './routes/_authenticated/sales/orders/edit/index'
@@ -88,7 +89,7 @@ import { Route as AuthenticatedPurchasesInvoicesEditIndexRouteImport } from './r
 import { Route as AuthenticatedPurchasesInvoicesDetailIndexRouteImport } from './routes/_authenticated/purchases/invoices/detail/index'
 import { Route as AuthenticatedPurchasesInvoicesAddIndexRouteImport } from './routes/_authenticated/purchases/invoices/add/index'
 import { Route as AuthenticatedPurchasesDeliveryDetailIndexRouteImport } from './routes/_authenticated/purchases/delivery/detail/index'
-import { Route as AuthenticatedAdminPlansPlanIdPermissionsIndexRouteImport } from './routes/_authenticated/admin/plans/$planId/permissions/index'
+import { Route as AuthenticatedAdminPlansPlanIdIndexRouteImport } from './routes/_authenticated/admin/plans/$planId/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -454,6 +455,12 @@ const AuthenticatedAdminAccountCategoriesIndexRoute =
     path: '/account-categories/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminPlansAddRoute =
+  AuthenticatedAdminPlansAddRouteImport.update({
+    id: '/plans/add',
+    path: '/plans/add',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedSettingsCompanyRolesEditIndexRoute =
   AuthenticatedSettingsCompanyRolesEditIndexRouteImport.update({
     id: '/settings/company-roles/edit/',
@@ -550,10 +557,10 @@ const AuthenticatedPurchasesDeliveryDetailIndexRoute =
     path: '/purchases/delivery/detail/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminPlansPlanIdPermissionsIndexRoute =
-  AuthenticatedAdminPlansPlanIdPermissionsIndexRouteImport.update({
-    id: '/plans/$planId/permissions/',
-    path: '/plans/$planId/permissions/',
+const AuthenticatedAdminPlansPlanIdIndexRoute =
+  AuthenticatedAdminPlansPlanIdIndexRouteImport.update({
+    id: '/plans/$planId/',
+    path: '/plans/$planId/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 
@@ -584,6 +591,7 @@ export interface FileRoutesByFullPath {
   '/rental': typeof AuthenticatedRentalIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
   '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
@@ -620,6 +628,7 @@ export interface FileRoutesByFullPath {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/purchases/delivery/detail': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/purchases/invoices/add': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
   '/purchases/invoices/detail': typeof AuthenticatedPurchasesInvoicesDetailIndexRoute
@@ -636,7 +645,6 @@ export interface FileRoutesByFullPath {
   '/sales/orders/edit': typeof AuthenticatedSalesOrdersEditIndexRoute
   '/settings/company-roles/add': typeof AuthenticatedSettingsCompanyRolesAddIndexRoute
   '/settings/company-roles/edit': typeof AuthenticatedSettingsCompanyRolesEditIndexRoute
-  '/admin/plans/$planId/permissions': typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -665,6 +673,7 @@ export interface FileRoutesByTo {
   '/rental': typeof AuthenticatedRentalIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
   '/admin/menu-categories': typeof AuthenticatedAdminMenuCategoriesIndexRoute
@@ -701,6 +710,7 @@ export interface FileRoutesByTo {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/purchases/delivery/detail': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/purchases/invoices/add': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
   '/purchases/invoices/detail': typeof AuthenticatedPurchasesInvoicesDetailIndexRoute
@@ -717,7 +727,6 @@ export interface FileRoutesByTo {
   '/sales/orders/edit': typeof AuthenticatedSalesOrdersEditIndexRoute
   '/settings/company-roles/add': typeof AuthenticatedSettingsCompanyRolesAddIndexRoute
   '/settings/company-roles/edit': typeof AuthenticatedSettingsCompanyRolesEditIndexRoute
-  '/admin/plans/$planId/permissions': typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -748,6 +757,7 @@ export interface FileRoutesById {
   '/_authenticated/rental/': typeof AuthenticatedRentalIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/_authenticated/admin/dashboard/': typeof AuthenticatedAdminDashboardIndexRoute
   '/_authenticated/admin/menu-categories/': typeof AuthenticatedAdminMenuCategoriesIndexRoute
@@ -784,6 +794,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
   '/_authenticated/settings/users/': typeof AuthenticatedSettingsUsersIndexRoute
+  '/_authenticated/admin/plans/$planId/': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/_authenticated/purchases/delivery/detail/': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/_authenticated/purchases/invoices/add/': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
   '/_authenticated/purchases/invoices/detail/': typeof AuthenticatedPurchasesInvoicesDetailIndexRoute
@@ -800,7 +811,6 @@ export interface FileRoutesById {
   '/_authenticated/sales/orders/edit/': typeof AuthenticatedSalesOrdersEditIndexRoute
   '/_authenticated/settings/company-roles/add/': typeof AuthenticatedSettingsCompanyRolesAddIndexRoute
   '/_authenticated/settings/company-roles/edit/': typeof AuthenticatedSettingsCompanyRolesEditIndexRoute
-  '/_authenticated/admin/plans/$planId/permissions/': typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -831,6 +841,7 @@ export interface FileRouteTypes {
     | '/rental'
     | '/reports'
     | '/settings'
+    | '/admin/plans/add'
     | '/admin/account-categories'
     | '/admin/dashboard'
     | '/admin/menu-categories'
@@ -867,6 +878,7 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/admin/plans/$planId'
     | '/purchases/delivery/detail'
     | '/purchases/invoices/add'
     | '/purchases/invoices/detail'
@@ -883,7 +895,6 @@ export interface FileRouteTypes {
     | '/sales/orders/edit'
     | '/settings/company-roles/add'
     | '/settings/company-roles/edit'
-    | '/admin/plans/$planId/permissions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -912,6 +923,7 @@ export interface FileRouteTypes {
     | '/rental'
     | '/reports'
     | '/settings'
+    | '/admin/plans/add'
     | '/admin/account-categories'
     | '/admin/dashboard'
     | '/admin/menu-categories'
@@ -948,6 +960,7 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/admin/plans/$planId'
     | '/purchases/delivery/detail'
     | '/purchases/invoices/add'
     | '/purchases/invoices/detail'
@@ -964,7 +977,6 @@ export interface FileRouteTypes {
     | '/sales/orders/edit'
     | '/settings/company-roles/add'
     | '/settings/company-roles/edit'
-    | '/admin/plans/$planId/permissions'
   id:
     | '__root__'
     | '/_authenticated'
@@ -994,6 +1006,7 @@ export interface FileRouteTypes {
     | '/_authenticated/rental/'
     | '/_authenticated/reports/'
     | '/_authenticated/settings/'
+    | '/_authenticated/admin/plans/add'
     | '/_authenticated/admin/account-categories/'
     | '/_authenticated/admin/dashboard/'
     | '/_authenticated/admin/menu-categories/'
@@ -1030,6 +1043,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
     | '/_authenticated/settings/users/'
+    | '/_authenticated/admin/plans/$planId/'
     | '/_authenticated/purchases/delivery/detail/'
     | '/_authenticated/purchases/invoices/add/'
     | '/_authenticated/purchases/invoices/detail/'
@@ -1046,7 +1060,6 @@ export interface FileRouteTypes {
     | '/_authenticated/sales/orders/edit/'
     | '/_authenticated/settings/company-roles/add/'
     | '/_authenticated/settings/company-roles/edit/'
-    | '/_authenticated/admin/plans/$planId/permissions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1506,6 +1519,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAccountCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/plans/add': {
+      id: '/_authenticated/admin/plans/add'
+      path: '/plans/add'
+      fullPath: '/admin/plans/add'
+      preLoaderRoute: typeof AuthenticatedAdminPlansAddRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/settings/company-roles/edit/': {
       id: '/_authenticated/settings/company-roles/edit/'
       path: '/settings/company-roles/edit'
@@ -1618,17 +1638,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPurchasesDeliveryDetailIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/plans/$planId/permissions/': {
-      id: '/_authenticated/admin/plans/$planId/permissions/'
-      path: '/plans/$planId/permissions'
-      fullPath: '/admin/plans/$planId/permissions'
-      preLoaderRoute: typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRouteImport
+    '/_authenticated/admin/plans/$planId/': {
+      id: '/_authenticated/admin/plans/$planId/'
+      path: '/plans/$planId'
+      fullPath: '/admin/plans/$planId'
+      preLoaderRoute: typeof AuthenticatedAdminPlansPlanIdIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
   }
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminPlansAddRoute: typeof AuthenticatedAdminPlansAddRoute
   AuthenticatedAdminAccountCategoriesIndexRoute: typeof AuthenticatedAdminAccountCategoriesIndexRoute
   AuthenticatedAdminDashboardIndexRoute: typeof AuthenticatedAdminDashboardIndexRoute
   AuthenticatedAdminMenuCategoriesIndexRoute: typeof AuthenticatedAdminMenuCategoriesIndexRoute
@@ -1637,11 +1658,12 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminPlansIndexRoute: typeof AuthenticatedAdminPlansIndexRoute
   AuthenticatedAdminSubscriptionsIndexRoute: typeof AuthenticatedAdminSubscriptionsIndexRoute
   AuthenticatedAdminTransactionTypesIndexRoute: typeof AuthenticatedAdminTransactionTypesIndexRoute
-  AuthenticatedAdminPlansPlanIdPermissionsIndexRoute: typeof AuthenticatedAdminPlansPlanIdPermissionsIndexRoute
+  AuthenticatedAdminPlansPlanIdIndexRoute: typeof AuthenticatedAdminPlansPlanIdIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminPlansAddRoute: AuthenticatedAdminPlansAddRoute,
     AuthenticatedAdminAccountCategoriesIndexRoute:
       AuthenticatedAdminAccountCategoriesIndexRoute,
     AuthenticatedAdminDashboardIndexRoute:
@@ -1656,8 +1678,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
       AuthenticatedAdminSubscriptionsIndexRoute,
     AuthenticatedAdminTransactionTypesIndexRoute:
       AuthenticatedAdminTransactionTypesIndexRoute,
-    AuthenticatedAdminPlansPlanIdPermissionsIndexRoute:
-      AuthenticatedAdminPlansPlanIdPermissionsIndexRoute,
+    AuthenticatedAdminPlansPlanIdIndexRoute:
+      AuthenticatedAdminPlansPlanIdIndexRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =

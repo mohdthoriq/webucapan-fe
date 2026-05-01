@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { DataTableRowActions } from './plans-row-actions'
 
 export const plansColumns: ColumnDef<Plan>[] = [
   {
@@ -158,10 +157,5 @@ export const plansColumns: ColumnDef<Plan>[] = [
     meta: {
       className: 'w-full',
     },
-  },
-  {
-    id: 'actions',
-    cell: DataTableRowActions,
-    meta: { className: 'w-10' },
   },
 ]
