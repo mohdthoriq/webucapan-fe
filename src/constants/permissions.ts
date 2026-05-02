@@ -90,6 +90,7 @@ export const PERMISSION_KEY = {
   CASH_BANK_SPEND: 'cash.bank.spend',
   CASH_BANK_RECEIVE: 'cash.bank.receive',
   CASH_BANK_EDIT: 'cash.bank.edit',
+  CASH_BANK_DELETE: 'cash.bank.delete',
 
   // Account
   ACCOUNT: 'account',

@@ -3,9 +3,6 @@ import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import { type CashBankTransactionDetail, TransactionCode } from '@/types'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
-// import { useDeleteSalesInvoiceMutation } from '../hooks/use-invoice-payments.mutation'
-// import { InvoiceDeleteDialog } from './cash-bank-delete-dialog'
-
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { useHasPermission } from '@/hooks/use-has-permission'
@@ -17,6 +14,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
+import { useDeletePaymentTransactionMutation } from '../hooks/use-cash-bank-detail.mutation'
+import { CashBankDeleteDialog } from './cash-bank-delete-dialog'
 
 type CashBankRowActionsProps = {
   transaction: CashBankTransactionDetail
@@ -26,10 +25,15 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
   const navigate = useNavigate()
   const { openDialog } = useGlobalDialogStore()
   const [showLockDialog, setShowLockDialog] = useState(false)
+  const [showLockDeleteDialog, setShowLockDeleteDialog] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const canEdit = useHasPermission(PERMISSION_KEY.CASH_BANK_EDIT)
+  const canDelete = useHasPermission(PERMISSION_KEY.CASH_BANK_DELETE)
+
+  const deleteMutation = useDeletePaymentTransactionMutation()
 
   const handleEdit = () => {
-    if (!canEdit && transaction.transaction_type?.code === TransactionCode.BankTransfer) {
+    if (!canEdit) {
       setShowLockDialog(true)
       return
     }
@@ -46,6 +50,19 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
       search: {
         transactionId: transaction.id,
         accountId: transaction?.account?.id || '',
+      },
+    })
+  }
+
+  const handleDelete = () => {
+    deleteMutation.mutate(transaction.id, {
+      onSuccess: () => {
+        setShowDeleteDialog(false)
+        navigate({
+          to: '/cash-bank/$accountName',
+          params: { accountName: transaction.account.name },
+          search: { id: transaction.account.id }
+        })
       },
     })
   }
@@ -67,17 +84,39 @@ export function CashBankRowActions({ transaction }: CashBankRowActionsProps) {
             <PencilIcon className='h-4 w-4' />
             Ubah
           </DropdownMenuItem>
-          <DropdownMenuItem disabled>
+          <DropdownMenuItem
+            onClick={() => {
+              if (canDelete) {
+                setShowDeleteDialog(true)
+              } else {
+                setShowLockDeleteDialog(true)
+              }
+            }}
+          >
             <Trash2Icon className='h-4 w-4' />
             Hapus
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
+      <CashBankDeleteDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        onConfirm={handleDelete}
+        transaction={transaction}
+        isLoading={deleteMutation.isPending}
+      />
+
       <FeatureLockDialog
         open={showLockDialog}
         onOpenChange={setShowLockDialog}
         feature='Ubah Transaksi'
+      />
+
+      <FeatureLockDialog
+        open={showLockDeleteDialog}
+        onOpenChange={setShowLockDeleteDialog}
+        feature='Hapus Transaksi'
       />
     </>
   )

@@ -1,7 +1,7 @@
-import { format } from '@/lib/date'
 import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
 import type { SalesInvoice } from '@/types'
+import { format } from '@/lib/date'
 import { cn, formatNumber, getStatusStyles, invoiceLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -210,6 +210,27 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
           <Badge className={cn(getStatusStyles(payment_status))}>
             {invoiceLabel[payment_status] || payment_status}
           </Badge>
+        </div>
+      )
+    },
+    meta: {
+      className: 'w-full px-2',
+    },
+  },
+  {
+    accessorKey: 'Pembayaran Kas & Bank',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Pembayaran Kas & Bank' />
+    ),
+    cell: ({ row }) => {
+      const { is_pos, payments } = row.original
+      const accountName = is_pos ? payments?.[0]?.account?.name || '-' : ''
+      const methodName = is_pos ? payments?.[0]?.method || '-' : ''
+
+      return (
+        <div className='p-2'>
+          <LongText className='truncate font-medium'>{accountName}</LongText>
+          <LongText className='truncate text-secondary-foreground/80'>{methodName}</LongText>
         </div>
       )
     },

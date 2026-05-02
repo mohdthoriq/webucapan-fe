@@ -38,5 +38,6 @@ export interface Payment extends GlobalResponse {
   sales_invoice?: SalesInvoice
   purchase_invoice?: PurchaseInvoice
   expense?: Expense
+  method: string
   tags?: Tag[]
 }

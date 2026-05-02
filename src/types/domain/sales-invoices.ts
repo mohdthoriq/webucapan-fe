@@ -84,4 +84,5 @@ export interface SalesInvoice extends GlobalResponse {
   expedition: Expedition | null
   tracking_number: string
   note?: string | null
+  is_pos: boolean
 }
