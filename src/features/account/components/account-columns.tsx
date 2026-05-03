@@ -3,6 +3,7 @@ import { type Account } from '@/types'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn, formatNumber } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Tooltip,
   TooltipContent,
@@ -11,7 +12,6 @@ import {
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { useAccounts } from './account-provider'
-import { Checkbox } from '@/components/ui/checkbox'
 
 // eslint-disable-next-line
 const NameCell = ({ row }: { row: Row<Account> }) => {
@@ -65,11 +65,15 @@ const NameCell = ({ row }: { row: Row<Account> }) => {
 // eslint-disable-next-line
 const SaldoCell = ({ row }: { row: Row<Account> }) => {
   const account = row.original
+  const isBalanceMinus = account.balance < 0
   const { setOpen, setCurrentRow } = useAccounts()
 
   return (
     <div
-      className='cursor-pointer overflow-hidden p-2 text-blue-600 hover:underline'
+      className={cn(
+        'cursor-pointer overflow-hidden p-2 hover:underline',
+        isBalanceMinus ? 'text-red-600' : 'text-blue-600'
+      )}
       onClick={() => {
         setCurrentRow(account)
         setOpen('ledger')

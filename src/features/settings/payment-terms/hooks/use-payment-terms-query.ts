@@ -6,7 +6,7 @@ import { QUERY_KEY } from '@/constants/query-key'
 export interface PaymentTermsQueryParams {
   page?: number
   limit?: number
-  name?: string
+  search?: string
   company_id?: string
 }
 
@@ -16,14 +16,14 @@ export function usePaymentTermsQuery(params?: PaymentTermsQueryParams) {
       QUERY_KEY.PAYMENT_TERMS,
       params?.page,
       params?.limit,
-      params?.name,
+      params?.search,
       params?.company_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 

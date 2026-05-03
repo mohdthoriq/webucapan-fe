@@ -72,7 +72,7 @@ export function Taxes() {
   const queryParams: TaxesQueryParams = {
     page: search?.page ? parseInt(search.page) : undefined,
     limit: search?.limit ? parseInt(search.limit) : undefined,
-    name: search?.name ? search.name : undefined,
+    search: search?.search ? search.search : undefined,
   }
 
   return (

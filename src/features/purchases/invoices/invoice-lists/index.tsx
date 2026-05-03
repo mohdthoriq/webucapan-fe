@@ -90,7 +90,7 @@ function InvoiceLists() {
   const queryParams: InvoiceListQueryParams = {
     page: search?.page ? parseInt(search.page) : undefined,
     limit: search?.limit ? parseInt(search.limit) : undefined,
-    invoice_number: (search.invoice_number as string) || undefined,
+    search: (search.search as string) || undefined,
     date_from: search?.date_from ? new Date(search.date_from) : undefined,
     date_to: search?.date_to ? new Date(search.date_to) : undefined,
     due_date_from: search?.due_date_from

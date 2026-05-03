@@ -88,7 +88,7 @@ function InvoiceLists() {
   const queryParams: InvoiceListQueryParams = {
     page: search.page ? parseInt(search.page as string) : undefined,
     limit: search.limit ? parseInt(search.limit as string) : undefined,
-    invoice_number: (search.invoice_number as string) || undefined,
+    search: (search.search as string) || undefined,
     payment_status:
       (search.payment_status as InvoiceListQueryParams['payment_status']) ||
       undefined,

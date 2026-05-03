@@ -10,7 +10,7 @@ export interface ExpenseListQueryParams {
   company_id?: string
   contact_id?: string
   payment_status?: 'unpaid' | 'partially_paid' | 'paid'
-  expense_number?: string
+  search?: string
   date_from?: Date
   date_to?: Date
   tags?: string[]
@@ -23,8 +23,8 @@ export function useExpensesListQuery(params?: ExpenseListQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.expense_number
-          ? { expense_number: params.expense_number }
+        ...(params?.search
+          ? { search: params.search }
           : {}),
         ...(params?.date_from
           ? { date_from: params.date_from.toISOString() }

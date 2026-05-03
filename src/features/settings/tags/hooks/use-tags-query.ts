@@ -7,7 +7,7 @@ export interface TagsQueryParams {
   page?: number
   limit?: number
   order?: string
-  name?: string
+  search?: string
 }
 
 export function useTagsQuery(params?: TagsQueryParams) {
@@ -17,13 +17,13 @@ export function useTagsQuery(params?: TagsQueryParams) {
       params?.page,
       params?.limit,
       params?.order,
-      params?.name,
+      params?.search,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.order ? { order: params.order } : {}),
       })
 

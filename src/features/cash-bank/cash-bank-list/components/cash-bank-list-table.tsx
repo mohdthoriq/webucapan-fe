@@ -51,19 +51,18 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'Nomor', searchKey: 'search', type: 'string' },
-      { columnId: 'Deskripsi', searchKey: 'search', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -76,11 +75,13 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
@@ -107,11 +108,7 @@ export function CashBankListsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari nomor atau deskripsi...'
-        searchKey='Deskripsi'
-      >
+      <DataTableToolbar table={table} searchPlaceholder='Cari...'>
         <CashBankListFilter search={search} navigate={navigate} />
       </DataTableToolbar>
       {/* <div className='flex flex-col gap-2 md:flex-row md:items-center'>

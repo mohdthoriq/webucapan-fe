@@ -35,10 +35,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import {
-  DataTableBulkActions,
-  DataTableToolbar,
-} from '@/components/data-table'
+import { DataTableBulkActions, DataTableToolbar } from '@/components/data-table'
 import { FeatureLockDialog } from '@/components/dialog/feature-lock.dialog'
 import { useBulkDeleteAccountMutation } from '../hooks/use-account-mutation'
 import { AccountBulkDeleteDialog } from './account-bulk-delete-dialog'
@@ -70,16 +67,18 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
 
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'Nama', searchKey: 'search', type: 'string' }],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -93,11 +92,13 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
       columnFilters,
       columnVisibility,
       expanded,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onExpandedChange: setExpanded,
@@ -131,11 +132,7 @@ export function AccountsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari akun...'
-        searchKey='Nama'
-      />
+      <DataTableToolbar table={table} searchPlaceholder='Cari...' />
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

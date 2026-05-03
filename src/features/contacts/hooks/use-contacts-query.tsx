@@ -7,7 +7,7 @@ export interface ContactQueryParams {
   page?: number
   limit?: number
   company_id?: string
-  name?: string
+  search?: string
   type_id?: string
 }
 
@@ -18,14 +18,14 @@ export function useContactsQuery(params?: ContactQueryParams) {
       params?.page,
       params?.limit,
       params?.company_id,
-      params?.name,
+      params?.search,
       params?.type_id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
         ...(params?.type_id ? { type_id: params.type_id } : {}),
       })
@@ -49,13 +49,13 @@ export function useContactTypesQuery(params?: ContactQueryParams) {
       params?.page,
       params?.limit,
       params?.company_id,
-      params?.name,
+      params?.search,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.company_id ? { company_id: params.company_id } : {}),
       })
 

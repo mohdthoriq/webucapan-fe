@@ -68,7 +68,7 @@ function Tags() {
   const queryParams: TagsQueryParams = {
     page: search?.page ? parseInt(search.page) : undefined,
     limit: search?.limit ? parseInt(search.limit) : undefined,
-    name: search?.name ? search.name : undefined,
+    search: (search.search as string) || undefined,
   }
 
   return (
