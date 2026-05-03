@@ -66,21 +66,30 @@ export function useInvoiceTotals(taxes: Tax[]) {
     }
 
     // Sync individual item amounts
+    const currentDiscounts = form.getValues('additional_discounts') || []
     totals.additionalDiscounts?.forEach((amount, index) => {
-      if (form.getValues(`additional_discounts.${index}.amount`) !== amount) {
-        form.setValue(`additional_discounts.${index}.amount`, amount)
+      if (index < currentDiscounts.length) {
+        if (form.getValues(`additional_discounts.${index}.amount`) !== amount) {
+          form.setValue(`additional_discounts.${index}.amount`, amount)
+        }
       }
     })
 
+    const currentFees = form.getValues('transaction_fees') || []
     totals.transactionFees?.forEach((amount, index) => {
-      if (form.getValues(`transaction_fees.${index}.amount`) !== amount) {
-        form.setValue(`transaction_fees.${index}.amount`, amount)
+      if (index < currentFees.length) {
+        if (form.getValues(`transaction_fees.${index}.amount`) !== amount) {
+          form.setValue(`transaction_fees.${index}.amount`, amount)
+        }
       }
     })
 
+    const currentDeductions = form.getValues('deductions') || []
     totals.deductions?.forEach((amount, index) => {
-      if (form.getValues(`deductions.${index}.amount`) !== amount) {
-        form.setValue(`deductions.${index}.amount`, amount)
+      if (index < currentDeductions.length) {
+        if (form.getValues(`deductions.${index}.amount`) !== amount) {
+          form.setValue(`deductions.${index}.amount`, amount)
+        }
       }
     })
   }, [form, totals])
