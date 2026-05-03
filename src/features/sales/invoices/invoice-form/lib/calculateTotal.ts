@@ -22,7 +22,6 @@ export const calculateTotals = (
 ) => {
   let newSubtotal = 0
   let newTaxTotal = 0
-  let totalGross = 0
   const taxBreakdown: Record<string, number> = {}
 
   items.forEach((item) => {
@@ -32,7 +31,6 @@ export const calculateTotals = (
 
     const discountAmount = (quantity * unitPrice * discount) / 100
     const grossLineTotal = quantity * unitPrice - discountAmount
-    totalGross += grossLineTotal
 
     let lineSubtotal = grossLineTotal
     let lineTax = 0
@@ -64,7 +62,7 @@ export const calculateTotals = (
   additionalDiscounts?.forEach((discount) => {
     const value = Number(discount.value) || 0
     const amount =
-      discount.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      discount.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     additionalDiscountsTotal += amount
   })
 
@@ -72,7 +70,7 @@ export const calculateTotals = (
   transactionFees?.forEach((fee) => {
     const value = Number(fee.value) || 0
     const amount =
-      fee.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      fee.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     transactionFeesTotal += amount
   })
 
@@ -80,7 +78,7 @@ export const calculateTotals = (
   deductions?.forEach((deduction) => {
     const value = Number(deduction.value) || 0
     const amount =
-      deduction.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      deduction.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     deductionsTotal += amount
   })
 
@@ -101,15 +99,15 @@ export const calculateTotals = (
     taxBreakdown,
     additionalDiscounts: additionalDiscounts?.map((d) => {
       const value = Number(d.value) || 0
-      return d.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      return d.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     }),
     transactionFees: transactionFees?.map((f) => {
       const value = Number(f.value) || 0
-      return f.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      return f.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     }),
     deductions: deductions?.map((d) => {
       const value = Number(d.value) || 0
-      return d.type === UnitsType.percent ? (totalGross * value) / 100 : value
+      return d.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
     }),
   }
 }
