@@ -55,7 +55,6 @@ function AccountCombobox({
   } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
-    searchKey: 'search',
     extraParams: {
       code_prefix: codePrefix,
       is_parent: false,

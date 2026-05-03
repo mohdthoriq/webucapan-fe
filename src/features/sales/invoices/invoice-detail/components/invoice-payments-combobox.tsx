@@ -35,7 +35,6 @@ export function InvoicePaymentsCombobox({
   } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
-    searchKey: 'search',
     extraParams: {
       code_prefix: ['1-100'],
       is_parent: false,

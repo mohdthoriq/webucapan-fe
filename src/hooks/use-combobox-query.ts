@@ -14,7 +14,6 @@ export function useComboboxQuery<T extends { id: string }, P>({
   queryHook,
   limit = 20,
   extraParams = {} as Partial<P>,
-  searchKey = 'name',
 }: UseComboboxQueryProps<T, P>) {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -26,7 +25,7 @@ export function useComboboxQuery<T extends { id: string }, P>({
   const query = queryHook({
     page: currentPage,
     limit,
-    [searchKey]: debouncedSearchTerm || undefined,
+    search: debouncedSearchTerm || undefined,
     ...extraParams,
   } as unknown as P)
 

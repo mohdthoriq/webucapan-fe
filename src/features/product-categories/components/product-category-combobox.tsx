@@ -35,7 +35,6 @@ export function ProductCategoryCombobox({
   } = useComboboxQuery<ProductCategory, ProductCategoryQueryParams>({
     queryHook: useProductCategoryQuery,
     limit,
-    searchKey: 'name',
   })
 
   const selectedItem = useMemo(
