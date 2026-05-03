@@ -16,6 +16,7 @@ export function useInvoiceTotals(taxes: Tax[]) {
     transactionFees,
     deductions,
     shippingFee,
+    isTaxInclusive,
   ] = useWatch({
     control: form.control,
     name: [
@@ -24,6 +25,7 @@ export function useInvoiceTotals(taxes: Tax[]) {
       'transaction_fees',
       'deductions',
       'shipping_fee',
+      'is_tax_inclusive',
     ],
   })
 
@@ -32,22 +34,22 @@ export function useInvoiceTotals(taxes: Tax[]) {
   const totals = useMemo(
     () =>
       calculateTotals(
-        form,
         invoiceItems,
         additionalDiscounts,
         transactionFees,
         deductions,
         Number(shippingFee || 0),
-        taxes
+        taxes,
+        !!isTaxInclusive
       ),
     [
-      form,
       invoiceItems,
       additionalDiscounts,
       transactionFees,
       deductions,
       shippingFee,
       taxes,
+      isTaxInclusive,
     ]
   )
 

@@ -1,4 +1,3 @@
-import type { useForm } from 'react-hook-form'
 import type { Tax } from '@/types'
 import {
   type CreateInvoiceFormData,
@@ -7,10 +6,6 @@ import {
 } from '../types/invoice-form.schema'
 
 export const calculateTotals = (
-  form: Pick<
-    ReturnType<typeof useForm<CreateInvoiceFormData | UpdateInvoiceFormData>>,
-    'setValue' | 'getValues'
-  >,
   items: (CreateInvoiceFormData | UpdateInvoiceFormData)['sales_invoice_items'],
   additionalDiscounts: (
     | CreateInvoiceFormData
@@ -22,14 +17,13 @@ export const calculateTotals = (
   )['transaction_fees'],
   deductions: (CreateInvoiceFormData | UpdateInvoiceFormData)['deductions'],
   shippingFee: number,
-  taxes: Tax[]
+  taxes: Tax[],
+  isTaxInclusive: boolean
 ) => {
   let newSubtotal = 0
   let newTaxTotal = 0
   let newTotal = 0
   const taxBreakdown: Record<string, number> = {}
-
-  const isTaxInclusive = form.getValues('is_tax_inclusive')
 
   items.forEach((item) => {
     const quantity = Number(item.quantity) || 0
