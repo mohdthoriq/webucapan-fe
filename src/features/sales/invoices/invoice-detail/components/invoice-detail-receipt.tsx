@@ -362,13 +362,6 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
               </div>
             )}
 
-            <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
-              <span className='text-muted-foreground font-medium'>Total</span>
-              <span className='text-lg font-bold'>
-                {formatCurrency(Number(invoice.total), invoice.currency)}
-              </span>
-            </div>
-
             {/* Deductions */}
             {invoice.deductions?.map((deduction) => (
               <div
@@ -388,6 +381,13 @@ export function InvoiceDetailReceipt({ invoice }: InvoiceDetailReceiptProps) {
                 </span>
               </div>
             ))}
+
+            <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
+              <span className='text-muted-foreground font-medium'>Total</span>
+              <span className='text-lg font-bold'>
+                {formatCurrency(Number(invoice.total), invoice.currency)}
+              </span>
+            </div>
 
             {invoice.payments?.map((payment) => (
               <div

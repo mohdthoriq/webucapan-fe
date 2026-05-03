@@ -1,6 +1,7 @@
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { Plus, MinusCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { AccountsCombobox } from '@/features/account/components/account-combobox'
@@ -41,8 +42,8 @@ export function InvoiceFormSummary() {
   })
 
   return (
-    <div className='flex justify-end'>
-      <div className='w-full md:w-3/5'>
+    <div className='w-full'>
+      <div className='w-full'>
         <div className='hover:bg-muted flex justify-between border-b p-2 py-3 text-sm'>
           <span className='text-muted-foreground'>Sub Total</span>
           <span>{totals.subtotal.toLocaleString()}</span>
@@ -58,10 +59,15 @@ export function InvoiceFormSummary() {
               className='hover:bg-muted flex items-center justify-between border-b p-2 text-sm'
             >
               <div className='flex items-center gap-2'>
-                <MinusCircle
-                  className='hover:text-destructive size-4 cursor-pointer text-red-500 transition-colors'
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  className='hover:text-destructive h-6 w-6 text-red-500'
                   onClick={() => removeDiscount(index)}
-                />
+                >
+                  <MinusCircle className='size-4' />
+                </Button>
                 <span className='text-muted-foreground font-medium'>
                   Tambahan Diskon
                 </span>
@@ -158,10 +164,15 @@ export function InvoiceFormSummary() {
               className='hover:bg-muted flex items-center justify-between border-b p-2 text-sm'
             >
               <div className='flex items-center gap-2'>
-                <MinusCircle
-                  className='hover:text-destructive size-4 cursor-pointer text-red-500 transition-colors'
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  className='hover:text-destructive h-6 w-6 text-red-500'
                   onClick={() => removeFee(index)}
-                />
+                >
+                  <MinusCircle className='size-4' />
+                </Button>
                 <Input
                   {...control.register(`transaction_fees.${index}.name`)}
                   placeholder='Nama...'
@@ -242,7 +253,7 @@ export function InvoiceFormSummary() {
 
         <div className='text-md hover:bg-muted flex justify-between border-b p-2 py-3 font-semibold'>
           <span>Total</span>
-          <span>{totals.total.toLocaleString()}</span>
+          <span>{totals.totalBeforeDeductions.toLocaleString()}</span>
         </div>
 
         {/* Deductions */}
@@ -256,10 +267,15 @@ export function InvoiceFormSummary() {
               className='hover:bg-muted flex items-center justify-between border-b p-2 text-sm'
             >
               <div className='flex items-center gap-2'>
-                <MinusCircle
-                  className='hover:text-destructive size-4 cursor-pointer text-red-500 transition-colors'
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  className='hover:text-destructive h-6 w-6 text-red-500'
                   onClick={() => removeDeduction(index)}
-                />
+                >
+                  <MinusCircle className='size-4' />
+                </Button>
                 <FormField
                   control={control}
                   name={`deductions.${index}.account_id`}

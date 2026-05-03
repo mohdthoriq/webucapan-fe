@@ -13,7 +13,7 @@ import type {
   TransactionFee,
 } from './sales-invoices'
 import type { Tag } from './tag'
-import type { Tax } from './tax'
+import type { Tax, TransactionTax } from './tax'
 
 export interface PurchaseItems extends GlobalResponse {
   product: Product
@@ -43,7 +43,7 @@ export interface PurchaseInvoice extends GlobalResponse {
   purchase_invoice_items: PurchaseItems[]
   payments: Payment[]
   tags: (string | Tag)[]
-  taxes: Tax[]
+  taxes: TransactionTax[]
   additional_discounts: AdditionalDiscount[]
   transaction_fees: TransactionFee[]
   deductions: Deduction[]
