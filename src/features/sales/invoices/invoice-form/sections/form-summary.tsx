@@ -242,7 +242,7 @@ export function InvoiceFormSummary() {
 
         <div className='text-md hover:bg-muted flex justify-between border-b p-2 py-3 font-semibold'>
           <span>Total</span>
-          <span>{totals.total.toLocaleString()}</span>
+          <span>{totals.totalBeforeDeductions.toLocaleString()}</span>
         </div>
 
         {/* Deductions */}

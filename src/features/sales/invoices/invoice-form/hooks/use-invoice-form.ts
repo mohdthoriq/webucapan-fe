@@ -125,6 +125,7 @@ export function useInvoiceForm({
   })
 
   if (import.meta.env.VITE_API_URL_NODE_ENVIRONMENT === 'DEVELOPMENT') {
+    // eslint-disable-next-line no-console
     console.log(form.formState.errors)
   }
 
