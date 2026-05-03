@@ -13,7 +13,6 @@ export interface DeliveryListQueryParams {
   customer_id?: string
   document_status?: 'draft' | 'posted' | 'void'
   payment_status?: 'unpaid' | 'partially_paid' | 'paid'
-  invoice_number?: string
   date_from?: Date
   date_to?: Date
   expedition_id?: string
@@ -26,9 +25,6 @@ export function useDeliveryListQuery(params?: DeliveryListQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.invoice_number
-          ? { invoice_number: params.invoice_number }
-          : {}),
         ...(params?.date_from
           ? { date_from: params.date_from.toISOString() }
           : {}),

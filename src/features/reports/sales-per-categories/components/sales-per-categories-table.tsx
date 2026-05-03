@@ -52,18 +52,18 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
 
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'Nama Kategori', searchKey: 'search', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -77,11 +77,13 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
       columnFilters,
       columnVisibility,
       expanded,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onExpandedChange: setExpanded,
@@ -110,11 +112,7 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari kategori...'
-        searchKey='Nama Kategori'
-      />
+      <DataTableToolbar table={table} searchPlaceholder='Cari...' />
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
@@ -157,7 +155,7 @@ export function SalesPerCategoriesTable({ search, navigate }: DataTableProps) {
           {table.getRowModel().rows?.length > 0 &&
             salesPerCategoriesData?.summary && (
               <TableFooter className='bg-secondary hover:bg-secondary font-bold'>
-                <TableRow className='hover:bg-transparent border-none'>
+                <TableRow className='border-none hover:bg-transparent'>
                   <TableCell>Total</TableCell>
                   <TableCell>
                     {salesPerCategoriesData.summary.total_quantity}

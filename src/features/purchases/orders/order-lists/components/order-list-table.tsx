@@ -69,16 +69,16 @@ export function OrderListsTable({ search, navigate }: DataTableProps) {
     columnFilters,
     onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'Nomor Pesanan', searchKey: 'order_number', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -90,6 +90,7 @@ export function OrderListsTable({ search, navigate }: DataTableProps) {
       pagination,
       rowSelection,
       columnFilters,
+      globalFilter,
       columnVisibility,
     },
     manualPagination: true,
@@ -97,6 +98,7 @@ export function OrderListsTable({ search, navigate }: DataTableProps) {
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
+    onGlobalFilterChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -123,8 +125,7 @@ export function OrderListsTable({ search, navigate }: DataTableProps) {
     <div className='flex flex-1 flex-col gap-4'>
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari nomor order...'
-        searchKey='Nomor Pesanan'
+        searchPlaceholder='Cari...'
       >
         <div className='flex gap-2'>
           <OrderListFilter search={search} navigate={navigate} />

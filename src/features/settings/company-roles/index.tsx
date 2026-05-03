@@ -73,7 +73,7 @@ export function CompanyRoles() {
   const queryParams: RoleSettingsQueryParams = {
     page: search?.page ? parseInt(search.page) : undefined,
     limit: search?.limit ? parseInt(search.limit) : undefined,
-    name: search?.name ? search.name : undefined,
+    search: search?.search ? search.search : undefined,
   }
 
   return (

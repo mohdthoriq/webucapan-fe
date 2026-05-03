@@ -8,7 +8,7 @@ export interface UsersQueryParams {
   page?: number
   limit?: number
   company_id?: string
-  name?: string
+  search?: string
 }
 
 export function useUsersQuery(params?: UsersQueryParams) {
@@ -19,14 +19,14 @@ export function useUsersQuery(params?: UsersQueryParams) {
       QUERY_KEY.USERS,
       params?.page,
       params?.limit,
-      params?.name,
+      params?.search,
       params?.company_id ?? company?.id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
       })
 
       const url = queryParams.toString()

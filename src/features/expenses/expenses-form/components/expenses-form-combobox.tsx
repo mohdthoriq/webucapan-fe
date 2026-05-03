@@ -118,7 +118,6 @@ function AccountCombobox({
   } = useComboboxQuery<Account, AccountQueryParams>({
     queryHook: useAccountsQuery,
     limit,
-    searchKey: 'search',
     extraParams: {
       code_prefix: ['5-500', '6-600', '8-800', '9-900'],
       is_parent: isParent,

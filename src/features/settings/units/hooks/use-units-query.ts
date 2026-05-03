@@ -8,7 +8,7 @@ export interface UnitsQueryParams {
   page?: number
   limit?: number
   company_id?: string
-  name?: string
+  search?: string
 }
 
 export function useUnitsQuery(params?: UnitsQueryParams) {
@@ -20,14 +20,14 @@ export function useUnitsQuery(params?: UnitsQueryParams) {
       params?.page,
       params?.limit,
       params?.company_id,
-      params?.name,
+      params?.search,
       user?.company?.id,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         company_id: params?.company_id
           ? params.company_id
           : user?.company?.id || '',

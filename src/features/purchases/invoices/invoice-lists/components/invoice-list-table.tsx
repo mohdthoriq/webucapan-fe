@@ -75,17 +75,16 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
     columnFilters,
     onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      // name per-column text filter
-      { columnId: 'Nomor', searchKey: 'invoice_number', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -98,11 +97,13 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
@@ -133,11 +134,7 @@ export function InvoiceListsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari nomor tagihan...'
-        searchKey='Nomor'
-      >
+      <DataTableToolbar table={table} searchPlaceholder='Cari...'>
         <InvoiceListFilter search={search} navigate={navigate} />
       </DataTableToolbar>
       <Tabs

@@ -74,19 +74,18 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      // name per-column text filter
-      { columnId: 'Nama', searchKey: 'name', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -99,11 +98,13 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
@@ -134,11 +135,7 @@ export function ContactsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari kontak...'
-        searchKey='Nama'
-      />
+      <DataTableToolbar table={table} searchPlaceholder='Cari...' />
       <Tabs
         defaultValue=''
         value={(search.type_id as string) || ''}

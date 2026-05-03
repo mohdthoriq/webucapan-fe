@@ -36,7 +36,6 @@ import {
   DataTablePagination,
   DataTableToolbar,
 } from '@/components/data-table'
-
 import { ExpeditionsBulkDeleteDialog } from './expeditions-bulk-delete-dialog'
 import { expeditionsColumns } from './expeditions-columns'
 import { useExpeditions } from './expeditions-provider'
@@ -47,7 +46,13 @@ type DataTableProps = {
 }
 
 export function ExpeditionsTable({ search, navigate }: DataTableProps) {
-  const { expeditionsData, pagination: serverPagination, isLoading, setCurrentRow, setOpen } = useExpeditions()
+  const {
+    expeditionsData,
+    pagination: serverPagination,
+    isLoading,
+    setCurrentRow,
+    setOpen,
+  } = useExpeditions()
 
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
@@ -60,16 +65,16 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
     columnFilters,
     onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'Nama', searchKey: 'search', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -81,6 +86,7 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
       pagination,
       rowSelection,
       columnFilters,
+      globalFilter,
       columnVisibility,
     },
     manualPagination: true,
@@ -88,6 +94,7 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
+    onGlobalFilterChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -117,11 +124,7 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari ekspedisi...'
-        searchKey='Nama'
-      />
+      <DataTableToolbar table={table} searchPlaceholder='Cari...' />
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
@@ -135,7 +138,12 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
                       className={cn(
                         'bg-secondary group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                         header.column.columnDef.meta?.className,
-                        (header.column.columnDef.meta as Record<string, unknown>)?.thClassName as string | undefined
+                        (
+                          header.column.columnDef.meta as Record<
+                            string,
+                            unknown
+                          >
+                        )?.thClassName as string | undefined
                       )}
                     >
                       {header.isPlaceholder
@@ -156,8 +164,8 @@ export function ExpeditionsTable({ search, navigate }: DataTableProps) {
                 columnCount={table.getVisibleFlatColumns().length}
               />
             ) : table.getRowModel().rows?.length ? (
-              <TableRows 
-                table={table} 
+              <TableRows
+                table={table}
                 onEdit={(row) => {
                   setCurrentRow(row)
                   setOpen('edit')
@@ -216,7 +224,13 @@ function TableLoading({ columnCount }: { columnCount: number }) {
   )
 }
 
-function TableRows({ table, onEdit }: { table: TanstackTable<Expedition>, onEdit: (row: Expedition) => void }) {
+function TableRows({
+  table,
+  onEdit,
+}: {
+  table: TanstackTable<Expedition>
+  onEdit: (row: Expedition) => void
+}) {
   return (
     <>
       {table.getRowModel().rows.map((row) => (
@@ -234,7 +248,8 @@ function TableRows({ table, onEdit }: { table: TanstackTable<Expedition>, onEdit
                   className={cn(
                     'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                     cell.column.columnDef.meta?.className,
-                    (cell.column.columnDef.meta as Record<string, unknown>)?.tdClassName as string | undefined
+                    (cell.column.columnDef.meta as Record<string, unknown>)
+                      ?.tdClassName as string | undefined
                   )}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -248,7 +263,8 @@ function TableRows({ table, onEdit }: { table: TanstackTable<Expedition>, onEdit
                 className={cn(
                   'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
                   cell.column.columnDef.meta?.className,
-                  (cell.column.columnDef.meta as Record<string, unknown>)?.tdClassName as string | undefined
+                  (cell.column.columnDef.meta as Record<string, unknown>)
+                    ?.tdClassName as string | undefined
                 )}
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

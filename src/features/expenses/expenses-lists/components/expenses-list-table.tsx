@@ -73,19 +73,18 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
   // Synced with URL states (keys/defaults mirror roles route search schema)
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      // name per-column text filter
-      { columnId: 'Nomor', searchKey: 'expense_number', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -98,11 +97,13 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
@@ -135,8 +136,7 @@ export function ExpensesListsTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari nomor biaya...'
-        searchKey='Nomor'
+        searchPlaceholder='Cari...'
       >
         <ExpensesListFilter search={search} navigate={navigate} />
       </DataTableToolbar>

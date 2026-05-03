@@ -110,7 +110,6 @@ function ProductCombobox({
   } = useComboboxQuery<Product, ProductsQueryParams>({
     queryHook: useProductsQuery,
     limit,
-    searchKey: 'search',
   })
 
   const selectedItem = useMemo(

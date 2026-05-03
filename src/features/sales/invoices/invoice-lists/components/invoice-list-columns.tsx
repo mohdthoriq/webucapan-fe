@@ -71,18 +71,17 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
               </Link>
             </TooltipTrigger>
             <TooltipContent
-              className='border-border w-80 bg-white p-0'
-              arrowClassName='bg-white fill-white'
+              className='border-border w-80 p-0 bg-white dark:bg-secondary group-hover:bg-muted/100'
+              arrowClassName='bg-white dark:bg-secondary'
             >
               <Table>
-                <TableHeader className='bg-white'>
+                <TableHeader className='bg-white dark:bg-secondary'>
                   {' '}
-                  {/* Pakai putih murni */}
                   <TableRow className='border-b hover:bg-transparent'>
-                    <TableHead className='text-foreground h-9 px-3 text-xs font-semibold'>
+                    <TableHead className='text-foreground px-3 py-4 text-xs font-semibold'>
                       Item
                     </TableHead>
-                    <TableHead className='text-foreground h-9 px-3 text-right text-xs font-semibold'>
+                    <TableHead className='text-foreground px-3 py-4 text-right text-xs font-semibold'>
                       Qty
                     </TableHead>
                   </TableRow>
@@ -92,12 +91,12 @@ export const invoiceListsColumns: ColumnDef<SalesInvoice>[] = [
                     sales_invoice_items.map((item) => (
                       <TableRow
                         key={item.id}
-                        className='border-b last:border-0 hover:bg-slate-50/50'
+                        className='border-b last:border-0 bg-background'
                       >
-                        <TableCell className='text-foreground px-3 py-2 text-xs'>
+                        <TableCell className='text-foreground px-3 py-4 text-xs'>
                           {item.product?.name}
                         </TableCell>
-                        <TableCell className='text-foreground px-3 py-2 text-right text-xs'>
+                        <TableCell className='text-foreground px-3 py-4 text-right text-xs'>
                           {item.quantity}
                         </TableCell>
                       </TableRow>

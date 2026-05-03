@@ -7,7 +7,7 @@ import { QUERY_KEY } from '@/constants/query-key'
 export interface TaxesQueryParams {
   page?: number
   limit?: number
-  name?: string
+  search?: string
   company_id?: string
 }
 
@@ -19,7 +19,7 @@ export function useTaxesQuery(params?: TaxesQueryParams) {
       QUERY_KEY.TAXES,
       params?.page,
       params?.limit,
-      params?.name,
+      params?.search,
       params?.company_id,
       user?.company?.id,
     ],
@@ -27,7 +27,7 @@ export function useTaxesQuery(params?: TaxesQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         company_id: params?.company_id
           ? params.company_id
           : user?.company?.id || '',

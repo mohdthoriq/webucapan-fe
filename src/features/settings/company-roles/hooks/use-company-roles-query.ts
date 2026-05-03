@@ -8,7 +8,7 @@ export interface RoleSettingsQueryParams {
   page?: number
   limit?: number
   company_id?: string
-  name?: string
+  search?: string
   is_system_role?: boolean
   order?: 'asc' | 'desc'
 }
@@ -22,7 +22,7 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
       params?.page,
       params?.limit,
       params?.company_id,
-      params?.name,
+      params?.search,
       params?.is_system_role,
       params?.order,
     ],
@@ -35,8 +35,8 @@ export function useCompanyRoleSettingsQuery(params?: RoleSettingsQueryParams) {
       if (params?.limit !== undefined) {
         queryParams.append('limit', params.limit.toString())
       }
-      if (params?.name !== undefined) {
-        queryParams.append('name', params.name)
+      if (params?.search !== undefined) {
+        queryParams.append('search', params.search)
       }
       if (params?.is_system_role !== undefined) {
         queryParams.append('is_system_role', params.is_system_role.toString())

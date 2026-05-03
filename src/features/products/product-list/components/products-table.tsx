@@ -64,16 +64,17 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
 
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [{ columnId: 'Nama', searchKey: 'search', type: 'string' }],
+    globalFilter: { enabled: true, key: 'search' },
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -86,11 +87,13 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
       rowSelection,
       columnFilters,
       columnVisibility,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
@@ -121,11 +124,7 @@ export function ProductsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari produk...'
-        searchKey='Nama'
-      >
+      <DataTableToolbar table={table} searchPlaceholder='Cari...'>
         <ProductListFilter search={search} navigate={navigate} />
       </DataTableToolbar>
       <div className='overflow-hidden rounded-md border'>

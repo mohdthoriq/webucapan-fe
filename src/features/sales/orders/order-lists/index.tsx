@@ -84,7 +84,7 @@ function OrderLists() {
   const queryParams: SalesOrderListQueryParams = {
     page: search.page ? parseInt(search.page as string) : undefined,
     limit: search.limit ? parseInt(search.limit as string) : undefined,
-    order_number: (search.order_number as string) || undefined,
+    search: (search.search as string) || undefined,
     payment_status:
       (search.payment_status as SalesOrderListQueryParams['payment_status']) ||
       undefined,

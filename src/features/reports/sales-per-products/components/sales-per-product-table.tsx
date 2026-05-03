@@ -55,18 +55,18 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
 
   const {
     columnFilters,
-    onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
+    globalFilter: { enabled: true, key: 'search' },
     columnFilters: [
-      { columnId: 'Nama Produk', searchKey: 'search', type: 'string' },
-      { columnId: 'Kategori', searchKey: 'product_category_id' },
     ],
   })
 
@@ -81,11 +81,13 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
       columnFilters,
       columnVisibility,
       expanded,
+      globalFilter,
     },
     manualPagination: true,
     manualFiltering: true,
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
+    onGlobalFilterChange,
     onPaginationChange,
     onColumnFiltersChange,
     onExpandedChange: setExpanded,
@@ -116,8 +118,7 @@ export function SalesPerProductTable({ search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Cari produk...'
-        searchKey='Nama Produk'
+        searchPlaceholder='Cari...'
         filters={[
           {
             columnId: 'Kategori',

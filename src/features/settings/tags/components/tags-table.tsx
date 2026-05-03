@@ -59,17 +59,16 @@ export function TagsTable({ search, navigate }: DataTableProps) {
     columnFilters,
     onColumnFiltersChange,
     pagination,
+    globalFilter,
+    onGlobalFilterChange,
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
     search,
     navigate,
     pagination: { defaultPage: 1, defaultPageSize: 10, pageSizeKey: 'limit' },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      // name per-column text filter
-      { columnId: 'Nama', searchKey: 'name', type: 'string' },
-    ],
+    globalFilter: { enabled: true, key: 'search' },
+    columnFilters: [],
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -81,6 +80,7 @@ export function TagsTable({ search, navigate }: DataTableProps) {
       pagination,
       rowSelection,
       columnFilters,
+      globalFilter,
       columnVisibility,
     },
     manualPagination: true,
@@ -88,6 +88,7 @@ export function TagsTable({ search, navigate }: DataTableProps) {
     pageCount: serverPagination.total_pages,
     enableRowSelection: true,
     onPaginationChange,
+    onGlobalFilterChange,
     onColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -117,11 +118,7 @@ export function TagsTable({ search, navigate }: DataTableProps) {
         'flex flex-1 flex-col gap-4'
       )}
     >
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder='Cari tag...'
-        searchKey='Nama'
-      />
+      <DataTableToolbar table={table} searchPlaceholder='Cari...' />
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

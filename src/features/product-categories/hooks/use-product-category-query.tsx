@@ -7,17 +7,17 @@ export interface ProductCategoryQueryParams {
   page?: number
   limit?: number
   company_id?: string
-  name?: string
+  search?: string
 }
 
 export function useProductCategoryQuery(params?: ProductCategoryQueryParams) {
   return useQuery({
-    queryKey: [QUERY_KEY.PRODUCT_CATEGORIES, params?.page, params?.limit, params?.name],
+    queryKey: [QUERY_KEY.PRODUCT_CATEGORIES, params?.page, params?.limit, params?.search],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.name ? { name: params.name } : {}),
+        ...(params?.search ? { search: params.search } : {}),
       })
 
       const url = queryParams.toString()
