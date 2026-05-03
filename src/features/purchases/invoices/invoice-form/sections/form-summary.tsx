@@ -351,7 +351,7 @@ export function InvoiceFormSummary() {
           <span className='text-primary text-sm'>Pemotongan</span>
         </div>
 
-        <div className='text-lg hover:bg-muted flex justify-between border-b p-2 py-4 font-bold'>
+        <div className='hover:bg-muted flex justify-between border-b p-2 py-4 text-lg font-bold'>
           <span className='text-foreground'>Total Tagihan</span>
           <span className='text-primary'>{totals.total.toLocaleString()}</span>
         </div>
