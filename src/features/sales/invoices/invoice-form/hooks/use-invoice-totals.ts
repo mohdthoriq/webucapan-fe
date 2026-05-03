@@ -14,7 +14,7 @@ export function useInvoiceTotals(taxes: Tax[]) {
     invoiceItems,
     additionalDiscounts,
     transactionFees,
-    deductions,
+    deductions = [],
     shippingFee,
     isTaxInclusive,
   ] = useWatch({
