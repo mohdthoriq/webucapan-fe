@@ -2,11 +2,16 @@ import { useState } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { InvoiceItemsTable } from '../components/invoice-items-table'
 import type { CreateInvoiceFormData } from '../types/invoice-form.schema'
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Switch } from '@/components/ui/switch'
 
 export function InvoiceFormItems() {
   const [itemsAmount, setItemsAmount] = useState(1)
@@ -36,8 +41,8 @@ export function InvoiceFormItems() {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1.5'>
           <h3 className='text-md font-medium'>Item Tagihan</h3>
-          <span className='bg-secondary text-muted-foreground flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-medium border'>
-            {fields.length} item
+          <span className='bg-secondary text-muted-foreground flex h-5 min-w-5 items-center justify-center rounded-full border px-1 text-[10px] font-medium'>
+            {fields.length}
           </span>
         </div>
         <div className='flex items-center gap-2'>

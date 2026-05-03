@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import type { AxiosError } from 'axios'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm, type UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
 import {
@@ -9,12 +9,14 @@ import {
   type Expense,
   type ApiResponse,
 } from '@/types'
+import { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import { toast } from 'sonner'
 import { useGenerateNextNumber } from '@/hooks/use-auto-numbering'
 import { useUploadAttachmentsMutation } from '@/hooks/use-upload-attachments-mutation'
 import {
   CreateExpenseSchema,
   UpdateExpenseSchema,
+  type ExpenseFormData,
   type CreateExpenseFormData,
   type UpdateExpenseFormData,
 } from '../types/expenses-form.schema'
@@ -36,7 +38,7 @@ export function useExpensesForm({
   const navigate = useNavigate()
 
   const defaultValues = useMemo(
-    () =>
+    (): ExpenseFormData =>
       isEdit && currentRow
         ? {
             id: currentRow.id,
@@ -49,6 +51,7 @@ export function useExpensesForm({
             tax_total: Number(currentRow.tax_total),
             total: Number(currentRow.total),
             is_paylater: currentRow.is_paylater ?? false,
+            include_tax: currentRow.include_tax ?? false,
             date: currentRow.date ? new Date(currentRow.date) : new Date(),
             due_date: currentRow.due_date
               ? new Date(currentRow.due_date)
@@ -56,10 +59,19 @@ export function useExpensesForm({
             expense_items:
               currentRow.expense_items?.map((item) => ({
                 id: item.id,
-                account_id: item.account?.id ?? undefined,
+                account_id: item.account?.id ?? '',
                 description: item.description || undefined,
                 tax_id: item.tax?.id ?? undefined,
                 amount: Number(item.amount) || 0,
+              })) || [],
+            deductions:
+              currentRow.deductions?.map((d) => ({
+                id: d.id,
+                account_id: d.account?.id || '',
+                name: d.name || 'Pemotongan',
+                type: (d.type as UnitsType) || UnitsType.fixed,
+                value: Number(d.value) || 0,
+                amount: Number(d.amount) || 0,
               })) || [],
             tags:
               currentRow.tags?.map((tag: string | { id: string }) =>
@@ -68,6 +80,7 @@ export function useExpensesForm({
             note: currentRow.note ?? '',
           }
         : {
+            id: '',
             expense_number: autoNumbering?.format ?? '',
             contact_id: '',
             account_id: '',
@@ -77,6 +90,7 @@ export function useExpensesForm({
             tax_total: 0,
             total: 0,
             is_paylater: false,
+            include_tax: false,
             date: new Date(),
             due_date: new Date(),
             expense_items: [
@@ -87,13 +101,14 @@ export function useExpensesForm({
                 amount: 0,
               },
             ],
+            deductions: [],
             tags: [],
             note: '',
           },
     [currentRow, isEdit, autoNumbering]
   )
 
-  const form = useForm<CreateExpenseFormData | UpdateExpenseFormData>({
+  const form = useForm<ExpenseFormData>({
     resolver: zodResolver(isEdit ? UpdateExpenseSchema : CreateExpenseSchema),
     defaultValues: defaultValues,
   })
@@ -126,9 +141,7 @@ export function useExpensesForm({
       : null) ||
     (firstError ? firstError.message || 'Terjadi kesalahan pada input' : null)
 
-  const onSubmit = async (
-    data: CreateExpenseFormData | UpdateExpenseFormData
-  ) => {
+  const onSubmit = async (data: ExpenseFormData) => {
     try {
       let attachmentUrls: string[] = []
 
@@ -155,7 +168,7 @@ export function useExpensesForm({
         const updateData: UpdateExpenseFormData = {
           ...payload,
           id: currentRow.id,
-        } as unknown as UpdateExpenseFormData
+        } as UpdateExpenseFormData
         const response = await updateMutation.mutateAsync(updateData)
 
         form.reset(data)
@@ -165,7 +178,7 @@ export function useExpensesForm({
         })
       } else {
         const response = await createMutation.mutateAsync(
-          payload as unknown as CreateExpenseFormData
+          payload as CreateExpenseFormData
         )
 
         await generateNextNumber.mutateAsync(FinanceNumberType.expense)
@@ -183,7 +196,7 @@ export function useExpensesForm({
   }
 
   return {
-    form,
+    form: form as UseFormReturn<ExpenseFormData>,
     fields,
     append,
     remove,

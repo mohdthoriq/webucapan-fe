@@ -52,7 +52,7 @@ export function ExpensesDetail() {
           <div className='flex items-center justify-between'>
             <div>
               <h1 className='text-xl font-semibold'>
-                Detail Biaya {/* expense.expense_number */}
+                Detail Biaya {expense.expense_number}
               </h1>
             </div>
             <div className='mr-4 flex gap-2'>

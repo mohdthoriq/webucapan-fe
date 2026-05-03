@@ -41,7 +41,7 @@ export function InvoiceFormItems() {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1.5'>
           <h3 className='text-md font-medium'>Item Tagihan</h3>
-          <span className='bg-secondary text-muted-foreground flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-medium border'>
+          <span className='bg-secondary text-muted-foreground flex h-5 min-w-5 items-center justify-center rounded-full border px-1 text-[10px] font-medium'>
             {fields.length}
           </span>
         </div>

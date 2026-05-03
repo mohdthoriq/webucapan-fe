@@ -1,54 +1,66 @@
-import type { useForm } from 'react-hook-form'
 import type { Tax } from '@/types'
-import type {
-  CreateExpenseFormData,
-  UpdateExpenseFormData,
+import { UnitsType } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
+import {
+  type CreateExpenseFormData,
+  type UpdateExpenseFormData,
 } from '../types/expenses-form.schema'
 
 export const calculateTotals = (
-  form: Pick<
-    ReturnType<typeof useForm<CreateExpenseFormData | UpdateExpenseFormData>>,
-    'setValue' | 'getValues'
-  >,
   items: (CreateExpenseFormData | UpdateExpenseFormData)['expense_items'],
-  taxes: Tax[]
+  deductions: (CreateExpenseFormData | UpdateExpenseFormData)['deductions'],
+  taxes: Tax[],
+  includeTax: boolean
 ) => {
   let newSubtotal = 0
   let newTaxTotal = 0
-  let newTotal = 0
   const taxBreakdown: Record<string, number> = {}
 
   items.forEach((item) => {
     const itemAmount = Number(item.amount) || 0
-
-    const lineTotal = itemAmount
-    newSubtotal += lineTotal
+    let lineSubtotal = itemAmount
+    let lineTax = 0
 
     if (item.tax_id) {
       const tax = taxes.find((t) => t.id === item.tax_id)
       if (tax) {
-        const itemTax = (itemAmount * tax.rate) / 100
-        newTaxTotal += itemTax
+        if (includeTax) {
+          lineSubtotal = itemAmount / (1 + tax.rate / 100)
+          lineTax = itemAmount - lineSubtotal
+        } else {
+          lineSubtotal = itemAmount
+          lineTax = (itemAmount * tax.rate) / 100
+        }
 
+        newTaxTotal += lineTax
         if (tax.name) {
-          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + itemTax
+          taxBreakdown[tax.name] = (taxBreakdown[tax.name] || 0) + lineTax
         }
       }
     }
+
+    newSubtotal += lineSubtotal
   })
 
-  newTotal = newSubtotal + newTaxTotal
+  let deductionsTotal = 0
+  deductions?.forEach((deduction) => {
+    const value = Number(deduction.value) || 0
+    const amount =
+      deduction.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
+    deductionsTotal += amount
+  })
 
-  if (form.getValues('subtotal') !== newSubtotal)
-    form.setValue('subtotal', newSubtotal)
-  if (form.getValues('tax_total') !== newTaxTotal)
-    form.setValue('tax_total', newTaxTotal)
-  if (form.getValues('total') !== newTotal) form.setValue('total', newTotal)
+  const totalBeforeDeductions = newSubtotal + newTaxTotal
+  const newTotal = totalBeforeDeductions - deductionsTotal
 
   return {
     subtotal: newSubtotal,
     taxTotal: newTaxTotal,
     total: newTotal,
+    totalBeforeDeductions,
     taxBreakdown,
+    deductions: deductions?.map((d) => {
+      const value = Number(d.value) || 0
+      return d.type === UnitsType.percent ? (newSubtotal * value) / 100 : value
+    }),
   }
 }

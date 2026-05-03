@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { addDays, format } from 'date-fns'
-import { id } from 'date-fns/locale'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
   type Contact,
@@ -9,6 +8,7 @@ import {
   type PaymentTerm,
   type Tag,
 } from '@/types'
+import { id } from 'date-fns/locale'
 import { CalendarIcon, ChevronDown } from 'lucide-react'
 import { useGlobalDialogStore } from '@/stores/global-dialog-store'
 import { cn } from '@/lib/utils'
@@ -408,7 +408,7 @@ export function InvoiceFormHeader() {
           <CollapsibleTrigger asChild>
             <Button
               variant='link'
-              className='text-primary h-auto pb-2 font-medium hover:no-underline'
+              className='text-primary h-auto p-0 text-xs font-medium hover:no-underline'
             >
               <div className='flex items-center'>
                 <span>Tampilkan Informasi Pengiriman</span>

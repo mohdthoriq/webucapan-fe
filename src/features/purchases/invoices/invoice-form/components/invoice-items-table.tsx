@@ -9,13 +9,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useProductsQuery } from '@/features/products/product-list/hooks/use-product-list-query'
+import type { InvoiceItemFormData } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 import { useTaxesQuery } from '@/features/settings/taxes/hooks/use-taxes-query'
 import type {
   CreateInvoiceFormData,
   UpdateInvoiceFormData,
 } from '../types/invoice-form.schema'
 import { InvoiceItemRow } from './invoice-item-row'
-import type { InvoiceItemFormData } from '@/features/sales/invoices/invoice-form/types/invoice-form.schema'
 
 type InvoiceItemsTableProps = {
   fields: InvoiceItemFormData[]

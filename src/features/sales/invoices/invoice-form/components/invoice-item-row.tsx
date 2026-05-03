@@ -136,7 +136,7 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                       e.target.value === '' ? '' : Number(e.target.value)
                     )
                   }
-                  className='h-8 w-[60px] text-sm'
+                  className='h-8 w-[80px] text-sm'
                 />
               </FormControl>
               <FormMessage />
@@ -214,7 +214,10 @@ export const InvoiceItemRow = memo(function InvoiceItemRow({
                     </div>
                   ) : (
                     <>
-                      <SelectItem value='none' className='text-muted-foreground text-xs'>
+                      <SelectItem
+                        value='none'
+                        className='text-muted-foreground text-xs'
+                      >
                         ...
                       </SelectItem>
                       {taxes?.data.map((t) => (

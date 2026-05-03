@@ -232,38 +232,26 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
             </div>
 
             {/* Tax Breakdown */}
-            {Object.entries(
-              expense.expense_items.reduce(
-                (acc, item) => {
-                  if (item.tax) {
-                    const taxName = item.tax.name
-                    const amount = Number(item.amount) || 0
-                    const taxAmount = (amount * (item.tax.rate || 0)) / 100
-
-                    acc[taxName] = (acc[taxName] || 0) + taxAmount
-                  }
-                  return acc
-                },
-                {} as Record<string, number>
-              )
-            ).map(([name, amount]) => (
+            {expense.taxes?.map((tax) => (
               <div
-                key={name}
+                key={tax.id}
                 className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
               >
-                <span className='text-muted-foreground'>{name}</span>
+                <span className='text-muted-foreground'>
+                  {tax.name} ({tax.rate}%)
+                </span>
                 <span className='font-medium'>
-                  {formatCurrency(amount, expense.currency)}
+                  {formatCurrency(Number(tax.amount), expense.currency)}
                 </span>
               </div>
             ))}
 
-            {/* Fallback if no specific tax items but a total exists */}
-            {expense.expense_items.every((item) => !item.tax) &&
+            {/* Fallback if no specific tax list but total exists */}
+            {(!expense.taxes || expense.taxes.length === 0) &&
               Number(expense.tax_total) > 0 && (
-                <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm font-medium'>
-                  <span className='text-muted-foreground'>Pajak</span>
-                  <span>
+                <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
+                  <span className='text-muted-foreground'>Total Pajak</span>
+                  <span className='font-medium'>
                     {formatCurrency(
                       Number(expense.tax_total),
                       expense.currency
@@ -272,8 +260,28 @@ export function ExpensesDetailReceipt({ expense }: ExpensesDetailReceiptProps) {
                 </div>
               )}
 
+            {/* Deductions */}
+            {expense.deductions?.map((deduction) => (
+              <div
+                key={deduction.id}
+                className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'
+              >
+                <span className='text-muted-foreground'>
+                  {deduction.name}{' '}
+                  {deduction.account && (
+                    <span className='text-[10px] text-gray-400'>
+                      ({deduction.account.name})
+                    </span>
+                  )}
+                </span>
+                <span className='font-medium text-red-500'>
+                  ({formatCurrency(Number(deduction.amount), expense.currency)})
+                </span>
+              </div>
+            ))}
+
             <div className='border-muted-foreground/10 flex justify-between border-b pb-1 text-sm'>
-              <span className='text-muted-foreground font-medium'>Total</span>
+              <span className='text-muted-foreground font-bold'>Total</span>
               <span className='text-lg font-bold'>
                 {formatCurrency(Number(expense.total), expense.currency)}
               </span>
