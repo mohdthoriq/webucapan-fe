@@ -11,7 +11,7 @@ export interface SalesOrderListQueryParams {
   customer_id?: string
   payment_status?: 'unpaid' | 'partially_paid' | 'paid'
   document_status?: 'draft' | 'posted' | 'void'
-  order_number?: string
+  search?: string
   date_from?: Date
   date_to?: Date
   due_date_from?: Date
@@ -34,7 +34,7 @@ export function useSalesOrderListQuery(params?: SalesOrderListQueryParams) {
       const queryParams = new URLSearchParams({
         ...(params?.page ? { page: params.page.toString() } : {}),
         ...(params?.limit ? { limit: params.limit.toString() } : {}),
-        ...(params?.order_number ? { order_number: params.order_number } : {}),
+        ...(params?.search ? { search: params.search } : {}),
         ...(params?.date_from ? { date_from: params.date_from.toISOString() } : {}),
         ...(params?.date_to ? { date_to: params.date_to.toISOString() } : {}),
         ...(params?.payment_status ? { payment_status: params.payment_status } : {}),
