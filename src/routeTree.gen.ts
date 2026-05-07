@@ -22,6 +22,7 @@ import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedWarehousesIndexRouteImport } from './routes/_authenticated/warehouses/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedRentalIndexRouteImport } from './routes/_authenticated/rental/index'
@@ -36,6 +37,9 @@ import { Route as AuthenticatedCashBankReceiveRouteImport } from './routes/_auth
 import { Route as AuthenticatedCashBankEditRouteImport } from './routes/_authenticated/cash-bank/edit'
 import { Route as AuthenticatedCashBankDetailRouteImport } from './routes/_authenticated/cash-bank/detail'
 import { Route as AuthenticatedCashBankAccountNameRouteImport } from './routes/_authenticated/cash-bank/$accountName'
+import { Route as AuthenticatedWarehousesEditIndexRouteImport } from './routes/_authenticated/warehouses/edit/index'
+import { Route as AuthenticatedWarehousesDetailIndexRouteImport } from './routes/_authenticated/warehouses/detail/index'
+import { Route as AuthenticatedWarehousesAddIndexRouteImport } from './routes/_authenticated/warehouses/add/index'
 import { Route as AuthenticatedSettingsUsersIndexRouteImport } from './routes/_authenticated/settings/users/index'
 import { Route as AuthenticatedSettingsUnitsIndexRouteImport } from './routes/_authenticated/settings/units/index'
 import { Route as AuthenticatedSettingsTaxesIndexRouteImport } from './routes/_authenticated/settings/taxes/index'
@@ -155,6 +159,12 @@ const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedWarehousesIndexRoute =
+  AuthenticatedWarehousesIndexRouteImport.update({
+    id: '/warehouses/',
+    path: '/warehouses/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/settings/',
@@ -237,6 +247,24 @@ const AuthenticatedCashBankAccountNameRoute =
   AuthenticatedCashBankAccountNameRouteImport.update({
     id: '/cash-bank/$accountName',
     path: '/cash-bank/$accountName',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWarehousesEditIndexRoute =
+  AuthenticatedWarehousesEditIndexRouteImport.update({
+    id: '/warehouses/edit/',
+    path: '/warehouses/edit/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWarehousesDetailIndexRoute =
+  AuthenticatedWarehousesDetailIndexRouteImport.update({
+    id: '/warehouses/detail/',
+    path: '/warehouses/detail/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWarehousesAddIndexRoute =
+  AuthenticatedWarehousesAddIndexRouteImport.update({
+    id: '/warehouses/add/',
+    path: '/warehouses/add/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsUsersIndexRoute =
@@ -591,6 +619,7 @@ export interface FileRoutesByFullPath {
   '/rental': typeof AuthenticatedRentalIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
@@ -628,6 +657,9 @@ export interface FileRoutesByFullPath {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/warehouses/add': typeof AuthenticatedWarehousesAddIndexRoute
+  '/warehouses/detail': typeof AuthenticatedWarehousesDetailIndexRoute
+  '/warehouses/edit': typeof AuthenticatedWarehousesEditIndexRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/purchases/delivery/detail': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/purchases/invoices/add': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
@@ -673,6 +705,7 @@ export interface FileRoutesByTo {
   '/rental': typeof AuthenticatedRentalIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/admin/account-categories': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardIndexRoute
@@ -710,6 +743,9 @@ export interface FileRoutesByTo {
   '/settings/taxes': typeof AuthenticatedSettingsTaxesIndexRoute
   '/settings/units': typeof AuthenticatedSettingsUnitsIndexRoute
   '/settings/users': typeof AuthenticatedSettingsUsersIndexRoute
+  '/warehouses/add': typeof AuthenticatedWarehousesAddIndexRoute
+  '/warehouses/detail': typeof AuthenticatedWarehousesDetailIndexRoute
+  '/warehouses/edit': typeof AuthenticatedWarehousesEditIndexRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/purchases/delivery/detail': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/purchases/invoices/add': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
@@ -757,6 +793,7 @@ export interface FileRoutesById {
   '/_authenticated/rental/': typeof AuthenticatedRentalIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
   '/_authenticated/admin/plans/add': typeof AuthenticatedAdminPlansAddRoute
   '/_authenticated/admin/account-categories/': typeof AuthenticatedAdminAccountCategoriesIndexRoute
   '/_authenticated/admin/dashboard/': typeof AuthenticatedAdminDashboardIndexRoute
@@ -794,6 +831,9 @@ export interface FileRoutesById {
   '/_authenticated/settings/taxes/': typeof AuthenticatedSettingsTaxesIndexRoute
   '/_authenticated/settings/units/': typeof AuthenticatedSettingsUnitsIndexRoute
   '/_authenticated/settings/users/': typeof AuthenticatedSettingsUsersIndexRoute
+  '/_authenticated/warehouses/add/': typeof AuthenticatedWarehousesAddIndexRoute
+  '/_authenticated/warehouses/detail/': typeof AuthenticatedWarehousesDetailIndexRoute
+  '/_authenticated/warehouses/edit/': typeof AuthenticatedWarehousesEditIndexRoute
   '/_authenticated/admin/plans/$planId/': typeof AuthenticatedAdminPlansPlanIdIndexRoute
   '/_authenticated/purchases/delivery/detail/': typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   '/_authenticated/purchases/invoices/add/': typeof AuthenticatedPurchasesInvoicesAddIndexRoute
@@ -841,6 +881,7 @@ export interface FileRouteTypes {
     | '/rental'
     | '/reports'
     | '/settings'
+    | '/warehouses'
     | '/admin/plans/add'
     | '/admin/account-categories'
     | '/admin/dashboard'
@@ -878,6 +919,9 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/warehouses/add'
+    | '/warehouses/detail'
+    | '/warehouses/edit'
     | '/admin/plans/$planId'
     | '/purchases/delivery/detail'
     | '/purchases/invoices/add'
@@ -923,6 +967,7 @@ export interface FileRouteTypes {
     | '/rental'
     | '/reports'
     | '/settings'
+    | '/warehouses'
     | '/admin/plans/add'
     | '/admin/account-categories'
     | '/admin/dashboard'
@@ -960,6 +1005,9 @@ export interface FileRouteTypes {
     | '/settings/taxes'
     | '/settings/units'
     | '/settings/users'
+    | '/warehouses/add'
+    | '/warehouses/detail'
+    | '/warehouses/edit'
     | '/admin/plans/$planId'
     | '/purchases/delivery/detail'
     | '/purchases/invoices/add'
@@ -1006,6 +1054,7 @@ export interface FileRouteTypes {
     | '/_authenticated/rental/'
     | '/_authenticated/reports/'
     | '/_authenticated/settings/'
+    | '/_authenticated/warehouses/'
     | '/_authenticated/admin/plans/add'
     | '/_authenticated/admin/account-categories/'
     | '/_authenticated/admin/dashboard/'
@@ -1043,6 +1092,9 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/taxes/'
     | '/_authenticated/settings/units/'
     | '/_authenticated/settings/users/'
+    | '/_authenticated/warehouses/add/'
+    | '/_authenticated/warehouses/detail/'
+    | '/_authenticated/warehouses/edit/'
     | '/_authenticated/admin/plans/$planId/'
     | '/_authenticated/purchases/delivery/detail/'
     | '/_authenticated/purchases/invoices/add/'
@@ -1169,6 +1221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/warehouses/': {
+      id: '/_authenticated/warehouses/'
+      path: '/warehouses'
+      fullPath: '/warehouses'
+      preLoaderRoute: typeof AuthenticatedWarehousesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/settings'
@@ -1265,6 +1324,27 @@ declare module '@tanstack/react-router' {
       path: '/cash-bank/$accountName'
       fullPath: '/cash-bank/$accountName'
       preLoaderRoute: typeof AuthenticatedCashBankAccountNameRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/warehouses/edit/': {
+      id: '/_authenticated/warehouses/edit/'
+      path: '/warehouses/edit'
+      fullPath: '/warehouses/edit'
+      preLoaderRoute: typeof AuthenticatedWarehousesEditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/warehouses/detail/': {
+      id: '/_authenticated/warehouses/detail/'
+      path: '/warehouses/detail'
+      fullPath: '/warehouses/detail'
+      preLoaderRoute: typeof AuthenticatedWarehousesDetailIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/warehouses/add/': {
+      id: '/_authenticated/warehouses/add/'
+      path: '/warehouses/add'
+      fullPath: '/warehouses/add'
+      preLoaderRoute: typeof AuthenticatedWarehousesAddIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/users/': {
@@ -1704,6 +1784,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRentalIndexRoute: typeof AuthenticatedRentalIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+  AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
   AuthenticatedExpensesAddIndexRoute: typeof AuthenticatedExpensesAddIndexRoute
   AuthenticatedExpensesDetailIndexRoute: typeof AuthenticatedExpensesDetailIndexRoute
   AuthenticatedExpensesEditIndexRoute: typeof AuthenticatedExpensesEditIndexRoute
@@ -1732,6 +1813,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsTaxesIndexRoute: typeof AuthenticatedSettingsTaxesIndexRoute
   AuthenticatedSettingsUnitsIndexRoute: typeof AuthenticatedSettingsUnitsIndexRoute
   AuthenticatedSettingsUsersIndexRoute: typeof AuthenticatedSettingsUsersIndexRoute
+  AuthenticatedWarehousesAddIndexRoute: typeof AuthenticatedWarehousesAddIndexRoute
+  AuthenticatedWarehousesDetailIndexRoute: typeof AuthenticatedWarehousesDetailIndexRoute
+  AuthenticatedWarehousesEditIndexRoute: typeof AuthenticatedWarehousesEditIndexRoute
   AuthenticatedPurchasesDeliveryDetailIndexRoute: typeof AuthenticatedPurchasesDeliveryDetailIndexRoute
   AuthenticatedPurchasesInvoicesAddIndexRoute: typeof AuthenticatedPurchasesInvoicesAddIndexRoute
   AuthenticatedPurchasesInvoicesDetailIndexRoute: typeof AuthenticatedPurchasesInvoicesDetailIndexRoute
@@ -1768,6 +1852,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRentalIndexRoute: AuthenticatedRentalIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+  AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
   AuthenticatedExpensesAddIndexRoute: AuthenticatedExpensesAddIndexRoute,
   AuthenticatedExpensesDetailIndexRoute: AuthenticatedExpensesDetailIndexRoute,
   AuthenticatedExpensesEditIndexRoute: AuthenticatedExpensesEditIndexRoute,
@@ -1811,6 +1896,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsTaxesIndexRoute: AuthenticatedSettingsTaxesIndexRoute,
   AuthenticatedSettingsUnitsIndexRoute: AuthenticatedSettingsUnitsIndexRoute,
   AuthenticatedSettingsUsersIndexRoute: AuthenticatedSettingsUsersIndexRoute,
+  AuthenticatedWarehousesAddIndexRoute: AuthenticatedWarehousesAddIndexRoute,
+  AuthenticatedWarehousesDetailIndexRoute:
+    AuthenticatedWarehousesDetailIndexRoute,
+  AuthenticatedWarehousesEditIndexRoute: AuthenticatedWarehousesEditIndexRoute,
   AuthenticatedPurchasesDeliveryDetailIndexRoute:
     AuthenticatedPurchasesDeliveryDetailIndexRoute,
   AuthenticatedPurchasesInvoicesAddIndexRoute:

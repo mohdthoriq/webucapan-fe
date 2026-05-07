@@ -71,6 +71,13 @@ export const PERMISSION_KEY = {
   PRODUCT_EDIT: 'product.edit',
   PRODUCT_DELETE: 'product.delete',
 
+  // Warehouse
+  WAREHOUSE: 'warehouse',
+  WAREHOUSE_VIEW: 'warehouse.view',
+  WAREHOUSE_ADD: 'warehouse.add',
+  WAREHOUSE_EDIT: 'warehouse.edit',
+  WAREHOUSE_DELETE: 'warehouse.delete',
+
   // Reports
   REPORTS: 'report',
   REPORTS_BALANCE_SHEET: 'report.balance.sheet',

@@ -15,6 +15,7 @@ import {
   Store,
   Truck,
   WalletCards,
+  Warehouse,
 } from 'lucide-react'
 import { PERMISSION_KEY } from '@/constants/permissions'
 import { type SidebarData } from '../types'
@@ -122,6 +123,12 @@ export const sidebarData: SidebarData = {
               permission: PERMISSION_KEY.PRODUCT_VIEW,
             },
           ],
+        },
+        {
+          title: 'Gudang',
+          url: '/warehouses',
+          icon: Warehouse,
+          permission: PERMISSION_KEY.WAREHOUSE,
         },
         {
           title: 'Laporan',

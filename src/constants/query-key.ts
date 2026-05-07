@@ -57,6 +57,7 @@ export const QUERY_KEY = {
   REPORTS_SALES_PRODUCT: 'reports_sales_product',
   REPORTS_PROFIT_LOSS: 'reports_profit_loss',
   REPORTS_BALANCE_SHEET: 'reports_balance_sheet',
+  WAREHOUSE: 'warehouse',
 }
 
 export const QUERY_KEY_ADMIN = {
